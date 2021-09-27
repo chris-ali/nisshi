@@ -231,7 +231,7 @@ CREATE TABLE `models` (
   `IsComplex` tinyint(1) NOT NULL DEFAULT '0',
   `IsHighPerformance` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for high performance',
   `IsTailwheel` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for tailwheel',
-  `HasConstantPropellor` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for constant speed prop airplanes',
+  `HasConstantPropeller` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for constant speed prop airplanes',
   `IsTurbine` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'Non-zero for turbine; 1=Turboprop, 2=Jet',
   `IsCertifiedSinglePilot` tinyint(1) NOT NULL COMMENT 'For type-rated turbine aircraft, indicates certification for single-pilot operations.',
   `HasRetractableGear` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for retractable gear',

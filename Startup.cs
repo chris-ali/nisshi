@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,7 +27,9 @@ namespace Nisshi
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                    .AddJsonOptions(opt => 
+                        opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase );
             
             services.AddSwaggerGen();
 
