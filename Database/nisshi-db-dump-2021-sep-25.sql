@@ -11,27 +11,27 @@ DROP TABLE IF EXISTS `aircraft`;
 CREATE TABLE `aircraft` (
   `IDAircraft` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `IDModel` int(10) unsigned NOT NULL DEFAULT '0',
-  `Username` varchar(255) NOT NULL COMMENT 'Owner of the aircraft',
+  `IDUser` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Owner of the aircraft',
   `TailNumber` varchar(30) NOT NULL DEFAULT '',
   `InstanceType` int(1) unsigned NOT NULL DEFAULT '1' COMMENT 'InstanceType of this airplane (real (1) vs. simulator (0))',
-  `LastAnnual` datetime DEFAULT NULL COMMENT 'Date of last annual inspection',
-  `LastPitotStatic` datetime DEFAULT NULL COMMENT 'Date of last PitotStatic inspection',
-  `LastVOR` datetime DEFAULT NULL COMMENT 'Date of last VOR inspection',
-  `LastAltimeter` datetime DEFAULT NULL COMMENT 'Date of last altimeter inspection',
-  `LastTransponder` datetime DEFAULT NULL COMMENT 'Date of last transponder inspection',
-  `LastELT` datetime DEFAULT NULL COMMENT 'Date of last ELT inspection',
+  `LastAnnual` date DEFAULT NULL COMMENT 'Date of last annual inspection',
+  `LastPitotStatic` date DEFAULT NULL COMMENT 'Date of last PitotStatic inspection',
+  `LastVOR` date DEFAULT NULL COMMENT 'Date of last VOR inspection',
+  `LastAltimeter` date DEFAULT NULL COMMENT 'Date of last altimeter inspection',
+  `LastTransponder` date DEFAULT NULL COMMENT 'Date of last transponder inspection',
+  `LastELT` date DEFAULT NULL COMMENT 'Date of last ELT inspection',
   `Last100` decimal(10,1) unsigned NOT NULL DEFAULT '0.0' COMMENT 'Hobbs of last 100hr inspection',
   `LastOil` decimal(10,1) unsigned NOT NULL DEFAULT '0.0' COMMENT 'Hobbs of last oil change',
   `LastEngine` decimal(10,1) unsigned NOT NULL DEFAULT '0.0' COMMENT 'Engine time',
-  `RegistrationDue` datetime DEFAULT NULL COMMENT 'Date, if any, of next renewal of registration',
+  `RegistrationDue` date DEFAULT NULL COMMENT 'Date, if any, of next renewal of registration',
   `Notes` text COMMENT 'Notes about the aircraft that are shared among all users.',
   `DateCreated` date DEFAULT NULL,
   `DateUpdated` date DEFAULT NULL,
   PRIMARY KEY (`IDAircraft`),
   KEY `TailNumber` (`TailNumber`),
   KEY `Model` (`IDModel`),
-  KEY `Username` (`Username`),
-  CONSTRAINT `fkCurrencyUser` FOREIGN KEY (`Username`) REFERENCES `users` (`Username`) ON DELETE CASCADE ON UPDATE NO ACTION
+  KEY `User` (`IDUser`),
+  CONSTRAINT `fkAircraftUser` FOREIGN KEY (`IDUser`) REFERENCES `users` (`IDUser`) ON DELETE CASCADE ON UPDATE NO ACTION
   CONSTRAINT `fkAircraftModel` FOREIGN KEY (`IDModel`) REFERENCES `models` (`IDModel`) ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Specific airplanes';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -60,6 +60,8 @@ CREATE TABLE `airports` (
   `Latitude` double NOT NULL,
   `Longitude` double NOT NULL,
   `Preferred` int(11) DEFAULT '0' COMMENT 'Used for disambiguation when two airports share the same lat/lon',
+  `DateCreated` date DEFAULT NULL,
+  `DateUpdated` date DEFAULT NULL,
   PRIMARY KEY (`IDAirport`,`Type`),
   KEY `fkAirportType` (`Type`),
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='US airport data from http://www.faa.gov/airports_airtraffic/';
@@ -88,6 +90,8 @@ CREATE TABLE `categoryclass` (
   `Category` varchar(45) NOT NULL DEFAULT '' COMMENT 'Category',
   `Class` varchar(45) NOT NULL DEFAULT '',
   `AlternateCatClass` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Secondary category/class for airplanes that are part-time on floats or amphib',
+  `DateCreated` date DEFAULT NULL,
+  `DateUpdated` date DEFAULT NULL,
   PRIMARY KEY (`IDCategoryClass`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='Aircraft categories and classes';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -111,7 +115,7 @@ DROP TABLE IF EXISTS `currency`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `currency` (
   `IDCurrency` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key',
-  `Username` varchar(255) NOT NULL COMMENT 'Owner of the custom currency',
+  `IDUser` int(10) unsigned NOT NULL DEFAULT '0' 'Owner of the custom currency',
   `Name` varchar(45) NOT NULL COMMENT 'Name of the currency',
   `MinEvents` decimal(6,2) unsigned NOT NULL COMMENT 'Number of events that must be counted',
   `LimitType` int(10) unsigned DEFAULT '0' COMMENT '0 = minimum events must be met, 1 = no more than maximum',
@@ -125,8 +129,8 @@ CREATE TABLE `currency` (
   `DateCreated` date DEFAULT NULL,
   `DateUpdated` date DEFAULT NULL,
   PRIMARY KEY (`IDcurrency`),
-  KEY `Username` (`Username`),
-  CONSTRAINT `fkCurrencyUser` FOREIGN KEY (`Username`) REFERENCES `users` (`Username`) ON DELETE CASCADE ON UPDATE NO ACTION
+  KEY `User` (`IDUser`),
+  CONSTRAINT `fkCurrencyUser` FOREIGN KEY (`IDUser`) REFERENCES `users` (`IDUser`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=3326 DEFAULT CHARSET=utf8 COMMENT='Custom currencies for a user';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -149,13 +153,14 @@ DROP TABLE IF EXISTS `logbookentries`;
 CREATE TABLE `logbookentries` (
   `IDLogbookEntry` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `IDAircraft` int(10) unsigned NOT NULL DEFAULT '0',
-  `Username` varchar(255) NOT NULL DEFAULT '',
+  `IDUser` int(10) unsigned NOT NULL DEFAULT '0',
   `FlightDate` date NOT NULL DEFAULT '0000-00-00',
   `NumInstrumentApproaches` int(10) unsigned NOT NULL DEFAULT '0',
   `NumLandings` int(10) unsigned NOT NULL DEFAULT '0',
   `NumNightLandings` int(10) unsigned NOT NULL DEFAULT '0',
   `NumFullStopLandings` int(10) unsigned NOT NULL DEFAULT '0',
-  `CrossCountry` decimal(10,4) unsigned NOT NULL DEFAULT '0.00',
+  `CrossCountry` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
+  `MultiEngine` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
   `Night` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
   `IMC` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
   `SimulatedInstrument` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
@@ -174,9 +179,9 @@ CREATE TABLE `logbookentries` (
   PRIMARY KEY (`IDLogbookEntry`),
   KEY `DateOfFlight` (`date`),
   KEY `Aircraft` (`IDaircraft`),
-  KEY `Username` (`Username`),
+  KEY `User` (`IDUser`),
   CONSTRAINT `fkEntryAircraft` FOREIGN KEY (`IDAircraft`) REFERENCES `aircraft` (`IDAircraft`) ON UPDATE NO ACTION,
-  CONSTRAINT `fkFlightUser` FOREIGN KEY (`Username`) REFERENCES `users` (`Username`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fkFlightUser` FOREIGN KEY (`IDUser`) REFERENCES `users` (`IDUser`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='A logged flight';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -230,6 +235,7 @@ CREATE TABLE `models` (
   `ModelName` varchar(45) DEFAULT NULL,
   `IsComplex` tinyint(1) NOT NULL DEFAULT '0',
   `IsHighPerformance` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for high performance',
+  `IsMultiEngine` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for multi-engine',
   `IsTailwheel` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for tailwheel',
   `HasConstantPropeller` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for constant speed prop airplanes',
   `IsTurbine` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'Non-zero for turbine; 1=Turboprop, 2=Jet',
@@ -266,7 +272,7 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `IDUser` varchar(36) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL DEFAULT '',
+  `IDUser` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Username` varchar(255) NOT NULL DEFAULT '',
   `Email` varchar(100) NOT NULL DEFAULT '',
   `FirstName` varchar(32) DEFAULT NULL,
@@ -277,7 +283,6 @@ CREATE TABLE `users` (
   `LastPasswordChangedDate` datetime DEFAULT NULL,
   `LastLoginDate` datetime DEFAULT NULL,
   `IsLockedOut` tinyint(1) DEFAULT NULL,
-  `LastLockedOutDate` datetime DEFAULT NULL,
   `LastBFR` datetime DEFAULT NULL,
   `LastMedical` datetime DEFAULT NULL,
   `MonthsToMedical` int(10) unsigned NOT NULL DEFAULT '0',

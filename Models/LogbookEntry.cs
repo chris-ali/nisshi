@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace Nisshi.Models
@@ -12,8 +11,7 @@ namespace Nisshi.Models
         /// <summary>
         /// Associated aircraft that performed the flight in this entry
         /// </summary>
-        [JsonPropertyName("associatedAircraft")]
-        public virtual Aircraft AssociatedAircraft { get; set; }
+        public virtual Aircraft Aircraft { get; set; }
 
         /// <summary>
         /// Date that the flight took place
@@ -29,6 +27,8 @@ namespace Nisshi.Models
         public int NumFullStopLandings { get; set; }
 
         public decimal CrossCountry { get; set; }
+
+        public decimal MultiEngine { get; set; }
 
         public decimal Night { get; set; }
 

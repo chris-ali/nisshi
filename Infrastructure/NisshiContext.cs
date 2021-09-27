@@ -14,8 +14,8 @@ namespace Nisshi.Infrastructure
         {
             var users = new User[] 
             {
-                new User { Id = 1, UserName = "chris", FirstName = "Chris", LastName = "Ali", Email = "chris@ali.com"},
-                new User { Id = 2, UserName = "somebodyElse", FirstName = "Somebody", LastName = "Else", Email = "somebody@else.com"},
+                new User { Id = 1, Username = "chris", FirstName = "Chris", LastName = "Ali", Email = "chris@ali.com"},
+                new User { Id = 2, Username = "somebodyElse", FirstName = "Somebody", LastName = "Else", Email = "somebody@else.com"},
             };
             modelBuilder.Entity<User>().HasData(users);
 
@@ -52,34 +52,79 @@ namespace Nisshi.Infrastructure
             };
             modelBuilder.Entity<HeroUser>().HasData(heroUsers);
 
-            modelBuilder.Entity<LogMessage>(b => 
-            {
-                b.HasKey(x => x.Id);
-                b.Property(x => x.Contents).IsRequired();
-                b.HasOne(x => x.Owner)
-                 .WithMany(x => x.Messages)
-                 .HasForeignKey(x => x.UserIdFk);
-            });
-
             modelBuilder.Entity<User>(b => 
             {
-                b.HasKey(x => x.Id);
-                b.Property(x => x.UserName).IsRequired();
-                b.HasMany(x => x.Heroes)
-                 .WithMany(x => x.Users)
-                 .UsingEntity<HeroUser>(x => x.HasOne(y => y.Hero)
-                                              .WithMany()
-                                              .HasForeignKey(x => x.HeroIdFk), 
-                                        x => x.HasOne(y => y.User)
-                                              .WithMany()
-                                              .HasForeignKey(x => x.UserIdFk))
-                 .ToTable("HeroUsers").HasKey(x => new { x.HeroIdFk, x.UserIdFk});
+                b.HasKey(x => x.Id)
+                 .HasName("IDUser");
+                b.Property(x => x.Username).IsRequired();
+                b.Property(x => x.Email).IsRequired();
+                b.Property(x => x.Password).IsRequired();
+                b.HasMany(x => x.Aircraft)
+                 .WithOne(x => x.Owner)
+                 .HasForeignKey("IDUser");
+                b.HasMany(x => x.LogbookEntries)
+                 .WithOne(x => x.Owner)
+                 .HasForeignKey("IDUser");
+            });
+
+            modelBuilder.Entity<Aircraft>(b =>
+            {
+                b.HasKey(x => x.Id)
+                 .HasName("IDAircraft");
+                b.HasOne(x => x.Model)
+                 .WithMany(x => x.Aircraft)
+                 .HasForeignKey("IDAircraft");
+                b.HasMany(x => x.LogbookEntries)
+                 .WithOne(x => x.Aircraft)
+                 .HasForeignKey("IDAircraft");
+            });
+
+            modelBuilder.Entity<Model>(b =>
+            {
+                b.HasKey(x => x.Id)
+                 .HasName("IDModel");
+                b.HasOne(x => x.Manufacturer)
+                 .WithMany(x => x.Models)
+                 .HasForeignKey("IDModel");
+                b.HasMany(x => x.Aircraft)
+                 .WithOne(x => x.Model)
+                 .HasForeignKey("IDModel");
+            });
+
+            modelBuilder.Entity<Manufacturer>(b =>
+            {
+                b.HasKey(x => x.Id)
+                 .HasName("IDManufacturer");
+                b.HasMany(x => x.Models)
+                 .WithOne(x => x.Manufacturer)
+                 .HasForeignKey("IDManufacturer");
+            });
+
+            modelBuilder.Entity<Airport>(b =>
+            {
+                b.HasKey(x => x.Id)
+                 .HasName("IDAirport");
+            });
+
+            modelBuilder.Entity<CategoryClass>(b =>
+            {
+                b.HasKey(x => x.Id)
+                 .HasName("IDCategoryClass");
             });
         }      
 
         public DbSet<Hero> Heroes { get; set; }
         public DbSet<LogMessage> Messages { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<HeroUser> HeroUsers { get; set; }
+        
+        public DbSet<User> Users { get; set; }
+        public DbSet<Hero> LogbookEntries { get; set; }
+        public DbSet<Hero> Aircraft { get; set; }
+        public DbSet<Hero> Currency { get; set; }
+        public DbSet<Hero> Manufacturers { get; set; }
+        public DbSet<Hero> Models { get; set; }
+        public DbSet<Hero> CategoryClass { get; set; }
+        public DbSet<Hero> Airports { get; set; }
+
     }
 }

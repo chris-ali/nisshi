@@ -1,8 +1,10 @@
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace Nisshi.Models
 {
+    /// <summary>
+    /// Representation of a manufacturer of aircraft
+    /// </summary>
     public class Manufacturer : BaseEntity
     {
         public string ManufacturerName { get; set; }

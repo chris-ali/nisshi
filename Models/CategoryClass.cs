@@ -4,10 +4,8 @@ namespace Nisshi.Models
     /// <summary>
     /// Category and class designation for a model of aircraft
     /// </summary>
-    public class CategoryClass
+    public class CategoryClass : BaseEntity
     {
-        public int Id { get; set; }
-
         /// <summary>
         /// Aircraft Category and Class
         /// </summary>

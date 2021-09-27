@@ -71,13 +71,16 @@ namespace Nisshi.Models
         /// </summary>
         public DateTime RegistrationDue { get; set; }
 
+        /// <summary>
+        /// Notes about the aircraft
+        /// </summary>
         public string Notes { get; set; }
 
         /// <summary>
         /// Associated logbook entries of this aircraft 
         /// </summary>
         [JsonIgnore]
-        public virtual List<User> LogbookEntries { get; set; } = new();
+        public virtual List<LogbookEntry> LogbookEntries { get; set; } = new();
         
         /// <summary>
         /// Owner of this aircraft

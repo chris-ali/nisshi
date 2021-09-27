@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
-
 namespace Nisshi.Models
 {
-    public class Airport
+    /// <summary>
+    /// Representation of an airport 
+    /// </summary>
+    public class Airport : BaseEntity
     {
         /// <summary>
         /// ICAO or IATA code
@@ -25,8 +25,14 @@ namespace Nisshi.Models
         /// </summary>
         public string SourceUserName { get; set; }
 
+        /// <summary>
+        /// Facility latitude position [deg, N positive]
+        /// </summary>
         public double Latitude { get; set; }
 
+        /// <summary>
+        /// Facility longitude position [deg, E positive]
+        /// </summary>
         public double Longitude { get; set; }
 
         /// <summary>
