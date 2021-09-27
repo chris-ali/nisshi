@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Nisshi.Infrastructure
 {
-    public class HeroesDbContext : DbContext
+    public class NisshiContext : DbContext
     {
-        public HeroesDbContext(DbContextOptions<HeroesDbContext> options) : base(options)
+        public NisshiContext(DbContextOptions<NisshiContext> options) : base(options)
         {
         }
 

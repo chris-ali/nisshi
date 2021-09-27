@@ -1,10 +1,14 @@
+using System.Reflection;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Nisshi.Infrastructure;
 
 namespace Nisshi
 {
@@ -20,7 +24,14 @@ namespace Nisshi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMediatR(Assembly.GetExecutingAssembly());
+
             services.AddControllersWithViews();
+            
+            services.AddSwaggerGen();
+
+            services.AddDbContext<NisshiContext>(opt => opt.UseInMemoryDatabase("Nisshi"));
+            
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -49,6 +60,9 @@ namespace Nisshi
                 app.UseSpaStaticFiles();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Nisshi API"));
+
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
@@ -68,6 +82,7 @@ namespace Nisshi
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
+                    //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
             });
         }

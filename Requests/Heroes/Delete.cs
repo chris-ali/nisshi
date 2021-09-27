@@ -14,7 +14,7 @@ namespace Nisshi.Requests.Heroes
 
         public class CommandHandler : BaseRequest, IRequestHandler<Command, Hero>
         {
-            public CommandHandler(HeroesDbContext context) : base(context)
+            public CommandHandler(NisshiContext context) : base(context)
             {
             }
 

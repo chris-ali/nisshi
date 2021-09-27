@@ -19,7 +19,7 @@ namespace Nisshi.Requests.LogMessages
         {
             private readonly ICurrentUserAccessor accessor;
 
-            public QueryHandler(HeroesDbContext context, ICurrentUserAccessor accessor) : base(context)
+            public QueryHandler(NisshiContext context, ICurrentUserAccessor accessor) : base(context)
             {
                 this.accessor = accessor;
             }

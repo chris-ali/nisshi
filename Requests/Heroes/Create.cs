@@ -17,7 +17,7 @@ namespace Nisshi.Requests.Heroes
         {
             private readonly ICurrentUserAccessor accessor;
 
-            public CommandHandler(HeroesDbContext context, ICurrentUserAccessor accessor) : base(context)
+            public CommandHandler(NisshiContext context, ICurrentUserAccessor accessor) : base(context)
             {
                 this.accessor = accessor;
             }

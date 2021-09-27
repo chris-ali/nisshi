@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS `aircraft`;
 CREATE TABLE `aircraft` (
   `IDAircraft` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `IDModel` int(10) unsigned NOT NULL DEFAULT '0',
+  `Username` varchar(255) NOT NULL COMMENT 'Owner of the aircraft',
   `TailNumber` varchar(30) NOT NULL DEFAULT '',
   `InstanceType` int(1) unsigned NOT NULL DEFAULT '1' COMMENT 'InstanceType of this airplane (real (1) vs. simulator (0))',
   `LastAnnual` datetime DEFAULT NULL COMMENT 'Date of last annual inspection',
@@ -29,6 +30,8 @@ CREATE TABLE `aircraft` (
   PRIMARY KEY (`IDAircraft`),
   KEY `TailNumber` (`TailNumber`),
   KEY `Model` (`IDModel`),
+  KEY `Username` (`Username`),
+  CONSTRAINT `fkCurrencyUser` FOREIGN KEY (`Username`) REFERENCES `users` (`Username`) ON DELETE CASCADE ON UPDATE NO ACTION
   CONSTRAINT `fkAircraftModel` FOREIGN KEY (`IDModel`) REFERENCES `models` (`IDModel`) ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Specific airplanes';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -81,10 +84,10 @@ DROP TABLE IF EXISTS `categoryclass`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `categoryclass` (
   `IDCategoryClass` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key',
-  `CategoryClass` varchar(45) NOT NULL DEFAULT '' COMMENT 'Aircraft category, class, etc.',
+  `CatClass` varchar(45) NOT NULL DEFAULT '' COMMENT 'Aircraft category, class, etc.',
   `Category` varchar(45) NOT NULL DEFAULT '' COMMENT 'Category',
   `Class` varchar(45) NOT NULL DEFAULT '',
-  `AltCatClass` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Secondary category/class for airplanes that are part-time on floats or amphib',
+  `AlternateCatClass` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Secondary category/class for airplanes that are part-time on floats or amphib',
   PRIMARY KEY (`IDCategoryClass`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='Aircraft categories and classes';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -95,7 +98,7 @@ CREATE TABLE `categoryclass` (
 
 LOCK TABLES `categoryclass` WRITE;
 /*!40000 ALTER TABLE `categoryclass` DISABLE KEYS */;
-INSERT INTO `categoryclass` VALUES (1,'ASEL','Airplane','Single Engine, Land',3),(2,'AMEL','Airplane','Multi Engine, Land',4),(3,'ASES','Airplane','Single Engine, Sea',1),(4,'AMES','Airplane','Multi Engine, Sea',2),(5,'GlIDer','GlIDer','',0),(7,'Helicopter','Rotorcraft','Helicopter',0),(8,'Gyroplane','Rotorcraft','Gyroplane',0),(9,'Powered Lift','Powered Lift','',0),(10,'Airship','Lighter Than Air','Airship',0),(11,'Hot Air Balloon','Lighter Than Air','Hot Air Balloon',0),(12,'Gas Balloon','Lighter Than Air','Gas Baloon',0),(13,'Powered Parachute - Land','Powered Parachute','Land',14),(14,'Powered Parachute - Sea','Powered Parachute','Sea',13),(15,'Weight-shift Control - Land','Weight-shift Control','Land',16),(16,'Weight-shift Control - Sea','Weight-shift Control','Sea',15),(17,'Unmanned Aerial System','Unmanned Aerial System','',0),(18,'Powered ParaglIDer','Powered ParaglIDer',' ',0);
+INSERT INTO `categoryclass` VALUES (1,'ASEL','Airplane','Single Engine, Land',3),(2,'AMEL','Airplane','Multi Engine, Land',4),(3,'ASES','Airplane','Single Engine, Sea',1),(4,'AMES','Airplane','Multi Engine, Sea',2),(5,'Glider','Glider','',0),(7,'Helicopter','Rotorcraft','Helicopter',0),(8,'Gyroplane','Rotorcraft','Gyroplane',0),(9,'Powered Lift','Powered Lift','',0),(10,'Airship','Lighter Than Air','Airship',0),(11,'Hot Air Balloon','Lighter Than Air','Hot Air Balloon',0),(12,'Gas Balloon','Lighter Than Air','Gas Baloon',0),(13,'Powered Parachute - Land','Powered Parachute','Land',14),(14,'Powered Parachute - Sea','Powered Parachute','Sea',13),(15,'Weight-shift Control - Land','Weight-shift Control','Land',16),(16,'Weight-shift Control - Sea','Weight-shift Control','Sea',15),(17,'Unmanned Aerial System','Unmanned Aerial System','',0),(18,'Powered Paraglider','Powered Paraglider',' ',0);
 /*!40000 ALTER TABLE `categoryclass` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -226,12 +229,12 @@ CREATE TABLE `models` (
   `Family` varchar(45) DEFAULT NULL COMMENT 'The family for the model (e.g., PA28-160 and PA28-180 are both PA28s)',
   `ModelName` varchar(45) DEFAULT NULL,
   `IsComplex` tinyint(1) NOT NULL DEFAULT '0',
-  `IsHighPerf` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for high performance',
-  `Tailwheel` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for tailwheel',
-  `IsConstantProp` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for constant speed prop airplanes',
+  `IsHighPerformance` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for high performance',
+  `IsTailwheel` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for tailwheel',
+  `HasConstantPropellor` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for constant speed prop airplanes',
   `IsTurbine` tinyint(2) NOT NULL DEFAULT '0' COMMENT 'Non-zero for turbine; 1=Turboprop, 2=Jet',
   `IsCertifiedSinglePilot` tinyint(1) NOT NULL COMMENT 'For type-rated turbine aircraft, indicates certification for single-pilot operations.',
-  `IsRetract` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for retractable gear',
+  `HasRetractableGear` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True for retractable gear',
   `HasFlaps` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True if the aircraft has flaps',
   `IsSimOnly` int(1) NOT NULL DEFAULT '0' COMMENT 'If 1, all aircraft with this make/model MUST NOT be real-aircraft.  If 2, can also be generic but real. ',
   `IsMotorGlider` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True if this is a motor glider (only applies to gliders)',

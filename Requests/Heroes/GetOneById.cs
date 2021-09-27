@@ -13,7 +13,7 @@ namespace Nisshi.Requests.Heroes
 
         public class QueryHandler : BaseRequest, IRequestHandler<Query, Hero>
         {
-            public QueryHandler(HeroesDbContext context) : base(context)
+            public QueryHandler(NisshiContext context) : base(context)
             {
             }
 
