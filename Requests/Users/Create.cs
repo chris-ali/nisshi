@@ -31,7 +31,7 @@ namespace Nisshi.Requests.Users
                     throw new RestException(HttpStatusCode.BadRequest, new { Message = message});
                 }
 
-                if (await context.Users.Where(x => x.UserName == request.user.UserName).AnyAsync(cancellationToken))
+                if (await context.Users.Where(x => x.Username == request.user.Username).AnyAsync(cancellationToken))
                 {
                     var message = $"Username already exists in database";
                     // logger.LogWarning(message);

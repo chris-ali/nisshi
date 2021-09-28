@@ -20,6 +20,7 @@ namespace Nisshi.Models
         /// <summary>
         /// Hashed and salted password for this user
         /// </summary>
+        [JsonIgnore]
         public string Password { get; set; }
 
         /// <summary>
@@ -30,6 +31,7 @@ namespace Nisshi.Models
         /// <summary>
         /// Answer to reset user's password
         /// </summary>
+        [JsonIgnore]
         public string PasswordAnswer { get; set; }
 
         /// <summary>

@@ -9,11 +9,6 @@ namespace Nisshi.Models
     /// </summary>
     public class Aircraft : BaseEntity
     {
-        /// <summary>
-        /// Associated model of this aircraft
-        /// </summary>
-        public Model Model { get; set; }
-
         public string TailNumber { get; set; }
 
         /// <summary>
@@ -77,18 +72,22 @@ namespace Nisshi.Models
         public string Notes { get; set; }
 
         /// <summary>
+        /// Foreign key to the models table
+        /// </summary>
+        /// <value></value>
+        public int IDModel { get; set; }
+
+        /// <summary>
+        /// Associated model of this aircraft
+        /// </summary>
+        public Model Model { get; set; }
+        
+        /// <summary>
         /// Associated logbook entries of this aircraft 
         /// </summary>
         [JsonIgnore]
         public virtual List<LogbookEntry> LogbookEntries { get; set; } = new();
         
-        /// <summary>
-        /// Foreign key to the models table
-        /// </summary>
-        /// <value></value>
-        [JsonIgnore]
-        public int IDModel { get; set; }
-
         /// <summary>
         /// Foreign key to the users table
         /// </summary>

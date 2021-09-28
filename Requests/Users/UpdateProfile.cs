@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using Nisshi.Infrastructure;
 using Nisshi.Models;
 using MediatR;
-using Microsoft.Extensions.Logging;
+using System;
 
 namespace Nisshi.Requests.Users
 {
-  public class Update
+  public class UpdateProfile
     {
         // TODO make user wrapper here that has password; Models.User should just have JWT token 
 
@@ -27,24 +27,37 @@ namespace Nisshi.Requests.Users
                 if (data == null) 
                 {
                     var message = $"No user found for id: {request.user.ID}";
-                    // logger.LogWarning(message);
                     throw new RestException(HttpStatusCode.NotFound, new { Message = message});
                 }
                 
-                // logger.LogDebug($"Found user id: {data.Id} to update...");
-                
-                data.FirstName = request.user.FirstName;
-                data.LastName = request.user.LastName;
-                data.Email = request.user.Email;
-                data.UserName = request.user.UserName;
+                Update(ref data, request.user);
+                data.DateUpdated = DateTime.Now;
                 // TODO Handle password hashing here if password edited
 
                 context.Update(data);
                 await context.SaveChangesAsync(cancellationToken);
 
-                // logger.LogDebug($"...updated successfully!");
-
                 return data;
+            }
+
+            /// <summary>
+            /// Updates Aircraft object from database with object in request
+            /// </summary>
+            /// <param name="toBeUpdated"></param>
+            /// <param name="toUpdateWith"></param>
+            private void Update(ref User toBeUpdated, User toUpdateWith) 
+            {
+                toBeUpdated.CertificateNumber = toUpdateWith.CertificateNumber;
+                toBeUpdated.CFIExpiration = toUpdateWith.CFIExpiration;
+                toBeUpdated.FirstName = toUpdateWith.FirstName;
+                toBeUpdated.IsInstructor = toUpdateWith.IsInstructor;
+                toBeUpdated.LastBFR = toUpdateWith.LastBFR;
+                toBeUpdated.LastMedical = toUpdateWith.LastMedical;
+                toBeUpdated.LastName = toUpdateWith.LastName;
+                toBeUpdated.License = toUpdateWith.License;
+                toBeUpdated.MonthsToMedical = toUpdateWith.MonthsToMedical;
+                toBeUpdated.Preferences = toUpdateWith.Preferences;
+                toBeUpdated.TimeZone = toUpdateWith.TimeZone;
             }
         }
     }

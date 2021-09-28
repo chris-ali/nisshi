@@ -128,13 +128,12 @@ namespace Nisshi.Infrastructure
         public DbSet<HeroUser> HeroUsers { get; set; }
         
         public DbSet<User> Users { get; set; }
-        public DbSet<Hero> LogbookEntries { get; set; }
-        public DbSet<Hero> Aircraft { get; set; }
-        public DbSet<Hero> Currency { get; set; }
-        public DbSet<Hero> Manufacturers { get; set; }
-        public DbSet<Hero> Models { get; set; }
-        public DbSet<Hero> CategoryClass { get; set; }
-        public DbSet<Hero> Airports { get; set; }
+        public DbSet<LogbookEntry> LogbookEntries { get; set; }
+        public DbSet<Aircraft> Aircraft { get; set; }
+        public DbSet<Manufacturer> Manufacturers { get; set; }
+        public DbSet<Model> Models { get; set; }
+        public DbSet<CategoryClass> CategoryClass { get; set; }
+        public DbSet<Airport> Airports { get; set; }
 
     }
 }
