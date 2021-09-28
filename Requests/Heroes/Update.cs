@@ -25,11 +25,11 @@ namespace Nisshi.Requests.Heroes
 
             public async Task<Hero> Handle(Command request, CancellationToken cancellationToken)
             {
-                var data = await context.FindAsync<Hero>(new object[] { request.hero.Id }, cancellationToken);
+                var data = await context.FindAsync<Hero>(new object[] { request.hero.ID }, cancellationToken);
 
                 if (data == null) 
                 {
-                    var message = $"No hero found for id: {request.hero.Id}";
+                    var message = $"No hero found for id: {request.hero.ID}";
                     // logger.LogWarning(message);
                     throw new RestException(HttpStatusCode.NotFound, new { Message = message});
                 }

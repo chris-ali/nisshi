@@ -98,6 +98,6 @@ namespace Nisshi.Models
         /// Associated logbook entries belonging to the user
         /// </summary>
         [JsonIgnore]
-        public virtual List<LogbookEntry> LogbookEntries {get; set;}
+        public virtual List<LogbookEntry> LogbookEntries { get; set; }
     }
 }

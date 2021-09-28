@@ -9,7 +9,7 @@ DROP TABLE IF EXISTS `aircraft`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `aircraft` (
-  `IDAircraft` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `IDModel` int(10) unsigned NOT NULL DEFAULT '0',
   `IDUser` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Owner of the aircraft',
   `TailNumber` varchar(30) NOT NULL DEFAULT '',
@@ -31,8 +31,8 @@ CREATE TABLE `aircraft` (
   KEY `TailNumber` (`TailNumber`),
   KEY `Model` (`IDModel`),
   KEY `User` (`IDUser`),
-  CONSTRAINT `fkAircraftUser` FOREIGN KEY (`IDUser`) REFERENCES `users` (`IDUser`) ON DELETE CASCADE ON UPDATE NO ACTION
-  CONSTRAINT `fkAircraftModel` FOREIGN KEY (`IDModel`) REFERENCES `models` (`IDModel`) ON UPDATE NO ACTION
+  CONSTRAINT `fkAircraftUser` FOREIGN KEY (`IDUser`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fkAircraftModel` FOREIGN KEY (`IDModel`) REFERENCES `models` (`ID`) ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Specific airplanes';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -53,7 +53,7 @@ DROP TABLE IF EXISTS `airports`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `airports` (
-  `IDAirport` varchar(10) NOT NULL COMMENT 'ICAO or IATA code',
+  `AirportCode` varchar(10) NOT NULL COMMENT 'ICAO or IATA code',
   `FacilityName` varchar(128) NOT NULL COMMENT 'Friendly Name',
   `Type` varchar(5) NOT NULL DEFAULT 'A' COMMENT 'Type of facility (not just airports)',
   `SourceUserName` varchar(255) NOT NULL COMMENT 'Username of creator; empty for non-user generated',
@@ -62,8 +62,8 @@ CREATE TABLE `airports` (
   `Preferred` int(11) DEFAULT '0' COMMENT 'Used for disambiguation when two airports share the same lat/lon',
   `DateCreated` date DEFAULT NULL,
   `DateUpdated` date DEFAULT NULL,
-  PRIMARY KEY (`IDAirport`,`Type`),
-  KEY `fkAirportType` (`Type`),
+  PRIMARY KEY (`AirportCode`,`Type`),
+  KEY `AirportType` (`Type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='US airport data from http://www.faa.gov/airports_airtraffic/';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -85,14 +85,14 @@ DROP TABLE IF EXISTS `categoryclass`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `categoryclass` (
-  `IDCategoryClass` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key',
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key',
   `CatClass` varchar(45) NOT NULL DEFAULT '' COMMENT 'Aircraft category, class, etc.',
   `Category` varchar(45) NOT NULL DEFAULT '' COMMENT 'Category',
   `Class` varchar(45) NOT NULL DEFAULT '',
   `AlternateCatClass` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Secondary category/class for airplanes that are part-time on floats or amphib',
   `DateCreated` date DEFAULT NULL,
   `DateUpdated` date DEFAULT NULL,
-  PRIMARY KEY (`IDCategoryClass`)
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='Aircraft categories and classes';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -114,7 +114,7 @@ DROP TABLE IF EXISTS `currency`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `currency` (
-  `IDCurrency` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key',
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key',
   `IDUser` int(10) unsigned NOT NULL DEFAULT '0' 'Owner of the custom currency',
   `Name` varchar(45) NOT NULL COMMENT 'Name of the currency',
   `MinEvents` decimal(6,2) unsigned NOT NULL COMMENT 'Number of events that must be counted',
@@ -128,9 +128,9 @@ CREATE TABLE `currency` (
   `TextRestriction` varchar(255) NOT NULL COMMENT 'Text that must be in the comments field or text property',
   `DateCreated` date DEFAULT NULL,
   `DateUpdated` date DEFAULT NULL,
-  PRIMARY KEY (`IDcurrency`),
+  PRIMARY KEY (`ID`),
   KEY `User` (`IDUser`),
-  CONSTRAINT `fkCurrencyUser` FOREIGN KEY (`IDUser`) REFERENCES `users` (`IDUser`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fkCurrencyUser` FOREIGN KEY (`IDUser`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=3326 DEFAULT CHARSET=utf8 COMMENT='Custom currencies for a user';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -151,7 +151,7 @@ DROP TABLE IF EXISTS `logbookentries`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `logbookentries` (
-  `IDLogbookEntry` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `IDAircraft` int(10) unsigned NOT NULL DEFAULT '0',
   `IDUser` int(10) unsigned NOT NULL DEFAULT '0',
   `FlightDate` date NOT NULL DEFAULT '0000-00-00',
@@ -176,12 +176,12 @@ CREATE TABLE `logbookentries` (
   `Comments` varchar(16384) DEFAULT NULL,
   `DateCreated` date DEFAULT NULL,
   `DateUpdated` date DEFAULT NULL,
-  PRIMARY KEY (`IDLogbookEntry`),
+  PRIMARY KEY (`ID`),
   KEY `DateOfFlight` (`date`),
   KEY `Aircraft` (`IDaircraft`),
   KEY `User` (`IDUser`),
-  CONSTRAINT `fkEntryAircraft` FOREIGN KEY (`IDAircraft`) REFERENCES `aircraft` (`IDAircraft`) ON UPDATE NO ACTION,
-  CONSTRAINT `fkFlightUser` FOREIGN KEY (`IDUser`) REFERENCES `users` (`IDUser`) ON DELETE CASCADE ON UPDATE NO ACTION
+  CONSTRAINT `fkEntryAircraft` FOREIGN KEY (`IDAircraft`) REFERENCES `aircraft` (`ID`) ON UPDATE NO ACTION,
+  CONSTRAINT `fkFlightUser` FOREIGN KEY (`IDUser`) REFERENCES `users` (`ID`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='A logged flight';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -202,11 +202,11 @@ DROP TABLE IF EXISTS `manufacturers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `manufacturers` (
-  `IDManufacturer` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Manufacturer` varchar(45) NOT NULL DEFAULT '',
   `DateCreated` date DEFAULT NULL,
   `DateUpdated` date DEFAULT NULL,
-  PRIMARY KEY (`IDManufacturer`)
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -227,7 +227,7 @@ DROP TABLE IF EXISTS `models`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `models` (
-  `IDModel` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `IDManufacturer` int(10) unsigned NOT NULL DEFAULT '0',
   `IDCategoryClass` int(10) unsigned NOT NULL DEFAULT '0',
   `TypeName` varchar(45) DEFAULT NULL,
@@ -247,11 +247,11 @@ CREATE TABLE `models` (
   `IsMultiHelicopter` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'For helicopters, is this a multi-engine helicopter?',
   `DateCreated` date DEFAULT NULL,
   `DateUpdated` date DEFAULT NULL,
-  PRIMARY KEY (`IDModel`),
+  PRIMARY KEY (`ID`),
   KEY `CatClassID` (`IDCategoryClass`),
   KEY `MfctrID` (`IDmanufacturer`),
-  CONSTRAINT `fkModelsMan` FOREIGN KEY (`IDManufacturer`) REFERENCES `manufacturers` (`IDManufacturer`) ON UPDATE NO ACTION,
-  CONSTRAINT `fkModelsCatClass` FOREIGN KEY (`IDCategoryClass`) REFERENCES `categoryclass` (`IDCategoryClass`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fkModelsMan` FOREIGN KEY (`IDManufacturer`) REFERENCES `manufacturers` (`ID`) ON UPDATE NO ACTION,
+  CONSTRAINT `fkModelsCatClass` FOREIGN KEY (`IDCategoryClass`) REFERENCES `categoryclass` (`ID`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Aircraft Models';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -272,7 +272,7 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `IDUser` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `Username` varchar(255) NOT NULL DEFAULT '',
   `Email` varchar(100) NOT NULL DEFAULT '',
   `FirstName` varchar(32) DEFAULT NULL,

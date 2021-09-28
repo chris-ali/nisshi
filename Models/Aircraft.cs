@@ -83,6 +83,20 @@ namespace Nisshi.Models
         public virtual List<LogbookEntry> LogbookEntries { get; set; } = new();
         
         /// <summary>
+        /// Foreign key to the models table
+        /// </summary>
+        /// <value></value>
+        [JsonIgnore]
+        public int IDModel { get; set; }
+
+        /// <summary>
+        /// Foreign key to the users table
+        /// </summary>
+        /// <value></value>
+        [JsonIgnore]
+        public int IDUser { get; set; }
+
+        /// <summary>
         /// Owner of this aircraft
         /// </summary>
         [JsonIgnore]

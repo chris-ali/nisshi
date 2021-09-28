@@ -8,7 +8,7 @@ namespace Nisshi.Models
         /// <summary>
         /// ICAO or IATA code
         /// </summary>
-        public string IDAirport { get; set; }
+        public string AirportCode { get; set; }
 
         /// <summary>
         /// Friendly name of airport

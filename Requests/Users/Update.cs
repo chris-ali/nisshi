@@ -22,11 +22,11 @@ namespace Nisshi.Requests.Users
 
             public async Task<User> Handle(Command request, CancellationToken cancellationToken)
             {
-                var data = await context.FindAsync<User>(new object[] { request.user.Id }, cancellationToken);
+                var data = await context.FindAsync<User>(new object[] { request.user.ID }, cancellationToken);
 
                 if (data == null) 
                 {
-                    var message = $"No user found for id: {request.user.Id}";
+                    var message = $"No user found for id: {request.user.ID}";
                     // logger.LogWarning(message);
                     throw new RestException(HttpStatusCode.NotFound, new { Message = message});
                 }

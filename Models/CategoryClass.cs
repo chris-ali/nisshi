@@ -1,4 +1,7 @@
 
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
+
 namespace Nisshi.Models
 {
     /// <summary>
@@ -19,5 +22,11 @@ namespace Nisshi.Models
         /// Secondary category/class for airplanes that are part-time on floats or amphibious
         /// </summary>
         public int AlternateCatClass { get; set; }
+
+        /// <summary>
+        /// List of models associated with this category class
+        /// </summary>
+        [JsonIgnore]
+        public virtual List<Model> Models { get; set; }
     }
 }

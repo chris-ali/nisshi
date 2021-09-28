@@ -57,6 +57,20 @@ namespace Nisshi.Models
         public string Comments { get; set; }
 
         /// <summary>
+        /// Foreign key to the aircraft table
+        /// </summary>
+        /// <value></value>
+        [JsonIgnore]
+        public int IDAircraft { get; set; }
+
+        /// <summary>
+        /// Foreign key to the users table
+        /// </summary>
+        /// <value></value>
+        [JsonIgnore]
+        public int IDUser { get; set; }
+        
+        /// <summary>
         /// Owner of this logbook entry
         /// </summary>
         [JsonIgnore]
