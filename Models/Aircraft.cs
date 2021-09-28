@@ -74,7 +74,6 @@ namespace Nisshi.Models
         /// <summary>
         /// Foreign key to the models table
         /// </summary>
-        /// <value></value>
         public int IDModel { get; set; }
 
         /// <summary>
@@ -91,7 +90,6 @@ namespace Nisshi.Models
         /// <summary>
         /// Foreign key to the users table
         /// </summary>
-        /// <value></value>
         [JsonIgnore]
         public int IDUser { get; set; }
 

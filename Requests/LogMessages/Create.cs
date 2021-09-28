@@ -38,7 +38,7 @@ namespace Nisshi.Requests.LogMessages
                 // Set current user as ownner
                 var userName = accessor.GetCurrentUserName();
                 var currentUser = await context.Users
-                    .Where(x => x.UserName == userName)
+                    .Where(x => x.Username == userName)
                     .FirstOrDefaultAsync(cancellationToken);
 
                 if (currentUser == null)

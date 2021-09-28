@@ -9,11 +9,6 @@ namespace Nisshi.Models
     public class LogbookEntry : BaseEntity
     {
         /// <summary>
-        /// Associated aircraft that performed the flight in this entry
-        /// </summary>
-        public virtual Aircraft Aircraft { get; set; }
-
-        /// <summary>
         /// Date that the flight took place
         /// </summary>
         public DateTime FlightDate { get; set; }
@@ -59,14 +54,16 @@ namespace Nisshi.Models
         /// <summary>
         /// Foreign key to the aircraft table
         /// </summary>
-        /// <value></value>
-        [JsonIgnore]
         public int IDAircraft { get; set; }
+
+        /// <summary>
+        /// Associated aircraft that performed the flight in this entry
+        /// </summary>
+        public virtual Aircraft Aircraft { get; set; }
 
         /// <summary>
         /// Foreign key to the users table
         /// </summary>
-        /// <value></value>
         [JsonIgnore]
         public int IDUser { get; set; }
         

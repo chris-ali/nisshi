@@ -36,7 +36,7 @@ namespace Nisshi.Requests.LogMessages
                     throw new RestException(HttpStatusCode.Unauthorized, new { Message = message });
                 }
 
-                var data = context.Messages.Include(x => x.Owner).Where(x => x.Owner.UserName == userName);
+                var data = context.Messages.Include(x => x.Owner).Where(x => x.Owner.Username == userName);
 
                 if (data == null) 
                 {

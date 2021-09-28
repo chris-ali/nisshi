@@ -97,14 +97,12 @@ namespace Nisshi.Models
         /// Foreign key to the categoryclass table
         /// </summary>
         /// <value></value>
-        [JsonIgnore]
         public int IDCategoryClass { get; set; }
 
         /// <summary>
         /// Foreign key to the manufacturers table
         /// </summary>
         /// <value></value>
-        [JsonIgnore]
         public int IDManufacturer { get; set; }
 
         /// <summary>

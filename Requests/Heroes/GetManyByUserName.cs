@@ -33,7 +33,7 @@ namespace Nisshi.Requests.Heroes
                 var data = await context.Heroes
                     .Include(x => x.Users)
                     .Where(x => x.Users
-                    .Any(x => x.UserName == request.userName))
+                    .Any(x => x.Username == request.userName))
                     .ToListAsync(cancellationToken);
                 
                 if (data.Count == 0)

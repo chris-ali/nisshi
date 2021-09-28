@@ -8,16 +8,13 @@ using MediatR;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
-/// <summary>
-/// sic
-/// </summary>
-namespace Nisshi.Requests.Aircrafts
+namespace Nisshi.Requests.LogbookEntries
 {
     public class Create
     {
-        public record Command(Aircraft aircraft) : IRequest<Aircraft>;
+        public record Command(LogbookEntry logbookEntry) : IRequest<LogbookEntry>;
 
-        public class CommandHandler : BaseRequest, IRequestHandler<Command, Aircraft>
+        public class CommandHandler : BaseRequest, IRequestHandler<Command, LogbookEntry>
         {
             private readonly ICurrentUserAccessor accessor;
 
@@ -26,11 +23,11 @@ namespace Nisshi.Requests.Aircrafts
                 this.accessor = accessor;
             }
 
-            public async Task<Aircraft> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<LogbookEntry> Handle(Command request, CancellationToken cancellationToken)
             {
-                if (request.aircraft == null) 
+                if (request.logbookEntry == null) 
                 {
-                    var message = $"No aircraft data found in request";
+                    var message = $"No logbook entry data found in request";
                     throw new RestException(HttpStatusCode.BadRequest, new { Message = message });
                 }
 
@@ -46,13 +43,13 @@ namespace Nisshi.Requests.Aircrafts
                     .Where(x => x.Username == username)
                     .FirstOrDefaultAsync(cancellationToken);
 
-                request.aircraft.DateCreated = request.aircraft.DateUpdated = DateTime.Now;
-                request.aircraft.Owner = currentUser;
+                request.logbookEntry.DateCreated = request.logbookEntry.DateUpdated = DateTime.Now;
+                request.logbookEntry.Owner = currentUser;
 
-                await context.AddAsync<Aircraft>(request.aircraft, cancellationToken);
+                await context.AddAsync<LogbookEntry>(request.logbookEntry, cancellationToken);
                 await context.SaveChangesAsync(cancellationToken);
 
-                return request.aircraft;
+                return request.logbookEntry;
             }
         }
     }

@@ -38,7 +38,7 @@ namespace Nisshi.Requests.LogMessages
                 
                 var data = await context.Messages
                     .Include(x => x.Owner)
-                    .Where(x => x.Owner.UserName == userName)
+                    .Where(x => x.Owner.Username == userName)
                     .ToListAsync(cancellationToken);
 
                 // logger.LogDebug($"Found {data.Count} messages to return for user {request.userName}...");

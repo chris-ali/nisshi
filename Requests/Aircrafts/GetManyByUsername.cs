@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 /// </summary>
 namespace Nisshi.Requests.Aircrafts 
 {
-    public class GetManyByUserName
+    public class GetManyByUsername
     {
         public record Query(string username) : IRequest<IList<Aircraft>>;
 
@@ -39,7 +39,7 @@ namespace Nisshi.Requests.Aircrafts
                 
                 if (data.Count == 0)
                 {
-                    var message = $"No aircraft found to for user: {request.username}";
+                    var message = $"No aircraft found for user: {request.username}";
                     throw new RestException(HttpStatusCode.NotFound, new { Message = message });
                 }
                 

@@ -46,12 +46,9 @@ namespace Nisshi.Requests.Aircrafts
                 var user = await context.Users.Where(x => x.Username == username)
                     .FirstOrDefaultAsync(cancellationToken);
 
-                var model = await context.Models.FindAsync(new object[] { data.IDModel }, cancellationToken);
-
                 Update(ref data, request.aircraft);
                 data.DateUpdated = DateTime.Now;
                 data.Owner = user;
-                data.Model = model;
                 
                 context.Update<Aircraft>(data);
                 await context.SaveChangesAsync(cancellationToken);
@@ -76,6 +73,7 @@ namespace Nisshi.Requests.Aircrafts
                 toBeUpdated.LastPitotStatic = toUpdateWith.LastPitotStatic;
                 toBeUpdated.LastTransponder = toUpdateWith.LastTransponder;
                 toBeUpdated.LastVOR = toUpdateWith.LastVOR;
+                toBeUpdated.IDModel = toUpdateWith.IDModel;
             }
         }
     }
