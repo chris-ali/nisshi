@@ -73,7 +73,7 @@ namespace Nisshi.Requests.Aircrafts
                 toBeUpdated.LastPitotStatic = toUpdateWith.LastPitotStatic;
                 toBeUpdated.LastTransponder = toUpdateWith.LastTransponder;
                 toBeUpdated.LastVOR = toUpdateWith.LastVOR;
-                toBeUpdated.IDModel = toUpdateWith.IDModel;
+                toBeUpdated.IdModel = toUpdateWith.IdModel;
             }
         }
     }

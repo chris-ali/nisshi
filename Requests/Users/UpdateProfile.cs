@@ -57,7 +57,6 @@ namespace Nisshi.Requests.Users
                 toBeUpdated.License = toUpdateWith.License;
                 toBeUpdated.MonthsToMedical = toUpdateWith.MonthsToMedical;
                 toBeUpdated.Preferences = toUpdateWith.Preferences;
-                toBeUpdated.TimeZone = toUpdateWith.TimeZone;
             }
         }
     }

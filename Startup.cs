@@ -3,6 +3,7 @@ using System.Text.Json;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
@@ -33,13 +34,16 @@ namespace Nisshi
             
             services.AddSwaggerGen();
 
-            services.AddDbContext<NisshiContext>(opt => opt.UseInMemoryDatabase("Nisshi"));
+            services.AddDbContext<NisshiContext>(opt => { opt.UseInMemoryDatabase("Nisshi"); });
             
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

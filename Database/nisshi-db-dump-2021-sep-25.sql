@@ -290,7 +290,6 @@ CREATE TABLE `users` (
   `CFIExpiration` datetime DEFAULT NULL COMMENT 'Expiration date of certificate',
   `License` varchar(45) DEFAULT NULL COMMENT 'Pilot''s license',
   `CertificateNumber` varchar(90) DEFAULT NULL COMMENT 'Pilot certificate number',
-  `TimeZone` varchar(45) DEFAULT NULL COMMENT 'Id for the preferred timezone for the user',
   `Preferences` json DEFAULT NULL COMMENT 'Additional preferences, in JSON dictionary format.',
   `DateCreated` date DEFAULT NULL,
   `DateUpdated` date DEFAULT NULL,

@@ -21,7 +21,6 @@ namespace Nisshi.Models
         /// <summary>
         /// The type name of this aircraft 
         /// </summary>
-        /// <value></value>
         public string TypeName { get; set; }
 
         /// <summary>
@@ -79,13 +78,11 @@ namespace Nisshi.Models
         /// <summary>
         /// If true, all aircraft of this make/model are simulated
         /// </summary>
-        /// <value></value>
         public bool IsSimOnly { get; set; }
 
         /// <summary>
         /// Is the model a motorglider
         /// </summary>
-        /// <value></value>
         public bool IsMotorGlider { get; set; }
 
         /// <summary>
@@ -96,14 +93,12 @@ namespace Nisshi.Models
         /// <summary>
         /// Foreign key to the categoryclass table
         /// </summary>
-        /// <value></value>
-        public int IDCategoryClass { get; set; }
+        public int IdCategoryClass { get; set; }
 
         /// <summary>
         /// Foreign key to the manufacturers table
         /// </summary>
-        /// <value></value>
-        public int IDManufacturer { get; set; }
+        public int IdManufacturer { get; set; }
 
         /// <summary>
         /// Associated aircraft with this model

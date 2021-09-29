@@ -14,8 +14,8 @@ namespace Nisshi.Infrastructure
         {
             var users = new User[] 
             {
-                new User { Id = 1, Username = "chris", FirstName = "Chris", LastName = "Ali", Email = "chris@ali.com" },
-                new User { Id = 2, Username = "somebodyElse", FirstName = "Somebody", LastName = "Else", Email = "somebody@else.com" },
+                new User { Id = 1, Username = "chris", FirstName = "Chris", LastName = "Ali", Email = "chris@ali.com", Password = "4355drtygfvhjbnkm8e657iftyul" },
+                new User { Id = 2, Username = "somebodyElse", FirstName = "Somebody", LastName = "Else", Email = "somebody@else.com", Password = "4355drtygfvhjbnkm8e657iftyul" },
             };
             modelBuilder.Entity<User>().HasData(users);
 
@@ -24,7 +24,7 @@ namespace Nisshi.Infrastructure
                 new CategoryClass { Id = 1, Category = "Airplane", Class = "Single Engine Land", CatClass = "ASEL" },
                 new CategoryClass { Id = 2, Category = "Airplane", Class = "Multi Engine Land", CatClass = "AMEL" },
             };
-            modelBuilder.Entity<User>().HasData(users);
+            modelBuilder.Entity<CategoryClass>().HasData(categoryClasses);
 
             var manufacturers = new Manufacturer[] 
             {
@@ -37,27 +37,27 @@ namespace Nisshi.Infrastructure
 
             var models = new Model[]
             {
-                new Model { Id = 1, Family = "172", ModelName = "172N", IDManufacturer = manufacturers[0].Id, IDCategoryClass = categoryClasses[0].Id },
-                new Model { Id = 2, Family = "182", ModelName = "182Q", IDManufacturer = manufacturers[0].Id, IDCategoryClass = categoryClasses[0].Id, IsSimOnly = true },
-                new Model { Id = 3, Family = "182", ModelName = "182S", IDManufacturer = manufacturers[0].Id, IDCategoryClass = categoryClasses[0].Id },
-                new Model { Id = 4, Family = "PA-28", ModelName = "PA-28-160", IDManufacturer = manufacturers[1].Id, IDCategoryClass = categoryClasses[0].Id },
-                new Model { Id = 5, Family = "PA-28", ModelName = "PA-28-200", IDManufacturer = manufacturers[1].Id, IDCategoryClass = categoryClasses[1].Id },
-                new Model { Id = 6, Family = "PA-44", ModelName = "PA-44-200", IDManufacturer = manufacturers[1].Id, IDCategoryClass = categoryClasses[1].Id },
-                new Model { Id = 7, Family = "Bonanza", ModelName = "A36", IDManufacturer = manufacturers[2].Id, IDCategoryClass = categoryClasses[0].Id },
-                new Model { Id = 8, Family = "Bonanza", ModelName = "V35", IDManufacturer = manufacturers[2].Id, IDCategoryClass = categoryClasses[0].Id, IsSimOnly = true },
-                new Model { Id = 9, Family = "Baron", ModelName = "B58", IDManufacturer = manufacturers[2].Id, IDCategoryClass = categoryClasses[0].Id },
-                new Model { Id = 10, Family = "M20", ModelName = "M20J", IDManufacturer = manufacturers[3].Id, IDCategoryClass = categoryClasses[0].Id },
-                new Model { Id = 10, Family = "M20", ModelName = "M20F", IDManufacturer = manufacturers[3].Id, IDCategoryClass = categoryClasses[0].Id },
+                new Model { Id = 1, Family = "172", ModelName = "172N", IdManufacturer = manufacturers[0].Id, IdCategoryClass = categoryClasses[0].Id },
+                new Model { Id = 2, Family = "182", ModelName = "182Q", IdManufacturer = manufacturers[0].Id, IdCategoryClass = categoryClasses[0].Id, IsSimOnly = true },
+                new Model { Id = 3, Family = "182", ModelName = "182S", IdManufacturer = manufacturers[0].Id, IdCategoryClass = categoryClasses[0].Id },
+                new Model { Id = 4, Family = "PA-28", ModelName = "PA-28-160", IdManufacturer = manufacturers[1].Id, IdCategoryClass = categoryClasses[0].Id },
+                new Model { Id = 5, Family = "PA-28", ModelName = "PA-28-200", IdManufacturer = manufacturers[1].Id, IdCategoryClass = categoryClasses[1].Id },
+                new Model { Id = 6, Family = "PA-44", ModelName = "PA-44-200", IdManufacturer = manufacturers[1].Id, IdCategoryClass = categoryClasses[1].Id },
+                new Model { Id = 7, Family = "Bonanza", ModelName = "A36", IdManufacturer = manufacturers[2].Id, IdCategoryClass = categoryClasses[0].Id },
+                new Model { Id = 8, Family = "Bonanza", ModelName = "V35", IdManufacturer = manufacturers[2].Id, IdCategoryClass = categoryClasses[0].Id, IsSimOnly = true },
+                new Model { Id = 9, Family = "Baron", ModelName = "B58", IdManufacturer = manufacturers[2].Id, IdCategoryClass = categoryClasses[0].Id },
+                new Model { Id = 10, Family = "M20", ModelName = "M20J", IdManufacturer = manufacturers[3].Id, IdCategoryClass = categoryClasses[0].Id },
+                new Model { Id = 11, Family = "M20", ModelName = "M20F", IdManufacturer = manufacturers[3].Id, IdCategoryClass = categoryClasses[0].Id },
             };
             modelBuilder.Entity<Model>().HasData(models);
 
             var aircraft = new Aircraft[] 
             {
-                new Aircraft { Id = 1, IDModel = models[1].Id, IDUser = users[0].Id, TailNumber = "N8445D" },
-                new Aircraft { Id = 2, IDModel = models[4].Id, IDUser = users[0].Id, TailNumber = "N5427D" },
-                new Aircraft { Id = 3, IDModel = models[0].Id, IDUser = users[1].Id, TailNumber = "N9440D" },
-                new Aircraft { Id = 4, IDModel = models[0].Id, IDUser = users[1].Id, TailNumber = "N9441D" },
-                new Aircraft { Id = 5, IDModel = models[0].Id, IDUser = users[1].Id, TailNumber = "N9442D" },
+                new Aircraft { Id = 1, IdModel = models[1].Id, IdUser = users[0].Id, TailNumber = "N8445D" },
+                new Aircraft { Id = 2, IdModel = models[4].Id, IdUser = users[0].Id, TailNumber = "N5427D" },
+                new Aircraft { Id = 3, IdModel = models[0].Id, IdUser = users[1].Id, TailNumber = "N9440D" },
+                new Aircraft { Id = 4, IdModel = models[0].Id, IdUser = users[1].Id, TailNumber = "N9441D" },
+                new Aircraft { Id = 5, IdModel = models[0].Id, IdUser = users[1].Id, TailNumber = "N9442D" },
             };
             modelBuilder.Entity<Aircraft>().HasData(aircraft);
 
@@ -72,25 +72,25 @@ namespace Nisshi.Infrastructure
             var logbookEntries = new LogbookEntry[]
             {
                 new LogbookEntry { Id = 1, Comments = "Test1", FlightDate = DateTime.Now.AddDays(-1), PIC = 2.0m, Night = 2.0m, NumLandings = 1, 
-                    NumInstrumentApproaches = 1, Route = $"{airports[0].AirportCode} {airports[1].AirportCode}", IDAircraft = aircraft[0].Id, IDUser = users[0].Id },
+                    NumInstrumentApproaches = 1, Route = $"{airports[0].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
                 new LogbookEntry { Id = 2, Comments = "Test2", FlightDate = DateTime.Now.AddDays(-2), PIC = 2.7m, CrossCountry = 2.7m, NumLandings = 2, 
-                    NumInstrumentApproaches = 1, Route = $"{airports[1].AirportCode} {airports[2].AirportCode}", IDAircraft = aircraft[1].Id, IDUser = users[0].Id },
+                    NumInstrumentApproaches = 1, Route = $"{airports[1].AirportCode} {airports[2].AirportCode}", IdAircraft = aircraft[1].Id, IdUser = users[0].Id },
                 new LogbookEntry { Id = 3, Comments = "Test3", FlightDate = DateTime.Now.AddDays(-3), PIC = 3.0m, CrossCountry = 3.0m, NumLandings = 3, 
-                    NumInstrumentApproaches = 4, Route = $"{airports[0].AirportCode} {airports[2].AirportCode}", IDAircraft = aircraft[1].Id, IDUser = users[0].Id },
+                    NumInstrumentApproaches = 4, Route = $"{airports[0].AirportCode} {airports[2].AirportCode}", IdAircraft = aircraft[1].Id, IdUser = users[0].Id },
                 new LogbookEntry { Id = 4, Comments = "Test4", FlightDate = DateTime.Now.AddDays(-4), PIC = 1.2m, CrossCountry = 1.2m, NumLandings = 1, 
-                    NumInstrumentApproaches = 1, Route = $"{airports[3].AirportCode} {airports[0].AirportCode}", IDAircraft = aircraft[0].Id, IDUser = users[0].Id },
+                    NumInstrumentApproaches = 1, Route = $"{airports[2].AirportCode} {airports[0].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
                 new LogbookEntry { Id = 5, Comments = "Test5", FlightDate = DateTime.Now.AddDays(-5), PIC = 2.0m, CrossCountry = 2.0m, NumLandings = 1, 
-                    NumInstrumentApproaches = 3, Route = $"{airports[1].AirportCode} {airports[1].AirportCode}", IDAircraft = aircraft[2].Id, IDUser = users[1].Id },
+                    NumInstrumentApproaches = 3, Route = $"{airports[1].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[2].Id, IdUser = users[1].Id },
                 new LogbookEntry { Id = 6, Comments = "Test6", FlightDate = DateTime.Now.AddDays(-6), PIC = 1.3m, CrossCountry = 1.3m, Night = 1.3m, NumLandings = 4, 
-                    NumInstrumentApproaches = 2, Route = $"{airports[0].AirportCode} {airports[1].AirportCode}", IDAircraft = aircraft[4].Id, IDUser = users[1].Id },
+                    NumInstrumentApproaches = 2, Route = $"{airports[0].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[4].Id, IdUser = users[1].Id },
                 new LogbookEntry { Id = 7, Comments = "Test7", FlightDate = DateTime.Now.AddDays(-7), PIC = 2.0m, NumLandings = 1, 
-                    NumInstrumentApproaches = 1, Route = $"{airports[1].AirportCode} {airports[1].AirportCode}", IDAircraft = aircraft[4].Id, IDUser = users[1].Id },
+                    NumInstrumentApproaches = 1, Route = $"{airports[1].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[4].Id, IdUser = users[1].Id },
                 new LogbookEntry { Id = 8, Comments = "Test8", FlightDate = DateTime.Now.AddDays(-8), PIC = 4.2m, CrossCountry = 4.2m, NumLandings = 2, 
-                    NumInstrumentApproaches = 2, Route = $"{airports[1].AirportCode} {airports[2].AirportCode}", IDAircraft = aircraft[0].Id, IDUser = users[0].Id },
+                    NumInstrumentApproaches = 2, Route = $"{airports[1].AirportCode} {airports[2].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
                 new LogbookEntry { Id = 9, Comments = "Test9", FlightDate = DateTime.Now.AddDays(-9), PIC = 1.1m, Night = 2.0m, NumLandings = 1, 
-                    NumInstrumentApproaches = 1, Route = $"{airports[2].AirportCode} {airports[1].AirportCode}", IDAircraft = aircraft[0].Id, IDUser = users[0].Id },
+                    NumInstrumentApproaches = 1, Route = $"{airports[2].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
             };
-            modelBuilder.Entity<Airport>().HasData(airports);
+            modelBuilder.Entity<LogbookEntry>().HasData(logbookEntries);
 
             modelBuilder.Entity<User>(b => 
             {
@@ -100,10 +100,10 @@ namespace Nisshi.Infrastructure
                 b.Property(x => x.Password).IsRequired();
                 b.HasMany(x => x.Aircraft)
                  .WithOne(x => x.Owner)
-                 .HasForeignKey(x => x.IDUser);
+                 .HasForeignKey(x => x.IdUser);
                 b.HasMany(x => x.LogbookEntries)
                  .WithOne(x => x.Owner)
-                 .HasForeignKey(x => x.IDUser)
+                 .HasForeignKey(x => x.IdUser)
                  .OnDelete(DeleteBehavior.Cascade);
             });
 
@@ -112,10 +112,10 @@ namespace Nisshi.Infrastructure
                 b.HasKey(x => x.Id);
                 b.HasOne(x => x.Owner)
                  .WithMany(x => x.LogbookEntries)
-                 .HasForeignKey(x => x.IDUser);
+                 .HasForeignKey(x => x.IdUser);
                 b.HasOne(x => x.Aircraft)
                  .WithMany(x => x.LogbookEntries)
-                 .HasForeignKey(x => x.IDAircraft);
+                 .HasForeignKey(x => x.IdAircraft);
             });
 
             modelBuilder.Entity<Aircraft>(b =>
@@ -123,10 +123,10 @@ namespace Nisshi.Infrastructure
                 b.HasKey(x => x.Id);
                 b.HasOne(x => x.Model)
                  .WithMany(x => x.Aircraft)
-                 .HasForeignKey(x => x.IDModel);
+                 .HasForeignKey(x => x.IdModel);
                 b.HasMany(x => x.LogbookEntries)
                  .WithOne(x => x.Aircraft)
-                 .HasForeignKey(x => x.IDAircraft);
+                 .HasForeignKey(x => x.IdAircraft);
             });
 
             modelBuilder.Entity<Model>(b =>
@@ -134,13 +134,13 @@ namespace Nisshi.Infrastructure
                 b.HasKey(x => x.Id);
                 b.HasOne(x => x.Manufacturer)
                  .WithMany(x => x.Models)
-                 .HasForeignKey(x => x.IDManufacturer);
+                 .HasForeignKey(x => x.IdManufacturer);
                 b.HasMany(x => x.Aircraft)
                  .WithOne(x => x.Model)
-                 .HasForeignKey(x => x.IDModel);
+                 .HasForeignKey(x => x.IdModel);
                 b.HasOne(x => x.CategoryClass)
                  .WithMany(x => x.Models)
-                 .HasForeignKey(x => x.IDCategoryClass)
+                 .HasForeignKey(x => x.IdCategoryClass)
                  .OnDelete(DeleteBehavior.NoAction);
             });
 
@@ -149,12 +149,12 @@ namespace Nisshi.Infrastructure
                 b.HasKey(x => x.Id);
                 b.HasMany(x => x.Models)
                  .WithOne(x => x.Manufacturer)
-                 .HasForeignKey(x => x.IDManufacturer);
+                 .HasForeignKey(x => x.IdManufacturer);
             });
 
             modelBuilder.Entity<Airport>(b =>
             {
-                b.HasKey(x => x.Id);
+                b.HasKey(x => x.AirportCode);
             });
 
             modelBuilder.Entity<CategoryClass>(b =>
@@ -168,7 +168,7 @@ namespace Nisshi.Infrastructure
         public DbSet<Aircraft> Aircraft { get; set; }
         public DbSet<Manufacturer> Manufacturers { get; set; }
         public DbSet<Model> Models { get; set; }
-        public DbSet<CategoryClass> CategoryClass { get; set; }
+        public DbSet<CategoryClass> CategoryClasses { get; set; }
         public DbSet<Airport> Airports { get; set; }
 
     }

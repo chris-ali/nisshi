@@ -56,7 +56,6 @@ namespace Nisshi.Models
         /// <summary>
         /// How many months until current medical examination expires
         /// </summary>
-        /// <value></value>
         public int MonthsToMedical { get; set; }
 
         /// <summary>
@@ -80,15 +79,9 @@ namespace Nisshi.Models
         public string CertificateNumber { get; set; }
 
         /// <summary>
-        /// ID of user's time zone 
-        /// </summary>
-        public string TimeZone { get; set; }
-
-        /// <summary>
         /// Additional user preferences serialized in JSON dictionary forma
         /// </summary>
-        [JsonIgnore]
-        public virtual Dictionary<string, string> Preferences { get; set; }
+        public virtual string Preferences { get; set; }
         
         /// <summary>
         /// Associated aircraft belonging to the user

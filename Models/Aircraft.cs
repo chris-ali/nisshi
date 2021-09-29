@@ -74,7 +74,7 @@ namespace Nisshi.Models
         /// <summary>
         /// Foreign key to the models table
         /// </summary>
-        public int IDModel { get; set; }
+        public int IdModel { get; set; }
 
         /// <summary>
         /// Associated model of this aircraft
@@ -91,7 +91,7 @@ namespace Nisshi.Models
         /// Foreign key to the users table
         /// </summary>
         [JsonIgnore]
-        public int IDUser { get; set; }
+        public int IdUser { get; set; }
 
         /// <summary>
         /// Owner of this aircraft

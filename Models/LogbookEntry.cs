@@ -54,7 +54,7 @@ namespace Nisshi.Models
         /// <summary>
         /// Foreign key to the aircraft table
         /// </summary>
-        public int IDAircraft { get; set; }
+        public int IdAircraft { get; set; }
 
         /// <summary>
         /// Associated aircraft that performed the flight in this entry
@@ -65,7 +65,7 @@ namespace Nisshi.Models
         /// Foreign key to the users table
         /// </summary>
         [JsonIgnore]
-        public int IDUser { get; set; }
+        public int IdUser { get; set; }
         
         /// <summary>
         /// Owner of this logbook entry

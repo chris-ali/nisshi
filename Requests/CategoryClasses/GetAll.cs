@@ -20,7 +20,7 @@ namespace Nisshi.Requests.CategoryClasses
 
             public async Task<IList<CategoryClass>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var data = await context.CategoryClass.ToListAsync(cancellationToken);
+                var data = await context.CategoryClasses.ToListAsync(cancellationToken);
                 
                 return data;
             }

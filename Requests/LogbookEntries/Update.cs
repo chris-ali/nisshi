@@ -80,7 +80,7 @@ namespace Nisshi.Requests.LogbookEntries
                 toBeUpdated.SIC = toUpdateWith.SIC;
                 toBeUpdated.SimulatedInstrument = toUpdateWith.SimulatedInstrument;
                 toBeUpdated.TotalFlightTime = toUpdateWith.TotalFlightTime;
-                toBeUpdated.IDAircraft = toUpdateWith.IDAircraft;
+                toBeUpdated.IdAircraft = toUpdateWith.IdAircraft;
             }
         }
     }

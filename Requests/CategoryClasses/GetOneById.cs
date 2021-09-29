@@ -22,7 +22,7 @@ namespace Nisshi.Requests.CategoryClasses
 
             public async Task<CategoryClass> Handle(Query request, CancellationToken cancellationToken)
             {
-                var data = await context.CategoryClass.FindAsync(new object[] { request.id }, cancellationToken);
+                var data = await context.CategoryClasses.FindAsync(new object[] { request.id }, cancellationToken);
 
                 return data;
             }
