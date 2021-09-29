@@ -3,10 +3,9 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
+using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
 using MediatR;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace Nisshi.Requests.Models
 {

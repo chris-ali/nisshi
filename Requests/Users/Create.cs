@@ -3,10 +3,10 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
+using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Nisshi.Requests.Users
 {
@@ -27,21 +27,18 @@ namespace Nisshi.Requests.Users
                 if (request.user == null) 
                 {
                     var message = $"No user data found in request";
-                    // logger.LogWarning(message);
                     throw new RestException(HttpStatusCode.BadRequest, new { Message = message});
                 }
 
                 if (await context.Users.Where(x => x.Username == request.user.Username).AnyAsync(cancellationToken))
                 {
                     var message = $"Username already exists in database";
-                    // logger.LogWarning(message);
                     throw new RestException(HttpStatusCode.BadRequest, new { Message = message});
                 }
 
                 if (await context.Users.Where(x => x.Email == request.user.Email).AnyAsync(cancellationToken))
                 {
                     var message = $"Email already exists in database";
-                    // logger.LogWarning(message);
                     throw new RestException(HttpStatusCode.BadRequest, new { Message = message});
                 }
 
@@ -51,8 +48,6 @@ namespace Nisshi.Requests.Users
 
                 await context.AddAsync<User>(request.user);
                 await context.SaveChangesAsync(cancellationToken);
-
-                // logger.LogDebug($"Added new user: {request.user.Id} - {request.user.UserName}!");
 
                 return request.user;
             }

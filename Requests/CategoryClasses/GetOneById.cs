@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Nisshi.Infrastructure;
 using Nisshi.Models;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 /// sic
