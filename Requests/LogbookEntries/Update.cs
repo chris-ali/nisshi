@@ -25,11 +25,11 @@ namespace Nisshi.Requests.LogbookEntries
 
             public async Task<LogbookEntry> Handle(Command request, CancellationToken cancellationToken)
             {
-                var data = await context.FindAsync<LogbookEntry>(new object[] { request.logbookEntry.ID }, cancellationToken);
+                var data = await context.FindAsync<LogbookEntry>(new object[] { request.logbookEntry.Id }, cancellationToken);
 
                 if (data == null) 
                 {
-                    var message = $"No LogbookEntry found for id: {request.logbookEntry.ID}";
+                    var message = $"No LogbookEntry found for id: {request.logbookEntry.Id}";
                     throw new RestException(HttpStatusCode.NotFound, new { Message = message});
                 }
 

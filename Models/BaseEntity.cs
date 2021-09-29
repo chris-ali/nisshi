@@ -11,7 +11,7 @@ namespace Nisshi.Models
         /// <summary>
         /// Primary key of the entity
         /// </summary>
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// Date entity was first created

@@ -28,11 +28,11 @@ namespace Nisshi.Requests.Aircrafts
 
             public async Task<Aircraft> Handle(Command request, CancellationToken cancellationToken)
             {
-                var data = await context.FindAsync<Aircraft>(new object[] { request.aircraft.ID }, cancellationToken);
+                var data = await context.FindAsync<Aircraft>(new object[] { request.aircraft.Id }, cancellationToken);
 
                 if (data == null) 
                 {
-                    var message = $"No Aircraft found for id: {request.aircraft.ID}";
+                    var message = $"No Aircraft found for id: {request.aircraft.Id}";
                     throw new RestException(HttpStatusCode.NotFound, new { Message = message});
                 }
 

@@ -22,7 +22,7 @@ namespace Nisshi.Requests.LogbookEntries
                 var data = await context.LogbookEntries
                     .Include(x => x.Aircraft)
                         .ThenInclude(x => x.Model)
-                    .FirstOrDefaultAsync(x => x.ID == request.id, cancellationToken);
+                    .FirstOrDefaultAsync(x => x.Id == request.id, cancellationToken);
 
                 return data;
             }

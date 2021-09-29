@@ -25,11 +25,11 @@ namespace Nisshi.Requests.Models
 
             public async Task<Model> Handle(Command request, CancellationToken cancellationToken)
             {
-                var data = await context.FindAsync<Model>(new object[] { request.model.ID }, cancellationToken);
+                var data = await context.FindAsync<Model>(new object[] { request.model.Id }, cancellationToken);
 
                 if (data == null) 
                 {
-                    var message = $"No Model found for id: {request.model.ID}";
+                    var message = $"No Model found for id: {request.model.Id}";
                     throw new RestException(HttpStatusCode.NotFound, new { Message = message});
                 }
 
@@ -43,7 +43,7 @@ namespace Nisshi.Requests.Models
                 var user = await context.Users.Where(x => x.Username == username)
                     .FirstOrDefaultAsync(cancellationToken);
 
-                var model = await context.Models.FindAsync(new object[] { data.ID }, cancellationToken);
+                var model = await context.Models.FindAsync(new object[] { data.Id }, cancellationToken);
 
                 Update(ref data, request.model);
                 data.DateUpdated = DateTime.Now;

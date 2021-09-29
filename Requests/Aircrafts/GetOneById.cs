@@ -24,7 +24,7 @@ namespace Nisshi.Requests.Aircrafts
             {
                 var data = await context.Aircraft
                     .Include(x => x.Model)
-                    .FirstOrDefaultAsync(x => x.ID == request.id, cancellationToken);
+                    .FirstOrDefaultAsync(x => x.Id == request.id, cancellationToken);
 
                 return data;
             }

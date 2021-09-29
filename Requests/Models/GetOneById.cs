@@ -21,7 +21,7 @@ namespace Nisshi.Requests.Models
             {
                 var data = await context.Models
                     .Include(x => x.CategoryClass)
-                    .FirstOrDefaultAsync(x => x.ID == request.id, cancellationToken);
+                    .FirstOrDefaultAsync(x => x.Id == request.id, cancellationToken);
 
                 return data;
             }
