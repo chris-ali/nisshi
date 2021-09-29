@@ -14,43 +14,83 @@ namespace Nisshi.Infrastructure
         {
             var users = new User[] 
             {
-                new User { ID = 1, Username = "chris", FirstName = "Chris", LastName = "Ali", Email = "chris@ali.com"},
-                new User { ID = 2, Username = "somebodyElse", FirstName = "Somebody", LastName = "Else", Email = "somebody@else.com"},
+                new User { ID = 1, Username = "chris", FirstName = "Chris", LastName = "Ali", Email = "chris@ali.com" },
+                new User { ID = 2, Username = "somebodyElse", FirstName = "Somebody", LastName = "Else", Email = "somebody@else.com" },
             };
             modelBuilder.Entity<User>().HasData(users);
 
-            var heroes = new Hero[] 
+            var categoryClasses = new CategoryClass[] 
             {
-                new Hero { ID = 11, Name = "Dr Nice", DateCreated = DateTime.Now },
-                new Hero { ID = 12, Name = "Narco", DateCreated = DateTime.Now },
-                new Hero { ID = 13, Name = "Bombasto", DateCreated = DateTime.Now },
-                new Hero { ID = 14, Name = "Celeritas", DateCreated = DateTime.Now },
-                new Hero { ID = 15, Name = "Magneta", DateCreated = DateTime.Now },
-                new Hero { ID = 16, Name = "RubberMan", DateCreated = DateTime.Now },
-                new Hero { ID = 17, Name = "Dynama", DateCreated = DateTime.Now },
-                new Hero { ID = 18, Name = "Dr IQ", DateCreated = DateTime.Now },
-                new Hero { ID = 19, Name = "Magma", DateCreated = DateTime.Now },
-                new Hero { ID = 20, Name = "Tornado", DateCreated = DateTime.Now },
+                new CategoryClass { ID = 1, Category = "Airplane", Class = "Single Engine Land", CatClass = "ASEL" },
+                new CategoryClass { ID = 2, Category = "Airplane", Class = "Multi Engine Land", CatClass = "AMEL" },
             };
-            modelBuilder.Entity<Hero>().HasData(heroes);
+            modelBuilder.Entity<User>().HasData(users);
 
-            var messages = new LogMessage[] 
+            var manufacturers = new Manufacturer[] 
             {
-                new LogMessage { ID = 5, Contents = "Test Log Message", DateCreated = DateTime.Now, UserIdFk = 1 },
-                new LogMessage { ID = 6, Contents = "Another Test Log Message", DateCreated = DateTime.Now.AddDays(-1), UserIdFk = 1 },
-                new LogMessage { ID = 7, Contents = "Someone Else's Test Log Message", DateCreated = DateTime.Now.AddMonths(-1), UserIdFk = 2 }
+                new Manufacturer { ID = 1, ManufacturerName = "Cessna" },
+                new Manufacturer { ID = 2, ManufacturerName = "Piper" },
+                new Manufacturer { ID = 3, ManufacturerName = "Beechcraft" },
+                new Manufacturer { ID = 4, ManufacturerName = "Mooney" },
             };
-            modelBuilder.Entity<LogMessage>().HasData(messages);
+            modelBuilder.Entity<Manufacturer>().HasData(manufacturers);
 
-            var heroUsers = new HeroUser[] 
+            var models = new Model[]
             {
-                new HeroUser{ HeroIdFk = 11, UserIdFk = 1 },
-                new HeroUser{ HeroIdFk = 13, UserIdFk = 2 },
-                new HeroUser{ HeroIdFk = 11, UserIdFk = 2 },
-                new HeroUser{ HeroIdFk = 15, UserIdFk = 1 },
-                new HeroUser{ HeroIdFk = 12, UserIdFk = 1 },
+                new Model { ID = 1, Family = "172", ModelName = "172N", IDManufacturer = manufacturers[0].ID, IDCategoryClass = categoryClasses[0].ID },
+                new Model { ID = 2, Family = "182", ModelName = "182Q", IDManufacturer = manufacturers[0].ID, IDCategoryClass = categoryClasses[0].ID, IsSimOnly = true },
+                new Model { ID = 3, Family = "182", ModelName = "182S", IDManufacturer = manufacturers[0].ID, IDCategoryClass = categoryClasses[0].ID },
+                new Model { ID = 4, Family = "PA-28", ModelName = "PA-28-160", IDManufacturer = manufacturers[1].ID, IDCategoryClass = categoryClasses[0].ID },
+                new Model { ID = 5, Family = "PA-28", ModelName = "PA-28-200", IDManufacturer = manufacturers[1].ID, IDCategoryClass = categoryClasses[1].ID },
+                new Model { ID = 6, Family = "PA-44", ModelName = "PA-44-200", IDManufacturer = manufacturers[1].ID, IDCategoryClass = categoryClasses[1].ID },
+                new Model { ID = 7, Family = "Bonanza", ModelName = "A36", IDManufacturer = manufacturers[2].ID, IDCategoryClass = categoryClasses[0].ID },
+                new Model { ID = 8, Family = "Bonanza", ModelName = "V35", IDManufacturer = manufacturers[2].ID, IDCategoryClass = categoryClasses[0].ID, IsSimOnly = true },
+                new Model { ID = 9, Family = "Baron", ModelName = "B58", IDManufacturer = manufacturers[2].ID, IDCategoryClass = categoryClasses[0].ID },
+                new Model { ID = 10, Family = "M20", ModelName = "M20J", IDManufacturer = manufacturers[3].ID, IDCategoryClass = categoryClasses[0].ID },
+                new Model { ID = 10, Family = "M20", ModelName = "M20F", IDManufacturer = manufacturers[3].ID, IDCategoryClass = categoryClasses[0].ID },
             };
-            modelBuilder.Entity<HeroUser>().HasData(heroUsers);
+            modelBuilder.Entity<Model>().HasData(models);
+
+            var aircraft = new Aircraft[] 
+            {
+                new Aircraft { ID = 1, IDModel = models[1].ID, IDUser = users[0].ID, TailNumber = "N8445D" },
+                new Aircraft { ID = 2, IDModel = models[4].ID, IDUser = users[0].ID, TailNumber = "N5427D" },
+                new Aircraft { ID = 3, IDModel = models[0].ID, IDUser = users[1].ID, TailNumber = "N9440D" },
+                new Aircraft { ID = 4, IDModel = models[0].ID, IDUser = users[1].ID, TailNumber = "N9441D" },
+                new Aircraft { ID = 5, IDModel = models[0].ID, IDUser = users[1].ID, TailNumber = "N9442D" },
+            };
+            modelBuilder.Entity<Aircraft>().HasData(aircraft);
+
+            var airports = new Airport[]
+            {
+                new Airport { AirportCode = "KTTN", FacilityName = "Trenton Mercer Airport", Latitude = 41, Longitude = -74, Preferred = true },
+                new Airport { AirportCode = "KRDG", FacilityName = "Reading Regional Airport", Latitude = 40, Longitude = -76, Preferred = true },
+                new Airport { AirportCode = "KACY", FacilityName = "Atlantic City International Airport", Latitude = 40, Longitude = -74, Preferred = true },
+            };
+            modelBuilder.Entity<Airport>().HasData(airports);
+
+            var logbookEntries = new LogbookEntry[]
+            {
+                new LogbookEntry { ID = 1, Comments = "Test1", FlightDate = DateTime.Now.AddDays(-1), PIC = 2.0m, Night = 2.0m, NumLandings = 1, 
+                    NumInstrumentApproaches = 1, Route = $"{airports[0].AirportCode} {airports[1].AirportCode}", IDAircraft = aircraft[0].ID, IDUser = users[0].ID },
+                new LogbookEntry { ID = 2, Comments = "Test2", FlightDate = DateTime.Now.AddDays(-2), PIC = 2.7m, CrossCountry = 2.7m, NumLandings = 2, 
+                    NumInstrumentApproaches = 1, Route = $"{airports[1].AirportCode} {airports[2].AirportCode}", IDAircraft = aircraft[1].ID, IDUser = users[0].ID },
+                new LogbookEntry { ID = 3, Comments = "Test3", FlightDate = DateTime.Now.AddDays(-3), PIC = 3.0m, CrossCountry = 3.0m, NumLandings = 3, 
+                    NumInstrumentApproaches = 4, Route = $"{airports[0].AirportCode} {airports[2].AirportCode}", IDAircraft = aircraft[1].ID, IDUser = users[0].ID },
+                new LogbookEntry { ID = 4, Comments = "Test4", FlightDate = DateTime.Now.AddDays(-4), PIC = 1.2m, CrossCountry = 1.2m, NumLandings = 1, 
+                    NumInstrumentApproaches = 1, Route = $"{airports[3].AirportCode} {airports[0].AirportCode}", IDAircraft = aircraft[0].ID, IDUser = users[0].ID },
+                new LogbookEntry { ID = 5, Comments = "Test5", FlightDate = DateTime.Now.AddDays(-5), PIC = 2.0m, CrossCountry = 2.0m, NumLandings = 1, 
+                    NumInstrumentApproaches = 3, Route = $"{airports[1].AirportCode} {airports[1].AirportCode}", IDAircraft = aircraft[2].ID, IDUser = users[1].ID },
+                new LogbookEntry { ID = 6, Comments = "Test6", FlightDate = DateTime.Now.AddDays(-6), PIC = 1.3m, CrossCountry = 1.3m, Night = 1.3m, NumLandings = 4, 
+                    NumInstrumentApproaches = 2, Route = $"{airports[0].AirportCode} {airports[1].AirportCode}", IDAircraft = aircraft[4].ID, IDUser = users[1].ID },
+                new LogbookEntry { ID = 7, Comments = "Test7", FlightDate = DateTime.Now.AddDays(-7), PIC = 2.0m, NumLandings = 1, 
+                    NumInstrumentApproaches = 1, Route = $"{airports[1].AirportCode} {airports[1].AirportCode}", IDAircraft = aircraft[4].ID, IDUser = users[1].ID },
+                new LogbookEntry { ID = 8, Comments = "Test8", FlightDate = DateTime.Now.AddDays(-8), PIC = 4.2m, CrossCountry = 4.2m, NumLandings = 2, 
+                    NumInstrumentApproaches = 2, Route = $"{airports[1].AirportCode} {airports[2].AirportCode}", IDAircraft = aircraft[0].ID, IDUser = users[0].ID },
+                new LogbookEntry { ID = 9, Comments = "Test9", FlightDate = DateTime.Now.AddDays(-9), PIC = 1.1m, Night = 2.0m, NumLandings = 1, 
+                    NumInstrumentApproaches = 1, Route = $"{airports[2].AirportCode} {airports[1].AirportCode}", IDAircraft = aircraft[0].ID, IDUser = users[0].ID },
+            };
+            modelBuilder.Entity<Airport>().HasData(airports);
 
             modelBuilder.Entity<User>(b => 
             {
@@ -122,10 +162,6 @@ namespace Nisshi.Infrastructure
                 b.HasKey(x => x.ID);
             });
         }      
-
-        public DbSet<Hero> Heroes { get; set; }
-        public DbSet<LogMessage> Messages { get; set; }
-        public DbSet<HeroUser> HeroUsers { get; set; }
         
         public DbSet<User> Users { get; set; }
         public DbSet<LogbookEntry> LogbookEntries { get; set; }
