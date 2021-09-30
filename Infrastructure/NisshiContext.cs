@@ -1,17 +1,109 @@
-using System;
-using Nisshi.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Nisshi.Models;
+using System;
+using System.Data;
 
 namespace Nisshi.Infrastructure
 {
+    /// <summary>
+    /// EFCore implmentation for the Nisshi database - Contains definitions 
+    /// for table relations and seeding for an in-memory database and 
+    /// transactional capability
+    /// </summary>
     public class NisshiContext : DbContext
     {
+        public DbSet<User> Users { get; set; }
+        public DbSet<LogbookEntry> LogbookEntries { get; set; }
+        public DbSet<Aircraft> Aircraft { get; set; }
+        public DbSet<Manufacturer> Manufacturers { get; set; }
+        public DbSet<Model> Models { get; set; }
+        public DbSet<CategoryClass> CategoryClasses { get; set; }
+        public DbSet<Airport> Airports { get; set; }
+
+        private IDbContextTransaction currentTransaction;
+
         public NisshiContext(DbContextOptions<NisshiContext> options) : base(options)
         {
         }
 
+        /// <summary>
+        /// Defines table relations and in-memory seeding
+        /// </summary>
+        /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
+            modelBuilder.Entity<User>(b => 
+            {
+                b.HasKey(x => x.Id);
+                b.Property(x => x.Username).IsRequired();
+                b.Property(x => x.Email).IsRequired();
+                b.Property(x => x.Password).IsRequired();
+                b.HasMany(x => x.Aircraft)
+                 .WithOne(x => x.Owner)
+                 .HasForeignKey(x => x.IdUser);
+                b.HasMany(x => x.LogbookEntries)
+                 .WithOne(x => x.Owner)
+                 .HasForeignKey(x => x.IdUser)
+                 .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<LogbookEntry>(b =>
+            {
+                b.HasKey(x => x.Id);
+                b.HasOne(x => x.Owner)
+                 .WithMany(x => x.LogbookEntries)
+                 .HasForeignKey(x => x.IdUser);
+                b.HasOne(x => x.Aircraft)
+                 .WithMany(x => x.LogbookEntries)
+                 .HasForeignKey(x => x.IdAircraft);
+            });
+
+            modelBuilder.Entity<Aircraft>(b =>
+            {
+                b.HasKey(x => x.Id);
+                b.HasOne(x => x.Model)
+                 .WithMany(x => x.Aircraft)
+                 .HasForeignKey(x => x.IdModel);
+                b.HasMany(x => x.LogbookEntries)
+                 .WithOne(x => x.Aircraft)
+                 .HasForeignKey(x => x.IdAircraft);
+            });
+
+            modelBuilder.Entity<Model>(b =>
+            {
+                b.HasKey(x => x.Id);
+                b.HasOne(x => x.Manufacturer)
+                 .WithMany(x => x.Models)
+                 .HasForeignKey(x => x.IdManufacturer);
+                b.HasMany(x => x.Aircraft)
+                 .WithOne(x => x.Model)
+                 .HasForeignKey(x => x.IdModel);
+                b.HasOne(x => x.CategoryClass)
+                 .WithMany(x => x.Models)
+                 .HasForeignKey(x => x.IdCategoryClass)
+                 .OnDelete(DeleteBehavior.NoAction);
+            });
+
+            modelBuilder.Entity<Manufacturer>(b =>
+            {
+                b.HasKey(x => x.Id);
+                b.HasMany(x => x.Models)
+                 .WithOne(x => x.Manufacturer)
+                 .HasForeignKey(x => x.IdManufacturer);
+            });
+
+            modelBuilder.Entity<Airport>(b =>
+            {
+                b.HasKey(x => x.AirportCode);
+            });
+
+            modelBuilder.Entity<CategoryClass>(b =>
+            {
+                b.HasKey(x => x.Id);
+            });
+
+            #region In Memory Seeding
             var users = new User[] 
             {
                 new User { Id = 1, Username = "chris", FirstName = "Chris", LastName = "Ali", Email = "chris@ali.com", Password = "4355drtygfvhjbnkm8e657iftyul" },
@@ -91,85 +183,53 @@ namespace Nisshi.Infrastructure
                     NumInstrumentApproaches = 1, Route = $"{airports[2].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
             };
             modelBuilder.Entity<LogbookEntry>().HasData(logbookEntries);
-
-            modelBuilder.Entity<User>(b => 
-            {
-                b.HasKey(x => x.Id);
-                b.Property(x => x.Username).IsRequired();
-                b.Property(x => x.Email).IsRequired();
-                b.Property(x => x.Password).IsRequired();
-                b.HasMany(x => x.Aircraft)
-                 .WithOne(x => x.Owner)
-                 .HasForeignKey(x => x.IdUser);
-                b.HasMany(x => x.LogbookEntries)
-                 .WithOne(x => x.Owner)
-                 .HasForeignKey(x => x.IdUser)
-                 .OnDelete(DeleteBehavior.Cascade);
-            });
-
-            modelBuilder.Entity<LogbookEntry>(b =>
-            {
-                b.HasKey(x => x.Id);
-                b.HasOne(x => x.Owner)
-                 .WithMany(x => x.LogbookEntries)
-                 .HasForeignKey(x => x.IdUser);
-                b.HasOne(x => x.Aircraft)
-                 .WithMany(x => x.LogbookEntries)
-                 .HasForeignKey(x => x.IdAircraft);
-            });
-
-            modelBuilder.Entity<Aircraft>(b =>
-            {
-                b.HasKey(x => x.Id);
-                b.HasOne(x => x.Model)
-                 .WithMany(x => x.Aircraft)
-                 .HasForeignKey(x => x.IdModel);
-                b.HasMany(x => x.LogbookEntries)
-                 .WithOne(x => x.Aircraft)
-                 .HasForeignKey(x => x.IdAircraft);
-            });
-
-            modelBuilder.Entity<Model>(b =>
-            {
-                b.HasKey(x => x.Id);
-                b.HasOne(x => x.Manufacturer)
-                 .WithMany(x => x.Models)
-                 .HasForeignKey(x => x.IdManufacturer);
-                b.HasMany(x => x.Aircraft)
-                 .WithOne(x => x.Model)
-                 .HasForeignKey(x => x.IdModel);
-                b.HasOne(x => x.CategoryClass)
-                 .WithMany(x => x.Models)
-                 .HasForeignKey(x => x.IdCategoryClass)
-                 .OnDelete(DeleteBehavior.NoAction);
-            });
-
-            modelBuilder.Entity<Manufacturer>(b =>
-            {
-                b.HasKey(x => x.Id);
-                b.HasMany(x => x.Models)
-                 .WithOne(x => x.Manufacturer)
-                 .HasForeignKey(x => x.IdManufacturer);
-            });
-
-            modelBuilder.Entity<Airport>(b =>
-            {
-                b.HasKey(x => x.AirportCode);
-            });
-
-            modelBuilder.Entity<CategoryClass>(b =>
-            {
-                b.HasKey(x => x.Id);
-            });
+            #endregion
         }      
         
-        public DbSet<User> Users { get; set; }
-        public DbSet<LogbookEntry> LogbookEntries { get; set; }
-        public DbSet<Aircraft> Aircraft { get; set; }
-        public DbSet<Manufacturer> Manufacturers { get; set; }
-        public DbSet<Model> Models { get; set; }
-        public DbSet<CategoryClass> CategoryClasses { get; set; }
-        public DbSet<Airport> Airports { get; set; }
+        public void BeginTransaction()
+        {
+            if (currentTransaction != null)
+                return;
 
+            if (!Database.IsInMemory())
+                currentTransaction = Database.BeginTransaction(IsolationLevel.ReadCommitted);
+        }
+
+        public void CommitTransaction()
+        {
+            try
+            {
+                currentTransaction?.Commit();
+            }
+            catch
+            {
+                RollbackTransaction();
+                throw;
+            }
+            finally
+            {
+                if (currentTransaction != null)
+                {
+                    currentTransaction.Dispose();
+                    currentTransaction = null;
+                }
+            }
+        }
+
+        public void RollbackTransaction()
+        {
+            try
+            {
+                currentTransaction?.Rollback();     
+            }
+            finally
+            {
+                if (currentTransaction != null)
+                {
+                    currentTransaction.Dispose();
+                    currentTransaction = null;
+                }
+            }
+        }
     }
 }

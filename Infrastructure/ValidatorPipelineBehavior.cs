@@ -11,12 +11,12 @@ namespace Nisshi.Infrastructure
     /// Pipeline Behavior that intercepts requests and validates their 
     /// associated entities using FluentValidation
     /// </summary>
-    public class ValidatiorPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    public class ValidatorPipelineBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : notnull
     {
         private readonly IEnumerable<IValidator<TRequest>> validators;
 
-        public ValidatiorPipelineBehavior(IEnumerable<IValidator<TRequest>> validators)
+        public ValidatorPipelineBehavior(IEnumerable<IValidator<TRequest>> validators)
         {
             this.validators = validators;
         }
