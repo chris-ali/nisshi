@@ -8,6 +8,7 @@ using Nisshi.Models;
 using MediatR;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation;
 
 /// <summary>
 /// sic
@@ -18,9 +19,18 @@ namespace Nisshi.Requests.Aircrafts
     {
         public record Command(Aircraft aircraft) : IRequest<Aircraft>;
 
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.aircraft).NotNull().WithMessage($"Aircraft {Messages.NOT_NULL}");
+            }
+        }
+
         public class CommandHandler : BaseRequest, IRequestHandler<Command, Aircraft>
         {
             private readonly ICurrentUserAccessor accessor;
+
 
             public CommandHandler(NisshiContext context, ICurrentUserAccessor accessor) : base(context)
             {
@@ -28,21 +38,12 @@ namespace Nisshi.Requests.Aircrafts
             }
 
             public async Task<Aircraft> Handle(Command request, CancellationToken cancellationToken)
-            {
-                if (request.aircraft == null) 
-                {
-                    var message = $"No aircraft data found in request";
-                    throw new RestException(HttpStatusCode.BadRequest, new { Message = message });
-                }
-
+            { 
                 var username = accessor.GetCurrentUserName();
-
+                
                 if (string.IsNullOrEmpty(username))
-                {
-                    var message = $"No logged in user found!";
-                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = message });
-                }
-
+                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = Messages.NOT_LOGGED_IN });
+                
                 var currentUser = await context.Users
                     .Where(x => x.Username == username)
                     .FirstOrDefaultAsync(cancellationToken);

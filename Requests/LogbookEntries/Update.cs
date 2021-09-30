@@ -8,12 +8,21 @@ using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation;
 
 namespace Nisshi.Requests.LogbookEntries
 {
     public class Update
     {
         public record Command(LogbookEntry logbookEntry) : IRequest<LogbookEntry>;
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.logbookEntry).NotNull().WithMessage($"Logbook Entry {Messages.NOT_NULL}");
+            }
+        }
 
         public class CommandHandler : BaseRequest, IRequestHandler<Command, LogbookEntry>
         {
@@ -27,19 +36,17 @@ namespace Nisshi.Requests.LogbookEntries
             public async Task<LogbookEntry> Handle(Command request, CancellationToken cancellationToken)
             {
                 var data = await context.FindAsync<LogbookEntry>(new object[] { request.logbookEntry.Id }, cancellationToken);
-
                 if (data == null) 
                 {
-                    var message = $"No LogbookEntry found for id: {request.logbookEntry.Id}";
+                    var message = $"Logbook Entry: {request.logbookEntry.Id} {Messages.DOES_NOT_EXIST}";
                     throw new RestException(HttpStatusCode.NotFound, new { Message = message});
                 }
 
                 var username = accessor.GetCurrentUserName();
+                
                 if (string.IsNullOrEmpty(username))
-                {
-                    var message = $"No logged in user found!";
-                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = message });
-                }
+                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = Messages.NOT_LOGGED_IN });
+                
 
                 var user = await context.Users.Where(x => x.Username == username)
                     .FirstOrDefaultAsync(cancellationToken);

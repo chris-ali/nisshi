@@ -6,6 +6,7 @@ using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
 using MediatR;
 using System;
+using FluentValidation;
 
 namespace Nisshi.Requests.Users
 {
@@ -14,6 +15,14 @@ namespace Nisshi.Requests.Users
         // TODO make user wrapper here that has password; Models.User should just have JWT token 
 
         public record Command(User user) : IRequest<User>;
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.user).NotNull().WithMessage($"User {Messages.NOT_NULL}");
+            }
+        }
 
         public class CommandHandler : BaseRequest, IRequestHandler<Command, User>
         {
@@ -24,10 +33,9 @@ namespace Nisshi.Requests.Users
             public async Task<User> Handle(Command request, CancellationToken cancellationToken)
             {
                 var data = await context.FindAsync<User>(new object[] { request.user.Id }, cancellationToken);
-
                 if (data == null) 
                 {
-                    var message = $"No user found for id: {request.user.Id}";
+                    var message = $"User: {request.user.Id} {Messages.DOES_NOT_EXIST}";
                     throw new RestException(HttpStatusCode.NotFound, new { Message = message});
                 }
                 
@@ -42,7 +50,7 @@ namespace Nisshi.Requests.Users
             }
 
             /// <summary>
-            /// Updates Aircraft object from database with object in request
+            /// Updates User object from database with object in request
             /// </summary>
             /// <param name="toBeUpdated"></param>
             /// <param name="toUpdateWith"></param>

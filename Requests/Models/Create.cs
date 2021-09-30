@@ -6,12 +6,21 @@ using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
 using MediatR;
+using FluentValidation;
 
 namespace Nisshi.Requests.Models
 {
     public class Create
     {
         public record Command(Model model) : IRequest<Model>;
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.model).NotNull().WithMessage($"Model {Messages.NOT_NULL}");
+            }
+        }
 
         public class CommandHandler : BaseRequest, IRequestHandler<Command, Model>
         {
@@ -24,12 +33,6 @@ namespace Nisshi.Requests.Models
 
             public async Task<Model> Handle(Command request, CancellationToken cancellationToken)
             {
-                if (request.model == null) 
-                {
-                    var message = $"No model data found in request";
-                    throw new RestException(HttpStatusCode.BadRequest, new { Message = message });
-                }
-
                 request.model.DateCreated = request.model.DateUpdated = DateTime.Now;
 
                 await context.AddAsync<Model>(request.model, cancellationToken);

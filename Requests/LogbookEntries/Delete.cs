@@ -24,7 +24,7 @@ namespace Nisshi.Requests.LogbookEntries
 
                 if (data == null) 
                 {
-                    var message = $"No logbook entry found to delete for id: {request.id}";
+                    var message = $"Logbook Entry: {request.id} {Messages.DOES_NOT_EXIST}";
                     throw new RestException(HttpStatusCode.NotFound, new { Message = message});
                 }
                 

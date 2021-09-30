@@ -8,12 +8,21 @@ using Nisshi.Models;
 using MediatR;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation;
 
 namespace Nisshi.Requests.Airports
 {
     public class Create
     {
         public record Command(Airport airport) : IRequest<Airport>;
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.airport).NotNull().WithMessage("Airport data cannot be null");
+            }
+        }
 
         public class CommandHandler : BaseRequest, IRequestHandler<Command, Airport>
         {
@@ -26,30 +35,21 @@ namespace Nisshi.Requests.Airports
 
             public async Task<Airport> Handle(Command request, CancellationToken cancellationToken)
             {
-                if (request.airport == null) 
-                {
-                    var message = $"No airport data found in request";
-                    throw new RestException(HttpStatusCode.BadRequest, new { Message = message });
-                }
-
                 var airport = await context.Airports
                     .Where(x => x.AirportCode.Contains(request.airport.AirportCode))
                     .FirstOrDefaultAsync(cancellationToken);
 
                 if (airport != null)
                 {
-                    var message = $"{airport.AirportCode} already exists";
+                    var message = $"{airport.AirportCode} {Messages.ALREADY_EXISTS}";
                     throw new RestException(HttpStatusCode.BadRequest, new { Message = message });
                 }
 
                 var username = accessor.GetCurrentUserName();
-
+                
                 if (string.IsNullOrEmpty(username))
-                {
-                    var message = $"No logged in user found!";
-                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = message });
-                }
-
+                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = Messages.NOT_LOGGED_IN });
+                
                 request.airport.DateCreated = request.airport.DateUpdated = DateTime.Now;
                 request.airport.SourceUserName = username;
 

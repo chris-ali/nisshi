@@ -8,12 +8,21 @@ using Nisshi.Models;
 using MediatR;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation;
 
 namespace Nisshi.Requests.Manufacturers
 {
     public class Create
     {
         public record Command(Manufacturer manufacturer) : IRequest<Manufacturer>;
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.manufacturer).NotNull().WithMessage($"Manufacturer {Messages.NOT_NULL}");
+            }
+        }
 
         public class CommandHandler : BaseRequest, IRequestHandler<Command, Manufacturer>
         {
@@ -26,19 +35,13 @@ namespace Nisshi.Requests.Manufacturers
 
             public async Task<Manufacturer> Handle(Command request, CancellationToken cancellationToken)
             {
-                if (request.manufacturer == null) 
-                {
-                    var message = $"No manufacturer data found in request";
-                    throw new RestException(HttpStatusCode.BadRequest, new { Message = message });
-                }
-
                 var manufacturer = await context.Manufacturers
                     .Where(x => x.ManufacturerName == request.manufacturer.ManufacturerName)
                     .FirstOrDefaultAsync(cancellationToken);
 
                 if (manufacturer != null)
                 {
-                    var message = $"{manufacturer.ManufacturerName} already exists";
+                    var message = $"{manufacturer.ManufacturerName} {Messages.ALREADY_EXISTS}";
                     throw new RestException(HttpStatusCode.BadRequest, new { Message = message });
                 }
 

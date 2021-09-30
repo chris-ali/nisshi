@@ -24,10 +24,9 @@ namespace Nisshi.Requests.Aircrafts
             public async Task<Aircraft> Handle(Command request, CancellationToken cancellationToken)
             {
                 var data = await context.FindAsync<Aircraft>(new object[] { request.id }, cancellationToken);
-
                 if (data == null) 
                 {
-                    var message = $"No aircraft found to delete for id: {request.id}";
+                    var message = $"Aircraft: {request.id} {Messages.DOES_NOT_EXIST}";
                     throw new RestException(HttpStatusCode.NotFound, new { Message = message});
                 }
                 

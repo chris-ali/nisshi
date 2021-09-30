@@ -8,12 +8,21 @@ using Nisshi.Models;
 using MediatR;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using FluentValidation;
 
 namespace Nisshi.Requests.LogbookEntries
 {
     public class Create
     {
         public record Command(LogbookEntry logbookEntry) : IRequest<LogbookEntry>;
+
+        public class CommandValidator : AbstractValidator<Command>
+        {
+            public CommandValidator()
+            {
+                RuleFor(x => x.logbookEntry).NotNull().WithMessage($"Logbook Entry {Messages.NOT_NULL}");
+            }
+        }
 
         public class CommandHandler : BaseRequest, IRequestHandler<Command, LogbookEntry>
         {
@@ -26,20 +35,11 @@ namespace Nisshi.Requests.LogbookEntries
 
             public async Task<LogbookEntry> Handle(Command request, CancellationToken cancellationToken)
             {
-                if (request.logbookEntry == null) 
-                {
-                    var message = $"No logbook entry data found in request";
-                    throw new RestException(HttpStatusCode.BadRequest, new { Message = message });
-                }
-
                 var username = accessor.GetCurrentUserName();
-
+                
                 if (string.IsNullOrEmpty(username))
-                {
-                    var message = $"No logged in user found!";
-                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = message });
-                }
-
+                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = Messages.NOT_LOGGED_IN });
+                
                 var currentUser = await context.Users
                     .Where(x => x.Username == username)
                     .FirstOrDefaultAsync(cancellationToken);
