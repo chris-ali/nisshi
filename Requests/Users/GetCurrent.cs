@@ -2,10 +2,10 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
+using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 
 namespace Nisshi.Requests.Users 
 {
@@ -17,7 +17,7 @@ namespace Nisshi.Requests.Users
         {
             private readonly ICurrentUserAccessor accessor;
 
-            public QueryHandler(HeroesDbContext context, ICurrentUserAccessor accessor) : base(context)
+            public QueryHandler(NisshiContext context, ICurrentUserAccessor accessor) : base(context)
             {
                 this.accessor = accessor;
             }
@@ -25,16 +25,13 @@ namespace Nisshi.Requests.Users
             public async Task<User> Handle(Query request, CancellationToken cancellationToken)
             {
                 var userName = accessor.GetCurrentUserName();
-                var data = await context.Users.FirstOrDefaultAsync(x => x.UserName == userName, cancellationToken);
+                var data = await context.Users.FirstOrDefaultAsync(x => x.Username == userName, cancellationToken);
 
                 if (string.IsNullOrEmpty(userName) || data == null) 
                 {
                     var message = $"No current user found in {(data == null ? "database" : "HTTP context")} ";
-                    // logger.LogWarning(message);
                     throw new RestException(HttpStatusCode.NotFound, new { Message = message});
                 }
-
-                // logger.LogDebug($"Found user: {data.UserName}...");
 
                 return data;
             }

@@ -1,17 +1,27 @@
 using System;
-using System.Text.Json.Serialization;
 
 namespace Nisshi.Models
 {
+    /// <summary>
+    /// Base entity with fundamental properties shared by 
+    /// all models
+    /// </summary>
     public class BaseEntity
     {
-        [JsonPropertyName("id")]
+        /// <summary>
+        /// Primary key of the entity
+        /// </summary>
         public int Id { get; set; }
 
-        [JsonPropertyName("createdDate")]
+        /// <summary>
+        /// Date entity was first created
+        /// </summary>
+        /// <value></value>
         public DateTime DateCreated { get; set; }
 
-        [JsonPropertyName("updatedDate")]
+        /// <summary>
+        /// Date entity was last updated
+        /// </summary>
         public DateTime DateUpdated { get; set; }
     }
 }

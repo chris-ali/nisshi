@@ -22,7 +22,7 @@ namespace Nisshi.Controllers
         [HttpPut]
         public async Task<ActionResult<User>> Update(User user, CancellationToken cancellationToken)
         {
-            return await mediator.Send(new Update.Command(user), cancellationToken);
+            return await mediator.Send(new UpdateProfile.Command(user), cancellationToken);
         }
 
         [HttpPost]
