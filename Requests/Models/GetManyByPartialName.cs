@@ -21,11 +21,11 @@ namespace Nisshi.Requests.Models
 
             public async Task<IList<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
-                if (string.IsNullOrEmpty(request.partialName) || request.partialName.Length < 3)
+                if (string.IsNullOrEmpty(request.partialName) || request.partialName.Length < 2)
                     return null;
                 
                 var data = await context.Models
-                    .Where(x => x.ModelName.StartsWith(request.partialName))
+                    .Where(x => x.ModelName.ToUpper().StartsWith(request.partialName.ToUpper()))
                     .ToListAsync(cancellationToken);
                 
                 return data;

@@ -25,7 +25,7 @@ namespace Nisshi.Requests.Manufacturers
                     return null;
                 
                 var data = await context.Manufacturers
-                    .Where(x => x.ManufacturerName.StartsWith(request.partialName))
+                    .Where(x => x.ManufacturerName.ToUpper().StartsWith(request.partialName.ToUpper()))
                     .ToListAsync(cancellationToken);
                 
                 return data;

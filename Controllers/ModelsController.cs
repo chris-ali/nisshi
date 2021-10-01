@@ -31,5 +31,11 @@ namespace Nisshi.Controllers
         {
             return await mediator.Send(new Create.Command(model), cancellationToken);
         }
+
+        [HttpPut]
+        public async Task<Model> Update(Model model, CancellationToken cancellationToken)
+        {
+            return await mediator.Send(new Update.Command(model), cancellationToken);
+        }
     }
 }

@@ -38,7 +38,7 @@ namespace Nisshi.Requests.Aircrafts
                 var data = await context.Aircraft
                     //.Include(x => x.Model)
                     .Include(x => x.Owner)
-                    .Where(x => x.Owner.Username == request.username)
+                    .Where(x => x.Owner.Username.ToUpper() == request.username.ToUpper())
                     .ToListAsync(cancellationToken);
                 
                 return data;

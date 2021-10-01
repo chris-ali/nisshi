@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Nisshi.Infrastructure.Enums;
 
 namespace Nisshi.Models
 {
@@ -12,9 +13,9 @@ namespace Nisshi.Models
         public string TailNumber { get; set; }
 
         /// <summary>
-        /// InstanceType of this airplane (real (1) vs. simulator (0))
+        /// InstanceType of this airplane (real (1) vs. simulator (2))
         /// </summary>
-        public int InstanceType { get; set; }
+        public InstanceType InstanceType { get; set; }
 
         /// <summary>
         /// Date of last annual inspection

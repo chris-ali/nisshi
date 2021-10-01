@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Nisshi.Infrastructure.Enums;
 
 namespace Nisshi.Models 
 {
@@ -42,6 +43,8 @@ namespace Nisshi.Models
         public DateTime LastLoginDate { get; set; }
 
         public bool IsLockedOut { get; set; }
+
+        public UserType UserType { get; set; }
 
         /// <summary>
         /// Date of last BFR

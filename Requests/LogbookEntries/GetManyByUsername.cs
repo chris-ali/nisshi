@@ -36,7 +36,7 @@ namespace Nisshi.Requests.LogbookEntries
                     .Include(x => x.Aircraft)
                         .ThenInclude(x => x.Model)
                     .Include(x => x.Owner)
-                    .Where(x => x.Owner.Username == request.username)
+                    .Where(x => x.Owner.Username.ToUpper() == request.username.ToUpper())
                     .ToListAsync(cancellationToken);
 
                 return data;

@@ -283,6 +283,7 @@ CREATE TABLE `users` (
   `LastPasswordChangedDate` datetime DEFAULT NULL,
   `LastLoginDate` datetime DEFAULT NULL,
   `IsLockedOut` tinyint(1) DEFAULT NULL,
+  `UserType` int(1) DEFAULT '1',
   `LastBFR` datetime DEFAULT NULL,
   `LastMedical` datetime DEFAULT NULL,
   `MonthsToMedical` int(10) unsigned NOT NULL DEFAULT '0',

@@ -25,7 +25,7 @@ namespace Nisshi.Requests.Airports
                     return null;
                 
                 var data = await context.Airports
-                    .Where(x => x.AirportCode.StartsWith(request.partialCode))
+                    .Where(x => x.AirportCode.ToUpper().StartsWith(request.partialCode.ToUpper()))
                     .ToListAsync(cancellationToken);
                 
                 return data;
