@@ -9,7 +9,6 @@ namespace Nisshi.Requests
         public BaseRequest(NisshiContext context)
         {
             this.context = context;
-            context.Database.EnsureCreated();
         }
     }
 }

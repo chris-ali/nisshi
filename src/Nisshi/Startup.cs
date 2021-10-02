@@ -4,13 +4,13 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Nisshi.Infrastructure;
+using Nisshi.Infrastructure.Security;
 
 namespace Nisshi
 {
@@ -27,14 +27,22 @@ namespace Nisshi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorPipelineBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ContextTransactionPipelineBehavior<,>));
 
-            services.AddControllersWithViews()
-                    .AddJsonOptions(opt => 
-                        opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase );
+            services.AddControllersWithViews().AddJsonOptions(opt => 
+            {
+                opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+            });
             
-            services.AddSwaggerGen();
+            services.AddSwaggerService();
 
-            services.AddDbContext<NisshiContext>(opt => { opt.UseInMemoryDatabase("Nisshi"); });
+            services.AddDbContext<NisshiContext>(opt => 
+            { 
+                opt.UseInMemoryDatabase("Nisshi"); 
+            });
+
+            services.AddCors();
             
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -42,8 +50,12 @@ namespace Nisshi
                 configuration.RootPath = "../../ClientApp/dist";
             });
 
+            services.AddScoped<IPasswordHasher, PasswordHasher>();
+            services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+            services.AddJwt();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,7 +79,8 @@ namespace Nisshi
                 app.UseSpaStaticFiles();
             }
 
-            app.UseSwagger();
+            // Enables middleware to serve required Swagger assets
+            app.UseSwagger(c => c.RouteTemplate = "swagger/{documentName}/swagger.json");
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Nisshi API"));
 
             app.UseRouting();
@@ -92,6 +105,9 @@ namespace Nisshi
                     //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
             });
+
+            // Also ensures database is seeded if in memory is used
+            app.ApplicationServices.GetRequiredService<NisshiContext>().Database.EnsureCreated();
         }
     }
 }
