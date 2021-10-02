@@ -19,10 +19,16 @@ namespace Nisshi.Models
         public string LastName { get; set; }
 
         /// <summary>
-        /// Hashed and salted password for this user
+        /// Hashed of password for this user
         /// </summary>
         [JsonIgnore]
-        public string Password { get; set; }
+        public byte[] Hash { get; set; }
+
+        /// <summary>
+        /// Salt of password for this user
+        /// </summary>
+        [JsonIgnore]
+        public byte[] Salt { get; set; }
 
         /// <summary>
         /// Question to reset user's password

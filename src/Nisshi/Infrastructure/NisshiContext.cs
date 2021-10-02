@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Nisshi.Models;
 using System;
 using System.Data;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Nisshi.Infrastructure
 {
@@ -38,7 +40,8 @@ namespace Nisshi.Infrastructure
                 b.HasKey(x => x.Id);
                 b.Property(x => x.Username).IsRequired();
                 b.Property(x => x.Email).IsRequired();
-                b.Property(x => x.Password).IsRequired();
+                b.Property(x => x.Hash).IsRequired();
+                b.Property(x => x.Salt).IsRequired();
                 b.HasMany(x => x.Aircraft)
                  .WithOne(x => x.Owner)
                  .HasForeignKey(x => x.IdUser);
@@ -106,8 +109,10 @@ namespace Nisshi.Infrastructure
             #region In Memory Seeding
             var users = new User[] 
             {
-                new User { Id = 1, Username = "chris", FirstName = "Chris", LastName = "Ali", Email = "chris@ali.com", Password = "4355drtygfvhjbnkm8e657iftyul" },
-                new User { Id = 2, Username = "somebodyElse", FirstName = "Somebody", LastName = "Else", Email = "somebody@else.com", Password = "4355drtygfvhjbnkm8e657iftyul" },
+                new User { Id = 1, Username = "chris", FirstName = "Chris", LastName = "Ali", Email = "chris@ali.com", 
+                    Hash = Encoding.ASCII.GetBytes("Test"), Salt = Encoding.ASCII.GetBytes("Test") },
+                new User { Id = 2, Username = "somebodyElse", FirstName = "Somebody", LastName = "Else", Email = "somebody@else.com", 
+                    Hash = Encoding.ASCII.GetBytes("Test"), Salt = Encoding.ASCII.GetBytes("Test") },
             };
             modelBuilder.Entity<User>().HasData(users);
 
@@ -195,11 +200,11 @@ namespace Nisshi.Infrastructure
                 currentTransaction = Database.BeginTransaction(IsolationLevel.ReadCommitted);
         }
 
-        public void CommitTransaction()
+        public async Task CommitTransaction()
         {
             try
             {
-                currentTransaction?.Commit();
+                await currentTransaction?.CommitAsync();
             }
             catch
             {

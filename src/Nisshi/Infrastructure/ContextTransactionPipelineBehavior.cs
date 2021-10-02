@@ -31,7 +31,7 @@ namespace Nisshi.Infrastructure
 
                 response = await next();
 
-                context.CommitTransaction();
+                await context.CommitTransaction();
             }
             catch (Exception)
             {
