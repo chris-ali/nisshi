@@ -1,14 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
 using Nisshi.Infrastructure.Enums;
 
-namespace Nisshi.Models 
+namespace Nisshi.Models
 {
     /// <summary>
-    /// User object for project, tied to users table
+    /// Provides user profile information and token data when a user logs in successfully
     /// </summary>
-    public class User : BaseEntity
+    public class UserLoggedIn
     {
         public string Username { get; set; }
 
@@ -17,34 +15,6 @@ namespace Nisshi.Models
         public string FirstName { get; set; }
         
         public string LastName { get; set; }
-
-        /// <summary>
-        /// Hashed of password for this user
-        /// </summary>
-        [JsonIgnore]
-        public byte[] Hash { get; set; } = Array.Empty<byte>();
-
-        /// <summary>
-        /// Salt of password for this user
-        /// </summary>
-        [JsonIgnore]
-        public byte[] Salt { get; set; } = Array.Empty<byte>();
-
-        /// <summary>
-        /// Question to reset user's password
-        /// </summary>
-        public string PasswordQuestion { get; set; }
-
-        /// <summary>
-        /// Answer to reset user's password
-        /// </summary>
-        [JsonIgnore]
-        public string PasswordAnswer { get; set; }
-
-        /// <summary>
-        /// Date the password was last changed
-        /// </summary>
-        public DateTime LastPasswordChangedDate { get; set; }
 
         public DateTime LastLoginDate { get; set; }
 
@@ -88,20 +58,13 @@ namespace Nisshi.Models
         public string CertificateNumber { get; set; }
 
         /// <summary>
-        /// Additional user preferences serialized in JSON dictionary forma
+        /// Additional user preferences serialized in JSON dictionary format
         /// </summary>
         public string Preferences { get; set; }
-        
-        /// <summary>
-        /// Associated aircraft belonging to the user
-        /// </summary>
-        [JsonIgnore]
-        public virtual List<Aircraft> Aircraft { get; set; } = new();
 
         /// <summary>
-        /// Associated logbook entries belonging to the user
+        /// JWT token generated after logging in successfully
         /// </summary>
-        [JsonIgnore]
-        public virtual List<LogbookEntry> LogbookEntries { get; set; } = new();
+        public string Token { get; set; }
     }
 }

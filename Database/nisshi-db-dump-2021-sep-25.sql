@@ -273,10 +273,10 @@ DROP TABLE IF EXISTS `users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `Id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Username` varchar(255) NOT NULL DEFAULT '',
+  `Username` varchar(128) NOT NULL DEFAULT '',
   `Email` varchar(100) NOT NULL DEFAULT '',
-  `FirstName` varchar(32) DEFAULT NULL,
-  `LastName` varchar(32) DEFAULT NULL,
+  `FirstName` varchar(64) DEFAULT NULL,
+  `LastName` varchar(64) DEFAULT NULL,
   `Hash` blob NOT NULL,
   `Salt` blob NOT NULL,
   `PasswordQuestion` varchar(255) DEFAULT NULL,

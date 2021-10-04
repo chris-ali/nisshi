@@ -26,9 +26,9 @@ namespace Nisshi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> Create(User user, CancellationToken cancellationToken)
+        public async Task<ActionResult<UserLoggedIn>> Register(UserRegistration registration, CancellationToken cancellationToken)
         {
-            return await mediator.Send(new Create.Command(user), cancellationToken);
+            return await mediator.Send(new Register.Command(registration), cancellationToken);
         }
     }
 }

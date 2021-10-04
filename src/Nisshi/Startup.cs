@@ -10,12 +10,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Nisshi.Infrastructure;
+using Nisshi.Infrastructure.Errors;
 using Nisshi.Infrastructure.Security;
 
 namespace Nisshi
 {
     public class Startup
     {
+        /// <summary>
+        /// Path relative from this class to the root of the Angular client project
+        /// </summary>
+        private readonly string SPA_PATH = "../../ClientApp";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,6 +33,7 @@ namespace Nisshi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
+
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorPipelineBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ContextTransactionPipelineBehavior<,>));
 
@@ -47,8 +54,10 @@ namespace Nisshi
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "../../ClientApp/dist";
+                configuration.RootPath = $"{SPA_PATH}/dist";
             });
+
+            services.AddAutoMapper(GetType().Assembly);
 
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
@@ -73,6 +82,7 @@ namespace Nisshi
             }
 
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
             if (!env.IsDevelopment())
             {
@@ -84,6 +94,17 @@ namespace Nisshi
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Nisshi API"));
 
             app.UseRouting();
+
+            app.UseCors(x => 
+            {
+                x.AllowAnyOrigin()
+                 .AllowAnyMethod()
+                 .AllowAnyHeader();
+            });
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
+
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
@@ -97,10 +118,11 @@ namespace Nisshi
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
-                spa.Options.SourcePath = "../../ClientApp";
+                spa.Options.SourcePath = $"{SPA_PATH}";
 
                 if (env.IsDevelopment())
                 {
+                    // Exchange comment tag if you want to run Angular project standalone
                     spa.UseAngularCliServer(npmScript: "start");
                     //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
