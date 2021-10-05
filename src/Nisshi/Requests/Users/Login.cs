@@ -14,17 +14,17 @@ using AutoMapper;
 
 namespace Nisshi.Requests.Users
 {
-    public class Register
+    public class Login
     {
-        public record Command(UserRegistration registration) : IRequest<UserLoggedIn>;
+        public record Command(UserLogin login) : IRequest<UserLoggedIn>;
 
         public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
             {
-                RuleFor(x => x.registration).NotNull()
+                RuleFor(x => x.login).NotNull()
                     .WithMessage($"User {Messages.NOT_NULL}")
-                    .SetValidator(new UserRegistration.RegistrationValidator());
+                    .SetValidator(new UserLogin.LoginValidator());
             }
         }
 
@@ -46,33 +46,19 @@ namespace Nisshi.Requests.Users
 
             public async Task<UserLoggedIn> Handle(Command request, CancellationToken cancellationToken)
             {
-                if (await context.Users.Where(x => x.Username == request.registration.Username).AnyAsync(cancellationToken))
+                var user = await context.Users.Where(x => x.Username == request.login.Username).SingleOrDefaultAsync(cancellationToken);
+                if (user == null)
                 {
-                    var message = $"Username {Messages.ALREADY_EXISTS}";
-                    throw new RestException(HttpStatusCode.BadRequest, new { Message = message});
+                    var message = $"{Messages.INVALID_CREDENTIALS}";
+                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = message});
                 }
 
-                if (await context.Users.Where(x => x.Email == request.registration.Email).AnyAsync(cancellationToken))
+                if (!user.Hash.SequenceEqual(await hasher.HashAsync(request.login.Password ?? throw new InvalidOperationException(), user.Salt)))
                 {
-                    var message = $"Email {Messages.ALREADY_EXISTS}";
-                    throw new RestException(HttpStatusCode.BadRequest, new { Message = message});
+                    var message = $"{Messages.INVALID_CREDENTIALS}";
+                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = message});
                 }
-
-                var iodized = Guid.NewGuid().ToByteArray();
-                var user = new User 
-                {
-                    Username = request.registration.Username,
-                    Email = request.registration.Email,
-                    DateCreated = DateTime.Now,
-                    DateUpdated = DateTime.Now,
-                    Salt = iodized,
-                    Hash = await hasher.HashAsync(request.registration.Password 
-                            ?? throw new InvalidOperationException(), iodized)
-                };
                 
-                await context.AddAsync<User>(user);
-                await context.SaveChangesAsync(cancellationToken);
-
                 // Maps to a model that includes a JWT token for Angular
                 var loggedInUser = mapper.Map<User, UserLoggedIn>(user);
                 loggedInUser.Token = bigGenerator.CreateToken(user.Username ?? throw new InvalidOperationException());

@@ -102,7 +102,8 @@ namespace Nisshi
                  .AllowAnyHeader();
             });
 
-            app.UseMiddleware<ErrorHandlingMiddleware>();
+            // TODO add localization
+            //app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseAuthentication();
 
@@ -129,7 +130,10 @@ namespace Nisshi
             });
 
             // Also ensures database is seeded if in memory is used
-            app.ApplicationServices.GetRequiredService<NisshiContext>().Database.EnsureCreated();
+            using (var serviceScope = app.ApplicationServices.CreateScope()) 
+            {
+                serviceScope.ServiceProvider.GetRequiredService<NisshiContext>().Database.EnsureCreated();
+            }
         }
     }
 }

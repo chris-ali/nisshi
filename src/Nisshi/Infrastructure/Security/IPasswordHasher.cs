@@ -5,6 +5,7 @@ namespace Nisshi.Infrastructure.Security
 {
     public interface IPasswordHasher : IDisposable
     {
-        Task<byte[]> Hash(string password, byte[] salt);     
+        Task<byte[]> HashAsync(string password, byte[] salt);
+        byte[] Hash(string password, byte[] salt);
     }
 }

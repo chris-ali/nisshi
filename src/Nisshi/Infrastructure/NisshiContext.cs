@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Nisshi.Infrastructure.Security;
 using Nisshi.Models;
 using System;
 using System.Data;
@@ -107,12 +108,15 @@ namespace Nisshi.Infrastructure
             });
 
             #region In Memory Seeding
+            var hasher = new PasswordHasher();
+            var salt1 = Guid.NewGuid().ToByteArray();
+            var salt2 = Guid.NewGuid().ToByteArray();
             var users = new User[] 
             {
                 new User { Id = 1, Username = "chris", FirstName = "Chris", LastName = "Ali", Email = "chris@ali.com", 
-                    Hash = Encoding.ASCII.GetBytes("Test"), Salt = Encoding.ASCII.GetBytes("Test") },
+                    Hash = hasher.Hash("test123", salt1), Salt = salt1 },
                 new User { Id = 2, Username = "somebodyElse", FirstName = "Somebody", LastName = "Else", Email = "somebody@else.com", 
-                    Hash = Encoding.ASCII.GetBytes("Test"), Salt = Encoding.ASCII.GetBytes("Test") },
+                    Hash = hasher.Hash("test456", salt2), Salt = salt2 },
             };
             modelBuilder.Entity<User>().HasData(users);
 
@@ -204,7 +208,8 @@ namespace Nisshi.Infrastructure
         {
             try
             {
-                await currentTransaction?.CommitAsync();
+                if (currentTransaction != null)
+                    await currentTransaction.CommitAsync();
             }
             catch
             {

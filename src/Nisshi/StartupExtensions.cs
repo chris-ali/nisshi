@@ -107,10 +107,11 @@ namespace Nisshi
                 sw.CustomSchemaIds(x => x.FullName);
                 sw.DocInclusionPredicate((version, apiDescription) => true);
                 
-                sw.TagActionsBy(x => new List<string>() 
-                { 
-                    x.GroupName ?? throw new InvalidOperationException() 
-                });
+                // TODO Is this needed?
+                // sw.TagActionsBy(x => new List<string>() 
+                // { 
+                //     x.GroupName ?? throw new InvalidOperationException() 
+                // });
             });
         }
     }

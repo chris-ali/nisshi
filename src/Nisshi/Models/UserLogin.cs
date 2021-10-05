@@ -11,9 +11,9 @@ namespace Nisshi.Models
 
         public string Password { get; set; }
 
-        public class RegistrationValidator : AbstractValidator<UserLogin>
+        public class LoginValidator : AbstractValidator<UserLogin>
         {
-            public RegistrationValidator()
+            public LoginValidator()
             {
                 RuleFor(x => x.Username).NotNull().NotEmpty().MaximumLength(128);
                 RuleFor(x => x.Password).NotNull().NotEmpty().MaximumLength(20);

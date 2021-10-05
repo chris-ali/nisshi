@@ -14,13 +14,13 @@ namespace Nisshi.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<User>> Get(CancellationToken cancellationToken)
+        public async Task<ActionResult<User>> GetCurrent(CancellationToken cancellationToken)
         {
             return await mediator.Send(new GetCurrent.Query(), cancellationToken);
         }
 
         [HttpPut]
-        public async Task<ActionResult<User>> Update(User user, CancellationToken cancellationToken)
+        public async Task<ActionResult<User>> UpdateProfile(User user, CancellationToken cancellationToken)
         {
             return await mediator.Send(new UpdateProfile.Command(user), cancellationToken);
         }
@@ -29,6 +29,12 @@ namespace Nisshi.Controllers
         public async Task<ActionResult<UserLoggedIn>> Register(UserRegistration registration, CancellationToken cancellationToken)
         {
             return await mediator.Send(new Register.Command(registration), cancellationToken);
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<UserLoggedIn>> Login(UserLogin login, CancellationToken cancellationToken)
+        {
+            return await mediator.Send(new Login.Command(login), cancellationToken);
         }
     }
 }
