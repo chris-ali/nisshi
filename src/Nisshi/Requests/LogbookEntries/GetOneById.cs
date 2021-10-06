@@ -11,7 +11,7 @@ namespace Nisshi.Requests.LogbookEntries
     {
         public record Query(int id) : IRequest<LogbookEntry>;
 
-        public class QueryHandler : BaseRequest, IRequestHandler<Query, LogbookEntry>
+        public class QueryHandler : BaseHandler, IRequestHandler<Query, LogbookEntry>
         {
             public QueryHandler(NisshiContext context) : base(context)
             {

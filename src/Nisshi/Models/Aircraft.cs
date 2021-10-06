@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Nisshi.Infrastructure.Enums;
+using Nisshi.Models.Users;
 
 namespace Nisshi.Models
 {

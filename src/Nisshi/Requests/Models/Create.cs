@@ -22,7 +22,7 @@ namespace Nisshi.Requests.Models
             }
         }
 
-        public class CommandHandler : BaseRequest, IRequestHandler<Command, Model>
+        public class CommandHandler : BaseHandler, IRequestHandler<Command, Model>
         {
             private readonly ICurrentUserAccessor accessor;
 

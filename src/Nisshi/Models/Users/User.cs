@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Nisshi.Infrastructure.Enums;
 
-namespace Nisshi.Models 
+namespace Nisshi.Models.Users 
 {
     /// <summary>
     /// User object for project, tied to users table

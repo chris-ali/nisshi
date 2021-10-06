@@ -13,7 +13,7 @@ namespace Nisshi.Requests.Manufacturers
     {
         public record Query(string partialName) : IRequest<IList<Manufacturer>>;
 
-        public class QueryHandler : BaseRequest, IRequestHandler<Query, IList<Manufacturer>>
+        public class QueryHandler : BaseHandler, IRequestHandler<Query, IList<Manufacturer>>
         {
             public QueryHandler(NisshiContext context) : base(context)
             {

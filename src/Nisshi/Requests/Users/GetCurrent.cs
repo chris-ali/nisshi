@@ -3,9 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
-using Nisshi.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Nisshi.Models.Users;
 
 namespace Nisshi.Requests.Users 
 {
@@ -13,7 +13,7 @@ namespace Nisshi.Requests.Users
     {
         public record Query() : IRequest<User>;
 
-        public class QueryHandler : BaseRequest, IRequestHandler<Query, User>
+        public class QueryHandler : BaseHandler, IRequestHandler<Query, User>
         {
             private readonly ICurrentUserAccessor accessor;
 

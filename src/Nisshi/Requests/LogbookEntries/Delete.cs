@@ -12,7 +12,7 @@ namespace Nisshi.Requests.LogbookEntries
     {
         public record Command(int id) : IRequest<LogbookEntry>;
 
-        public class CommandHandler : BaseRequest, IRequestHandler<Command, LogbookEntry>
+        public class CommandHandler : BaseHandler, IRequestHandler<Command, LogbookEntry>
         {
             public CommandHandler(NisshiContext context) : base(context)
             {

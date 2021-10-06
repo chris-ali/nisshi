@@ -24,7 +24,7 @@ namespace Nisshi.Requests.Airports
             }
         }
 
-        public class CommandHandler : BaseRequest, IRequestHandler<Command, Airport>
+        public class CommandHandler : BaseHandler, IRequestHandler<Command, Airport>
         {
             private readonly ICurrentUserAccessor accessor;
 

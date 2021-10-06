@@ -27,7 +27,7 @@ namespace Nisshi.Requests.Aircrafts
             }
         }
 
-        public class CommandHandler : BaseRequest, IRequestHandler<Command, Aircraft>
+        public class CommandHandler : BaseHandler, IRequestHandler<Command, Aircraft>
         {
             private readonly ICurrentUserAccessor accessor;
 

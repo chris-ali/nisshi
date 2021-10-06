@@ -1,12 +1,12 @@
 using AutoMapper;
 
-namespace Nisshi.Models
+namespace Nisshi.Models.Users
 {
     public class UserMapper : Profile
     {
         public UserMapper()
         {
-            CreateMap<User, UserLoggedIn>(MemberList.None);
+            CreateMap<User, LoggedIn>(MemberList.None);
         }
     }
 }

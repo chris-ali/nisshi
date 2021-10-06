@@ -4,19 +4,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
-using Nisshi.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 using System;
 using Nisshi.Infrastructure.Security;
 using AutoMapper;
+using Nisshi.Models.Users;
 
 namespace Nisshi.Requests.Users
 {
     public class Register
     {
-        public record Command(UserRegistration registration) : IRequest<UserLoggedIn>;
+        public record Command(Registration registration) : IRequest<LoggedIn>;
 
         public class CommandValidator : AbstractValidator<Command>
         {
@@ -24,11 +24,11 @@ namespace Nisshi.Requests.Users
             {
                 RuleFor(x => x.registration).NotNull()
                     .WithMessage($"User {Messages.NOT_NULL}")
-                    .SetValidator(new UserRegistration.RegistrationValidator());
+                    .SetValidator(new Registration.RegistrationValidator());
             }
         }
 
-        public class CommandHandler : BaseRequest, IRequestHandler<Command, UserLoggedIn>
+        public class CommandHandler : BaseHandler, IRequestHandler<Command, LoggedIn>
         {
             private readonly IPasswordHasher hasher;
             private readonly IJwtTokenGenerator bigGenerator;
@@ -44,7 +44,7 @@ namespace Nisshi.Requests.Users
                 this.mapper = mapper;
             }
 
-            public async Task<UserLoggedIn> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<LoggedIn> Handle(Command request, CancellationToken cancellationToken)
             {
                 if (await context.Users.Where(x => x.Username == request.registration.Username).AnyAsync(cancellationToken))
                 {
@@ -74,7 +74,7 @@ namespace Nisshi.Requests.Users
                 await context.SaveChangesAsync(cancellationToken);
 
                 // Maps to a model that includes a JWT token for Angular
-                var loggedInUser = mapper.Map<User, UserLoggedIn>(user);
+                var loggedInUser = mapper.Map<User, LoggedIn>(user);
                 loggedInUser.Token = bigGenerator.CreateToken(user.Username ?? throw new InvalidOperationException());
 
                 return loggedInUser;

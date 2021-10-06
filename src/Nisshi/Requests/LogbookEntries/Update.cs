@@ -24,7 +24,7 @@ namespace Nisshi.Requests.LogbookEntries
             }
         }
 
-        public class CommandHandler : BaseRequest, IRequestHandler<Command, LogbookEntry>
+        public class CommandHandler : BaseHandler, IRequestHandler<Command, LogbookEntry>
         {
             private readonly ICurrentUserAccessor accessor;
 

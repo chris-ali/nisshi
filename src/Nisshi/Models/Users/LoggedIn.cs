@@ -1,12 +1,12 @@
 using System;
 using Nisshi.Infrastructure.Enums;
 
-namespace Nisshi.Models
+namespace Nisshi.Models.Users
 {
     /// <summary>
     /// Provides user profile information and token data when a user logs in successfully
     /// </summary>
-    public class UserLoggedIn
+    public class LoggedIn
     {
         public string Username { get; set; }
 

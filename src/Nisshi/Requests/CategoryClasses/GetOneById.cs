@@ -13,7 +13,7 @@ namespace Nisshi.Requests.CategoryClasses
     {
         public record Query(int id) : IRequest<CategoryClass>;
 
-        public class QueryHandler : BaseRequest, IRequestHandler<Query, CategoryClass>
+        public class QueryHandler : BaseHandler, IRequestHandler<Query, CategoryClass>
         {
             public QueryHandler(NisshiContext context) : base(context)
             {

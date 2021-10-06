@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json.Serialization;
+using Nisshi.Models.Users;
 
 namespace Nisshi.Models
 {

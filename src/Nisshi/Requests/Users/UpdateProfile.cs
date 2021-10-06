@@ -3,10 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
-using Nisshi.Models;
 using MediatR;
 using System;
 using FluentValidation;
+using Nisshi.Models.Users;
 
 namespace Nisshi.Requests.Users
 {
@@ -24,7 +24,7 @@ namespace Nisshi.Requests.Users
             }
         }
 
-        public class CommandHandler : BaseRequest, IRequestHandler<Command, User>
+        public class CommandHandler : BaseHandler, IRequestHandler<Command, User>
         {
             public CommandHandler(NisshiContext context) : base(context)
             {

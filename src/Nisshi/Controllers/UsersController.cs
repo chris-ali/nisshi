@@ -1,11 +1,11 @@
-﻿using Nisshi.Models;
-using Nisshi.Requests.Users;
+﻿using Nisshi.Requests.Users;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Nisshi.Infrastructure.Security;
+using Nisshi.Models.Users;
 
 namespace Nisshi.Controllers
 {
@@ -30,15 +30,15 @@ namespace Nisshi.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<UserLoggedIn>> Register([FromBody] UserRegistration registration, CancellationToken cancellationToken)
+        public async Task<ActionResult<LoggedIn>> Register([FromBody] Registration registration, CancellationToken cancellationToken)
         {
             return await mediator.Send(new Register.Command(registration), cancellationToken);
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<UserLoggedIn>> Login([FromBody] UserLogin login, CancellationToken cancellationToken)
+        public async Task<ActionResult<LoggedIn>> Login([FromBody] Models.Users.Authenticate authenticate, CancellationToken cancellationToken)
         {
-            return await mediator.Send(new Login.Command(login), cancellationToken);
+            return await mediator.Send(new Requests.Users.Login.Command(authenticate), cancellationToken);
         }
     }
 }

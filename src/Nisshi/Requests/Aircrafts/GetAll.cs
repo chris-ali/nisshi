@@ -17,7 +17,7 @@ namespace Nisshi.Requests.Aircrafts
     {
         public record Query() : IRequest<IList<Aircraft>>;
 
-        public class QueryHandler : BaseRequest, IRequestHandler<Query, IList<Aircraft>>
+        public class QueryHandler : BaseHandler, IRequestHandler<Query, IList<Aircraft>>
         {
             private readonly ICurrentUserAccessor accessor;
 

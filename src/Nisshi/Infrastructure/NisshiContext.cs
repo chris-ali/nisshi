@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Nisshi.Infrastructure.Security;
 using Nisshi.Models;
+using Nisshi.Models.Users;
 using System;
 using System.Data;
 using System.Text;

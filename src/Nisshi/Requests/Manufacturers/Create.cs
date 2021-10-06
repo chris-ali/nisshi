@@ -24,7 +24,7 @@ namespace Nisshi.Requests.Manufacturers
             }
         }
 
-        public class CommandHandler : BaseRequest, IRequestHandler<Command, Manufacturer>
+        public class CommandHandler : BaseHandler, IRequestHandler<Command, Manufacturer>
         {
             private readonly ICurrentUserAccessor accessor;
 

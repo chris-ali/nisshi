@@ -2,11 +2,11 @@ using Nisshi.Infrastructure;
 
 namespace Nisshi.Requests
 {
-    public class BaseRequest
+    public class BaseHandler
     {
         protected readonly NisshiContext context;
 
-        public BaseRequest(NisshiContext context)
+        public BaseHandler(NisshiContext context)
         {
             this.context = context;
         }

@@ -11,7 +11,7 @@ namespace Nisshi.Requests.Models
     {
         public record Query(int id) : IRequest<Model>;
 
-        public class QueryHandler : BaseRequest, IRequestHandler<Query, Model>
+        public class QueryHandler : BaseHandler, IRequestHandler<Query, Model>
         {
             public QueryHandler(NisshiContext context) : base(context)
             {

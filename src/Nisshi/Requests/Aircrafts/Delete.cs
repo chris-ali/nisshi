@@ -15,7 +15,7 @@ namespace Nisshi.Requests.Aircrafts
     {
         public record Command(int id) : IRequest<Aircraft>;
 
-        public class CommandHandler : BaseRequest, IRequestHandler<Command, Aircraft>
+        public class CommandHandler : BaseHandler, IRequestHandler<Command, Aircraft>
         {
             public CommandHandler(NisshiContext context) : base(context)
             {

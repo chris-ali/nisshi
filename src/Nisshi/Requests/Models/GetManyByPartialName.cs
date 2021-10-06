@@ -13,7 +13,7 @@ namespace Nisshi.Requests.Models
     {
         public record Query(string partialName) : IRequest<IList<Model>>;
 
-        public class QueryHandler : BaseRequest, IRequestHandler<Query, IList<Model>>
+        public class QueryHandler : BaseHandler, IRequestHandler<Query, IList<Model>>
         {
             public QueryHandler(NisshiContext context) : base(context)
             {

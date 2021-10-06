@@ -14,7 +14,7 @@ namespace Nisshi.Requests.Aircrafts
     {
         public record Query(int id) : IRequest<Aircraft>;
 
-        public class QueryHandler : BaseRequest, IRequestHandler<Query, Aircraft>
+        public class QueryHandler : BaseHandler, IRequestHandler<Query, Aircraft>
         {
             public QueryHandler(NisshiContext context) : base(context)
             {

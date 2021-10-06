@@ -13,7 +13,7 @@ namespace Nisshi.Requests.Airports
     {
         public record Query(string partialCode) : IRequest<IList<Airport>>;
 
-        public class QueryHandler : BaseRequest, IRequestHandler<Query, IList<Airport>>
+        public class QueryHandler : BaseHandler, IRequestHandler<Query, IList<Airport>>
         {
             public QueryHandler(NisshiContext context) : base(context)
             {

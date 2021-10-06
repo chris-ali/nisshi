@@ -16,7 +16,7 @@ namespace Nisshi.Requests.LogbookEntries
     {
         public record Query() : IRequest<IList<LogbookEntry>>;
 
-        public class QueryHandler : BaseRequest, IRequestHandler<Query, IList<LogbookEntry>>
+        public class QueryHandler : BaseHandler, IRequestHandler<Query, IList<LogbookEntry>>
         {
             private readonly ICurrentUserAccessor accessor;
 
