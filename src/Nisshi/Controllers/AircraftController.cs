@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Nisshi.Infrastructure.Security;
 
 namespace Nisshi.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes)]
     public class AircraftController : BaseNisshiController
     {
         public AircraftController(IMediator mediator) : base(mediator)
@@ -15,9 +18,9 @@ namespace Nisshi.Controllers
         }
 
         [HttpGet("user/{username}")]
-        public async Task<IEnumerable<Aircraft>> GetManyByUsername(string username, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Aircraft>> GetAll(CancellationToken cancellationToken)
         {
-            return await mediator.Send(new GetManyByUsername.Query(username), cancellationToken);
+            return await mediator.Send(new GetAll.Query(), cancellationToken);
         }
 
         [HttpGet("{id}")]
@@ -27,13 +30,13 @@ namespace Nisshi.Controllers
         }
 
         [HttpPut]
-        public async Task<Aircraft> Update(Aircraft aircraft, CancellationToken cancellationToken)
+        public async Task<Aircraft> Update([FromBody] Aircraft aircraft, CancellationToken cancellationToken)
         {
             return await mediator.Send(new Update.Command(aircraft), cancellationToken);
         }
 
         [HttpPost]
-        public async Task<Aircraft> Create(Aircraft aircraft, CancellationToken cancellationToken)
+        public async Task<Aircraft> Create([FromBody] Aircraft aircraft, CancellationToken cancellationToken)
         {
             return await mediator.Send(new Create.Command(aircraft), cancellationToken);
         }

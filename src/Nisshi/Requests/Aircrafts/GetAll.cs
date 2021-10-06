@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
-using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -15,30 +13,27 @@ using FluentValidation;
 /// </summary>
 namespace Nisshi.Requests.Aircrafts 
 {
-    public class GetManyByUsername
+    public class GetAll
     {
-        public record Query(string username) : IRequest<IList<Aircraft>>;
-
-        public class QueryValidator : AbstractValidator<Query>
-        {
-            public QueryValidator()
-            {
-                RuleFor(x => x.username).NotNull().WithMessage($"Username {Messages.NOT_NULL}");
-            }
-        }
+        public record Query() : IRequest<IList<Aircraft>>;
 
         public class QueryHandler : BaseRequest, IRequestHandler<Query, IList<Aircraft>>
         {
-            public QueryHandler(NisshiContext context) : base(context)
+            private readonly ICurrentUserAccessor accessor;
+
+            public QueryHandler(NisshiContext context, ICurrentUserAccessor accessor) : base(context)
             {
+                this.accessor = accessor;
             }
 
             public async Task<IList<Aircraft>> Handle(Query request, CancellationToken cancellationToken)
             {
+                var username = accessor.GetCurrentUserName();
+
                 var data = await context.Aircraft
                     //.Include(x => x.Model)
                     .Include(x => x.Owner)
-                    .Where(x => x.Owner.Username.ToUpper() == request.username.ToUpper())
+                    .Where(x => x.Owner.Username.ToUpper() == username.ToUpper())
                     .ToListAsync(cancellationToken);
                 
                 return data;

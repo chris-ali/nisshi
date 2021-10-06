@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Nisshi.Infrastructure.Security;
 
 namespace Nisshi.Controllers
 {
@@ -27,13 +29,15 @@ namespace Nisshi.Controllers
         }
 
         [HttpPost]
-        public async Task<Model> Create(Model model, CancellationToken cancellationToken)
+        [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes)]
+        public async Task<Model> Create([FromBody] Model model, CancellationToken cancellationToken)
         {
             return await mediator.Send(new Create.Command(model), cancellationToken);
         }
 
         [HttpPut]
-        public async Task<Model> Update(Model model, CancellationToken cancellationToken)
+        [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes)]
+        public async Task<Model> Update([FromBody] Model model, CancellationToken cancellationToken)
         {
             return await mediator.Send(new Update.Command(model), cancellationToken);
         }

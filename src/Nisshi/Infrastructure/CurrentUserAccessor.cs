@@ -15,8 +15,8 @@ namespace Nisshi.Infrastructure
         
         public string GetCurrentUserName()
         {
-            return accessor.HttpContext?.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value 
-                ?? "chris";
+            return accessor.HttpContext?.User?.Claims?
+                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
         }
     }
 }

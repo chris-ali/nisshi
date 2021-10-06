@@ -5,9 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Nisshi.Infrastructure.Security;
 
 namespace Nisshi.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes)]
     public class LogbookEntriesController : BaseNisshiController
     {
         public LogbookEntriesController(IMediator mediator) : base(mediator)
@@ -15,9 +18,9 @@ namespace Nisshi.Controllers
         }
 
         [HttpGet("user/{username}")]
-        public async Task<IEnumerable<LogbookEntry>> GetManyByUsername(string username, CancellationToken cancellationToken)
+        public async Task<IEnumerable<LogbookEntry>> GetManyByUsername(CancellationToken cancellationToken)
         {
-            return await mediator.Send(new GetManyByUsername.Query(username), cancellationToken);
+            return await mediator.Send(new GetAll.Query(), cancellationToken);
         }
 
         [HttpGet("{id}")]
@@ -27,13 +30,13 @@ namespace Nisshi.Controllers
         }
 
         [HttpPut]
-        public async Task<LogbookEntry> Update(LogbookEntry logbookEntry, CancellationToken cancellationToken)
+        public async Task<LogbookEntry> Update([FromBody] LogbookEntry logbookEntry, CancellationToken cancellationToken)
         {
             return await mediator.Send(new Update.Command(logbookEntry), cancellationToken);
         }
 
         [HttpPost]
-        public async Task<LogbookEntry> Create(LogbookEntry logbookEntry, CancellationToken cancellationToken)
+        public async Task<LogbookEntry> Create([FromBody] LogbookEntry logbookEntry, CancellationToken cancellationToken)
         {
             return await mediator.Send(new Create.Command(logbookEntry), cancellationToken);
         }

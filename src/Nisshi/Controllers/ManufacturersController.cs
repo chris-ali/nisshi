@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Nisshi.Infrastructure.Security;
 
 namespace Nisshi.Controllers
 {
@@ -21,7 +23,8 @@ namespace Nisshi.Controllers
         }
 
         [HttpPost]
-        public async Task<Manufacturer> Create(Manufacturer manufacturer, CancellationToken cancellationToken)
+        [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes)]
+        public async Task<Manufacturer> Create([FromBody] Manufacturer manufacturer, CancellationToken cancellationToken)
         {
             return await mediator.Send(new Create.Command(manufacturer), cancellationToken);
         }

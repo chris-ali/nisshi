@@ -12,31 +12,28 @@ using FluentValidation;
 
 namespace Nisshi.Requests.LogbookEntries 
 {
-    public class GetManyByUsername
+    public class GetAll
     {
-        public record Query(string username) : IRequest<IList<LogbookEntry>>;
-
-        public class QueryValidator : AbstractValidator<Query>
-        {
-            public QueryValidator()
-            {
-                RuleFor(x => x.username).NotNull().WithMessage($"Username {Messages.NOT_NULL}");
-            }
-        }
+        public record Query() : IRequest<IList<LogbookEntry>>;
 
         public class QueryHandler : BaseRequest, IRequestHandler<Query, IList<LogbookEntry>>
         {
-            public QueryHandler(NisshiContext context) : base(context)
+            private readonly ICurrentUserAccessor accessor;
+
+            public QueryHandler(NisshiContext context, ICurrentUserAccessor accessor) : base(context)
             {
+                this.accessor = accessor;
             }
 
             public async Task<IList<LogbookEntry>> Handle(Query request, CancellationToken cancellationToken)
             {
+                var username = accessor.GetCurrentUserName();
+
                 var data = await context.LogbookEntries
                     .Include(x => x.Aircraft)
                         .ThenInclude(x => x.Model)
                     .Include(x => x.Owner)
-                    .Where(x => x.Owner.Username.ToUpper() == request.username.ToUpper())
+                    .Where(x => x.Owner.Username.ToUpper() == username.ToUpper())
                     .ToListAsync(cancellationToken);
 
                 return data;

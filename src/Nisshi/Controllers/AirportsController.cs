@@ -21,7 +21,7 @@ namespace Nisshi.Controllers
         }
 
         [HttpPost]
-        public async Task<Airport> Create(Airport aircraft, CancellationToken cancellationToken)
+        public async Task<Airport> Create([FromBody] Airport aircraft, CancellationToken cancellationToken)
         {
             return await mediator.Send(new Create.Command(aircraft), cancellationToken);
         }
