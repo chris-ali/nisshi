@@ -55,7 +55,7 @@ namespace Nisshi.Infrastructure.Errors
                 case Exception ey:
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     logger.LogError(ey, "Unhandled Exception");
-                    result = JsonSerializer.Serialize(new { errors = localizer["Internal Server Error"].Value});
+                    result = JsonSerializer.Serialize(new { errors = localizer["InternalServerError"].Value});
                     break;
             }
 

@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentValidation;
 using MediatR;
 
 namespace Nisshi.Infrastructure
@@ -39,7 +36,7 @@ namespace Nisshi.Infrastructure
                 throw;
             }
 
-            return await next();
+            return response;
         }
     }
 }

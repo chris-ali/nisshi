@@ -41,6 +41,8 @@ namespace Nisshi
             {
                 opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
+
+            services.AddLocalization(x => x.ResourcesPath = "Resources");
             
             services.AddSwaggerService();
 
@@ -102,8 +104,7 @@ namespace Nisshi
                  .AllowAnyHeader();
             });
 
-            // TODO add localization
-            //app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseAuthentication();
 
