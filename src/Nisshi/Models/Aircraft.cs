@@ -21,32 +21,32 @@ namespace Nisshi.Models
         /// <summary>
         /// Date of last annual inspection
         /// </summary>
-        public DateTime LastAnnual { get; set; }
+        public DateTime? LastAnnual { get; set; }
 
         /// <summary>
         /// Date of last pitot static inspection
         /// </summary>
-        public DateTime LastPitotStatic { get; set; }
+        public DateTime? LastPitotStatic { get; set; }
 
         /// <summary>
         /// Date of last VOR inspection
         /// </summary>
-        public DateTime LastVOR { get; set; }
+        public DateTime? LastVOR { get; set; }
 
         /// <summary>
         /// Date of last altimeter inspection
         /// </summary>
-        public DateTime LastAltimeter { get; set; }
+        public DateTime? LastAltimeter { get; set; }
 
         /// <summary>
         /// Date of last transponder inspection
         /// </summary>
-        public DateTime LastTransponder { get; set; }
+        public DateTime? LastTransponder { get; set; }
 
         /// <summary>
         /// Date of last ELT inspection
         /// </summary>
-        public DateTime LastELT { get; set; }
+        public DateTime? LastELT { get; set; }
 
         /// <summary>
         /// Hobbs time of last 100 hour inspection
@@ -66,7 +66,7 @@ namespace Nisshi.Models
         /// <summary>
         /// Date, if any, of next renewal of registration
         /// </summary>
-        public DateTime RegistrationDue { get; set; }
+        public DateTime? RegistrationDue { get; set; }
 
         /// <summary>
         /// Notes about the aircraft

@@ -12,7 +12,7 @@ namespace Nisshi.Models
         /// <summary>
         /// Date that the flight took place
         /// </summary>
-        public DateTime FlightDate { get; set; }
+        public DateTime? FlightDate { get; set; }
 
         public int NumInstrumentApproaches { get; set; }
 

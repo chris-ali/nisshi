@@ -2,7 +2,7 @@ using AutoMapper;
 
 namespace Nisshi.Models.Users
 {
-    public class UserMapper : Profile
+    public class UserMapper : AutoMapper.Profile
     {
         public UserMapper()
         {

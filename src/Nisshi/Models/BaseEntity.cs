@@ -17,11 +17,11 @@ namespace Nisshi.Models
         /// Date entity was first created
         /// </summary>
         /// <value></value>
-        public DateTime DateCreated { get; set; }
+        public DateTime? DateCreated { get; set; }
 
         /// <summary>
         /// Date entity was last updated
         /// </summary>
-        public DateTime DateUpdated { get; set; }
+        public DateTime? DateUpdated { get; set; }
     }
 }

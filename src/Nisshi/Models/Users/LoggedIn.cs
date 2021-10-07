@@ -16,7 +16,7 @@ namespace Nisshi.Models.Users
         
         public string LastName { get; set; }
 
-        public DateTime LastLoginDate { get; set; }
+        public DateTime? LastLoginDate { get; set; }
 
         public bool IsLockedOut { get; set; }
 
@@ -25,12 +25,12 @@ namespace Nisshi.Models.Users
         /// <summary>
         /// Date of last BFR
         /// </summary>
-        public DateTime LastBFR { get; set; }
+        public DateTime? LastBFR { get; set; }
 
         /// <summary>
         /// Date of last medical examination
         /// </summary>
-        public DateTime LastMedical { get; set; }
+        public DateTime? LastMedical { get; set; }
 
         /// <summary>
         /// How many months until current medical examination expires
@@ -45,7 +45,7 @@ namespace Nisshi.Models.Users
         /// <summary>
         /// Expiration of certificate
         /// </summary>
-        public DateTime CFIExpiration { get; set; }
+        public DateTime? CFIExpiration { get; set; }
 
         /// <summary>
         /// Pilot license type

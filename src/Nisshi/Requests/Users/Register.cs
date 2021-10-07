@@ -67,7 +67,7 @@ namespace Nisshi.Requests.Users
                     DateUpdated = DateTime.Now,
                     Salt = iodized,
                     Hash = await hasher.HashAsync(request.registration.Password 
-                            ?? throw new InvalidOperationException(), iodized)
+                            ?? throw new InvalidOperationException(), iodized, cancellationToken)
                 };
                 
                 await context.AddAsync<User>(user);

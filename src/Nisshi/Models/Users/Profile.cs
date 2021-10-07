@@ -1,14 +1,11 @@
 using System;
-using System.Collections.Generic;
-using System.Text.Json.Serialization;
-using Nisshi.Infrastructure.Enums;
 
 namespace Nisshi.Models.Users 
 {
     /// <summary>
-    /// User object for project, tied to users table
+    /// Model passed in to controller to edit the profile and password
     /// </summary>
-    public class User : BaseEntity
+    public class Profile
     {
         public string Username { get; set; }
 
@@ -18,17 +15,7 @@ namespace Nisshi.Models.Users
         
         public string LastName { get; set; }
 
-        /// <summary>
-        /// Hashed of password for this user
-        /// </summary>
-        [JsonIgnore]
-        public byte[] Hash { get; set; } = Array.Empty<byte>();
-
-        /// <summary>
-        /// Salt of password for this user
-        /// </summary>
-        [JsonIgnore]
-        public byte[] Salt { get; set; } = Array.Empty<byte>();
+        public string Password { get; set; }
 
         /// <summary>
         /// Question to reset user's password
@@ -38,19 +25,7 @@ namespace Nisshi.Models.Users
         /// <summary>
         /// Answer to reset user's password
         /// </summary>
-        [JsonIgnore]
         public string PasswordAnswer { get; set; }
-
-        /// <summary>
-        /// Date the password was last changed
-        /// </summary>
-        public DateTime? LastPasswordChangedDate { get; set; }
-
-        public DateTime? LastLoginDate { get; set; }
-
-        public bool IsLockedOut { get; set; }
-
-        public UserType UserType { get; set; }
 
         /// <summary>
         /// Date of last BFR
@@ -91,17 +66,5 @@ namespace Nisshi.Models.Users
         /// Additional user preferences serialized in JSON dictionary forma
         /// </summary>
         public string Preferences { get; set; }
-        
-        /// <summary>
-        /// Associated aircraft belonging to the user
-        /// </summary>
-        [JsonIgnore]
-        public virtual List<Aircraft> Aircraft { get; set; } = new();
-
-        /// <summary>
-        /// Associated logbook entries belonging to the user
-        /// </summary>
-        [JsonIgnore]
-        public virtual List<LogbookEntry> LogbookEntries { get; set; } = new();
     }
 }

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Nisshi.Infrastructure.Security
@@ -13,7 +14,7 @@ namespace Nisshi.Infrastructure.Security
     {
         private readonly HMACSHA512 sha = new(Encoding.UTF8.GetBytes("wagaNisshi"));
 
-        public Task<byte[]> HashAsync(string password, byte[] salt)
+        public Task<byte[]> HashAsync(string password, byte[] salt, CancellationToken cancellationToken)
         {
             var bytes = Encoding.UTF8.GetBytes(password);
 
@@ -21,7 +22,7 @@ namespace Nisshi.Infrastructure.Security
             Buffer.BlockCopy(bytes, 0, allBytes, 0, bytes.Length);
             Buffer.BlockCopy(salt, 0, allBytes, bytes.Length, salt.Length);
 
-            return sha.ComputeHashAsync(new MemoryStream(allBytes));
+            return sha.ComputeHashAsync(new MemoryStream(allBytes), cancellationToken);
         }
 
         public byte[] Hash(string password, byte[] salt)

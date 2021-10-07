@@ -7,46 +7,62 @@ using MediatR;
 using System;
 using FluentValidation;
 using Nisshi.Models.Users;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using Nisshi.Infrastructure.Security;
 
 namespace Nisshi.Requests.Users
 {
   public class UpdateProfile
     {
-        // TODO make user wrapper here that has password; Models.User should just have JWT token 
-
-        public record Command(User user) : IRequest<User>;
+        public record Command(Profile edit) : IRequest<User>;
 
         public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
             {
-                RuleFor(x => x.user).NotNull().WithMessage($"User {Messages.NOT_NULL}");
+                RuleFor(x => x.edit).NotNull().WithMessage($"User {Messages.NOT_NULL}");
             }
         }
 
         public class CommandHandler : BaseHandler, IRequestHandler<Command, User>
         {
-            public CommandHandler(NisshiContext context) : base(context)
+            private readonly ICurrentUserAccessor accessor;
+            private readonly IPasswordHasher hasher;
+
+            public CommandHandler(NisshiContext context, ICurrentUserAccessor accessor, IPasswordHasher hasher) : base(context)
             {
+                this.accessor = accessor;
+                this.hasher = hasher;
             }
 
             public async Task<User> Handle(Command request, CancellationToken cancellationToken)
             {
-                var data = await context.FindAsync<User>(new object[] { request.user.Id }, cancellationToken);
-                if (data == null) 
+                var username = accessor.GetCurrentUserName();
+                if (string.IsNullOrEmpty(username))
+                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = Messages.NOT_LOGGED_IN });
+
+                var user = await context.Users.Where(x => x.Username == username).SingleOrDefaultAsync(cancellationToken);
+                if (user == null)
                 {
-                    var message = $"User: {request.user.Id} {Messages.DOES_NOT_EXIST}";
-                    throw new RestException(HttpStatusCode.NotFound, new { Message = message});
+                    var message = $"User: {username} {Messages.DOES_NOT_EXIST}";
+                    throw new RestException(HttpStatusCode.NotFound, new { Message = message });
                 }
                 
-                Update(ref data, request.user);
-                data.DateUpdated = DateTime.Now;
-                // TODO Handle password hashing here if password edited
+                Update(ref user, request.edit);
+                user.DateUpdated = DateTime.Now;
 
-                context.Update(data);
+                if (!string.IsNullOrEmpty(request.edit.Password))
+                {
+                    var iodized = Guid.NewGuid().ToByteArray();
+                    user.Salt = iodized;
+                    user.Hash = await hasher.HashAsync(request.edit.Password, iodized, cancellationToken);
+                }
+
+                context.Update(user);
                 await context.SaveChangesAsync(cancellationToken);
 
-                return data;
+                return user;
             }
 
             /// <summary>
@@ -54,7 +70,7 @@ namespace Nisshi.Requests.Users
             /// </summary>
             /// <param name="toBeUpdated"></param>
             /// <param name="toUpdateWith"></param>
-            private void Update(ref User toBeUpdated, User toUpdateWith) 
+            private void Update(ref User toBeUpdated, Profile toUpdateWith) 
             {
                 toBeUpdated.CertificateNumber = toUpdateWith.CertificateNumber;
                 toBeUpdated.CFIExpiration = toUpdateWith.CFIExpiration;

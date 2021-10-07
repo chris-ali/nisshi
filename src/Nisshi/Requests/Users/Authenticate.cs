@@ -53,7 +53,8 @@ namespace Nisshi.Requests.Users
                     throw new RestException(HttpStatusCode.Unauthorized, new { Message = message});
                 }
 
-                if (!user.Hash.SequenceEqual(await hasher.HashAsync(request.login.Password ?? throw new InvalidOperationException(), user.Salt)))
+                if (!user.Hash.SequenceEqual(await hasher.HashAsync(request.login.Password ?? throw new InvalidOperationException(), 
+                    user.Salt, cancellationToken)))
                 {
                     var message = $"{Messages.INVALID_CREDENTIALS}";
                     throw new RestException(HttpStatusCode.Unauthorized, new { Message = message});

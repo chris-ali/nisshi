@@ -24,9 +24,9 @@ namespace Nisshi.Controllers
 
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes)]
-        public async Task<ActionResult<User>> UpdateProfile([FromBody] User user, CancellationToken cancellationToken)
+        public async Task<ActionResult<User>> UpdateProfile([FromBody] Profile edit, CancellationToken cancellationToken)
         {
-            return await mediator.Send(new UpdateProfile.Command(user), cancellationToken);
+            return await mediator.Send(new UpdateProfile.Command(edit), cancellationToken);
         }
 
         [HttpPost]
