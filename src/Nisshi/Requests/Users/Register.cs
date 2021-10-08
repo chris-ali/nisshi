@@ -23,7 +23,7 @@ namespace Nisshi.Requests.Users
             public CommandValidator()
             {
                 RuleFor(x => x.registration).NotNull()
-                    .WithMessage($"User {Messages.NOT_NULL}")
+                    .WithMessage(Message.NotNull.ToString())
                     .SetValidator(new Registration.RegistrationValidator());
             }
         }
@@ -47,17 +47,11 @@ namespace Nisshi.Requests.Users
             public async Task<LoggedIn> Handle(Command request, CancellationToken cancellationToken)
             {
                 if (await context.Users.Where(x => x.Username == request.registration.Username).AnyAsync(cancellationToken))
-                {
-                    var message = $"Username {Messages.ALREADY_EXISTS}";
-                    throw new RestException(HttpStatusCode.BadRequest, new { Message = message});
-                }
-
+                    throw new RestException(HttpStatusCode.BadRequest, Message.UsernameExists);
+                
                 if (await context.Users.Where(x => x.Email == request.registration.Email).AnyAsync(cancellationToken))
-                {
-                    var message = $"Email {Messages.ALREADY_EXISTS}";
-                    throw new RestException(HttpStatusCode.BadRequest, new { Message = message});
-                }
-
+                    throw new RestException(HttpStatusCode.BadRequest, Message.EmailExists);
+                
                 var iodized = Guid.NewGuid().ToByteArray();
                 var user = new User 
                 {

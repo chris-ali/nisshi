@@ -20,7 +20,7 @@ namespace Nisshi.Requests.Models
         {
             public CommandValidator()
             {
-                RuleFor(x => x.model).NotNull().WithMessage($"Model {Messages.NOT_NULL}");
+                RuleFor(x => x.model).NotNull().WithMessage(Message.NotNull.ToString());
             }
         }
 
@@ -36,13 +36,9 @@ namespace Nisshi.Requests.Models
             public async Task<Model> Handle(Command request, CancellationToken cancellationToken)
             {
                 var data = await context.FindAsync<Model>(new object[] { request.model.Id }, cancellationToken);
-
                 if (data == null) 
-                {
-                    var message = $"Model: {request.model.Id} {Messages.DOES_NOT_EXIST}";
-                    throw new RestException(HttpStatusCode.NotFound, new { Message = message});
-                }
-
+                    throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
+                
                 var model = await context.Models.FindAsync(new object[] { data.Id }, cancellationToken);
 
                 Update(ref data, request.model);

@@ -59,6 +59,27 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="InternalServerError" xml:space="preserve">
-    <value>An internal error has occurred.</value>
+    <value>Ein interner Serverfehler ist geschehen.</value>
+  </data>
+  <data name="UsernameExists" xml:space="preserve">
+    <value>Username existiert bereits im System. Bitte versuchen Sie einen anderen Wert.</value>
+  </data>
+  <data name="EmailExists" xml:space="preserve">
+    <value>Email existiert bereits im System. Bitte versuchen Sie einen anderen Wert.</value>
+  </data>
+  <data name="ItemDoesNotExist" xml:space="preserve">
+    <value>Item existiert nicht im System.</value>
+  </data>
+  <data name="ItemExistsAlready" xml:space="preserve">
+    <value>Item existiert bereits im System.</value>
+  </data>
+  <data name="NotNull" xml:space="preserve">
+    <value>Daten musst fuer diese for this Anfrage gewesen sein, und darf nicht null sein.</value>
+  </data>
+  <data name="NotLoggedIn" xml:space="preserve">
+    <value>Angemeldete Konto wurde nicht gefunden! Bitte versuchen Sie nochmal anzumelden.</value>
+  </data>
+  <data name="InvalidCredentials" xml:space="preserve">
+    <value>Ungueltige Username/Kennwort! Bitte versuchen Sie nochmal.</value>
   </data>
 </root>

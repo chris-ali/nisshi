@@ -21,7 +21,7 @@ namespace Nisshi.Requests.Users
         {
             public CommandValidator()
             {
-                RuleFor(x => x.edit).NotNull().WithMessage($"User {Messages.NOT_NULL}");
+                RuleFor(x => x.edit).NotNull().WithMessage(Message.NotNull.ToString());
             }
         }
 
@@ -40,15 +40,12 @@ namespace Nisshi.Requests.Users
             {
                 var username = accessor.GetCurrentUserName();
                 if (string.IsNullOrEmpty(username))
-                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = Messages.NOT_LOGGED_IN });
+                    throw new RestException(HttpStatusCode.Unauthorized, Message.NotLoggedIn);
 
                 var user = await context.Users.Where(x => x.Username == username).SingleOrDefaultAsync(cancellationToken);
                 if (user == null)
-                {
-                    var message = $"User: {username} {Messages.DOES_NOT_EXIST}";
-                    throw new RestException(HttpStatusCode.NotFound, new { Message = message });
-                }
-                
+                    throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
+                                
                 Update(ref user, request.edit);
                 user.DateUpdated = DateTime.Now;
 

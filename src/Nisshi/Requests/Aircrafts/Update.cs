@@ -23,7 +23,7 @@ namespace Nisshi.Requests.Aircrafts
         {
             public CommandValidator()
             {
-                RuleFor(x => x.aircraft).NotNull().WithMessage($"Aircraft {Messages.NOT_NULL}");
+                RuleFor(x => x.aircraft).NotNull().WithMessage(Message.NotNull.ToString());
             }
         }
 
@@ -40,15 +40,11 @@ namespace Nisshi.Requests.Aircrafts
             {
                 var data = await context.FindAsync<Aircraft>(new object[] { request.aircraft.Id }, cancellationToken);
                 if (data == null) 
-                {
-                    var message = $"Aircraft: {request.aircraft.Id} {Messages.DOES_NOT_EXIST}";
-                    throw new RestException(HttpStatusCode.NotFound, new { Message = message});
-                }
-
-                var username = accessor.GetCurrentUserName();
+                    throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
                 
+                var username = accessor.GetCurrentUserName();                
                 if (string.IsNullOrEmpty(username))
-                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = Messages.NOT_LOGGED_IN });
+                    throw new RestException(HttpStatusCode.Unauthorized, Message.NotLoggedIn);
                 
                 var user = await context.Users.Where(x => x.Username == username)
                     .FirstOrDefaultAsync(cancellationToken);

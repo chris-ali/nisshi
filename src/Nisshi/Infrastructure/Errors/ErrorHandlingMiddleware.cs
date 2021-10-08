@@ -50,7 +50,7 @@ namespace Nisshi.Infrastructure.Errors
             {
                 case RestException re:
                     context.Response.StatusCode = (int)re.Code;
-                    result = JsonSerializer.Serialize(new {errors = re.Errors});
+                    result = JsonSerializer.Serialize(new { errors = localizer[re.Error?.ToString()].Value });
                     break;
                 case Exception ey:
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

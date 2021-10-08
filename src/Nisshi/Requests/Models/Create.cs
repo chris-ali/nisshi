@@ -18,7 +18,7 @@ namespace Nisshi.Requests.Models
         {
             public CommandValidator()
             {
-                RuleFor(x => x.model).NotNull().WithMessage($"Model {Messages.NOT_NULL}");
+                RuleFor(x => x.model).NotNull().WithMessage(Message.NotNull.ToString());
             }
         }
 

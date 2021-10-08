@@ -20,7 +20,7 @@ namespace Nisshi.Requests.Airports
         {
             public CommandValidator()
             {
-                RuleFor(x => x.airport).NotNull().WithMessage("Airport data cannot be null");
+                RuleFor(x => x.airport).NotNull().WithMessage(Message.NotNull.ToString());
             }
         }
 
@@ -40,15 +40,11 @@ namespace Nisshi.Requests.Airports
                     .FirstOrDefaultAsync(cancellationToken);
 
                 if (airport != null)
-                {
-                    var message = $"{airport.AirportCode} {Messages.ALREADY_EXISTS}";
-                    throw new RestException(HttpStatusCode.BadRequest, new { Message = message });
-                }
+                    throw new RestException(HttpStatusCode.BadRequest, Message.ItemExistsAlready);
 
                 var username = accessor.GetCurrentUserName();
-                
                 if (string.IsNullOrEmpty(username))
-                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = Messages.NOT_LOGGED_IN });
+                    throw new RestException(HttpStatusCode.Unauthorized, Message.NotLoggedIn);
                 
                 request.airport.DateCreated = request.airport.DateUpdated = DateTime.Now;
                 request.airport.SourceUserName = username;

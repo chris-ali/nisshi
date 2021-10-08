@@ -20,7 +20,7 @@ namespace Nisshi.Requests.Manufacturers
         {
             public CommandValidator()
             {
-                RuleFor(x => x.manufacturer).NotNull().WithMessage($"Manufacturer {Messages.NOT_NULL}");
+                RuleFor(x => x.manufacturer).NotNull().WithMessage(Message.NotNull.ToString());
             }
         }
 
@@ -40,11 +40,8 @@ namespace Nisshi.Requests.Manufacturers
                     .FirstOrDefaultAsync(cancellationToken);
 
                 if (manufacturer != null)
-                {
-                    var message = $"{manufacturer.ManufacturerName} {Messages.ALREADY_EXISTS}";
-                    throw new RestException(HttpStatusCode.BadRequest, new { Message = message });
-                }
-
+                    throw new RestException(HttpStatusCode.BadRequest, Message.ItemExistsAlready);
+                
                 request.manufacturer.DateCreated = request.manufacturer.DateUpdated = DateTime.Now;
 
                 await context.AddAsync<Manufacturer>(request.manufacturer, cancellationToken);

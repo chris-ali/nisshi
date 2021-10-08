@@ -20,7 +20,7 @@ namespace Nisshi.Requests.LogbookEntries
         {
             public CommandValidator()
             {
-                RuleFor(x => x.logbookEntry).NotNull().WithMessage($"Logbook Entry {Messages.NOT_NULL}");
+                RuleFor(x => x.logbookEntry).NotNull().WithMessage(Message.NotNull.ToString());
             }
         }
 
@@ -38,7 +38,7 @@ namespace Nisshi.Requests.LogbookEntries
                 var username = accessor.GetCurrentUserName();
                 
                 if (string.IsNullOrEmpty(username))
-                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = Messages.NOT_LOGGED_IN });
+                    throw new RestException(HttpStatusCode.Unauthorized, Message.ItemDoesNotExist);
                 
                 var currentUser = await context.Users
                     .Where(x => x.Username == username)

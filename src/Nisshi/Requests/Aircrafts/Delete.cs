@@ -25,11 +25,8 @@ namespace Nisshi.Requests.Aircrafts
             {
                 var data = await context.FindAsync<Aircraft>(new object[] { request.id }, cancellationToken);
                 if (data == null) 
-                {
-                    var message = $"Aircraft: {request.id} {Messages.DOES_NOT_EXIST}";
-                    throw new RestException(HttpStatusCode.NotFound, new { Message = message});
-                }
-                
+                    throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
+                                
                 // Should also cascade to remove logbook entries
                 context.Remove(data);
                 await context.SaveChangesAsync();

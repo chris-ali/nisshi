@@ -28,11 +28,8 @@ namespace Nisshi.Requests.Users
                 var data = await context.Users.FirstOrDefaultAsync(x => x.Username == userName, cancellationToken);
 
                 if (string.IsNullOrEmpty(userName) || data == null) 
-                {
-                    var message = $"No current user found in {(data == null ? "database" : "HTTP context")} ";
-                    throw new RestException(HttpStatusCode.NotFound, new { Message = message});
-                }
-
+                    throw new RestException(HttpStatusCode.NotFound, Message.NotLoggedIn);
+                
                 return data;
             }
         }

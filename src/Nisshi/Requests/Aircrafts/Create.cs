@@ -23,7 +23,7 @@ namespace Nisshi.Requests.Aircrafts
         {
             public CommandValidator()
             {
-                RuleFor(x => x.aircraft).NotNull().WithMessage($"Aircraft {Messages.NOT_NULL}");
+                RuleFor(x => x.aircraft).NotNull().WithMessage(Message.NotNull.ToString());
             }
         }
 
@@ -42,7 +42,7 @@ namespace Nisshi.Requests.Aircrafts
                 var username = accessor.GetCurrentUserName();
                 
                 if (string.IsNullOrEmpty(username))
-                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = Messages.NOT_LOGGED_IN });
+                    throw new RestException(HttpStatusCode.Unauthorized, Message.NotLoggedIn);
                 
                 var currentUser = await context.Users
                     .Where(x => x.Username == username)

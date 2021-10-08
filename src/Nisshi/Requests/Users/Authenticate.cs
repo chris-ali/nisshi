@@ -23,7 +23,7 @@ namespace Nisshi.Requests.Users
             public CommandValidator()
             {
                 RuleFor(x => x.login).NotNull()
-                    .WithMessage($"User {Messages.NOT_NULL}")
+                    .WithMessage(Message.NotNull.ToString())
                     .SetValidator(new Authenticate.AuthenticateValidator());
             }
         }
@@ -48,18 +48,13 @@ namespace Nisshi.Requests.Users
             {
                 var user = await context.Users.Where(x => x.Username == request.login.Username).SingleOrDefaultAsync(cancellationToken);
                 if (user == null)
-                {
-                    var message = $"{Messages.INVALID_CREDENTIALS}";
-                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = message});
-                }
-
-                if (!user.Hash.SequenceEqual(await hasher.HashAsync(request.login.Password ?? throw new InvalidOperationException(), 
-                    user.Salt, cancellationToken)))
-                {
-                    var message = $"{Messages.INVALID_CREDENTIALS}";
-                    throw new RestException(HttpStatusCode.Unauthorized, new { Message = message});
-                }
+                    throw new RestException(HttpStatusCode.Unauthorized, Message.InvalidCredentials);
                 
+                var authenticated = user.Hash.SequenceEqual(await hasher.HashAsync(request.login.Password ?? throw new InvalidOperationException(), 
+                    user.Salt, cancellationToken));
+                if (!authenticated)
+                    throw new RestException(HttpStatusCode.Unauthorized, Message.InvalidCredentials);
+                                
                 // Maps to a model that includes a JWT token for Angular
                 var loggedInUser = mapper.Map<User, LoggedIn>(user);
                 loggedInUser.Token = bigGenerator.CreateToken(user.Username ?? throw new InvalidOperationException());

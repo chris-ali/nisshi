@@ -21,13 +21,9 @@ namespace Nisshi.Requests.LogbookEntries
             public async Task<LogbookEntry> Handle(Command request, CancellationToken cancellationToken)
             {
                 var data = await context.FindAsync<LogbookEntry>(new object[] { request.id }, cancellationToken);
-
                 if (data == null) 
-                {
-                    var message = $"Logbook Entry: {request.id} {Messages.DOES_NOT_EXIST}";
-                    throw new RestException(HttpStatusCode.NotFound, new { Message = message});
-                }
-                
+                    throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
+                                
                 context.Remove(data);
                 await context.SaveChangesAsync();
                 
