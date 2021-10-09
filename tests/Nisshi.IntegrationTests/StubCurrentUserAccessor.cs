@@ -1,4 +1,5 @@
 using Nisshi.Infrastructure;
+using Nisshi.IntegrationTests.Requests;
 
 namespace Nisshi.IntegrationTests
 {
@@ -9,10 +10,9 @@ namespace Nisshi.IntegrationTests
         /// <summary>
         /// Provides a dummy username for integration tests
         /// </summary>
-        /// <param name="username"></param>
-        public StubCurrentUserAccessor(string username)
+        public StubCurrentUserAccessor()
         {
-            this.username = username;
+            this.username = Helpers.TestUserName;
         }
 
         public string GetCurrentUserName()

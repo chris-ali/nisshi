@@ -66,6 +66,7 @@ namespace Nisshi.Requests.Aircrafts
             /// <param name="toUpdateWith"></param>
             private void Update(ref Aircraft toBeUpdated, Aircraft toUpdateWith) 
             {
+                toBeUpdated.TailNumber = toUpdateWith.TailNumber;
                 toBeUpdated.InstanceType = toUpdateWith.InstanceType;
                 toBeUpdated.Last100Hobbs = toUpdateWith.Last100Hobbs;
                 toBeUpdated.LastAltimeter = toUpdateWith.LastAltimeter;
