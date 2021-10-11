@@ -15,6 +15,7 @@ namespace Nisshi.IntegrationTests.Requests
     public static class Helpers
     {
         public static readonly string TestUserName = "testUser";
+        public static readonly string TestEmailAddress = "test@test.com";
 
         /// <summary>
         /// Registers a test user for tests needing a user object relation
@@ -25,7 +26,7 @@ namespace Nisshi.IntegrationTests.Requests
         {
             var command = new Register.Command(new Registration 
             {
-                Email = "test@test.com",
+                Email = TestEmailAddress,
                 Username = TestUserName,
                 Password = "test123!"
             });

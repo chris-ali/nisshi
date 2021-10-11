@@ -1,6 +1,4 @@
-using System;
 using System.Threading.Tasks;
-using FluentValidation;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
 using Nisshi.Requests.Aircrafts;
@@ -12,7 +10,7 @@ using Xunit;
 namespace Nisshi.IntegrationTests.Requests.Aircrafts
 {
     /// <summary>
-    /// Tests creating an aircraft in various scenarios
+    /// Tests getting an aircraft in various scenarios
     /// </summary>
     public class GetTests : IClassFixture<SliceFixture>
     {
@@ -53,16 +51,23 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
             var aircraftResponse = await fixture.SendAsync(new GetAll.Query());
 
             Assert.NotNull(aircraftResponse);
-            Assert.Equal(aircraftResponse.Count, 3);
+            Assert.Equal(3, aircraftResponse.Count);
         }
 
         [Fact]
         public async Task Should_Find_None()
         {
+            var user = await Helpers.RegisterTestUser(fixture);
             var aircraftResponse = await fixture.SendAsync(new GetAll.Query());
 
             Assert.NotNull(aircraftResponse);
-            Assert.Equal(aircraftResponse.Count, 0);
-        } 
+            Assert.Equal(0, aircraftResponse.Count);
+        }
+
+        // [Fact]
+        // public async Task Should_Fail_No_User()
+        // {
+        //     await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new GetAll.Query()));
+        // }
     }
 }

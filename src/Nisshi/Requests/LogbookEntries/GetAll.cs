@@ -28,6 +28,8 @@ namespace Nisshi.Requests.LogbookEntries
             public async Task<IList<LogbookEntry>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var username = accessor.GetCurrentUserName();
+                if (string.IsNullOrEmpty(username))
+                    throw new RestException(HttpStatusCode.Unauthorized, Message.NotLoggedIn);
 
                 var data = await context.LogbookEntries
                     .Include(x => x.Aircraft)
