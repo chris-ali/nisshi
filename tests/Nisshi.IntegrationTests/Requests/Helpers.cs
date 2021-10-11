@@ -48,8 +48,8 @@ namespace Nisshi.IntegrationTests.Requests
 
             return new Aircraft 
             {
-                Model = model,
-                Owner = user,
+                IdModel = model.Id,
+                IdUser = user.Id,
                 TailNumber = "N31SD",
                 InstanceType = InstanceType.Real,
                 Last100Hobbs = 10,
@@ -94,8 +94,8 @@ namespace Nisshi.IntegrationTests.Requests
 
             return new Model
             {
-                Manufacturer = manufacturer,
-                CategoryClass = catClass,
+                IdManufacturer = manufacturer.Id,
+                IdCategoryClass = catClass.Id,
                 Family = "Test Family",
                 HasConstantPropeller = true,
                 HasFlaps = true,
@@ -127,8 +127,8 @@ namespace Nisshi.IntegrationTests.Requests
 
             return new LogbookEntry
             {
-                Aircraft = aircraft,
-                Owner = user,
+                IdAircraft = aircraft.Id,
+                IdUser = user.Id,
                 Comments = "Test comments.",
                 CrossCountry = RandomDuration(rand),
                 DualGiven = RandomDuration(rand),
