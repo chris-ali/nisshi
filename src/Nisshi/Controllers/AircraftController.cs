@@ -17,7 +17,7 @@ namespace Nisshi.Controllers
         {
         }
 
-        [HttpGet("user/{username}")]
+        [HttpGet("user")]
         public async Task<IEnumerable<Aircraft>> GetAll(CancellationToken cancellationToken)
         {
             return await mediator.Send(new GetAll.Query(), cancellationToken);

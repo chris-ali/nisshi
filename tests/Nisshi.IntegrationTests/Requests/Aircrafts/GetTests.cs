@@ -63,11 +63,5 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
             Assert.NotNull(aircraftResponse);
             Assert.Equal(0, aircraftResponse.Count);
         }
-
-        // [Fact]
-        // public async Task Should_Fail_No_User()
-        // {
-        //     await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new GetAll.Query()));
-        // }
     }
 }

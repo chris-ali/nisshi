@@ -55,6 +55,7 @@ namespace Nisshi.Requests.Models
             /// <param name="toUpdateWith"></param>
             private void Update(ref Model toBeUpdated, Model toUpdateWith) 
             {
+                toBeUpdated.ModelName = toUpdateWith.ModelName;
                 toBeUpdated.Family = toUpdateWith.Family;
                 toBeUpdated.HasConstantPropeller = toUpdateWith.HasConstantPropeller;
                 toBeUpdated.HasFlaps = toUpdateWith.HasFlaps;
