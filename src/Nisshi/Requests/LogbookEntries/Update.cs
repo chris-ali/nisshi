@@ -43,7 +43,6 @@ namespace Nisshi.Requests.LogbookEntries
                 if (string.IsNullOrEmpty(username))
                     throw new RestException(HttpStatusCode.Unauthorized, Message.NotLoggedIn);
                 
-
                 var user = await context.Users.Where(x => x.Username == username)
                     .FirstOrDefaultAsync(cancellationToken);
 

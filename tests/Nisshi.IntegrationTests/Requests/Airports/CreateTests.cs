@@ -36,9 +36,17 @@ namespace Nisshi.IntegrationTests.Requests.Airports
             var airportResponse = await fixture.SendAsync(new Create.Command(airportRequest));
 
             Assert.NotNull(airportResponse);
-            Assert.Equal(airportRequest.AirportCode, airportResponse.AirportCode);
-            Assert.Equal(airportRequest.Latitude, airportResponse.Latitude);
-            Assert.Equal(airportRequest.Preferred, airportResponse.Preferred);
+
+            var fromDb = await fixture.GetNisshiContext().Airports.FindAsync(airportResponse.Id);
+            
+            Assert.NotNull(fromDb);
+
+            Assert.Equal(fromDb.AirportCode, airportResponse.AirportCode);
+            Assert.Equal(fromDb.Latitude, airportResponse.Latitude);
+            Assert.Equal(fromDb.Longitude, airportResponse.Longitude);
+            Assert.Equal(fromDb.Preferred, airportResponse.Preferred);
+            Assert.Equal(fromDb.Type, airportResponse.Type);
+            Assert.Equal(fromDb.SourceUserName, airportResponse.SourceUserName);
         }
 
         [Fact]

@@ -39,10 +39,15 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
             var aircraftResponse = await fixture.SendAsync(new Update.Command(aircraftRequest));
 
             Assert.NotNull(aircraftResponse);
-            Assert.Equal(aircraftRequest.TailNumber, aircraftResponse.TailNumber);
-            Assert.Equal(aircraftRequest.InstanceType, aircraftResponse.InstanceType);
-            Assert.Equal(aircraftRequest.LastEngineHobbs, aircraftResponse.LastEngineHobbs);
-            Assert.Equal(aircraftRequest.LastVOR, aircraftResponse.LastVOR);
+
+            var fromDb = await fixture.GetNisshiContext().Aircraft.FindAsync(aircraftResponse.Id);
+            
+            Assert.NotNull(fromDb);
+
+            Assert.Equal(fromDb.TailNumber, aircraftResponse.TailNumber);
+            Assert.Equal(fromDb.InstanceType, aircraftResponse.InstanceType);
+            Assert.Equal(fromDb.LastEngineHobbs, aircraftResponse.LastEngineHobbs);
+            Assert.Equal(fromDb.LastVOR, aircraftResponse.LastVOR);
         }
 
         [Fact]

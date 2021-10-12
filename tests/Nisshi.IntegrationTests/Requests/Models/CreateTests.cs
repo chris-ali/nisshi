@@ -25,8 +25,22 @@ namespace Nisshi.IntegrationTests.Requests.Models
             var modelResponse = await fixture.SendAsync(new Create.Command(modelRequest));
 
             Assert.NotNull(modelResponse);
+
+            var fromDb = await fixture.GetNisshiContext().Models.FindAsync(modelResponse.Id);
+            
+            Assert.NotNull(fromDb);
+
             Assert.Equal(modelRequest.ModelName, modelResponse.ModelName);
             Assert.Equal(modelRequest.IsHighPerformance, modelResponse.IsHighPerformance);
+            Assert.Equal(modelRequest.IsCertifiedSinglePilot, modelResponse.IsCertifiedSinglePilot);
+            Assert.Equal(modelRequest.HasConstantPropeller, modelResponse.HasConstantPropeller);
+            Assert.Equal(modelRequest.HasFlaps, modelResponse.HasFlaps);
+            Assert.Equal(modelRequest.IsComplex, modelResponse.IsComplex);
+            Assert.Equal(modelRequest.IsHelicopter, modelResponse.IsHelicopter);
+            Assert.Equal(modelRequest.IsMotorGlider, modelResponse.IsMotorGlider);
+            Assert.Equal(modelRequest.IsMultiEngine, modelResponse.IsMultiEngine);
+            Assert.Equal(modelRequest.IsTailwheel, modelResponse.IsTailwheel);
+            Assert.Equal(modelRequest.IsSimOnly, modelResponse.IsSimOnly);
         }
 
         [Fact]

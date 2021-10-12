@@ -25,7 +25,12 @@ namespace Nisshi.IntegrationTests.Requests.Manufacturers
             var manufacturerResponse = await fixture.SendAsync(new Create.Command(manufacturerRequest));
 
             Assert.NotNull(manufacturerResponse);
-            Assert.Equal(manufacturerRequest.ManufacturerName, manufacturerResponse.ManufacturerName);
+
+            var fromDb = await fixture.GetNisshiContext().Manufacturers.FindAsync(manufacturerResponse.Id);
+            
+            Assert.NotNull(fromDb);
+
+            Assert.Equal(fromDb.ManufacturerName, manufacturerResponse.ManufacturerName);
         }
 
         [Fact]

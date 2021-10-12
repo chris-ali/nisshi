@@ -1,5 +1,7 @@
+using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models.Users;
 using Nisshi.Requests.Users;
@@ -32,8 +34,14 @@ namespace Nisshi.IntegrationTests.Requests.Users
             var response = await fixture.SendAsync(new Register.Command(registration));
 
             Assert.NotNull(response);
-            Assert.Equal(registration.Username, response.Username);
-            Assert.Equal(registration.Email, response.Email);
+
+            var fromDb = await fixture.GetNisshiContext().Users
+                .Where(x => x.Username == response.Username).FirstOrDefaultAsync();
+            
+            Assert.NotNull(fromDb);
+
+            Assert.Equal(fromDb.Username, response.Username);
+            Assert.Equal(fromDb.Email, response.Email);
             Assert.NotEmpty(response.Token);
         }
 

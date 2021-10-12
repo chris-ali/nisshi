@@ -32,6 +32,11 @@ namespace Nisshi.IntegrationTests.Requests.Models
             var modelResponse = await fixture.SendAsync(new Update.Command(modelRequest));
 
             Assert.NotNull(modelResponse);
+
+            var fromDb = await fixture.GetNisshiContext().Models.FindAsync(modelResponse.Id);
+            
+            Assert.NotNull(fromDb);
+
             Assert.Equal(modelRequest.ModelName, modelResponse.ModelName);
             Assert.Equal(modelRequest.HasFlaps, modelResponse.HasFlaps);
         }

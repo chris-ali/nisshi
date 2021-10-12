@@ -30,10 +30,24 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
             var aircraftResponse = await fixture.SendAsync(new Create.Command(aircraftRequest));
 
             Assert.NotNull(aircraftResponse);
-            Assert.Equal(aircraftRequest.TailNumber, aircraftResponse.TailNumber);
-            Assert.Equal(aircraftRequest.InstanceType, aircraftResponse.InstanceType);
-            Assert.Equal(aircraftRequest.LastEngineHobbs, aircraftResponse.LastEngineHobbs);
-            Assert.Equal(aircraftRequest.LastVOR, aircraftResponse.LastVOR);
+
+            var fromDb = await fixture.GetNisshiContext().Aircraft.FindAsync(aircraftResponse.Id);
+            
+            Assert.NotNull(fromDb);
+
+            Assert.Equal(fromDb.TailNumber, aircraftResponse.TailNumber);
+            Assert.Equal(fromDb.InstanceType, aircraftResponse.InstanceType);
+            Assert.Equal(fromDb.LastEngineHobbs, aircraftResponse.LastEngineHobbs);
+            Assert.Equal(fromDb.LastVOR, aircraftResponse.LastVOR);
+            Assert.Equal(fromDb.Last100Hobbs, aircraftResponse.Last100Hobbs);
+            Assert.Equal(fromDb.LastAltimeter, aircraftResponse.LastAltimeter);
+            Assert.Equal(fromDb.LastELT, aircraftResponse.LastELT);
+            Assert.Equal(fromDb.LastOilHobbs, aircraftResponse.LastOilHobbs);
+            Assert.Equal(fromDb.LastPitotStatic, aircraftResponse.LastPitotStatic);
+            Assert.Equal(fromDb.LastTransponder, aircraftResponse.LastTransponder);
+            Assert.Equal(fromDb.Notes, aircraftResponse.Notes);
+            Assert.Equal(fromDb.RegistrationDue, aircraftResponse.RegistrationDue);
+            Assert.Equal(fromDb.TailNumber, aircraftResponse.TailNumber);
         }
 
         [Fact]
