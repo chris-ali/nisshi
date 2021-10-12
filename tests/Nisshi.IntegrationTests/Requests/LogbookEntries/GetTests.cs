@@ -62,9 +62,21 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
         }
 
         [Fact]
-        public async Task Should_Fail_No_User()
+        public async Task Should_Not_Find_Non_Existant_Entry()
         {
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new GetAll.Query()));
+            var user = await Helpers.RegisterTestUser(fixture);
+            var logbookEntryResponse = await fixture.SendAsync(new GetOneById.Query(11236));
+
+            Assert.Null(logbookEntryResponse);
+        }
+
+        [Fact]
+        public async Task Should_Not_Find_Other_Users_Entry()
+        {
+            var user = await Helpers.RegisterTestUser(fixture);
+            var logbookEntryResponse = await fixture.SendAsync(new GetOneById.Query(1));
+
+            Assert.Null(logbookEntryResponse);
         }
     }
 }

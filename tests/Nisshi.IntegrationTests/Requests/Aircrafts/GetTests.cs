@@ -63,5 +63,23 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
             Assert.NotNull(aircraftResponse);
             Assert.Equal(0, aircraftResponse.Count);
         }
+
+        [Fact]
+        public async Task Should_Not_Find_Non_Existant_Aircraft()
+        {
+            var user = await Helpers.RegisterTestUser(fixture);
+            var aircraftResponse = await fixture.SendAsync(new GetOneById.Query(11236));
+
+            Assert.Null(aircraftResponse);
+        }
+
+        [Fact]
+        public async Task Should_Not_Find_Other_Users_Aircraft()
+        {
+            var user = await Helpers.RegisterTestUser(fixture);
+            var aircraftResponse = await fixture.SendAsync(new GetOneById.Query(1));
+
+            Assert.Null(aircraftResponse);
+        }
     }
 }

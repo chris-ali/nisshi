@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure.Enums;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
@@ -49,11 +51,26 @@ namespace Nisshi.IntegrationTests.Requests.Users
             var updateResponse = await fixture.SendAsync(new UpdateProfile.Command(profileRequest));
 
             Assert.NotNull(updateResponse);
+
+            // Need to call a request, no idea why EF context.Find() doesn't work for User 
+            var fromDb = await fixture.SendAsync(new GetCurrent.Query());
+            
+            Assert.NotNull(fromDb);
+
             Assert.NotEqual(user.Hash, updateResponse.Hash);
             Assert.NotEqual(user.Salt, updateResponse.Salt);
-            Assert.NotEqual(user.FirstName, updateResponse.FirstName);
-            Assert.NotEqual(user.LastBFR, updateResponse.LastBFR);
-            Assert.NotEqual(user.MonthsToMedical, updateResponse.MonthsToMedical);
+            Assert.Equal(fromDb.FirstName, updateResponse.FirstName);
+            Assert.Equal(fromDb.LastName, updateResponse.LastName);
+            Assert.Equal(fromDb.LastBFR, updateResponse.LastBFR);
+            Assert.Equal(fromDb.MonthsToMedical, updateResponse.MonthsToMedical);
+            Assert.Equal(fromDb.CertificateNumber, updateResponse.CertificateNumber);
+            Assert.Equal(fromDb.CFIExpiration, updateResponse.CFIExpiration);
+            Assert.Equal(fromDb.IsInstructor, updateResponse.IsInstructor);
+            Assert.Equal(fromDb.LastMedical, updateResponse.LastMedical);
+            Assert.Equal(fromDb.License, updateResponse.License);
+            Assert.Equal(fromDb.PasswordAnswer, updateResponse.PasswordAnswer);
+            Assert.Equal(fromDb.PasswordQuestion, updateResponse.PasswordQuestion);
+            Assert.Equal(fromDb.Preferences, updateResponse.Preferences);
         }
 
         [Fact]
