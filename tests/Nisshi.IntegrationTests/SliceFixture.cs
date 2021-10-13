@@ -28,11 +28,10 @@ namespace Nisshi.IntegrationTests
             var startup = new Startup(config);
             var services = new ServiceCollection();
 
-            DbContextOptionsBuilder builder = new DbContextOptionsBuilder();
-            builder.UseInMemoryDatabase(DatabaseName);
-            services.AddSingleton(new NisshiContext((DbContextOptions<NisshiContext>)builder.Options));
-
             startup.ConfigureServices(services);
+
+            services.AddDbContext<NisshiContext>(opt => opt.UseInMemoryDatabase(DatabaseName));
+            services.AddScoped<ICurrentUserAccessor, StubCurrentUserAccessor>();
 
             provider = services.BuildServiceProvider();
 
@@ -105,17 +104,6 @@ namespace Nisshi.IntegrationTests
         public Task<T> ExecuteContextAsync<T>(Func<NisshiContext, Task<T>> action)
         {
             return ExecuteScopeAsync(x => action(x.GetService<NisshiContext>()));
-        }
-
-        public Task InsertAsync(params object[] entities)
-        {
-            return ExecuteContextAsync(x =>
-            {
-                foreach (var entity in entities)
-                    x.Add(entity);
-                
-                return x.SaveChangesAsync();
-            });
         }
 
         public Task SendAsync(IRequest request)

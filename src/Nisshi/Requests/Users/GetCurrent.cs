@@ -27,8 +27,11 @@ namespace Nisshi.Requests.Users
                 var userName = accessor.GetCurrentUserName();
                 var data = await context.Users.FirstOrDefaultAsync(x => x.Username == userName, cancellationToken);
 
-                if (string.IsNullOrEmpty(userName) || data == null) 
-                    throw new RestException(HttpStatusCode.NotFound, Message.NotLoggedIn);
+                if (string.IsNullOrEmpty(userName)) 
+                    throw new RestException(HttpStatusCode.Unauthorized, Message.NotLoggedIn);
+
+                if (data == null)
+                    throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
                 
                 return data;
             }

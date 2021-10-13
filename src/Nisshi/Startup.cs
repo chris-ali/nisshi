@@ -1,5 +1,6 @@
 using System.Reflection;
 using System.Text.Json;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,8 @@ namespace Nisshi
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidatorPipelineBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ContextTransactionPipelineBehavior<,>));
+
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             services.AddControllersWithViews().AddJsonOptions(opt => 
             {

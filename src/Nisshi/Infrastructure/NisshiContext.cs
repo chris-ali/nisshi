@@ -5,7 +5,6 @@ using Nisshi.Models;
 using Nisshi.Models.Users;
 using System;
 using System.Data;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Nisshi.Infrastructure
@@ -108,7 +107,63 @@ namespace Nisshi.Infrastructure
                 b.HasKey(x => x.Id);
             });
 
-            #region In Memory Seeding
+            if (Database.IsInMemory())
+                SeedMe(modelBuilder);
+        }      
+        
+        public void BeginTransaction()
+        {
+            if (currentTransaction != null)
+                return;
+
+            if (!Database.IsInMemory())
+                currentTransaction = Database.BeginTransaction(IsolationLevel.ReadCommitted);
+        }
+
+        public async Task CommitTransaction()
+        {
+            try
+            {
+                if (currentTransaction != null)
+                    await currentTransaction.CommitAsync();
+            }
+            catch
+            {
+                RollbackTransaction();
+                throw;
+            }
+            finally
+            {
+                if (currentTransaction != null)
+                {
+                    currentTransaction.Dispose();
+                    currentTransaction = null;
+                }
+            }
+        }
+
+        public void RollbackTransaction()
+        {
+            try
+            {
+                currentTransaction?.Rollback();     
+            }
+            finally
+            {
+                if (currentTransaction != null)
+                {
+                    currentTransaction.Dispose();
+                    currentTransaction = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Seeds in memory database for unit tests, demos, etc.
+        /// </summary>
+        /// <param name="modelBuilder"></param>
+        private void SeedMe(ModelBuilder modelBuilder)
+        {
             var hasher = new PasswordHasher();
             var salt1 = Guid.NewGuid().ToByteArray();
             var salt2 = Guid.NewGuid().ToByteArray();
@@ -193,54 +248,6 @@ namespace Nisshi.Infrastructure
                     NumInstrumentApproaches = 1, Route = $"{airports[2].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
             };
             modelBuilder.Entity<LogbookEntry>().HasData(logbookEntries);
-            #endregion
-        }      
-        
-        public void BeginTransaction()
-        {
-            if (currentTransaction != null)
-                return;
-
-            if (!Database.IsInMemory())
-                currentTransaction = Database.BeginTransaction(IsolationLevel.ReadCommitted);
-        }
-
-        public async Task CommitTransaction()
-        {
-            try
-            {
-                if (currentTransaction != null)
-                    await currentTransaction.CommitAsync();
-            }
-            catch
-            {
-                RollbackTransaction();
-                throw;
-            }
-            finally
-            {
-                if (currentTransaction != null)
-                {
-                    currentTransaction.Dispose();
-                    currentTransaction = null;
-                }
-            }
-        }
-
-        public void RollbackTransaction()
-        {
-            try
-            {
-                currentTransaction?.Rollback();     
-            }
-            finally
-            {
-                if (currentTransaction != null)
-                {
-                    currentTransaction.Dispose();
-                    currentTransaction = null;
-                }
-            }
         }
     }
 }

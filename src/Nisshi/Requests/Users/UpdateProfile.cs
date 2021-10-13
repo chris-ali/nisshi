@@ -56,7 +56,7 @@ namespace Nisshi.Requests.Users
                     user.Hash = await hasher.HashAsync(request.edit.Password, iodized, cancellationToken);
                 }
 
-                context.Update(user);
+                context.Update<User>(user);
                 await context.SaveChangesAsync(cancellationToken);
 
                 return user;

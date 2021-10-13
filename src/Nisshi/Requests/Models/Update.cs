@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -7,7 +6,6 @@ using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 
 namespace Nisshi.Requests.Models
@@ -57,6 +55,7 @@ namespace Nisshi.Requests.Models
             /// <param name="toUpdateWith"></param>
             private void Update(ref Model toBeUpdated, Model toUpdateWith) 
             {
+                toBeUpdated.ModelName = toUpdateWith.ModelName;
                 toBeUpdated.Family = toUpdateWith.Family;
                 toBeUpdated.HasConstantPropeller = toUpdateWith.HasConstantPropeller;
                 toBeUpdated.HasFlaps = toUpdateWith.HasFlaps;
