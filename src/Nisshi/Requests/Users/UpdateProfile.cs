@@ -39,10 +39,9 @@ namespace Nisshi.Requests.Users
             public async Task<User> Handle(Command request, CancellationToken cancellationToken)
             {
                 var username = accessor.GetCurrentUserName();
-                if (string.IsNullOrEmpty(username))
-                    throw new RestException(HttpStatusCode.Unauthorized, Message.NotLoggedIn);
 
-                var user = await context.Users.Where(x => x.Username == username).SingleOrDefaultAsync(cancellationToken);
+                var user = await context.Users.SingleOrDefaultAsync(x => x.Username == username, cancellationToken);
+                
                 if (user == null)
                     throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
                                 

@@ -37,12 +37,8 @@ namespace Nisshi.Requests.LogbookEntries
             {
                 var username = accessor.GetCurrentUserName();
                 
-                if (string.IsNullOrEmpty(username))
-                    throw new RestException(HttpStatusCode.Unauthorized, Message.ItemDoesNotExist);
-                
                 var currentUser = await context.Users
-                    .Where(x => x.Username == username)
-                    .FirstOrDefaultAsync(cancellationToken);
+                    .FirstOrDefaultAsync(x => x.Username == username, cancellationToken);
 
                 request.logbookEntry.DateCreated = request.logbookEntry.DateUpdated = DateTime.Now;
                 request.logbookEntry.Owner = currentUser;

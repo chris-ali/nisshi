@@ -34,6 +34,7 @@ namespace Nisshi.Requests.Models
             public async Task<Model> Handle(Command request, CancellationToken cancellationToken)
             {
                 var data = await context.FindAsync<Model>(new object[] { request.model.Id }, cancellationToken);
+                
                 if (data == null) 
                     throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
                 

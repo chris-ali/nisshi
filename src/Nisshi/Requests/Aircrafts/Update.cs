@@ -39,15 +39,14 @@ namespace Nisshi.Requests.Aircrafts
             public async Task<Aircraft> Handle(Command request, CancellationToken cancellationToken)
             {
                 var data = await context.FindAsync<Aircraft>(new object[] { request.aircraft.Id }, cancellationToken);
+                
                 if (data == null) 
                     throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
                 
                 var username = accessor.GetCurrentUserName();                
-                if (string.IsNullOrEmpty(username))
-                    throw new RestException(HttpStatusCode.Unauthorized, Message.NotLoggedIn);
-                
-                var user = await context.Users.Where(x => x.Username == username)
-                    .FirstOrDefaultAsync(cancellationToken);
+
+                var user = await context.Users
+                    .FirstOrDefaultAsync(x => x.Username == username, cancellationToken);
 
                 Update(ref data, request.aircraft);
                 data.DateUpdated = DateTime.Now;

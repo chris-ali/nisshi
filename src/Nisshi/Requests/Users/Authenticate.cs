@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
@@ -11,6 +10,7 @@ using System;
 using Nisshi.Infrastructure.Security;
 using AutoMapper;
 using Nisshi.Models.Users;
+using System.Security.Authentication;
 
 namespace Nisshi.Requests.Users
 {
@@ -46,14 +46,17 @@ namespace Nisshi.Requests.Users
 
             public async Task<LoggedIn> Handle(Command request, CancellationToken cancellationToken)
             {
-                var user = await context.Users.Where(x => x.Username == request.login.Username).SingleOrDefaultAsync(cancellationToken);
+                var user = await context.Users
+                    .SingleOrDefaultAsync(x => x.Username == request.login.Username, cancellationToken);
+                
                 if (user == null)
-                    throw new RestException(HttpStatusCode.Unauthorized, Message.InvalidCredentials);
+                    throw new AuthenticationException(Message.InvalidCredentials.ToString());
                 
                 var authenticated = user.Hash.SequenceEqual(await hasher.HashAsync(request.login.Password ?? throw new InvalidOperationException(), 
                     user.Salt, cancellationToken));
+                
                 if (!authenticated)
-                    throw new RestException(HttpStatusCode.Unauthorized, Message.InvalidCredentials);
+                    throw new AuthenticationException(Message.InvalidCredentials.ToString());
                                 
                 // Maps to a model that includes a JWT token for Angular
                 var loggedInUser = mapper.Map<User, LoggedIn>(user);

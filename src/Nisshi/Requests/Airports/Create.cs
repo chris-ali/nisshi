@@ -43,9 +43,7 @@ namespace Nisshi.Requests.Airports
                     throw new RestException(HttpStatusCode.BadRequest, Message.ItemExistsAlready);
 
                 var username = accessor.GetCurrentUserName();
-                if (string.IsNullOrEmpty(username))
-                    throw new RestException(HttpStatusCode.Unauthorized, Message.NotLoggedIn);
-                
+
                 request.airport.DateCreated = request.airport.DateUpdated = DateTime.Now;
                 request.airport.SourceUserName = username;
 

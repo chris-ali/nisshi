@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
@@ -11,6 +10,7 @@ using System;
 using Nisshi.Infrastructure.Security;
 using AutoMapper;
 using Nisshi.Models.Users;
+using System.Security.Authentication;
 
 namespace Nisshi.Requests.Users
 {
@@ -47,10 +47,10 @@ namespace Nisshi.Requests.Users
             public async Task<LoggedIn> Handle(Command request, CancellationToken cancellationToken)
             {
                 if (await context.Users.Where(x => x.Username == request.registration.Username).AnyAsync(cancellationToken))
-                    throw new RestException(HttpStatusCode.BadRequest, Message.UsernameExists);
+                    throw new InvalidCredentialException(Message.UsernameExists.ToString());
                 
                 if (await context.Users.Where(x => x.Email == request.registration.Email).AnyAsync(cancellationToken))
-                    throw new RestException(HttpStatusCode.BadRequest, Message.EmailExists);
+                    throw new InvalidCredentialException(Message.EmailExists.ToString());
                 
                 var iodized = Guid.NewGuid().ToByteArray();
                 var user = new User 

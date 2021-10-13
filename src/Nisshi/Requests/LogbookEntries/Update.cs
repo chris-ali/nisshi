@@ -36,15 +36,14 @@ namespace Nisshi.Requests.LogbookEntries
             public async Task<LogbookEntry> Handle(Command request, CancellationToken cancellationToken)
             {
                 var data = await context.FindAsync<LogbookEntry>(new object[] { request.logbookEntry.Id }, cancellationToken);
+                
                 if (data == null) 
                     throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
                 
                 var username = accessor.GetCurrentUserName();
-                if (string.IsNullOrEmpty(username))
-                    throw new RestException(HttpStatusCode.Unauthorized, Message.NotLoggedIn);
-                
-                var user = await context.Users.Where(x => x.Username == username)
-                    .FirstOrDefaultAsync(cancellationToken);
+
+                var user = await context.Users
+                    .FirstOrDefaultAsync(x => x.Username == username, cancellationToken);
 
                 Update(ref data, request.logbookEntry);
                 data.DateUpdated = DateTime.Now;

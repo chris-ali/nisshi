@@ -1,5 +1,4 @@
 using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
@@ -40,13 +39,9 @@ namespace Nisshi.Requests.Aircrafts
             public async Task<Aircraft> Handle(Command request, CancellationToken cancellationToken)
             { 
                 var username = accessor.GetCurrentUserName();
-                
-                if (string.IsNullOrEmpty(username))
-                    throw new RestException(HttpStatusCode.Unauthorized, Message.NotLoggedIn);
-                
+ 
                 var currentUser = await context.Users
-                    .Where(x => x.Username == username)
-                    .FirstOrDefaultAsync(cancellationToken);
+                    .FirstOrDefaultAsync(x => x.Username == username, cancellationToken);
 
                 request.aircraft.DateCreated = request.aircraft.DateUpdated = DateTime.Now;
                 request.aircraft.Owner = currentUser;

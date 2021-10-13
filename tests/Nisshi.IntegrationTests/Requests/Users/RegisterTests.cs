@@ -1,8 +1,8 @@
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Nisshi.Infrastructure.Errors;
 using Nisshi.Models.Users;
 using Nisshi.Requests.Users;
 using Xunit;
@@ -63,7 +63,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
                 Password = "test123!"
             };
 
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Register.Command(registration)));
+            await Assert.ThrowsAsync<InvalidCredentialException>(() => fixture.SendAsync(new Register.Command(registration)));
         }
 
         [Fact]
@@ -78,7 +78,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
                 Password = "test123!"
             };
 
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Register.Command(registration)));
+            await Assert.ThrowsAsync<InvalidCredentialException>(() => fixture.SendAsync(new Register.Command(registration)));
         }
     }
 }
