@@ -45,5 +45,13 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
 
             await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Delete.Command(testAircraft.Id)));
         }
+
+        [Fact]
+        public async Task Should_Not_Delete_Other_Users_Aircraft()
+        {
+            var user = await Helpers.RegisterTestUser(fixture);
+
+            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Delete.Command(1)));
+        }
     }
 }
