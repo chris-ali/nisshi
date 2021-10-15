@@ -22,7 +22,7 @@ namespace Nisshi.IntegrationTests.Requests
         /// </summary>
         /// <param name="fixture">Testing slice fixture</param>
         /// <returns>A newly registered test user</returns>
-        public static async Task<User> RegisterTestUser(SliceFixture fixture)
+        public static async Task<User> RegisterAndGetTestUser(SliceFixture fixture)
         {
             var command = new Register.Command(new Registration 
             {
@@ -31,10 +31,10 @@ namespace Nisshi.IntegrationTests.Requests
                 Password = "test123!"
             });
 
-            var result = await fixture.SendAsync(command);
+            await fixture.SendAsync(command);
 
             return await fixture.GetNisshiContext().Users
-                .Where(x => x.Username == result.Username).SingleOrDefaultAsync();
+                .SingleOrDefaultAsync(x => x.Username == TestUserName);
         }
         
         /// <summary>
@@ -49,7 +49,7 @@ namespace Nisshi.IntegrationTests.Requests
             return new Aircraft 
             {
                 IdModel = model.Id,
-                IdUser = user.Id,
+                IdUser = user?.Id ?? 0,
                 TailNumber = "N31SD",
                 InstanceType = InstanceType.Real,
                 Last100Hobbs = 10,

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Nisshi.Models;
 using Nisshi.Requests.Models;
@@ -8,7 +9,7 @@ namespace Nisshi.IntegrationTests.Requests.Models
     /// <summary>
     /// Tests getting a model in various scenarios
     /// </summary>
-    public class GetTests : IClassFixture<SliceFixture>
+    public class GetTests : IClassFixture<SliceFixture>, IDisposable
     {
         private readonly SliceFixture fixture;
 
@@ -20,7 +21,7 @@ namespace Nisshi.IntegrationTests.Requests.Models
         [Fact]
         public async Task Get_One_Should_Find_One()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             var testModel = await Helpers.CreateTestModel(fixture);
             var modelRequest = await Helpers.SaveAndGet<Model>(fixture, testModel);
 
@@ -51,11 +52,16 @@ namespace Nisshi.IntegrationTests.Requests.Models
         [Fact]
         public async Task Get_Many_Should_Find_None()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             var aircraftResponse = await fixture.SendAsync(new GetManyByPartialName.Query("441"));
 
             Assert.NotNull(aircraftResponse);
             Assert.Equal(0, aircraftResponse.Count);
+        }
+
+        public void Dispose()
+        {
+            fixture.ResetDatabase();
         }
     }
 }

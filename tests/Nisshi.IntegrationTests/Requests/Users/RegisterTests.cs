@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
     /// <summary>
     /// Tests registering a user in various scenarios
     /// </summary>
-    public class RegisterTests : IClassFixture<SliceFixture>
+    public class RegisterTests : IClassFixture<SliceFixture>, IDisposable
     {
         private readonly SliceFixture fixture;
 
@@ -54,7 +55,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
         [Fact]
         public async Task Should_Fail_Username_Exists()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
 
             var registration = new Registration
             {
@@ -69,7 +70,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
         [Fact]
         public async Task Should_Fail_Email_Exists()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
 
             var registration = new Registration
             {
@@ -79,6 +80,11 @@ namespace Nisshi.IntegrationTests.Requests.Users
             };
 
             await Assert.ThrowsAsync<InvalidCredentialException>(() => fixture.SendAsync(new Register.Command(registration)));
+        }
+
+        public void Dispose()
+        {
+            fixture.ResetDatabase();
         }
     }
 }

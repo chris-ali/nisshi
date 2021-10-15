@@ -41,7 +41,7 @@ namespace Nisshi.Requests.Aircrafts
                 var data = await context.FindAsync<Aircraft>(new object[] { request.aircraft.Id }, cancellationToken);
                 
                 if (data == null) 
-                    throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
+                    throw new DomainException(typeof(Aircraft), Message.ItemDoesNotExist);
                 
                 var username = accessor.GetCurrentUserName();                
 

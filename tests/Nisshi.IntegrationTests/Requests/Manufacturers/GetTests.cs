@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Nisshi.Requests.Manufacturers;
 using Xunit;
@@ -7,7 +8,7 @@ namespace Nisshi.IntegrationTests.Requests.Manufacturers
     /// <summary>
     /// Tests getting a manufacturer in various scenarios
     /// </summary>
-    public class GetTests : IClassFixture<SliceFixture>
+    public class GetTests : IClassFixture<SliceFixture>, IDisposable
     {
         private readonly SliceFixture fixture;
 
@@ -32,6 +33,11 @@ namespace Nisshi.IntegrationTests.Requests.Manufacturers
 
             Assert.NotNull(manufacturerResponse);
             Assert.Equal(0, manufacturerResponse.Count);
+        }
+
+        public void Dispose()
+        {
+            fixture.ResetDatabase();
         }
     }
 }

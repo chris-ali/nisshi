@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Nisshi.Requests.CategoryClasses;
 using Xunit;
@@ -7,7 +8,7 @@ namespace Nisshi.IntegrationTests.Requests.CategoryClasses
     /// <summary>
     /// Tests getting a categoryclass in various scenarios
     /// </summary>
-    public class GetTests : IClassFixture<SliceFixture>
+    public class GetTests : IClassFixture<SliceFixture>, IDisposable
     {
         private readonly SliceFixture fixture;
 
@@ -39,6 +40,11 @@ namespace Nisshi.IntegrationTests.Requests.CategoryClasses
             var catClassResponse = await fixture.SendAsync(new GetOneById.Query(465));
 
             Assert.Null(catClassResponse);
+        }
+
+        public void Dispose()
+        {
+            fixture.ResetDatabase();
         }
     }
 }

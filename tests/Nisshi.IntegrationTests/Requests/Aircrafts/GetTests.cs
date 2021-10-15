@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
@@ -12,7 +13,7 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
     /// <summary>
     /// Tests getting an aircraft in various scenarios
     /// </summary>
-    public class GetTests : IClassFixture<SliceFixture>
+    public class GetTests : IClassFixture<SliceFixture>, IDisposable
     {
         private readonly SliceFixture fixture;
 
@@ -24,7 +25,7 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
         [Fact]
         public async Task Should_Find_One()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             var testAircraft = await Helpers.CreateTestAircraft(fixture, user);
             var aircraftRequest = await Helpers.SaveAndGet<Aircraft>(fixture, testAircraft);
 
@@ -40,7 +41,7 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
         [Fact]
         public async Task Should_Find_Three()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             var testAircraft = await Helpers.CreateTestAircraft(fixture, user);
             var testAircraft1 = await Helpers.CreateTestAircraft(fixture, user);
             var testAircraft2 = await Helpers.CreateTestAircraft(fixture, user);
@@ -57,7 +58,7 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
         [Fact]
         public async Task Should_Find_None()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             var aircraftResponse = await fixture.SendAsync(new GetAll.Query());
 
             Assert.NotNull(aircraftResponse);
@@ -67,7 +68,7 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
         [Fact]
         public async Task Should_Not_Find_Non_Existant_Aircraft()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             var aircraftResponse = await fixture.SendAsync(new GetOneById.Query(11236));
 
             Assert.Null(aircraftResponse);
@@ -76,10 +77,15 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
         [Fact]
         public async Task Should_Not_Find_Other_Users_Aircraft()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             var aircraftResponse = await fixture.SendAsync(new GetOneById.Query(1));
 
             Assert.Null(aircraftResponse);
+        }
+
+        public void Dispose()
+        {
+            fixture.ResetDatabase();
         }
     }
 }

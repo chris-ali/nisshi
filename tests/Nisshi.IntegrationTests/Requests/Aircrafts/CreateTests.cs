@@ -1,6 +1,6 @@
+using System;
 using System.Threading.Tasks;
 using FluentValidation;
-using Nisshi.Infrastructure.Errors;
 using Nisshi.Requests.Aircrafts;
 using Xunit;
 
@@ -12,7 +12,7 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
     /// <summary>
     /// Tests creating an aircraft in various scenarios
     /// </summary>
-    public class CreateTests : IClassFixture<SliceFixture>
+    public class CreateTests : IClassFixture<SliceFixture>, IDisposable
     {
         private readonly SliceFixture fixture;
 
@@ -24,7 +24,7 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
         [Fact]
         public async Task Should_Have_Been_Created()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             var aircraftRequest = await Helpers.CreateTestAircraft(fixture, user);
 
             var aircraftResponse = await fixture.SendAsync(new Create.Command(aircraftRequest));
@@ -53,17 +53,14 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
         [Fact]
         public async Task Should_Fail_Input_Null()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             
             await Assert.ThrowsAsync<ValidationException>(() => fixture.SendAsync(new Create.Command(null)));
         }
 
-        [Fact]
-        public async Task Should_Fail_No_User()
+        public void Dispose()
         {
-            var aircraftRequest = await Helpers.CreateTestAircraft(fixture, null);
-
-            await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new Create.Command(aircraftRequest)));
-        } 
+            fixture.ResetDatabase();
+        }
     }
 }

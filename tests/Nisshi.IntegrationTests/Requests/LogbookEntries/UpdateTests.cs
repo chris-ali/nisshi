@@ -11,7 +11,7 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
     /// <summary>
     /// Tests editing a logbook entry in various scenarios
     /// </summary>
-    public class UpdateTests : IClassFixture<SliceFixture>
+    public class UpdateTests : IClassFixture<SliceFixture>, IDisposable
     {
         private readonly SliceFixture fixture;
 
@@ -23,7 +23,7 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
         [Fact]
         public async Task Should_Have_Been_Updated()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             var testLogbookEntry = await Helpers.CreateTestLogbookEntry(fixture, user);
             var logbookEntryRequest = await Helpers.SaveAndGet<LogbookEntry>(fixture, testLogbookEntry);
 
@@ -49,26 +49,23 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
         [Fact]
         public async Task Should_Fail_Input_Null()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             
             await Assert.ThrowsAsync<ValidationException>(() => fixture.SendAsync(new Update.Command(null)));
         }
 
         [Fact]
-        public async Task Should_Fail_No_User()
-        {
-            var logbookEntryRequest = await Helpers.CreateTestLogbookEntry(fixture, null);
-
-            await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new Update.Command(logbookEntryRequest)));
-        }
-
-        [Fact]
         public async Task Should_Fail_Doesnt_Exist()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             var testLogbookEntry = await Helpers.CreateTestLogbookEntry(fixture, user);
 
             await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new Update.Command(testLogbookEntry)));
+        }
+
+        public void Dispose()
+        {
+            fixture.ResetDatabase();
         }
     }
 }

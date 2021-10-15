@@ -14,7 +14,6 @@ namespace Nisshi.IntegrationTests
         private static readonly IConfiguration config;
         private readonly IServiceScopeFactory scopeFactory;
         private readonly ServiceProvider provider;
-        private readonly string DatabaseName = $"{Guid.NewGuid()}.db";
 
         static SliceFixture()
         {
@@ -30,7 +29,7 @@ namespace Nisshi.IntegrationTests
 
             startup.ConfigureServices(services);
 
-            services.AddDbContext<NisshiContext>(opt => opt.UseInMemoryDatabase(DatabaseName));
+            services.AddDbContext<NisshiContext>(opt => opt.UseInMemoryDatabase("NisshiTest"));
             services.AddScoped<ICurrentUserAccessor, StubCurrentUserAccessor>();
 
             provider = services.BuildServiceProvider();
@@ -42,11 +41,21 @@ namespace Nisshi.IntegrationTests
         public NisshiContext GetNisshiContext() 
         {
             return provider.GetRequiredService<NisshiContext>();
-        }      
+        }
+
+        /// <summary>
+        /// Resets the database back to the original in memory state;
+        /// call after each test in a test class' Dispose() method
+        /// </summary>
+        public void ResetDatabase() 
+        {
+            GetNisshiContext().Database.EnsureDeleted();
+            GetNisshiContext().Database.EnsureCreated();
+        }
 
         public void Dispose()
         {
-            File.Delete(DatabaseName);
+            ResetDatabase();
         }
 
         #region Task Executions

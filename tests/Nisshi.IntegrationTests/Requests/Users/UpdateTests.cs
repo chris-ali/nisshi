@@ -1,11 +1,7 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
-using Nisshi.Infrastructure.Enums;
 using Nisshi.Infrastructure.Errors;
-using Nisshi.Models;
 using Nisshi.Models.Users;
 using Nisshi.Requests.Users;
 using Xunit;
@@ -15,7 +11,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
     /// <summary>
     /// Tests editing a user in various scenarios
     /// </summary>
-    public class UpdateTests : IClassFixture<SliceFixture>
+    public class UpdateTests : IClassFixture<SliceFixture>, IDisposable
     {
         private readonly SliceFixture fixture;
 
@@ -27,7 +23,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
         [Fact]
         public async Task Should_Have_Been_Updated()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
 
             var profileRequest = new Profile
             {
@@ -76,7 +72,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
         [Fact]
         public async Task Should_Fail_Input_Null()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             
             await Assert.ThrowsAsync<ValidationException>(() => fixture.SendAsync(new UpdateProfile.Command(null)));
         }
@@ -104,6 +100,11 @@ namespace Nisshi.IntegrationTests.Requests.Users
             };
 
             await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new UpdateProfile.Command(profileRequest)));
+        }
+
+        public void Dispose()
+        {
+            fixture.ResetDatabase();
         }
     }
 }

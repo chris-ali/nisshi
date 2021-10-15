@@ -11,7 +11,7 @@ namespace Nisshi.IntegrationTests.Requests.Models
     /// <summary>
     /// Tests editing a model in various scenarios
     /// </summary>
-    public class UpdateTests : IClassFixture<SliceFixture>
+    public class UpdateTests : IClassFixture<SliceFixture>, IDisposable
     {
         private readonly SliceFixture fixture;
 
@@ -53,6 +53,11 @@ namespace Nisshi.IntegrationTests.Requests.Models
             var testModel = await Helpers.CreateTestModel(fixture);
 
             await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new Update.Command(testModel)));
+        }
+
+        public void Dispose()
+        {
+            fixture.ResetDatabase();
         }
     }
 }

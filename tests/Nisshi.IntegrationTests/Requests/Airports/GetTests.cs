@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Nisshi.Requests.Airports;
 using Xunit;
@@ -7,7 +8,7 @@ namespace Nisshi.IntegrationTests.Requests.Airports
     /// <summary>
     /// Tests getting an airport in various scenarios
     /// </summary>
-    public class GetTests : IClassFixture<SliceFixture>
+    public class GetTests : IClassFixture<SliceFixture>, IDisposable
     {
         private readonly SliceFixture fixture;
 
@@ -32,6 +33,11 @@ namespace Nisshi.IntegrationTests.Requests.Airports
 
             Assert.NotNull(airportResponse);
             Assert.Equal(0, airportResponse.Count);
+        }
+
+        public void Dispose()
+        {
+            fixture.ResetDatabase();
         }
     }
 }
