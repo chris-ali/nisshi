@@ -6,6 +6,8 @@ using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
 using MediatR;
 using FluentValidation;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Nisshi.Requests.Models
 {
@@ -32,6 +34,13 @@ namespace Nisshi.Requests.Models
 
             public async Task<Model> Handle(Command request, CancellationToken cancellationToken)
             {
+                var model = await context.Models
+                    .Where(x => x.ModelName.ToUpper() == request.model.ModelName.ToUpper())
+                    .FirstOrDefaultAsync(cancellationToken);
+
+                if (model != null)
+                    throw new DomainException(typeof(Manufacturer), Message.ItemExistsAlready);
+
                 request.model.DateCreated = request.model.DateUpdated = DateTime.Now;
 
                 await context.AddAsync<Model>(request.model, cancellationToken);

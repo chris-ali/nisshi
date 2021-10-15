@@ -40,7 +40,7 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
             var user = await Helpers.RegisterTestUser(fixture);
             var testLogbookEntry = await Helpers.CreateTestLogbookEntry(fixture, user);
 
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Delete.Command(testLogbookEntry.Id)));
+            await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new Delete.Command(testLogbookEntry.Id)));
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
         {
             var user = await Helpers.RegisterTestUser(fixture);
 
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Delete.Command(1)));
+            await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new Delete.Command(1)));
         }
     }
 }

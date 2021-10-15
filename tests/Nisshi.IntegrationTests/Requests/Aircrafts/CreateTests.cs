@@ -63,7 +63,7 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
         {
             var aircraftRequest = await Helpers.CreateTestAircraft(fixture, null);
 
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Create.Command(aircraftRequest)));
+            await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new Create.Command(aircraftRequest)));
         } 
     }
 }

@@ -1,4 +1,3 @@
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
@@ -34,7 +33,7 @@ namespace Nisshi.Requests.Aircrafts
                         && x.Owner.Username.ToUpper() == username.ToUpper(), cancellationToken);
 
                 if (data == null)
-                    throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
+                    throw new DomainException(typeof(Aircraft), Message.ItemDoesNotExist);
 
                 // Should also cascade to remove logbook entries
                 context.Remove(data);

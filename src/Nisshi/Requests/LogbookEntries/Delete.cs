@@ -1,4 +1,3 @@
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
@@ -31,7 +30,7 @@ namespace Nisshi.Requests.LogbookEntries
                         && x.Owner.Username.ToUpper() == username.ToUpper(), cancellationToken);
                 
                 if (data == null)
-                    throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
+                    throw new DomainException(typeof(LogbookEntry), Message.ItemDoesNotExist);
 
                 context.Remove(data);
                 await context.SaveChangesAsync();

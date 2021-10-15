@@ -32,7 +32,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
         [Fact]
         public async Task Should_Fail_Doesnt_Exist()
         {
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new GetCurrent.Query()));
+            await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new GetCurrent.Query()));
         } 
     }
 }

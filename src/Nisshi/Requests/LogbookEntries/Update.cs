@@ -1,6 +1,4 @@
 using System;
-using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
@@ -38,7 +36,7 @@ namespace Nisshi.Requests.LogbookEntries
                 var data = await context.FindAsync<LogbookEntry>(new object[] { request.logbookEntry.Id }, cancellationToken);
                 
                 if (data == null) 
-                    throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
+                    throw new DomainException(typeof(LogbookEntry), Message.ItemDoesNotExist);
                 
                 var username = accessor.GetCurrentUserName();
 

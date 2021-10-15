@@ -1,5 +1,4 @@
 using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
@@ -36,11 +35,11 @@ namespace Nisshi.Requests.Manufacturers
             public async Task<Manufacturer> Handle(Command request, CancellationToken cancellationToken)
             {
                 var manufacturer = await context.Manufacturers
-                    .Where(x => x.ManufacturerName == request.manufacturer.ManufacturerName)
+                    .Where(x => x.ManufacturerName.ToUpper() == request.manufacturer.ManufacturerName.ToUpper())
                     .FirstOrDefaultAsync(cancellationToken);
 
                 if (manufacturer != null)
-                    throw new RestException(HttpStatusCode.BadRequest, Message.ItemExistsAlready);
+                    throw new DomainException(typeof(Manufacturer), Message.ItemExistsAlready);
                 
                 request.manufacturer.DateCreated = request.manufacturer.DateUpdated = DateTime.Now;
 

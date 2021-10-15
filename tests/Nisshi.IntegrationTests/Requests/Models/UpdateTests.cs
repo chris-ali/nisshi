@@ -52,7 +52,7 @@ namespace Nisshi.IntegrationTests.Requests.Models
         {
             var testModel = await Helpers.CreateTestModel(fixture);
 
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Update.Command(testModel)));
+            await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new Update.Command(testModel)));
         }
     }
 }

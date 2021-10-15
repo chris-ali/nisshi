@@ -1,4 +1,3 @@
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
@@ -7,13 +6,12 @@ using MediatR;
 using System;
 using FluentValidation;
 using Nisshi.Models.Users;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure.Security;
 
 namespace Nisshi.Requests.Users
 {
-  public class UpdateProfile
+    public class UpdateProfile
     {
         public record Command(Profile edit) : IRequest<User>;
 
@@ -43,7 +41,7 @@ namespace Nisshi.Requests.Users
                 var user = await context.Users.SingleOrDefaultAsync(x => x.Username == username, cancellationToken);
                 
                 if (user == null)
-                    throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
+                    throw new DomainException(typeof(User), Message.ItemDoesNotExist);
                                 
                 Update(ref user, request.edit);
                 user.DateUpdated = DateTime.Now;

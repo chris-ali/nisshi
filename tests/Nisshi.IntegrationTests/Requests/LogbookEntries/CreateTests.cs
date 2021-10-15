@@ -66,7 +66,7 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
         {
             var logbookEntryRequest = await Helpers.CreateTestLogbookEntry(fixture, null);
 
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Create.Command(logbookEntryRequest)));
+            await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new Create.Command(logbookEntryRequest)));
         } 
     }
 }

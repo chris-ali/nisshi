@@ -69,7 +69,7 @@ namespace Nisshi.IntegrationTests.Requests.Airports
                 SourceUserName = Helpers.TestUserName
             };
 
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Create.Command(airportRequest)));
+            await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new Create.Command(airportRequest)));
         }
     }
 }

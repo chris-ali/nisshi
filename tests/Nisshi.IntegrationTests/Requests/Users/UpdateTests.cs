@@ -103,7 +103,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
                 Preferences = "{option: value, option2: value2}"
             };
 
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new UpdateProfile.Command(profileRequest)));
+            await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new UpdateProfile.Command(profileRequest)));
         }
     }
 }

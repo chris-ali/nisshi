@@ -43,7 +43,7 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
             var user = await Helpers.RegisterTestUser(fixture);
             var testAircraft = await Helpers.CreateTestAircraft(fixture, user);
 
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Delete.Command(testAircraft.Id)));
+            await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new Delete.Command(testAircraft.Id)));
         }
 
         [Fact]
@@ -51,7 +51,7 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
         {
             var user = await Helpers.RegisterTestUser(fixture);
 
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Delete.Command(1)));
+            await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new Delete.Command(1)));
         }
     }
 }
