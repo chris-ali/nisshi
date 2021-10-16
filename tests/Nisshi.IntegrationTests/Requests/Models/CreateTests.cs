@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using FluentValidation;
 using Nisshi.Requests.Models;
@@ -8,13 +9,13 @@ namespace Nisshi.IntegrationTests.Requests.Models
     /// <summary>
     /// Tests creating a model in various scenarios
     /// </summary>
-    public class CreateTests : IClassFixture<SliceFixture>
+    public class CreateTests : IDisposable
     {
         private readonly SliceFixture fixture;
 
-        public CreateTests(SliceFixture fixture)
+        public CreateTests()
         {
-            this.fixture = fixture;
+            this.fixture = new SliceFixture();
         }
 
         [Fact]
@@ -47,6 +48,11 @@ namespace Nisshi.IntegrationTests.Requests.Models
         public async Task Should_Fail_Input_Null()
         {
             await Assert.ThrowsAsync<ValidationException>(() => fixture.SendAsync(new Create.Command(null)));
+        }
+
+        public void Dispose()
+        {
+            fixture.ResetDatabase();
         }
     }
 }

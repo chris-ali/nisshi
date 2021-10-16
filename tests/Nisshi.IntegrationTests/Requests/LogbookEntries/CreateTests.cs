@@ -1,6 +1,6 @@
+using System;
 using System.Threading.Tasks;
 using FluentValidation;
-using Nisshi.Infrastructure.Errors;
 using Nisshi.Requests.LogbookEntries;
 using Xunit;
 
@@ -9,19 +9,19 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
     /// <summary>
     /// Tests creating a logbook entry in various scenarios
     /// </summary>
-    public class CreateTests : IClassFixture<SliceFixture>
+    public class CreateTests : IDisposable
     {
         private readonly SliceFixture fixture;
 
-        public CreateTests(SliceFixture fixture)
+        public CreateTests()
         {
-            this.fixture = fixture;
+            this.fixture = new SliceFixture();
         }
 
         [Fact]
         public async Task Should_Have_Been_Created()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             var logbookEntryRequest = await Helpers.CreateTestLogbookEntry(fixture, user);
 
             var logbookEntryResponse = await fixture.SendAsync(new Create.Command(logbookEntryRequest));
@@ -56,17 +56,14 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
         [Fact]
         public async Task Should_Fail_Input_Null()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             
             await Assert.ThrowsAsync<ValidationException>(() => fixture.SendAsync(new Create.Command(null)));
         }
 
-        [Fact]
-        public async Task Should_Fail_No_User()
+        public void Dispose()
         {
-            var logbookEntryRequest = await Helpers.CreateTestLogbookEntry(fixture, null);
-
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Create.Command(logbookEntryRequest)));
-        } 
+            fixture.ResetDatabase();
+        }
     }
 }

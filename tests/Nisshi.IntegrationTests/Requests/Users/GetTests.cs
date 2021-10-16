@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Requests.Users;
@@ -8,19 +9,19 @@ namespace Nisshi.IntegrationTests.Requests.Users
     /// <summary>
     /// Tests getting a user in various scenarios
     /// </summary>
-    public class GetTests : IClassFixture<SliceFixture>
+    public class GetTests : IDisposable
     {
         private readonly SliceFixture fixture;
 
-        public GetTests(SliceFixture fixture)
+        public GetTests()
         {
-            this.fixture = fixture;
+            this.fixture = new SliceFixture();
         }
 
         [Fact]
         public async Task Should_Find_User()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
 
             var response = await fixture.SendAsync(new GetCurrent.Query());
 
@@ -32,7 +33,12 @@ namespace Nisshi.IntegrationTests.Requests.Users
         [Fact]
         public async Task Should_Fail_Doesnt_Exist()
         {
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new GetCurrent.Query()));
+            await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new GetCurrent.Query()));
+        }
+
+        public void Dispose()
+        {
+            fixture.ResetDatabase();
         } 
     }
 }

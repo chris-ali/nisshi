@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Security.Authentication;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -48,6 +49,20 @@ namespace Nisshi.Infrastructure.Errors
             string result = null;
             switch (ex) 
             {
+                case InvalidCredentialException ice:
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    result = JsonSerializer.Serialize(new { errors = localizer[ice.Message].Value });
+                    break;
+                case AuthenticationException ae:
+                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    result = JsonSerializer.Serialize(new { errors = localizer[ae.Message].Value });
+                    break;
+                case DomainException de:
+                    int status = de.MessageCode == Message.ItemDoesNotExist ? 
+                        (int)HttpStatusCode.NotFound : (int)HttpStatusCode.BadRequest;
+                    context.Response.StatusCode = status;
+                    result = JsonSerializer.Serialize(new { errors = localizer[$"{de.EntityType} {de.MessageCode}"].Value });
+                    break;
                 case RestException re:
                     context.Response.StatusCode = (int)re.Code;
                     result = JsonSerializer.Serialize(new { errors = localizer[re.Error?.ToString()].Value });

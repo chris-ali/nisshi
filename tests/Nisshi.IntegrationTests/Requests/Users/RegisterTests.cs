@@ -1,8 +1,9 @@
+using System;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Nisshi.Infrastructure.Errors;
 using Nisshi.Models.Users;
 using Nisshi.Requests.Users;
 using Xunit;
@@ -12,13 +13,13 @@ namespace Nisshi.IntegrationTests.Requests.Users
     /// <summary>
     /// Tests registering a user in various scenarios
     /// </summary>
-    public class RegisterTests : IClassFixture<SliceFixture>
+    public class RegisterTests : IDisposable
     {
         private readonly SliceFixture fixture;
 
-        public RegisterTests(SliceFixture fixture)
+        public RegisterTests()
         {
-            this.fixture = fixture;
+            this.fixture = new SliceFixture();
         }
 
         [Fact]
@@ -54,7 +55,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
         [Fact]
         public async Task Should_Fail_Username_Exists()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
 
             var registration = new Registration
             {
@@ -63,13 +64,13 @@ namespace Nisshi.IntegrationTests.Requests.Users
                 Password = "test123!"
             };
 
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Register.Command(registration)));
+            await Assert.ThrowsAsync<InvalidCredentialException>(() => fixture.SendAsync(new Register.Command(registration)));
         }
 
         [Fact]
         public async Task Should_Fail_Email_Exists()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
 
             var registration = new Registration
             {
@@ -78,7 +79,12 @@ namespace Nisshi.IntegrationTests.Requests.Users
                 Password = "test123!"
             };
 
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Register.Command(registration)));
+            await Assert.ThrowsAsync<InvalidCredentialException>(() => fixture.SendAsync(new Register.Command(registration)));
+        }
+
+        public void Dispose()
+        {
+            fixture.ResetDatabase();
         }
     }
 }

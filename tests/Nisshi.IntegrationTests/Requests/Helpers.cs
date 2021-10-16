@@ -18,11 +18,12 @@ namespace Nisshi.IntegrationTests.Requests
         public static readonly string TestEmailAddress = "test@test.com";
 
         /// <summary>
-        /// Registers a test user for tests needing a user object relation
+        /// Registers a test user for tests needing a user object relation if it doesn't already
+        /// exist, and then immediately gets it
         /// </summary>
         /// <param name="fixture">Testing slice fixture</param>
         /// <returns>A newly registered test user</returns>
-        public static async Task<User> RegisterTestUser(SliceFixture fixture)
+        public static async Task<User> RegisterAndGetTestUser(SliceFixture fixture)
         {
             var command = new Register.Command(new Registration 
             {
@@ -31,10 +32,14 @@ namespace Nisshi.IntegrationTests.Requests
                 Password = "test123!"
             });
 
-            var result = await fixture.SendAsync(command);
+            var user = await fixture.GetNisshiContext().Users
+                .SingleOrDefaultAsync(x => x.Username == TestUserName);
+            
+            if (user == null)
+                await fixture.SendAsync(command);
 
             return await fixture.GetNisshiContext().Users
-                .Where(x => x.Username == result.Username).SingleOrDefaultAsync();
+                .SingleOrDefaultAsync(x => x.Username == TestUserName);
         }
         
         /// <summary>
@@ -49,7 +54,7 @@ namespace Nisshi.IntegrationTests.Requests
             return new Aircraft 
             {
                 IdModel = model.Id,
-                IdUser = user.Id,
+                IdUser = user?.Id ?? 0,
                 TailNumber = "N31SD",
                 InstanceType = InstanceType.Real,
                 Last100Hobbs = 10,
@@ -170,10 +175,11 @@ namespace Nisshi.IntegrationTests.Requests
         public static async Task<TEntity> SaveAndGet<TEntity>(SliceFixture fixture, TEntity toSave)
             where TEntity : class
         {
-            await fixture.GetNisshiContext().AddAsync<TEntity>(toSave);
+            fixture.GetNisshiContext().Add<TEntity>(toSave);
+
             await fixture.GetNisshiContext().SaveChangesAsync();
 
             return await fixture.GetNisshiContext().Set<TEntity>().LastOrDefaultAsync();
-        } 
+        }
     }
 }

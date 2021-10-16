@@ -1,5 +1,4 @@
 using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
@@ -34,8 +33,9 @@ namespace Nisshi.Requests.Models
             public async Task<Model> Handle(Command request, CancellationToken cancellationToken)
             {
                 var data = await context.FindAsync<Model>(new object[] { request.model.Id }, cancellationToken);
+                
                 if (data == null) 
-                    throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
+                    throw new DomainException(typeof(Model), Message.ItemDoesNotExist);
                 
                 var model = await context.Models.FindAsync(new object[] { data.Id }, cancellationToken);
 

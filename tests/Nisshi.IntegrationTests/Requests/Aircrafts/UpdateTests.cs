@@ -15,19 +15,19 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
     /// <summary>
     /// Tests editing an aircraft in various scenarios
     /// </summary>
-    public class UpdateTests : IClassFixture<SliceFixture>
+    public class UpdateTests : IDisposable
     {
         private readonly SliceFixture fixture;
 
-        public UpdateTests(SliceFixture fixture)
+        public UpdateTests()
         {
-            this.fixture = fixture;
+            this.fixture = new SliceFixture();
         }
 
         [Fact]
         public async Task Should_Have_Been_Updated()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             var testAircraft = await Helpers.CreateTestAircraft(fixture, user);
             var aircraftRequest = await Helpers.SaveAndGet<Aircraft>(fixture, testAircraft);
 
@@ -53,7 +53,7 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
         [Fact]
         public async Task Should_Fail_Input_Null()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             
             await Assert.ThrowsAsync<ValidationException>(() => fixture.SendAsync(new Update.Command(null)));
         }
@@ -63,16 +63,21 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
         {
             var aircraftRequest = await Helpers.CreateTestAircraft(fixture, null);
 
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Update.Command(aircraftRequest)));
+            await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new Update.Command(aircraftRequest)));
         }
 
         [Fact]
         public async Task Should_Fail_Doesnt_Exist()
         {
-            var user = await Helpers.RegisterTestUser(fixture);
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
             var testAircraft = await Helpers.CreateTestAircraft(fixture, user);
 
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Update.Command(testAircraft)));
+            await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new Update.Command(testAircraft)));
+        }
+
+        public void Dispose()
+        {
+            fixture.ResetDatabase();
         }
     }
 }

@@ -9,6 +9,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Nisshi.IntegrationTests
 {
+    /// <summary>
+    /// Test fixture that registers all Nisshi services, and then creates a test
+    /// database and user accessor. Must be initialized explicitly between tests 
+    /// to ensure that a fresh database is created
+    /// </summary>
     public class SliceFixture : IDisposable
     {
         private static readonly IConfiguration config;
@@ -42,7 +47,17 @@ namespace Nisshi.IntegrationTests
         public NisshiContext GetNisshiContext() 
         {
             return provider.GetRequiredService<NisshiContext>();
-        }      
+        }
+
+        /// <summary>
+        /// Resets the database back to the original in memory state;
+        /// call after each test in a test class' Dispose() method
+        /// </summary>
+        public void ResetDatabase() 
+        {
+            GetNisshiContext().Database.EnsureDeleted();
+            GetNisshiContext().Database.EnsureCreated();
+        }
 
         public void Dispose()
         {

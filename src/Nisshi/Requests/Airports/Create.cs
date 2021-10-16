@@ -1,5 +1,4 @@
 using System;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
@@ -40,12 +39,10 @@ namespace Nisshi.Requests.Airports
                     .FirstOrDefaultAsync(cancellationToken);
 
                 if (airport != null)
-                    throw new RestException(HttpStatusCode.BadRequest, Message.ItemExistsAlready);
+                    throw new DomainException(typeof(Airport), Message.ItemExistsAlready);
 
                 var username = accessor.GetCurrentUserName();
-                if (string.IsNullOrEmpty(username))
-                    throw new RestException(HttpStatusCode.Unauthorized, Message.NotLoggedIn);
-                
+
                 request.airport.DateCreated = request.airport.DateUpdated = DateTime.Now;
                 request.airport.SourceUserName = username;
 

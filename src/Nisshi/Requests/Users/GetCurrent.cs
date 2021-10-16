@@ -1,4 +1,3 @@
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
@@ -7,7 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nisshi.Models.Users;
 
-namespace Nisshi.Requests.Users 
+namespace Nisshi.Requests.Users
 {
     public class GetCurrent
     {
@@ -24,14 +23,13 @@ namespace Nisshi.Requests.Users
 
             public async Task<User> Handle(Query request, CancellationToken cancellationToken)
             {
-                var userName = accessor.GetCurrentUserName();
-                var data = await context.Users.FirstOrDefaultAsync(x => x.Username == userName, cancellationToken);
-
-                if (string.IsNullOrEmpty(userName)) 
-                    throw new RestException(HttpStatusCode.Unauthorized, Message.NotLoggedIn);
+                var username = accessor.GetCurrentUserName();
+                
+                var data = await context.Users
+                    .SingleOrDefaultAsync(x => x.Username == username, cancellationToken);
 
                 if (data == null)
-                    throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
+                    throw new DomainException(typeof(User), Message.ItemDoesNotExist);
                 
                 return data;
             }

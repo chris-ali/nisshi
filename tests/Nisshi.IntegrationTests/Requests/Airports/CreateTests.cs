@@ -1,5 +1,7 @@
+using System;
 using System.Threading.Tasks;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
 using Nisshi.Requests.Airports;
@@ -10,13 +12,13 @@ namespace Nisshi.IntegrationTests.Requests.Airports
     /// <summary>
     /// Tests creating an airport in various scenarios
     /// </summary>
-    public class CreateTests : IClassFixture<SliceFixture>
+    public class CreateTests : IDisposable
     {
         private readonly SliceFixture fixture;
 
-        public CreateTests(SliceFixture fixture)
+        public CreateTests()
         {
-            this.fixture = fixture;
+            this.fixture = new SliceFixture();
         }
 
         [Fact]
@@ -37,7 +39,8 @@ namespace Nisshi.IntegrationTests.Requests.Airports
 
             Assert.NotNull(airportResponse);
 
-            var fromDb = await fixture.GetNisshiContext().Airports.FindAsync(airportResponse.Id);
+            var fromDb = await fixture.GetNisshiContext().Airports
+                .FirstOrDefaultAsync(x => x.AirportCode == airportResponse.AirportCode);
             
             Assert.NotNull(fromDb);
 
@@ -69,7 +72,12 @@ namespace Nisshi.IntegrationTests.Requests.Airports
                 SourceUserName = Helpers.TestUserName
             };
 
-            await Assert.ThrowsAsync<RestException>(() => fixture.SendAsync(new Create.Command(airportRequest)));
+            await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new Create.Command(airportRequest)));
+        }
+
+        public void Dispose()
+        {
+            fixture.ResetDatabase();
         }
     }
 }

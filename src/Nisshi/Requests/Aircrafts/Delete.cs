@@ -1,11 +1,9 @@
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
 using MediatR;
-using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
 /// <summary>
@@ -28,8 +26,6 @@ namespace Nisshi.Requests.Aircrafts
             public async Task<Aircraft> Handle(Command request, CancellationToken cancellationToken)
             {
                 var username = accessor.GetCurrentUserName();
-                if (string.IsNullOrEmpty(username))
-                    throw new RestException(HttpStatusCode.Unauthorized, Message.NotLoggedIn);
 
                 var data = await context.Aircraft
                     .Include(x => x.Owner)
@@ -37,7 +33,7 @@ namespace Nisshi.Requests.Aircrafts
                         && x.Owner.Username.ToUpper() == username.ToUpper(), cancellationToken);
 
                 if (data == null)
-                    throw new RestException(HttpStatusCode.NotFound, Message.ItemDoesNotExist);
+                    throw new DomainException(typeof(Aircraft), Message.ItemDoesNotExist);
 
                 // Should also cascade to remove logbook entries
                 context.Remove(data);
