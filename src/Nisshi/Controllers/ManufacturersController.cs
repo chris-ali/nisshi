@@ -23,7 +23,7 @@ namespace Nisshi.Controllers
         }
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes)]
+        [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes, Roles = "Administrator, User")]
         public async Task<Manufacturer> Create([FromBody] Manufacturer manufacturer, CancellationToken cancellationToken)
         {
             return await mediator.Send(new Create.Command(manufacturer), cancellationToken);

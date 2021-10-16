@@ -61,7 +61,7 @@ namespace Nisshi.Infrastructure.Errors
                     int status = de.MessageCode == Message.ItemDoesNotExist ? 
                         (int)HttpStatusCode.NotFound : (int)HttpStatusCode.BadRequest;
                     context.Response.StatusCode = status;
-                    result = JsonSerializer.Serialize(new { errors = localizer[$"{de.EntityType} {de.MessageCode}"].Value });
+                    result = JsonSerializer.Serialize(new { errors = $"{de.EntityType?.Name} {localizer[de.MessageCode.ToString()].Value}" });
                     break;
                 case RestException re:
                     context.Response.StatusCode = (int)re.Code;

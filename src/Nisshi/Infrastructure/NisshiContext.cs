@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Nisshi.Infrastructure.Enums;
 using Nisshi.Infrastructure.Security;
 using Nisshi.Models;
 using Nisshi.Models.Users;
@@ -170,9 +171,9 @@ namespace Nisshi.Infrastructure
             var users = new User[] 
             {
                 new User { Id = 1, Username = "chris", FirstName = "Chris", LastName = "Ali", Email = "chris@ali.com", 
-                    Hash = hasher.Hash("test123", salt1), Salt = salt1 },
+                    Hash = hasher.Hash("test123", salt1), Salt = salt1, UserType = UserType.Administrator },
                 new User { Id = 2, Username = "somebodyElse", FirstName = "Somebody", LastName = "Else", Email = "somebody@else.com", 
-                    Hash = hasher.Hash("test456", salt2), Salt = salt2 },
+                    Hash = hasher.Hash("test456", salt2), Salt = salt2, UserType = UserType.User },
             };
             modelBuilder.Entity<User>().HasData(users);
 

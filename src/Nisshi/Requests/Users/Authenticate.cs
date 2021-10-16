@@ -60,7 +60,8 @@ namespace Nisshi.Requests.Users
                                 
                 // Maps to a model that includes a JWT token for Angular
                 var loggedInUser = mapper.Map<User, LoggedIn>(user);
-                loggedInUser.Token = bigGenerator.CreateToken(user.Username ?? throw new InvalidOperationException());
+                loggedInUser.Token = bigGenerator
+                    .CreateToken(user.Username ?? throw new InvalidOperationException(), user.UserType.ToString());
 
                 return loggedInUser;
             }

@@ -11,6 +11,7 @@ using Nisshi.Infrastructure.Security;
 using AutoMapper;
 using Nisshi.Models.Users;
 using System.Security.Authentication;
+using Nisshi.Infrastructure.Enums;
 
 namespace Nisshi.Requests.Users
 {
@@ -57,6 +58,7 @@ namespace Nisshi.Requests.Users
                 {
                     Username = request.registration.Username,
                     Email = request.registration.Email,
+                    UserType = UserType.User,
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now,
                     Salt = iodized,
@@ -69,7 +71,8 @@ namespace Nisshi.Requests.Users
 
                 // Maps to a model that includes a JWT token for Angular
                 var loggedInUser = mapper.Map<User, LoggedIn>(user);
-                loggedInUser.Token = bigGenerator.CreateToken(user.Username ?? throw new InvalidOperationException());
+                loggedInUser.Token = bigGenerator
+                    .CreateToken(user.Username ?? throw new InvalidOperationException(), user.UserType.ToString());
 
                 return loggedInUser;
             }
