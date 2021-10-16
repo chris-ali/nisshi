@@ -6,10 +6,14 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Nisshi.IntegrationTests.Requests;
 
 namespace Nisshi.IntegrationTests
 {
+    /// <summary>
+    /// Test fixture that registers all Nisshi services, and then creates a test
+    /// database and user accessor. Must be initialized explicitly between tests 
+    /// to ensure that a fresh database is created
+    /// </summary>
     public class SliceFixture : IDisposable
     {
         private static readonly IConfiguration config;

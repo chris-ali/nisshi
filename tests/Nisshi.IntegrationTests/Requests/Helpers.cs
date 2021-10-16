@@ -18,7 +18,8 @@ namespace Nisshi.IntegrationTests.Requests
         public static readonly string TestEmailAddress = "test@test.com";
 
         /// <summary>
-        /// Registers a test user for tests needing a user object relation
+        /// Registers a test user for tests needing a user object relation if it doesn't already
+        /// exist, and then immediately gets it
         /// </summary>
         /// <param name="fixture">Testing slice fixture</param>
         /// <returns>A newly registered test user</returns>
