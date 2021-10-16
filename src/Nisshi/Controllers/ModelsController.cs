@@ -29,14 +29,14 @@ namespace Nisshi.Controllers
         }
 
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes)]
+        [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes, Roles = "Administrator")]
         public async Task<Model> Create([FromBody] Model model, CancellationToken cancellationToken)
         {
             return await mediator.Send(new Create.Command(model), cancellationToken);
         }
 
         [HttpPut]
-        [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes)]
+        [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes, Roles = "Administrator")]
         public async Task<Model> Update([FromBody] Model model, CancellationToken cancellationToken)
         {
             return await mediator.Send(new Update.Command(model), cancellationToken);

@@ -4,6 +4,6 @@ namespace Nisshi.Infrastructure.Enums
     {
         Deactivated = 0,
         User = 1,
-        Admin = 2
+        Administrator = 2
     }
 }

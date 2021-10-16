@@ -14,7 +14,7 @@ namespace Nisshi.Infrastructure.Security
             this.options = options.Value;
         }
 
-        public string CreateToken(string username)
+        public string CreateToken(string username, string role)
         {
             var claims = new[]
             {
@@ -22,7 +22,8 @@ namespace Nisshi.Infrastructure.Security
                 new Claim(JwtRegisteredClaimNames.Jti, options.JtiGenerator()),
                 new Claim(JwtRegisteredClaimNames.Iat, 
                     new DateTimeOffset(options.IssuedAt).ToUnixTimeSeconds().ToString(),
-                    ClaimValueTypes.Integer64)
+                    ClaimValueTypes.Integer64),
+                new Claim(ClaimTypes.Role, role)
             };
 
             var jwt = new JwtSecurityToken(options.Issuer, options.Audience,

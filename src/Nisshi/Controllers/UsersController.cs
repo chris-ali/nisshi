@@ -16,14 +16,14 @@ namespace Nisshi.Controllers
         }
 
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes)]
+        [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes, Roles = "Administrator, User")]
         public async Task<ActionResult<User>> GetCurrent(CancellationToken cancellationToken)
         {
             return await mediator.Send(new GetCurrent.Query(), cancellationToken);
         }
 
         [HttpPut]
-        [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes)]
+        [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes, Roles = "Administrator, User")]
         public async Task<ActionResult<User>> UpdateProfile([FromBody] Profile edit, CancellationToken cancellationToken)
         {
             return await mediator.Send(new UpdateProfile.Command(edit), cancellationToken);

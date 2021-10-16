@@ -10,7 +10,7 @@ using Nisshi.Infrastructure.Security;
 
 namespace Nisshi.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes)]
+    [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes, Roles = "Administrator, User")]
     public class AircraftController : BaseNisshiController
     {
         public AircraftController(IMediator mediator) : base(mediator)
