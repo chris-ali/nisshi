@@ -12,9 +12,9 @@ namespace Nisshi.IntegrationTests.Requests.CategoryClasses
     {
         private readonly SliceFixture fixture;
 
-        public GetTests(SliceFixture fixture)
+        public GetTests()
         {
-            this.fixture = fixture;
+            this.fixture = new SliceFixture();
         }
 
         [Fact]

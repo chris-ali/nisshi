@@ -11,13 +11,13 @@ namespace Nisshi.IntegrationTests.Requests.Users
     /// <summary>
     /// Tests editing a user in various scenarios
     /// </summary>
-    public class UpdateTests : IClassFixture<SliceFixture>, IDisposable
+    public class UpdateTests : IDisposable
     {
         private readonly SliceFixture fixture;
 
-        public UpdateTests(SliceFixture fixture)
+        public UpdateTests()
         {
-            this.fixture = fixture;
+            this.fixture = new SliceFixture();
         }
 
         [Fact]

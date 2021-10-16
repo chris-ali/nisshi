@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
 using Nisshi.Requests.Aircrafts;
 using Xunit;
@@ -13,13 +12,13 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
     /// <summary>
     /// Tests getting an aircraft in various scenarios
     /// </summary>
-    public class GetTests : IClassFixture<SliceFixture>, IDisposable
+    public class GetTests : IDisposable
     {
         private readonly SliceFixture fixture;
 
-        public GetTests(SliceFixture fixture)
+        public GetTests()
         {
-            this.fixture = fixture;
+            this.fixture = new SliceFixture();
         }
 
         [Fact]

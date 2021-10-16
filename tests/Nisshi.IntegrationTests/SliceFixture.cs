@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Nisshi.IntegrationTests.Requests;
 
 namespace Nisshi.IntegrationTests
 {
@@ -14,6 +15,7 @@ namespace Nisshi.IntegrationTests
         private static readonly IConfiguration config;
         private readonly IServiceScopeFactory scopeFactory;
         private readonly ServiceProvider provider;
+        private readonly string DatabaseName = $"{Guid.NewGuid()}.db";
 
         static SliceFixture()
         {
@@ -29,7 +31,7 @@ namespace Nisshi.IntegrationTests
 
             startup.ConfigureServices(services);
 
-            services.AddDbContext<NisshiContext>(opt => opt.UseInMemoryDatabase("NisshiTest"));
+            services.AddDbContext<NisshiContext>(opt => opt.UseInMemoryDatabase(DatabaseName));
             services.AddScoped<ICurrentUserAccessor, StubCurrentUserAccessor>();
 
             provider = services.BuildServiceProvider();
@@ -55,7 +57,7 @@ namespace Nisshi.IntegrationTests
 
         public void Dispose()
         {
-            ResetDatabase();
+            File.Delete(DatabaseName);
         }
 
         #region Task Executions

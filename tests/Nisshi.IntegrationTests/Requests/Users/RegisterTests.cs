@@ -13,13 +13,13 @@ namespace Nisshi.IntegrationTests.Requests.Users
     /// <summary>
     /// Tests registering a user in various scenarios
     /// </summary>
-    public class RegisterTests : IClassFixture<SliceFixture>, IDisposable
+    public class RegisterTests : IDisposable
     {
         private readonly SliceFixture fixture;
 
-        public RegisterTests(SliceFixture fixture)
+        public RegisterTests()
         {
-            this.fixture = fixture;
+            this.fixture = new SliceFixture();
         }
 
         [Fact]

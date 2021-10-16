@@ -31,7 +31,11 @@ namespace Nisshi.IntegrationTests.Requests
                 Password = "test123!"
             });
 
-            await fixture.SendAsync(command);
+            var user = await fixture.GetNisshiContext().Users
+                .SingleOrDefaultAsync(x => x.Username == TestUserName);
+            
+            if (user == null)
+                await fixture.SendAsync(command);
 
             return await fixture.GetNisshiContext().Users
                 .SingleOrDefaultAsync(x => x.Username == TestUserName);
@@ -170,10 +174,11 @@ namespace Nisshi.IntegrationTests.Requests
         public static async Task<TEntity> SaveAndGet<TEntity>(SliceFixture fixture, TEntity toSave)
             where TEntity : class
         {
-            await fixture.GetNisshiContext().AddAsync<TEntity>(toSave);
+            fixture.GetNisshiContext().Add<TEntity>(toSave);
+
             await fixture.GetNisshiContext().SaveChangesAsync();
 
             return await fixture.GetNisshiContext().Set<TEntity>().LastOrDefaultAsync();
-        } 
+        }
     }
 }

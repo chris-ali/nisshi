@@ -9,13 +9,13 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
     /// <summary>
     /// Tests creating a logbook entry in various scenarios
     /// </summary>
-    public class CreateTests : IClassFixture<SliceFixture>, IDisposable
+    public class CreateTests : IDisposable
     {
         private readonly SliceFixture fixture;
 
-        public CreateTests(SliceFixture fixture)
+        public CreateTests()
         {
-            this.fixture = fixture;
+            this.fixture = new SliceFixture();
         }
 
         [Fact]

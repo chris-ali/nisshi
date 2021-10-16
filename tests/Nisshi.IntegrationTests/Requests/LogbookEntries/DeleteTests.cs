@@ -10,13 +10,13 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
     /// <summary>
     /// Tests deleting a logbook entry in various scenarios
     /// </summary>
-    public class DeleteTests : IClassFixture<SliceFixture>, IDisposable
+    public class DeleteTests : IDisposable
     {
         private readonly SliceFixture fixture;
 
-        public DeleteTests(SliceFixture fixture)
+        public DeleteTests()
         {
-            this.fixture = fixture;
+            this.fixture = new SliceFixture();
         }
 
         [Fact]

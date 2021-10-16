@@ -12,13 +12,13 @@ namespace Nisshi.IntegrationTests.Requests.Airports
     /// <summary>
     /// Tests creating an airport in various scenarios
     /// </summary>
-    public class CreateTests : IClassFixture<SliceFixture>, IDisposable
+    public class CreateTests : IDisposable
     {
         private readonly SliceFixture fixture;
 
-        public CreateTests(SliceFixture fixture)
+        public CreateTests()
         {
-            this.fixture = fixture;
+            this.fixture = new SliceFixture();
         }
 
         [Fact]

@@ -13,13 +13,13 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
     /// <summary>
     /// Tests deleting an aircraft in various scenarios
     /// </summary>
-    public class DeleteTests : IClassFixture<SliceFixture>, IDisposable
+    public class DeleteTests : IDisposable
     {
         private readonly SliceFixture fixture;
 
-        public DeleteTests(SliceFixture fixture)
+        public DeleteTests()
         {
-            this.fixture = fixture;
+            this.fixture = new SliceFixture();;
         }
 
         [Fact]
