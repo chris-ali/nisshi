@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Security.Authentication;
 using System.Text.Json;
 using System.Threading.Tasks;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
@@ -37,14 +40,17 @@ namespace Nisshi.Infrastructure.Errors
             }
             catch (Exception ex)
             {
-                await HandleExceptionAsync(context, ex, logger, localizer);
+                await HandleExceptionAsync(context, ex);
             }
         }
 
-        private static async Task HandleExceptionAsync(HttpContext context, 
-            Exception ex, 
-            ILogger<ErrorHandlingMiddleware> logger, 
-            IStringLocalizer<ErrorHandlingMiddleware> localizer)
+        /// <summary>
+        /// When an exception is thrown from an HTTP request, return instead a friendlier
+        /// response with an error message obtained from the string localizer
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="ex"></param>
+        private async Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             string result = null;
             switch (ex) 
@@ -63,6 +69,10 @@ namespace Nisshi.Infrastructure.Errors
                     context.Response.StatusCode = status;
                     result = JsonSerializer.Serialize(new { errors = $"{de.EntityType?.Name} {localizer[de.MessageCode.ToString()].Value}" });
                     break;
+                case ValidationException ve:
+                    context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    result = JsonSerializer.Serialize(new { errors = FormatValidationFailures(ve.Errors, localizer) });
+                    break;
                 case RestException re:
                     context.Response.StatusCode = (int)re.Code;
                     result = JsonSerializer.Serialize(new { errors = localizer[re.Error?.ToString()].Value });
@@ -78,5 +88,15 @@ namespace Nisshi.Infrastructure.Errors
             await context.Response.WriteAsync(result ?? "{}");
         }
 
+        private Dictionary<string, string> FormatValidationFailures(IEnumerable<ValidationFailure> failures,
+             IStringLocalizer<ErrorHandlingMiddleware> localizer) 
+        {
+            var failDict = new Dictionary<string, string>();
+
+            foreach (var failure in failures)
+                failDict[failure.PropertyName] = localizer[failure.ErrorMessage].Value;
+            
+            return failDict;
+        }
     }
 }
