@@ -51,7 +51,8 @@ namespace Nisshi
 
             services.AddDbContext<NisshiContext>(opt => 
             { 
-                opt.UseInMemoryDatabase("Nisshi"); 
+                opt.UseInMemoryDatabase("Nisshi");
+                //opt.UseSqlite("DataSource=:memory:");
             });
 
             services.AddCors();
