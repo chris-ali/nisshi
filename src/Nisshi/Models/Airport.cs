@@ -1,9 +1,11 @@
+using System;
+
 namespace Nisshi.Models
 {
     /// <summary>
     /// Representation of an airport 
     /// </summary>
-    public class Airport : BaseEntity
+    public class Airport
     {
         /// <summary>
         /// ICAO or IATA code
@@ -39,5 +41,16 @@ namespace Nisshi.Models
         /// Used for disambiguation when two airports share the same lat/lon
         /// </summary>
         public bool Preferred { get; set; }
+
+        /// <summary>
+        /// Date entity was first created
+        /// </summary>
+        /// <value></value>
+        public DateTime? DateCreated { get; set; }
+
+        /// <summary>
+        /// Date entity was last updated
+        /// </summary>
+        public DateTime? DateUpdated { get; set; }
     }
 }

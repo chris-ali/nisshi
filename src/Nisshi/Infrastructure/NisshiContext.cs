@@ -108,6 +108,24 @@ namespace Nisshi.Infrastructure
                 b.HasKey(x => x.Id);
             });
 
+            // Set each DB item's name to lower case to match mysql's lower casing
+            foreach (var entity in modelBuilder.Model.GetEntityTypes())
+            {
+                entity.SetTableName(entity.GetTableName().ToLower());
+
+                foreach (var property in entity.GetProperties())
+                    property.SetColumnName(property.Name.ToLower());
+                
+                foreach (var key in entity.GetKeys())
+                    key.SetName(key.GetName().ToLower());
+                
+                foreach (var fk in entity.GetForeignKeys())
+                    fk.SetConstraintName(fk.GetConstraintName().ToLower());
+
+                foreach (var index in entity.GetIndexes())
+                    index.SetDatabaseName(index.GetDatabaseName().ToLower());
+            }
+
             if (Database.IsInMemory())
                 SeedMe(modelBuilder);
         }      

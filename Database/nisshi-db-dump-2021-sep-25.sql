@@ -90,14 +90,12 @@ UNLOCK TABLES;
 -- Table structure for table `categoryclass`
 --
 
-CREATE TABLE `categoryclass` (
+CREATE TABLE `categoryclasses` (
   `Id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key',
   `CatClass` varchar(45) NOT NULL DEFAULT '' COMMENT 'Aircraft category, class, etc.',
   `Category` varchar(45) NOT NULL DEFAULT '' COMMENT 'Category',
   `Class` varchar(45) NOT NULL DEFAULT '',
   `AlternateCatClass` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Secondary category/class for airplanes that are part-time on floats or amphib',
-  `DateCreated` date DEFAULT NULL,
-  `DateUpdated` date DEFAULT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='Aircraft categories and classes';
 
@@ -105,11 +103,17 @@ CREATE TABLE `categoryclass` (
 -- Dumping data for table `categoryclass`
 --
 
-LOCK TABLES `categoryclass` WRITE;
+LOCK TABLES `categoryclasses` WRITE;
 
-INSERT INTO `categoryclass` VALUES (1,'ASEL','Airplane','Single Engine, Land',3),(2,'AMEL','Airplane','Multi Engine, Land',4),(3,'ASES','Airplane','Single Engine, Sea',1),(4,'AMES','Airplane','Multi Engine, Sea',2),(5,'Glider','Glider','',0),(7,'Helicopter','Rotorcraft','Helicopter',0),(8,'Gyroplane','Rotorcraft','Gyroplane',0),(9,'Powered Lift','Powered Lift','',0),(10,'Airship','Lighter Than Air','Airship',0),(11,'Hot Air Balloon','Lighter Than Air','Hot Air Balloon',0),(12,'Gas Balloon','Lighter Than Air','Gas Baloon',0),(13,'Powered Parachute - Land','Powered Parachute','Land',14),(14,'Powered Parachute - Sea','Powered Parachute','Sea',13),(15,'Weight-shift Control - Land','Weight-shift Control','Land',16),(16,'Weight-shift Control - Sea','Weight-shift Control','Sea',15),(17,'Unmanned Aerial System','Unmanned Aerial System','',0),(18,'Powered Paraglider','Powered Paraglider',' ',0);
+INSERT INTO `categoryclasses` VALUES (1,'ASEL','Airplane','Single Engine, Land',3),(2,'AMEL','Airplane','Multi Engine, Land',4),(3,'ASES','Airplane','Single Engine, Sea',1),(4,'AMES','Airplane','Multi Engine, Sea',2),(5,'Glider','Glider','',0),(7,'Helicopter','Rotorcraft','Helicopter',0),(8,'Gyroplane','Rotorcraft','Gyroplane',0),(9,'Powered Lift','Powered Lift','',0),(10,'Airship','Lighter Than Air','Airship',0),(11,'Hot Air Balloon','Lighter Than Air','Hot Air Balloon',0),(12,'Gas Balloon','Lighter Than Air','Gas Baloon',0),(13,'Powered Parachute - Land','Powered Parachute','Land',14),(14,'Powered Parachute - Sea','Powered Parachute','Sea',13),(15,'Weight-shift Control - Land','Weight-shift Control','Land',16),(16,'Weight-shift Control - Sea','Weight-shift Control','Sea',15),(17,'Unmanned Aerial System','Unmanned Aerial System','',0),(18,'Powered Paraglider','Powered Paraglider',' ',0);
 
 UNLOCK TABLES;
+
+--
+-- Adding new columns to table after insert because original data did not have them
+--
+
+ALTER TABLE `categoryclasses` ADD (`DateCreated` date DEFAULT NULL, `DateUpdated` date DEFAULT NULL);
 
 --
 -- Table structure for table `manufacturers`
@@ -117,7 +121,7 @@ UNLOCK TABLES;
 
 CREATE TABLE `manufacturers` (
   `Id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `Manufacturer` varchar(45) NOT NULL DEFAULT '',
+  `ManufacturerName` varchar(45) NOT NULL DEFAULT '',
   `DateCreated` date DEFAULT NULL,
   `DateUpdated` date DEFAULT NULL,
   PRIMARY KEY (`Id`)
@@ -152,14 +156,14 @@ CREATE TABLE `models` (
   `HasFlaps` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True if the aircraft has flaps',
   `IsSimOnly` int(1) NOT NULL DEFAULT '0' COMMENT 'If 1, all aircraft with this make/model MUST NOT be real-aircraft.  If 2, can also be generic but real. ',
   `IsMotorGlider` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True if this is a motor glider (only applies to gliders)',
-  `IsMultiHelicopter` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'For helicopters, is this a multi-engine helicopter?',
+  `IsHelicopter` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'True if this is a helicopter',
   `DateCreated` date DEFAULT NULL,
   `DateUpdated` date DEFAULT NULL,
   PRIMARY KEY (`Id`),
   KEY `CatClassId` (`IdCategoryClass`),
   KEY `MfctrId` (`Idmanufacturer`),
   CONSTRAINT `fkModelsMan` FOREIGN KEY (`IdManufacturer`) REFERENCES `manufacturers` (`Id`) ON UPDATE NO ACTION,
-  CONSTRAINT `fkModelsCatClass` FOREIGN KEY (`IdCategoryClass`) REFERENCES `categoryclass` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `fkModelsCatClass` FOREIGN KEY (`IdCategoryClass`) REFERENCES `categoryclasses` (`Id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Aircraft Models';
 
 --
@@ -287,6 +291,6 @@ ALTER TABLE `airports` ADD (`DateCreated` date DEFAULT NULL, `DateUpdated` date 
 
 CREATE USER IF NOT EXISTS 'nisshiuser'@'localhost' IDENTIFIED BY 'saishoNoYuuza1?';
 
-GRANT CREATE, SELECT, UPDATE, DELETE ON nisshi.* TO 'nisshiuser'@'localhost';
+GRANT INSERT, SELECT, UPDATE, DELETE ON nisshi.* TO 'nisshiuser'@'localhost';
 
 FLUSH PRIVILEGES;

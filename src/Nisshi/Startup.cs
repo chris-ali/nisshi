@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using System.Text.Json;
 using FluentValidation;
@@ -18,6 +19,10 @@ namespace Nisshi
 {
     public class Startup
     {
+        private const string DEFAULT_DB_PROVIDER = "mysql";
+        private const string DEFAULT_DB_CONNECTION_STRING = 
+            "server=localhost;uid=nisshiuser;pwd=saishoNoYuuza1?;database=nisshi";
+
         /// <summary>
         /// Path relative from this class to the root of the Angular client project
         /// </summary>
@@ -49,10 +54,24 @@ namespace Nisshi
             
             services.AddSwaggerService();
 
+            var connectionString = Configuration.GetValue<string>("ASPNETCORE_Nisshi_ConnectionString")
+                ?? DEFAULT_DB_CONNECTION_STRING;
+            var databaseProvider = Configuration.GetValue<string>("ASPNETCORE_Nisshi_DatabaseProvider")
+                ?? DEFAULT_DB_PROVIDER;
+
             services.AddDbContext<NisshiContext>(opt => 
-            { 
-                opt.UseInMemoryDatabase("Nisshi");
-                //opt.UseSqlite("DataSource=:memory:");
+            {
+                switch (databaseProvider.ToLower().Trim())
+                {
+                    case "mysql":
+                        opt.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+                        break;
+                    case "inmemory":
+                        opt.UseInMemoryDatabase("Nisshi");
+                        break;
+                    default:
+                        throw new InvalidOperationException("Unknown database provider specified!");
+                }
             });
 
             services.AddCors();
