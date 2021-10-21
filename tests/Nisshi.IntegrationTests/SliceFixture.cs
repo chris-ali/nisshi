@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 
 namespace Nisshi.IntegrationTests
 {
@@ -34,6 +35,13 @@ namespace Nisshi.IntegrationTests
             var services = new ServiceCollection();
 
             startup.ConfigureServices(services);
+
+            // Replace with in-memory DB for testing
+            var db = services.SingleOrDefault(s => 
+                s.ServiceType == typeof(DbContextOptions<NisshiContext>));
+
+            if (db != null)
+                services.Remove(db);
 
             services.AddDbContext<NisshiContext>(opt => opt.UseInMemoryDatabase(DatabaseName));
             services.AddScoped<ICurrentUserAccessor, StubCurrentUserAccessor>();
