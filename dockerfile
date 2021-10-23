@@ -1,19 +1,21 @@
 # Stage 1 - Build Container
-FROM mcr.microsoft.com/dotnet/sdk:5.0.402-focal as build
+FROM node:14-alpine3.13 AS node_base
+FROM mcr.microsoft.com/dotnet/sdk:5.0.402-alpine3.13-amd64 as build
 
+COPY --from=node_base . .
 WORKDIR /build
 COPY . .
+
+# Need to install dotnet-format first
+ENV PATH="${PATH}:/root/.dotnet/tools"
+RUN dotnet tool install -g dotnet-format
+
 RUN dotnet run -p build/build.csproj
 
-#Need to install NodeJS first
-RUN curl -sL https://deb.nodesource.com/setup_14.x | bash -
-RUN apt-get install -y nodejs
-#RUN npm install
-
 # Stage 2 - Runtime Container
-FROM mcr.microsoft.com/dotnet/runtime:5.0.11-focal
+FROM mcr.microsoft.com/dotnet/aspnet:5.0.11-alpine3.13-amd64
 
-#RUN apk add --no-cache tzdata
+RUN apk add --no-cache tzdata
 COPY --from=build /build/publish /app
 WORKDIR /app
 EXPOSE 5000

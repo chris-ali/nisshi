@@ -8,12 +8,12 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PW}
     volumes:
-     - dbdata:/var/lib/mysql
      - ./Database:/docker-entrypoint-initdb.d
+     #- dbdata:/var/lib/mysql
     ports:
      - "${MYSQL_LOCAL_PORT}:${MYSQL_DOCKER_PORT}"
 
-  nisshi:
+  webapp:
     depends_on:
      - db
     build: .
@@ -22,7 +22,7 @@ services:
      - ASPNETCORE_Nisshi_DatabaseProvider=${ASPNETCORE_Nisshi_DatabaseProvider}
      - ASPNETCORE_Nisshi_ConnectionString=${ASPNETCORE_Nisshi_ConnectionString}
     ports:
-     - ${NISSHI_LOCAL_PORT}:${NISSHI_DOCKER_PORT}  
+     - ${NISSHI_LOCAL_PORT}:${NISSHI_DOCKER_PORT}
 
-volumes:
-  dbdata:
+#volumes:
+#  dbdata:

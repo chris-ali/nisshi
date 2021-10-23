@@ -16,7 +16,7 @@ const string Format = "format";
 const string Publish = "publish";
 const string Default = "default";
 
-Target(Clean, ForEach(Publish, "**/bin", "**/obj"), dir => 
+Target(Clean, ForEach(Publish, "**/bin", "**/obj"), dir =>
 {
     IEnumerable<string> GetDirectories(string d)
     {
@@ -38,19 +38,18 @@ Target(Clean, ForEach(Publish, "**/bin", "**/obj"), dir =>
     }
 });
 
-Target(Format, () => 
+Target(Format, () =>
 {
     Run("dotnet", "tool restore");
-    Run("dotnet", "tool install -g dotnet-format");
     Run("dotnet", "format --check");
 });
 
-Target(Build, DependsOn(Format), () => 
+Target(Build, DependsOn(Format), () =>
 {
     Run("dotnet", "build . -c Release");
 });
 
-Target(Test, DependsOn(Build), () => 
+Target(Test, DependsOn(Build), () =>
 {
     IEnumerable<string> GetFiles(string d)
     {
@@ -63,13 +62,13 @@ Target(Test, DependsOn(Build), () =>
     }
 });
 
-Target(Publish, DependsOn(Test), ForEach("src/Nisshi"), project => 
+Target(Publish, DependsOn(Test), ForEach("src/Nisshi"), project =>
 {
-    Run("dotnet", 
+    Run("dotnet",
         $"publish {project} -c Release -f net5.0 -o ./publish --no-restore --no-build --verbosity=normal");
 });
 
-Target(Default, DependsOn(Publish), () => 
+Target(Default, DependsOn(Publish), () =>
 {
     Console.WriteLine("...done!");
 });

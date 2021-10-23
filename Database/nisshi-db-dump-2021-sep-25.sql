@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `nisshi`
+CREATE DATABASE IF NOT EXISTS `nisshi`;
 USE `nisshi`;
 
 DROP TABLE IF EXISTS `logbookentries`;
