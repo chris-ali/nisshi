@@ -67,7 +67,7 @@ namespace Nisshi.Models
         /// </summary>
         [JsonIgnore]
         public int IdUser { get; set; }
-        
+
         /// <summary>
         /// Owner of this logbook entry
         /// </summary>

@@ -35,8 +35,8 @@ namespace Nisshi.Requests.Users
             private readonly IJwtTokenGenerator bigGenerator;
             private readonly IMapper mapper;
 
-            public CommandHandler(NisshiContext context, 
-                                IPasswordHasher hasher, 
+            public CommandHandler(NisshiContext context,
+                                IPasswordHasher hasher,
                                 IJwtTokenGenerator bigGenerator,
                                 IMapper mapper) : base(context)
             {
@@ -49,12 +49,12 @@ namespace Nisshi.Requests.Users
             {
                 if (await context.Users.Where(x => x.Username == request.registration.Username).AnyAsync(cancellationToken))
                     throw new InvalidCredentialException(Message.UsernameExists.ToString());
-                
+
                 if (await context.Users.Where(x => x.Email == request.registration.Email).AnyAsync(cancellationToken))
                     throw new InvalidCredentialException(Message.EmailExists.ToString());
-                
+
                 var iodized = Guid.NewGuid().ToByteArray();
-                var user = new User 
+                var user = new User
                 {
                     Username = request.registration.Username,
                     Email = request.registration.Email,
@@ -62,10 +62,10 @@ namespace Nisshi.Requests.Users
                     DateCreated = DateTime.Now,
                     DateUpdated = DateTime.Now,
                     Salt = iodized,
-                    Hash = await hasher.HashAsync(request.registration.Password 
+                    Hash = await hasher.HashAsync(request.registration.Password
                             ?? throw new InvalidOperationException(), iodized, cancellationToken)
                 };
-                
+
                 await context.AddAsync<User>(user);
                 await context.SaveChangesAsync(cancellationToken);
 

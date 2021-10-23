@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Nisshi.Requests.Models
 {
-  public class GetOneById
+    public class GetOneById
     {
         public record Query(int id) : IRequest<Model>;
 

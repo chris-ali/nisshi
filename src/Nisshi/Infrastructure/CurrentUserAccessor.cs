@@ -6,15 +6,15 @@ using Nisshi.Infrastructure.Errors;
 
 namespace Nisshi.Infrastructure
 {
-  public class CurrentUserAccessor : ICurrentUserAccessor
+    public class CurrentUserAccessor : ICurrentUserAccessor
     {
         private readonly IHttpContextAccessor accessor;
 
         public CurrentUserAccessor(IHttpContextAccessor accessor)
         {
-            this.accessor = accessor;   
+            this.accessor = accessor;
         }
-        
+
         /// <summary>
         /// Gets the currently logged in username
         /// </summary>
@@ -26,8 +26,8 @@ namespace Nisshi.Infrastructure
                 .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
             if (string.IsNullOrEmpty(username))
-                    throw new AuthenticationException(Message.NotLoggedIn.ToString());
-            
+                throw new AuthenticationException(Message.NotLoggedIn.ToString());
+
             return username;
         }
     }

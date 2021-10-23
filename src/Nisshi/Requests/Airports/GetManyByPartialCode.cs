@@ -7,7 +7,7 @@ using Nisshi.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Nisshi.Requests.Airports 
+namespace Nisshi.Requests.Airports
 {
     public class GetManyByPartialCode
     {
@@ -23,11 +23,11 @@ namespace Nisshi.Requests.Airports
             {
                 if (string.IsNullOrEmpty(request.partialCode) || request.partialCode.Length < 3)
                     return null;
-                
+
                 var data = await context.Airports
                     .Where(x => x.AirportCode.ToUpper().StartsWith(request.partialCode.ToUpper()))
                     .ToListAsync(cancellationToken);
-                
+
                 return data;
             }
         }

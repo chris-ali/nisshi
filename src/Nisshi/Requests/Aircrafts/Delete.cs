@@ -29,7 +29,7 @@ namespace Nisshi.Requests.Aircrafts
 
                 var data = await context.Aircraft
                     .Include(x => x.Owner)
-                    .FirstOrDefaultAsync(x => x.Id == request.id 
+                    .FirstOrDefaultAsync(x => x.Id == request.id
                         && x.Owner.Username.ToUpper() == username.ToUpper(), cancellationToken);
 
                 if (data == null)

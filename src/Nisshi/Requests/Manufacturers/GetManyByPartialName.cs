@@ -7,7 +7,7 @@ using Nisshi.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Nisshi.Requests.Manufacturers 
+namespace Nisshi.Requests.Manufacturers
 {
     public class GetManyByPartialName
     {
@@ -23,11 +23,11 @@ namespace Nisshi.Requests.Manufacturers
             {
                 if (string.IsNullOrEmpty(request.partialName) || request.partialName.Length < 3)
                     return null;
-                
+
                 var data = await context.Manufacturers
                     .Where(x => x.ManufacturerName.ToUpper().StartsWith(request.partialName.ToUpper()))
                     .ToListAsync(cancellationToken);
-                
+
                 return data;
             }
         }

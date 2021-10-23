@@ -39,10 +39,10 @@ namespace Nisshi.Requests.Users
                 var username = accessor.GetCurrentUserName();
 
                 var user = await context.Users.SingleOrDefaultAsync(x => x.Username == username, cancellationToken);
-                
+
                 if (user == null)
                     throw new DomainException(typeof(User), Message.ItemDoesNotExist);
-                                
+
                 Update(ref user, request.edit);
                 user.DateUpdated = DateTime.Now;
 
@@ -64,7 +64,7 @@ namespace Nisshi.Requests.Users
             /// </summary>
             /// <param name="toBeUpdated"></param>
             /// <param name="toUpdateWith"></param>
-            private void Update(ref User toBeUpdated, Profile toUpdateWith) 
+            private void Update(ref User toBeUpdated, Profile toUpdateWith)
             {
                 toBeUpdated.CertificateNumber = toUpdateWith.CertificateNumber;
                 toBeUpdated.CFIExpiration = toUpdateWith.CFIExpiration;

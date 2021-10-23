@@ -11,7 +11,7 @@ using FluentValidation;
 /// <summary>
 /// sic
 /// </summary>
-namespace Nisshi.Requests.Aircrafts 
+namespace Nisshi.Requests.Aircrafts
 {
     public class GetAll
     {
@@ -35,7 +35,7 @@ namespace Nisshi.Requests.Aircrafts
                     .Include(x => x.Owner)
                     .Where(x => x.Owner.Username.ToUpper() == username.ToUpper())
                     .ToListAsync(cancellationToken);
-                
+
                 return data;
             }
         }

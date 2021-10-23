@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 /// </summary>
 namespace Nisshi.Requests.Aircrafts
 {
-  public class GetOneById
+    public class GetOneById
     {
         public record Query(int id) : IRequest<Aircraft>;
 
@@ -30,7 +30,7 @@ namespace Nisshi.Requests.Aircrafts
                 var data = await context.Aircraft
                     .Include(x => x.Owner)
                     .Include(x => x.Model)
-                    .FirstOrDefaultAsync(x => x.Id == request.id 
+                    .FirstOrDefaultAsync(x => x.Id == request.id
                         && x.Owner.Username.ToUpper() == username.ToUpper(), cancellationToken);
 
                 return data;

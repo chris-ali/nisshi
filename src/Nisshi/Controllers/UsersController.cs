@@ -9,7 +9,7 @@ using Nisshi.Models.Users;
 
 namespace Nisshi.Controllers
 {
-  public class UsersController : BaseNisshiController
+    public class UsersController : BaseNisshiController
     {
         public UsersController(IMediator mediator) : base(mediator)
         {

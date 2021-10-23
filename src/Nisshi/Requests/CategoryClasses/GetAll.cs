@@ -6,7 +6,7 @@ using Nisshi.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Nisshi.Requests.CategoryClasses 
+namespace Nisshi.Requests.CategoryClasses
 {
     public class GetAll
     {
@@ -21,7 +21,7 @@ namespace Nisshi.Requests.CategoryClasses
             public async Task<IList<CategoryClass>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var data = await context.CategoryClasses.ToListAsync(cancellationToken);
-                
+
                 return data;
             }
         }

@@ -34,8 +34,8 @@ namespace Nisshi.Requests.Users
             private readonly IJwtTokenGenerator bigGenerator;
             private readonly IMapper mapper;
 
-            public CommandHandler(NisshiContext context, 
-                                IPasswordHasher hasher, 
+            public CommandHandler(NisshiContext context,
+                                IPasswordHasher hasher,
                                 IJwtTokenGenerator bigGenerator,
                                 IMapper mapper) : base(context)
             {
@@ -48,16 +48,16 @@ namespace Nisshi.Requests.Users
             {
                 var user = await context.Users
                     .SingleOrDefaultAsync(x => x.Username == request.login.Username, cancellationToken);
-                
+
                 if (user == null)
                     throw new AuthenticationException(Message.InvalidCredentials.ToString());
-                
-                var authenticated = user.Hash.SequenceEqual(await hasher.HashAsync(request.login.Password ?? throw new InvalidOperationException(), 
+
+                var authenticated = user.Hash.SequenceEqual(await hasher.HashAsync(request.login.Password ?? throw new InvalidOperationException(),
                     user.Salt, cancellationToken));
-                
+
                 if (!authenticated)
                     throw new AuthenticationException(Message.InvalidCredentials.ToString());
-                                
+
                 // Maps to a model that includes a JWT token for Angular
                 var loggedInUser = mapper.Map<User, LoggedIn>(user);
                 loggedInUser.Token = bigGenerator

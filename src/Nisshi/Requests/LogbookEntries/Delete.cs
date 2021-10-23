@@ -28,7 +28,7 @@ namespace Nisshi.Requests.LogbookEntries
                     .Include(x => x.Owner)
                     .FirstOrDefaultAsync(x => x.Id == request.id
                         && x.Owner.Username.ToUpper() == username.ToUpper(), cancellationToken);
-                
+
                 if (data == null)
                     throw new DomainException(typeof(LogbookEntry), Message.ItemDoesNotExist);
 

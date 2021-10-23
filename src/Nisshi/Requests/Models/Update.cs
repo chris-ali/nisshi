@@ -33,15 +33,15 @@ namespace Nisshi.Requests.Models
             public async Task<Model> Handle(Command request, CancellationToken cancellationToken)
             {
                 var data = await context.FindAsync<Model>(new object[] { request.model.Id }, cancellationToken);
-                
-                if (data == null) 
+
+                if (data == null)
                     throw new DomainException(typeof(Model), Message.ItemDoesNotExist);
-                
+
                 var model = await context.Models.FindAsync(new object[] { data.Id }, cancellationToken);
 
                 Update(ref data, request.model);
                 data.DateUpdated = DateTime.Now;
-                
+
                 context.Update<Model>(data);
                 await context.SaveChangesAsync(cancellationToken);
 
@@ -53,7 +53,7 @@ namespace Nisshi.Requests.Models
             /// </summary>
             /// <param name="toBeUpdated"></param>
             /// <param name="toUpdateWith"></param>
-            private void Update(ref Model toBeUpdated, Model toUpdateWith) 
+            private void Update(ref Model toBeUpdated, Model toUpdateWith)
             {
                 toBeUpdated.ModelName = toUpdateWith.ModelName;
                 toBeUpdated.Family = toUpdateWith.Family;

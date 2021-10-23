@@ -36,7 +36,7 @@ namespace Nisshi.Requests.LogbookEntries
             public async Task<LogbookEntry> Handle(Command request, CancellationToken cancellationToken)
             {
                 var username = accessor.GetCurrentUserName();
-                
+
                 var currentUser = await context.Users
                     .FirstOrDefaultAsync(x => x.Username == username, cancellationToken);
 

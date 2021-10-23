@@ -20,7 +20,7 @@ namespace Nisshi.Infrastructure.Security
             {
                 new Claim(JwtRegisteredClaimNames.Sub, username),
                 new Claim(JwtRegisteredClaimNames.Jti, options.JtiGenerator()),
-                new Claim(JwtRegisteredClaimNames.Iat, 
+                new Claim(JwtRegisteredClaimNames.Iat,
                     new DateTimeOffset(options.IssuedAt).ToUnixTimeSeconds().ToString(),
                     ClaimValueTypes.Integer64),
                 new Claim(ClaimTypes.Role, role)
@@ -28,7 +28,7 @@ namespace Nisshi.Infrastructure.Security
 
             var jwt = new JwtSecurityToken(options.Issuer, options.Audience,
                 claims, options.NotBefore, options.Expiration, options.SigningCredentials);
-            
+
             var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
 
             return encodedJwt;

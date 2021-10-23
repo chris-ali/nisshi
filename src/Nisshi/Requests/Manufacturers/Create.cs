@@ -40,7 +40,7 @@ namespace Nisshi.Requests.Manufacturers
 
                 if (manufacturer != null)
                     throw new DomainException(typeof(Manufacturer), Message.ItemExistsAlready);
-                
+
                 request.manufacturer.DateCreated = request.manufacturer.DateUpdated = DateTime.Now;
 
                 await context.AddAsync<Manufacturer>(request.manufacturer, cancellationToken);

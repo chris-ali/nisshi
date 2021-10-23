@@ -8,7 +8,7 @@ namespace Nisshi.Infrastructure.Errors
     /// </summary>
     public class RestException : Exception
     {
-        public Message? Error { get; set; } 
+        public Message? Error { get; set; }
         public HttpStatusCode Code { get; }
 
         public RestException(HttpStatusCode code, Message? error = null)

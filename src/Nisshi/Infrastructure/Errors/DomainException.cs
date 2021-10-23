@@ -15,7 +15,7 @@ namespace Nisshi.Infrastructure.Errors
         /// Message code 
         /// </summary>
         public Message MessageCode { get; }
-        
+
         public DomainException(Type entityType, Message message)
         {
             EntityType = entityType;

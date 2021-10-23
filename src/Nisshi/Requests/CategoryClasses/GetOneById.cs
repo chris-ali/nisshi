@@ -9,7 +9,7 @@ using MediatR;
 /// </summary>
 namespace Nisshi.Requests.CategoryClasses
 {
-  public class GetOneById
+    public class GetOneById
     {
         public record Query(int id) : IRequest<CategoryClass>;
 

@@ -39,11 +39,11 @@ namespace Nisshi.Requests.Aircrafts
             public async Task<Aircraft> Handle(Command request, CancellationToken cancellationToken)
             {
                 var data = await context.FindAsync<Aircraft>(new object[] { request.aircraft.Id }, cancellationToken);
-                
-                if (data == null) 
+
+                if (data == null)
                     throw new DomainException(typeof(Aircraft), Message.ItemDoesNotExist);
-                
-                var username = accessor.GetCurrentUserName();                
+
+                var username = accessor.GetCurrentUserName();
 
                 var user = await context.Users
                     .FirstOrDefaultAsync(x => x.Username == username, cancellationToken);
@@ -51,7 +51,7 @@ namespace Nisshi.Requests.Aircrafts
                 Update(ref data, request.aircraft);
                 data.DateUpdated = DateTime.Now;
                 data.Owner = user;
-                
+
                 context.Update<Aircraft>(data);
                 await context.SaveChangesAsync(cancellationToken);
 
@@ -63,7 +63,7 @@ namespace Nisshi.Requests.Aircrafts
             /// </summary>
             /// <param name="toBeUpdated"></param>
             /// <param name="toUpdateWith"></param>
-            private void Update(ref Aircraft toBeUpdated, Aircraft toUpdateWith) 
+            private void Update(ref Aircraft toBeUpdated, Aircraft toUpdateWith)
             {
                 toBeUpdated.TailNumber = toUpdateWith.TailNumber;
                 toBeUpdated.InstanceType = toUpdateWith.InstanceType;

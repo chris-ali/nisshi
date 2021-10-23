@@ -37,9 +37,9 @@ namespace Nisshi.Requests.Aircrafts
             }
 
             public async Task<Aircraft> Handle(Command request, CancellationToken cancellationToken)
-            { 
+            {
                 var username = accessor.GetCurrentUserName();
- 
+
                 var currentUser = await context.Users
                     .FirstOrDefaultAsync(x => x.Username == username, cancellationToken);
 

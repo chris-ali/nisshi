@@ -9,7 +9,7 @@ using System.Net;
 
 namespace Nisshi.Requests.LogbookEntries
 {
-  public class GetOneById
+    public class GetOneById
     {
         public record Query(int id) : IRequest<LogbookEntry>;
 
@@ -30,7 +30,7 @@ namespace Nisshi.Requests.LogbookEntries
                     .Include(x => x.Owner)
                     .Include(x => x.Aircraft)
                         .ThenInclude(x => x.Model)
-                    .FirstOrDefaultAsync(x => x.Id == request.id 
+                    .FirstOrDefaultAsync(x => x.Id == request.id
                         && x.Owner.Username.ToUpper() == username.ToUpper(), cancellationToken);
 
                 return data;

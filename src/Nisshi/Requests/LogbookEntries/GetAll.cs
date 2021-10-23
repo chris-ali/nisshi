@@ -10,7 +10,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 
-namespace Nisshi.Requests.LogbookEntries 
+namespace Nisshi.Requests.LogbookEntries
 {
     public class GetAll
     {
