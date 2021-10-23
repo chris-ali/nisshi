@@ -25,11 +25,11 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
             var user = await Helpers.RegisterAndGetTestUser(fixture);
             var testLogbookEntry = await Helpers.CreateTestLogbookEntry(fixture, user);
             var logbookEntryRequest = await Helpers.SaveAndGet<LogbookEntry>(fixture, testLogbookEntry);
-            
+
             var logbookEntryResponse = await fixture.SendAsync(new Delete.Command(logbookEntryRequest.Id));
 
             Assert.NotNull(logbookEntryResponse);
-            
+
             logbookEntryResponse = await fixture.SendAsync(new GetOneById.Query(logbookEntryRequest.Id));
 
             Assert.Null(logbookEntryResponse);

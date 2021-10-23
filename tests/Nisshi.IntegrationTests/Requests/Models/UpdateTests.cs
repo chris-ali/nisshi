@@ -28,13 +28,13 @@ namespace Nisshi.IntegrationTests.Requests.Models
 
             modelRequest.ModelName = "New Model Name";
             modelRequest.HasFlaps = false;
-            
+
             var modelResponse = await fixture.SendAsync(new Update.Command(modelRequest));
 
             Assert.NotNull(modelResponse);
 
             var fromDb = await fixture.GetNisshiContext().Models.FindAsync(modelResponse.Id);
-            
+
             Assert.NotNull(fromDb);
 
             Assert.Equal(modelRequest.ModelName, modelResponse.ModelName);

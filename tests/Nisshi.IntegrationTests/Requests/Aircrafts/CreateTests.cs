@@ -32,7 +32,7 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
             Assert.NotNull(aircraftResponse);
 
             var fromDb = await fixture.GetNisshiContext().Aircraft.FindAsync(aircraftResponse.Id);
-            
+
             Assert.NotNull(fromDb);
 
             Assert.Equal(fromDb.TailNumber, aircraftResponse.TailNumber);
@@ -54,7 +54,7 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
         public async Task Should_Fail_Input_Null()
         {
             var user = await Helpers.RegisterAndGetTestUser(fixture);
-            
+
             await Assert.ThrowsAsync<ValidationException>(() => fixture.SendAsync(new Create.Command(null)));
         }
 

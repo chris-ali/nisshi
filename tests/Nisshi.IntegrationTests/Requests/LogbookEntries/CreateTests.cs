@@ -29,7 +29,7 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
             Assert.NotNull(logbookEntryResponse);
 
             var fromDb = await fixture.GetNisshiContext().LogbookEntries.FindAsync(logbookEntryResponse.Id);
-            
+
             Assert.NotNull(fromDb);
 
             Assert.Equal(fromDb.Comments, logbookEntryResponse.Comments);
@@ -57,7 +57,7 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
         public async Task Should_Fail_Input_Null()
         {
             var user = await Helpers.RegisterAndGetTestUser(fixture);
-            
+
             await Assert.ThrowsAsync<ValidationException>(() => fixture.SendAsync(new Create.Command(null)));
         }
 

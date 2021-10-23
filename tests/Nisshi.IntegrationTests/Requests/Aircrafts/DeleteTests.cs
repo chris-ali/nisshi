@@ -19,7 +19,7 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
 
         public DeleteTests()
         {
-            this.fixture = new SliceFixture();;
+            this.fixture = new SliceFixture(); ;
         }
 
         [Fact]
@@ -28,11 +28,11 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
             var user = await Helpers.RegisterAndGetTestUser(fixture);
             var testAircraft = await Helpers.CreateTestAircraft(fixture, user);
             var aircraftRequest = await Helpers.SaveAndGet<Aircraft>(fixture, testAircraft);
-            
+
             var aircraftResponse = await fixture.SendAsync(new Delete.Command(aircraftRequest.Id));
 
             Assert.NotNull(aircraftResponse);
-            
+
             aircraftResponse = await fixture.SendAsync(new GetOneById.Query(aircraftRequest.Id));
 
             Assert.Null(aircraftResponse);

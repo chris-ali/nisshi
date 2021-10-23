@@ -50,7 +50,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
 
             // Need to call a request, no idea why EF context.Find() doesn't work for User 
             var fromDb = await fixture.SendAsync(new GetCurrent.Query());
-            
+
             Assert.NotNull(fromDb);
 
             Assert.NotEqual(user.Hash, updateResponse.Hash);
@@ -73,7 +73,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
         public async Task Should_Fail_Input_Null()
         {
             var user = await Helpers.RegisterAndGetTestUser(fixture);
-            
+
             await Assert.ThrowsAsync<ValidationException>(() => fixture.SendAsync(new UpdateProfile.Command(null)));
         }
 

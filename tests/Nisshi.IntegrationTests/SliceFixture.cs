@@ -37,7 +37,7 @@ namespace Nisshi.IntegrationTests
             startup.ConfigureServices(services);
 
             // Replace with in-memory DB for testing
-            var db = services.SingleOrDefault(s => 
+            var db = services.SingleOrDefault(s =>
                 s.ServiceType == typeof(DbContextOptions<NisshiContext>));
 
             if (db != null)
@@ -52,7 +52,7 @@ namespace Nisshi.IntegrationTests
             scopeFactory = provider.GetService<IServiceScopeFactory>();
         }
 
-        public NisshiContext GetNisshiContext() 
+        public NisshiContext GetNisshiContext()
         {
             return provider.GetRequiredService<NisshiContext>();
         }
@@ -61,7 +61,7 @@ namespace Nisshi.IntegrationTests
         /// Resets the database back to the original in memory state;
         /// call after each test in a test class' Dispose() method
         /// </summary>
-        public void ResetDatabase() 
+        public void ResetDatabase()
         {
             GetNisshiContext().Database.EnsureDeleted();
             GetNisshiContext().Database.EnsureCreated();
@@ -131,7 +131,7 @@ namespace Nisshi.IntegrationTests
 
         public Task SendAsync(IRequest request)
         {
-            return ExecuteScopeAsync(x => 
+            return ExecuteScopeAsync(x =>
             {
                 var mediator = x.GetService<IMediator>();
 
@@ -141,7 +141,7 @@ namespace Nisshi.IntegrationTests
 
         public Task<TResponse> SendAsync<TResponse>(IRequest<TResponse> request)
         {
-            return ExecuteScopeAsync(x => 
+            return ExecuteScopeAsync(x =>
             {
                 var mediator = x.GetService<IMediator>();
 

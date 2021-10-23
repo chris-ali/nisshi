@@ -41,10 +41,10 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
             var testLogbookEntry = await Helpers.CreateTestLogbookEntry(fixture, user);
             var testLogbookEntry1 = await Helpers.CreateTestLogbookEntry(fixture, user);
             var testLogbookEntry2 = await Helpers.CreateTestLogbookEntry(fixture, user);
-            
-            await fixture.GetNisshiContext().LogbookEntries.AddRangeAsync(new[] {testLogbookEntry,testLogbookEntry1,testLogbookEntry2});
+
+            await fixture.GetNisshiContext().LogbookEntries.AddRangeAsync(new[] { testLogbookEntry, testLogbookEntry1, testLogbookEntry2 });
             await fixture.GetNisshiContext().SaveChangesAsync();
-            
+
             var logbookEntryResponse = await fixture.SendAsync(new GetAll.Query());
 
             Assert.NotNull(logbookEntryResponse);
