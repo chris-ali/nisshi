@@ -1,18 +1,19 @@
+using System;
+using System.Data;
+using System.Globalization;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Nisshi.Infrastructure.Enums;
 using Nisshi.Infrastructure.Security;
 using Nisshi.Models;
 using Nisshi.Models.Users;
-using System;
-using System.Data;
-using System.Threading.Tasks;
 
 namespace Nisshi.Infrastructure
 {
     /// <summary>
-    /// EFCore implmentation for the Nisshi database - Contains definitions 
-    /// for table relations and seeding for an in-memory database and 
+    /// EFCore implmentation for the Nisshi database - Contains definitions
+    /// for table relations and seeding for an in-memory database and
     /// transactional capability
     /// </summary>
     public class NisshiContext : DbContext
@@ -111,19 +112,19 @@ namespace Nisshi.Infrastructure
             // Set each DB item's name to lower case to match mysql's lower casing
             foreach (var entity in modelBuilder.Model.GetEntityTypes())
             {
-                entity.SetTableName(entity.GetTableName().ToLower());
+                entity.SetTableName(entity.GetTableName().ToLower(CultureInfo.InvariantCulture));
 
                 foreach (var property in entity.GetProperties())
-                    property.SetColumnName(property.Name.ToLower());
+                    property.SetColumnName(property.Name.ToLower(CultureInfo.InvariantCulture));
 
                 foreach (var key in entity.GetKeys())
-                    key.SetName(key.GetName().ToLower());
+                    key.SetName(key.GetName().ToLower(CultureInfo.InvariantCulture));
 
                 foreach (var fk in entity.GetForeignKeys())
-                    fk.SetConstraintName(fk.GetConstraintName().ToLower());
+                    fk.SetConstraintName(fk.GetConstraintName().ToLower(CultureInfo.InvariantCulture));
 
                 foreach (var index in entity.GetIndexes())
-                    index.SetDatabaseName(index.GetDatabaseName().ToLower());
+                    index.SetDatabaseName(index.GetDatabaseName().ToLower(CultureInfo.InvariantCulture));
             }
 
             if (Database.IsInMemory())

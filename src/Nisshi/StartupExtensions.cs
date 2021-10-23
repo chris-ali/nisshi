@@ -1,12 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Nisshi.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Collections.Generic;
+using Nisshi.Infrastructure.Security;
 
 namespace Nisshi
 {

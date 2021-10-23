@@ -1,11 +1,11 @@
-﻿using Nisshi.Requests.Users;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Nisshi.Infrastructure.Security;
 using Nisshi.Models.Users;
+using Nisshi.Requests.Users;
 
 namespace Nisshi.Controllers
 {

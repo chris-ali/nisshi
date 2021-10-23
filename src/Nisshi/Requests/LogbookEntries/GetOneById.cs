@@ -1,11 +1,12 @@
+using System.Globalization;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Nisshi.Infrastructure;
-using Nisshi.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
-using System.Net;
+using Nisshi.Models;
 
 namespace Nisshi.Requests.LogbookEntries
 {
@@ -31,7 +32,8 @@ namespace Nisshi.Requests.LogbookEntries
                     .Include(x => x.Aircraft)
                         .ThenInclude(x => x.Model)
                     .FirstOrDefaultAsync(x => x.Id == request.id
-                        && x.Owner.Username.ToUpper() == username.ToUpper(), cancellationToken);
+                        && x.Owner.Username.ToLower(CultureInfo.InvariantCulture) ==
+                            username.ToLower(CultureInfo.InvariantCulture), cancellationToken);
 
                 return data;
             }

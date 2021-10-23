@@ -19,7 +19,8 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
 
         public DeleteTests()
         {
-            this.fixture = new SliceFixture(); ;
+            this.fixture = new SliceFixture();
+            ;
         }
 
         [Fact]

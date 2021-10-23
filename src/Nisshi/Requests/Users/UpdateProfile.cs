@@ -1,13 +1,13 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
-using MediatR;
-using System;
-using FluentValidation;
-using Nisshi.Models.Users;
-using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure.Security;
+using Nisshi.Models.Users;
 
 namespace Nisshi.Requests.Users
 {

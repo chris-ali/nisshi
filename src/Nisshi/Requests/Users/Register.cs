@@ -1,17 +1,17 @@
+using System;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
-using Nisshi.Infrastructure;
-using Nisshi.Infrastructure.Errors;
+using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using FluentValidation;
-using System;
-using Nisshi.Infrastructure.Security;
-using AutoMapper;
-using Nisshi.Models.Users;
-using System.Security.Authentication;
+using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Enums;
+using Nisshi.Infrastructure.Errors;
+using Nisshi.Infrastructure.Security;
+using Nisshi.Models.Users;
 
 namespace Nisshi.Requests.Users
 {

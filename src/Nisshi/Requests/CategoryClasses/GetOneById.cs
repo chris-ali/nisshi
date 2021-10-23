@@ -1,8 +1,8 @@
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using Nisshi.Infrastructure;
 using Nisshi.Models;
-using MediatR;
 
 /// <summary>
 /// sic

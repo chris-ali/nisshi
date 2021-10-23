@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
 using FluentValidation;
@@ -61,7 +62,7 @@ namespace Nisshi
 
             services.AddDbContext<NisshiContext>(opt =>
             {
-                switch (databaseProvider.ToLower().Trim())
+                switch (databaseProvider.ToLower(CultureInfo.InvariantCulture).Trim())
                 {
                     case "mysql":
                         opt.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));

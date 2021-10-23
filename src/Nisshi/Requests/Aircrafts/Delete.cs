@@ -1,10 +1,11 @@
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 /// sic
@@ -30,7 +31,7 @@ namespace Nisshi.Requests.Aircrafts
                 var data = await context.Aircraft
                     .Include(x => x.Owner)
                     .FirstOrDefaultAsync(x => x.Id == request.id
-                        && x.Owner.Username.ToUpper() == username.ToUpper(), cancellationToken);
+                        && x.Owner.Username.ToLower(CultureInfo.InvariantCulture) == username.ToLower(CultureInfo.InvariantCulture), cancellationToken);
 
                 if (data == null)
                     throw new DomainException(typeof(Aircraft), Message.ItemDoesNotExist);

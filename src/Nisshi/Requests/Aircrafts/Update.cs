@@ -3,12 +3,12 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using FluentValidation;
 
 /// <summary>
 /// sic

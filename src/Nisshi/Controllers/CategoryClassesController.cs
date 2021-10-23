@@ -1,10 +1,10 @@
-﻿using Nisshi.Models;
-using Nisshi.Requests.CategoryClasses;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Nisshi.Models;
+using Nisshi.Requests.CategoryClasses;
 
 namespace Nisshi.Controllers
 {

@@ -1,9 +1,10 @@
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
-using Nisshi.Infrastructure;
-using Nisshi.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Nisshi.Infrastructure;
+using Nisshi.Models;
 
 /// <summary>
 /// sic
@@ -31,7 +32,8 @@ namespace Nisshi.Requests.Aircrafts
                     .Include(x => x.Owner)
                     .Include(x => x.Model)
                     .FirstOrDefaultAsync(x => x.Id == request.id
-                        && x.Owner.Username.ToUpper() == username.ToUpper(), cancellationToken);
+                        && x.Owner.Username.ToLower(CultureInfo.InvariantCulture) ==
+                            username.ToLower(CultureInfo.InvariantCulture), cancellationToken);
 
                 return data;
             }

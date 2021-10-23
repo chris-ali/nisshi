@@ -1,14 +1,15 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using FluentValidation;
 
 namespace Nisshi.Requests.LogbookEntries
 {
@@ -33,7 +34,8 @@ namespace Nisshi.Requests.LogbookEntries
                     .Include(x => x.Aircraft)
                         .ThenInclude(x => x.Model)
                     .Include(x => x.Owner)
-                    .Where(x => x.Owner.Username.ToUpper() == username.ToUpper())
+                    .Where(x => x.Owner.Username.ToLower(CultureInfo.InvariantCulture) ==
+                        username.ToLower(CultureInfo.InvariantCulture))
                     .ToListAsync(cancellationToken);
 
                 return data;

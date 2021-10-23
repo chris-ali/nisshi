@@ -1,13 +1,13 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
-using MediatR;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using FluentValidation;
 
 namespace Nisshi.Requests.Airports
 {

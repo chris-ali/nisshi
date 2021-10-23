@@ -1,11 +1,13 @@
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Nisshi.Infrastructure;
-using Nisshi.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Nisshi.Infrastructure;
+using Nisshi.Models;
 
 namespace Nisshi.Requests.Manufacturers
 {
@@ -25,7 +27,10 @@ namespace Nisshi.Requests.Manufacturers
                     return null;
 
                 var data = await context.Manufacturers
-                    .Where(x => x.ManufacturerName.ToUpper().StartsWith(request.partialName.ToUpper()))
+                    .Where(x => x.ManufacturerName
+                        .ToLower(CultureInfo.InvariantCulture)
+                        .StartsWith(request.partialName
+                        .ToLower(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase))
                     .ToListAsync(cancellationToken);
 
                 return data;

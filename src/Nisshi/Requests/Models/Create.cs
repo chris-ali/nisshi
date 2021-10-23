@@ -1,13 +1,14 @@
 using System;
+using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
-using MediatR;
-using FluentValidation;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 
 namespace Nisshi.Requests.Models
 {
@@ -35,7 +36,8 @@ namespace Nisshi.Requests.Models
             public async Task<Model> Handle(Command request, CancellationToken cancellationToken)
             {
                 var model = await context.Models
-                    .Where(x => x.ModelName.ToUpper() == request.model.ModelName.ToUpper())
+                    .Where(x => x.ModelName.ToLower(CultureInfo.InvariantCulture) ==
+                        request.model.ModelName.ToLower(CultureInfo.InvariantCulture))
                     .FirstOrDefaultAsync(cancellationToken);
 
                 if (model != null)

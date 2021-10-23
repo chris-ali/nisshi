@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Nisshi.Infrastructure;
-using Nisshi.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Nisshi.Infrastructure;
+using Nisshi.Models;
 
 namespace Nisshi.Requests.CategoryClasses
 {

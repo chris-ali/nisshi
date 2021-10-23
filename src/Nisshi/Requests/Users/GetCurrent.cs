@@ -1,9 +1,9 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Nisshi.Infrastructure;
-using Nisshi.Infrastructure.Errors;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Nisshi.Infrastructure;
+using Nisshi.Infrastructure.Errors;
 using Nisshi.Models.Users;
 
 namespace Nisshi.Requests.Users
