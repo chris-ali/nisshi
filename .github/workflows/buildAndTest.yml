@@ -19,5 +19,5 @@ jobs:
         dotnet-version: 5.0.x
     - name: Build and Test
       run: |
-        ls
+        dotnet tool install -g dotnet-format
         dotnet run -p build/build.csproj
