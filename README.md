@@ -5,6 +5,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Implements Swagger endpoints, CQRS pattern via MediatR and JWT authentication 
 
+[![Build and Test](https://github.com/chris-ali/nisshi/actions/workflows/buildAndTest.yml/badge.svg)](https://github.com/chris-ali/nisshi/actions/workflows/buildAndTest.yml)
+
 ## Development server
 
 To run with the .NET WebAPI backend, run `dotnet build && dotnet run` from the project root folder, then open a web browser and navigate to `https://localhost:5001/`. Swagger endpoints are accessible by appending `swagger` to that URL   
