@@ -20,6 +20,4 @@ jobs:
     - name: Build and Test
       run: |
         ls
-        cd build
-        dotnet build 
-        dotnet run
+        dotnet run -p build/build.csproj
