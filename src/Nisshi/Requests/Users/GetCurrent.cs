@@ -1,9 +1,9 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Nisshi.Infrastructure;
-using Nisshi.Infrastructure.Errors;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Nisshi.Infrastructure;
+using Nisshi.Infrastructure.Errors;
 using Nisshi.Models.Users;
 
 namespace Nisshi.Requests.Users
@@ -24,13 +24,13 @@ namespace Nisshi.Requests.Users
             public async Task<User> Handle(Query request, CancellationToken cancellationToken)
             {
                 var username = accessor.GetCurrentUserName();
-                
+
                 var data = await context.Users
                     .SingleOrDefaultAsync(x => x.Username == username, cancellationToken);
 
                 if (data == null)
                     throw new DomainException(typeof(User), Message.ItemDoesNotExist);
-                
+
                 return data;
             }
         }

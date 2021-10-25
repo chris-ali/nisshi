@@ -35,7 +35,7 @@ namespace Nisshi.Infrastructure.Security
 
             return sha.ComputeHash(new MemoryStream(allBytes));
         }
-        
+
         public void Dispose() => sha.Dispose();
     }
 }

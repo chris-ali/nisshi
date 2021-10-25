@@ -1,6 +1,6 @@
 using System;
 
-namespace Nisshi.Models.Users 
+namespace Nisshi.Models.Users
 {
     /// <summary>
     /// Model passed in to controller to edit the profile and password
@@ -12,7 +12,7 @@ namespace Nisshi.Models.Users
         public string Email { get; set; }
 
         public string FirstName { get; set; }
-        
+
         public string LastName { get; set; }
 
         public string Password { get; set; }

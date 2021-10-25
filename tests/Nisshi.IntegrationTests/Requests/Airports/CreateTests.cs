@@ -41,7 +41,7 @@ namespace Nisshi.IntegrationTests.Requests.Airports
 
             var fromDb = await fixture.GetNisshiContext().Airports
                 .FirstOrDefaultAsync(x => x.AirportCode == airportResponse.AirportCode);
-            
+
             Assert.NotNull(fromDb);
 
             Assert.Equal(fromDb.AirportCode, airportResponse.AirportCode);

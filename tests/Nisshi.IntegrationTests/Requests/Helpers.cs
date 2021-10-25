@@ -25,7 +25,7 @@ namespace Nisshi.IntegrationTests.Requests
         /// <returns>A newly registered test user</returns>
         public static async Task<User> RegisterAndGetTestUser(SliceFixture fixture)
         {
-            var command = new Register.Command(new Registration 
+            var command = new Register.Command(new Registration
             {
                 Email = TestEmailAddress,
                 Username = TestUserName,
@@ -34,24 +34,24 @@ namespace Nisshi.IntegrationTests.Requests
 
             var user = await fixture.GetNisshiContext().Users
                 .SingleOrDefaultAsync(x => x.Username == TestUserName);
-            
+
             if (user == null)
                 await fixture.SendAsync(command);
 
             return await fixture.GetNisshiContext().Users
                 .SingleOrDefaultAsync(x => x.Username == TestUserName);
         }
-        
+
         /// <summary>
         /// Creates a test aircraft for testing purposes
         /// </summary>
         /// <param name="fixture">Testing slice fixture</param>
         /// <returns>Test aircraft</returns>
-        public static async Task<Aircraft> CreateTestAircraft(SliceFixture fixture, User user) 
+        public static async Task<Aircraft> CreateTestAircraft(SliceFixture fixture, User user)
         {
             var model = await fixture.GetNisshiContext().Models.FirstOrDefaultAsync();
 
-            return new Aircraft 
+            return new Aircraft
             {
                 IdModel = model.Id,
                 IdUser = user?.Id ?? 0,
@@ -150,7 +150,7 @@ namespace Nisshi.IntegrationTests.Requests
                 NumLandings = rand.Next(0, 10),
                 NumNightLandings = rand.Next(0, 10),
                 FlightDate = DateTime.Today.AddDays(-rand.Next(0, 180)),
-                Route = $"{airports[rand.Next(0,2)].AirportCode} - {airports[rand.Next(0,2)].AirportCode}"
+                Route = $"{airports[rand.Next(0, 2)].AirportCode} - {airports[rand.Next(0, 2)].AirportCode}"
             };
         }
 

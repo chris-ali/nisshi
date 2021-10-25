@@ -38,7 +38,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
 
             var fromDb = await fixture.GetNisshiContext().Users
                 .Where(x => x.Username == response.Username).FirstOrDefaultAsync();
-            
+
             Assert.NotNull(fromDb);
 
             Assert.Equal(fromDb.Username, response.Username);

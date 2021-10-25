@@ -82,13 +82,13 @@ namespace Nisshi.Models
         /// Associated model of this aircraft
         /// </summary>
         public Model Model { get; set; }
-        
+
         /// <summary>
         /// Associated logbook entries of this aircraft 
         /// </summary>
         [JsonIgnore]
         public virtual List<LogbookEntry> LogbookEntries { get; set; } = new();
-        
+
         /// <summary>
         /// Foreign key to the users table
         /// </summary>

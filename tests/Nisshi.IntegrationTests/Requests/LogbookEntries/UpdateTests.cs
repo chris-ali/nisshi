@@ -31,13 +31,13 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
             logbookEntryRequest.CrossCountry = 99.9m;
             logbookEntryRequest.FlightDate = DateTime.Today.AddMonths(12);
             logbookEntryRequest.NumLandings = 99;
-            
+
             var logbookEntryResponse = await fixture.SendAsync(new Update.Command(logbookEntryRequest));
 
             Assert.NotNull(logbookEntryResponse);
 
             var fromDb = await fixture.GetNisshiContext().LogbookEntries.FindAsync(logbookEntryResponse.Id);
-            
+
             Assert.NotNull(fromDb);
 
             Assert.Equal(logbookEntryRequest.Comments, logbookEntryResponse.Comments);
@@ -50,7 +50,7 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
         public async Task Should_Fail_Input_Null()
         {
             var user = await Helpers.RegisterAndGetTestUser(fixture);
-            
+
             await Assert.ThrowsAsync<ValidationException>(() => fixture.SendAsync(new Update.Command(null)));
         }
 

@@ -1,14 +1,14 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
-using MediatR;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using FluentValidation;
 
 namespace Nisshi.Requests.LogbookEntries
 {
@@ -36,7 +36,7 @@ namespace Nisshi.Requests.LogbookEntries
             public async Task<LogbookEntry> Handle(Command request, CancellationToken cancellationToken)
             {
                 var username = accessor.GetCurrentUserName();
-                
+
                 var currentUser = await context.Users
                     .FirstOrDefaultAsync(x => x.Username == username, cancellationToken);
 

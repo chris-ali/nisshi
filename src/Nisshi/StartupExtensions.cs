@@ -1,12 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using Nisshi.Infrastructure.Security;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using System.Collections.Generic;
+using Nisshi.Infrastructure.Security;
 
 namespace Nisshi
 {
@@ -28,7 +28,7 @@ namespace Nisshi
             var issuer = "issuer";
             var audience = "audience";
 
-            services.Configure<JwtIssuerOptions>(op => 
+            services.Configure<JwtIssuerOptions>(op =>
             {
                 op.Issuer = issuer;
                 op.Audience = audience;
@@ -52,7 +52,7 @@ namespace Nisshi
                 ClockSkew = TimeSpan.Zero
             };
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(op => 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(op =>
             {
                 op.TokenValidationParameters = tokenValidationParameters;
                 op.Events = new JwtBearerEvents
@@ -64,7 +64,7 @@ namespace Nisshi
 
                         if (token.Count > 0 && token[0].StartsWith("Token ", StringComparison.OrdinalIgnoreCase))
                             context.Token = token[0].Substring("Token ".Length).Trim();
-                        
+
                         return Task.CompletedTask;
                     }
                 };
@@ -77,9 +77,9 @@ namespace Nisshi
         /// <param name="services"></param>
         public static void AddSwaggerService(this IServiceCollection services)
         {
-            services.AddSwaggerGen(sw => 
+            services.AddSwaggerGen(sw =>
             {
-                sw.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme 
+                sw.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
                     Description = "Please insert JWT with Bearer into field",
@@ -88,14 +88,14 @@ namespace Nisshi
                     BearerFormat = "JWT"
                 });
 
-                sw.AddSecurityRequirement(new OpenApiSecurityRequirement() 
+                sw.AddSecurityRequirement(new OpenApiSecurityRequirement()
                 {
                     {
-                        new OpenApiSecurityScheme 
+                        new OpenApiSecurityScheme
                         {
-                            Reference = new OpenApiReference 
-                            { 
-                                Type = ReferenceType.SecurityScheme, 
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
                             }
                         },
@@ -106,7 +106,7 @@ namespace Nisshi
                 sw.SwaggerDoc("v1", new OpenApiInfo { Title = "Nisshi API", Version = "v1" });
                 sw.CustomSchemaIds(x => x.FullName);
                 sw.DocInclusionPredicate((version, apiDescription) => true);
-                
+
                 // TODO Is this needed?
                 // sw.TagActionsBy(x => new List<string>() 
                 // { 

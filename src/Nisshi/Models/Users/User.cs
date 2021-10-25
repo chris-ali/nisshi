@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Nisshi.Infrastructure.Enums;
 
-namespace Nisshi.Models.Users 
+namespace Nisshi.Models.Users
 {
     /// <summary>
     /// User object for project, tied to users table
@@ -15,7 +15,7 @@ namespace Nisshi.Models.Users
         public string Email { get; set; }
 
         public string FirstName { get; set; }
-        
+
         public string LastName { get; set; }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace Nisshi.Models.Users
         /// Additional user preferences serialized in JSON dictionary forma
         /// </summary>
         public string Preferences { get; set; }
-        
+
         /// <summary>
         /// Associated aircraft belonging to the user
         /// </summary>

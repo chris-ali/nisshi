@@ -1,4 +1,4 @@
-CREATE DATABASE  IF NOT EXISTS `nisshi`
+CREATE DATABASE IF NOT EXISTS `nisshi`;
 USE `nisshi`;
 
 DROP TABLE IF EXISTS `logbookentries`;
@@ -289,8 +289,8 @@ ALTER TABLE `airports` ADD (`DateCreated` date DEFAULT NULL, `DateUpdated` date 
 -- Creating user for web application
 --
 
-CREATE USER IF NOT EXISTS 'nisshiuser'@'localhost' IDENTIFIED BY 'saishoNoYuuza1?';
+CREATE USER IF NOT EXISTS 'nisshiuser'@'%' IDENTIFIED BY 'saishoNoYuuza1?';
 
-GRANT INSERT, SELECT, UPDATE, DELETE ON nisshi.* TO 'nisshiuser'@'localhost';
+GRANT INSERT, SELECT, UPDATE, DELETE ON nisshi.* TO 'nisshiuser'@'%';
 
 FLUSH PRIVILEGES;

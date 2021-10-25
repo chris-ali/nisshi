@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Reflection;
 using System.Text.Json;
 using FluentValidation;
@@ -20,7 +21,7 @@ namespace Nisshi
     public class Startup
     {
         private const string DEFAULT_DB_PROVIDER = "mysql";
-        private const string DEFAULT_DB_CONNECTION_STRING = 
+        private const string DEFAULT_DB_CONNECTION_STRING =
             "server=localhost;uid=nisshiuser;pwd=saishoNoYuuza1?;database=nisshi";
 
         /// <summary>
@@ -45,13 +46,13 @@ namespace Nisshi
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
-            services.AddControllersWithViews().AddJsonOptions(opt => 
+            services.AddControllersWithViews().AddJsonOptions(opt =>
             {
                 opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             });
 
             services.AddLocalization(x => x.ResourcesPath = "Resources");
-            
+
             services.AddSwaggerService();
 
             var connectionString = Configuration.GetValue<string>("ASPNETCORE_Nisshi_ConnectionString")
@@ -59,9 +60,9 @@ namespace Nisshi
             var databaseProvider = Configuration.GetValue<string>("ASPNETCORE_Nisshi_DatabaseProvider")
                 ?? DEFAULT_DB_PROVIDER;
 
-            services.AddDbContext<NisshiContext>(opt => 
+            services.AddDbContext<NisshiContext>(opt =>
             {
-                switch (databaseProvider.ToLower().Trim())
+                switch (databaseProvider.ToLower(CultureInfo.InvariantCulture).Trim())
                 {
                     case "mysql":
                         opt.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
@@ -75,7 +76,7 @@ namespace Nisshi
             });
 
             services.AddCors();
-            
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -120,7 +121,7 @@ namespace Nisshi
 
             app.UseRouting();
 
-            app.UseCors(x => 
+            app.UseCors(x =>
             {
                 x.AllowAnyOrigin()
                  .AllowAnyMethod()
@@ -155,7 +156,7 @@ namespace Nisshi
             });
 
             // Also ensures database is seeded if in memory is used
-            using (var serviceScope = app.ApplicationServices.CreateScope()) 
+            using (var serviceScope = app.ApplicationServices.CreateScope())
             {
                 serviceScope.ServiceProvider.GetRequiredService<NisshiContext>().Database.EnsureCreated();
             }

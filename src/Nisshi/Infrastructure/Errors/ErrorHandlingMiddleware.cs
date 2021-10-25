@@ -23,8 +23,8 @@ namespace Nisshi.Infrastructure.Errors
         private readonly IStringLocalizer<ErrorHandlingMiddleware> localizer;
 
         public ErrorHandlingMiddleware(
-            RequestDelegate next, 
-            ILogger<ErrorHandlingMiddleware> logger, 
+            RequestDelegate next,
+            ILogger<ErrorHandlingMiddleware> logger,
             IStringLocalizer<ErrorHandlingMiddleware> localizer)
         {
             this.next = next;
@@ -32,7 +32,7 @@ namespace Nisshi.Infrastructure.Errors
             this.localizer = localizer;
         }
 
-        public async Task Invoke(HttpContext context) 
+        public async Task Invoke(HttpContext context)
         {
             try
             {
@@ -53,7 +53,7 @@ namespace Nisshi.Infrastructure.Errors
         private async Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             string result = null;
-            switch (ex) 
+            switch (ex)
             {
                 case InvalidCredentialException ice:
                     context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
@@ -64,7 +64,7 @@ namespace Nisshi.Infrastructure.Errors
                     result = JsonSerializer.Serialize(new { errors = localizer[ae.Message].Value });
                     break;
                 case DomainException de:
-                    int status = de.MessageCode == Message.ItemDoesNotExist ? 
+                    int status = de.MessageCode == Message.ItemDoesNotExist ?
                         (int)HttpStatusCode.NotFound : (int)HttpStatusCode.BadRequest;
                     context.Response.StatusCode = status;
                     result = JsonSerializer.Serialize(new { errors = $"{de.EntityType?.Name} {localizer[de.MessageCode.ToString()].Value}" });
@@ -80,7 +80,7 @@ namespace Nisshi.Infrastructure.Errors
                 case Exception ey:
                     context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                     logger.LogError(ey, "Unhandled Exception");
-                    result = JsonSerializer.Serialize(new { errors = localizer["InternalServerError"].Value});
+                    result = JsonSerializer.Serialize(new { errors = localizer["InternalServerError"].Value });
                     break;
             }
 
@@ -89,13 +89,13 @@ namespace Nisshi.Infrastructure.Errors
         }
 
         private Dictionary<string, string> FormatValidationFailures(IEnumerable<ValidationFailure> failures,
-             IStringLocalizer<ErrorHandlingMiddleware> localizer) 
+             IStringLocalizer<ErrorHandlingMiddleware> localizer)
         {
             var failDict = new Dictionary<string, string>();
 
             foreach (var failure in failures)
                 failDict[failure.PropertyName] = localizer[failure.ErrorMessage].Value;
-            
+
             return failDict;
         }
     }

@@ -28,7 +28,7 @@ namespace Nisshi.IntegrationTests.Requests.Models
             Assert.NotNull(modelResponse);
 
             var fromDb = await fixture.GetNisshiContext().Models.FindAsync(modelResponse.Id);
-            
+
             Assert.NotNull(fromDb);
 
             Assert.Equal(modelRequest.ModelName, modelResponse.ModelName);

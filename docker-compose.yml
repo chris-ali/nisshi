@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  db:
+    image: ${MYSQL_IMAGE}
+    restart: always
+    env_file: ./.env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PW}
+    volumes:
+     - ./Database:/docker-entrypoint-initdb.d
+     #- ./db_container/data:/var/lib/mysql
+    ports:
+     - "${MYSQL_LOCAL_PORT}:${MYSQL_DOCKER_PORT}"
+
+  webapp:
+    depends_on:
+     - db
+    build: .
+    env_file: ./.env
+    environment:
+     - ASPNETCORE_Nisshi_DatabaseProvider=${ASPNETCORE_Nisshi_DatabaseProvider}
+     - ASPNETCORE_Nisshi_ConnectionString=${ASPNETCORE_Nisshi_ConnectionString}
+    ports:
+     - ${NISSHI_LOCAL_PORT}:${NISSHI_DOCKER_PORT}

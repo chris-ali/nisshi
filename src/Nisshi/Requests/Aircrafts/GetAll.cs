@@ -1,17 +1,18 @@
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Nisshi.Infrastructure;
-using Nisshi.Models;
+using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using FluentValidation;
+using Nisshi.Infrastructure;
+using Nisshi.Models;
 
 /// <summary>
 /// sic
 /// </summary>
-namespace Nisshi.Requests.Aircrafts 
+namespace Nisshi.Requests.Aircrafts
 {
     public class GetAll
     {
@@ -33,9 +34,10 @@ namespace Nisshi.Requests.Aircrafts
                 var data = await context.Aircraft
                     //.Include(x => x.Model)
                     .Include(x => x.Owner)
-                    .Where(x => x.Owner.Username.ToUpper() == username.ToUpper())
+                    .Where(x => x.Owner.Username.ToLower(CultureInfo.InvariantCulture) ==
+                        username.ToLower(CultureInfo.InvariantCulture))
                     .ToListAsync(cancellationToken);
-                
+
                 return data;
             }
         }

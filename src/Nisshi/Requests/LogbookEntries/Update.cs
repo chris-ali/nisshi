@@ -1,12 +1,12 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using FluentValidation;
 
 namespace Nisshi.Requests.LogbookEntries
 {
@@ -34,10 +34,10 @@ namespace Nisshi.Requests.LogbookEntries
             public async Task<LogbookEntry> Handle(Command request, CancellationToken cancellationToken)
             {
                 var data = await context.FindAsync<LogbookEntry>(new object[] { request.logbookEntry.Id }, cancellationToken);
-                
-                if (data == null) 
+
+                if (data == null)
                     throw new DomainException(typeof(LogbookEntry), Message.ItemDoesNotExist);
-                
+
                 var username = accessor.GetCurrentUserName();
 
                 var user = await context.Users
@@ -46,7 +46,7 @@ namespace Nisshi.Requests.LogbookEntries
                 Update(ref data, request.logbookEntry);
                 data.DateUpdated = DateTime.Now;
                 data.Owner = user;
-                
+
                 context.Update<LogbookEntry>(data);
                 await context.SaveChangesAsync(cancellationToken);
 
@@ -58,7 +58,7 @@ namespace Nisshi.Requests.LogbookEntries
             /// </summary>
             /// <param name="toBeUpdated"></param>
             /// <param name="toUpdateWith"></param>
-            private void Update(ref LogbookEntry toBeUpdated, LogbookEntry toUpdateWith) 
+            private void Update(ref LogbookEntry toBeUpdated, LogbookEntry toUpdateWith)
             {
                 toBeUpdated.Comments = toUpdateWith.Comments;
                 toBeUpdated.CrossCountry = toUpdateWith.CrossCountry;

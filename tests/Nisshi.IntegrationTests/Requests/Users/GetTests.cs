@@ -39,6 +39,6 @@ namespace Nisshi.IntegrationTests.Requests.Users
         public void Dispose()
         {
             fixture.ResetDatabase();
-        } 
+        }
     }
 }

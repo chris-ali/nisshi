@@ -1,18 +1,19 @@
+using System;
+using System.Data;
+using System.Globalization;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Nisshi.Infrastructure.Enums;
 using Nisshi.Infrastructure.Security;
 using Nisshi.Models;
 using Nisshi.Models.Users;
-using System;
-using System.Data;
-using System.Threading.Tasks;
 
 namespace Nisshi.Infrastructure
 {
     /// <summary>
-    /// EFCore implmentation for the Nisshi database - Contains definitions 
-    /// for table relations and seeding for an in-memory database and 
+    /// EFCore implmentation for the Nisshi database - Contains definitions
+    /// for table relations and seeding for an in-memory database and
     /// transactional capability
     /// </summary>
     public class NisshiContext : DbContext
@@ -35,9 +36,9 @@ namespace Nisshi.Infrastructure
         /// Defines table relations and in-memory seeding
         /// </summary>
         /// <param name="modelBuilder"></param>
-        protected override void OnModelCreating(ModelBuilder modelBuilder) 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<User>(b => 
+            modelBuilder.Entity<User>(b =>
             {
                 b.HasKey(x => x.Id);
                 b.Property(x => x.Username).IsRequired();
@@ -111,25 +112,25 @@ namespace Nisshi.Infrastructure
             // Set each DB item's name to lower case to match mysql's lower casing
             foreach (var entity in modelBuilder.Model.GetEntityTypes())
             {
-                entity.SetTableName(entity.GetTableName().ToLower());
+                entity.SetTableName(entity.GetTableName().ToLower(CultureInfo.InvariantCulture));
 
                 foreach (var property in entity.GetProperties())
-                    property.SetColumnName(property.Name.ToLower());
-                
+                    property.SetColumnName(property.Name.ToLower(CultureInfo.InvariantCulture));
+
                 foreach (var key in entity.GetKeys())
-                    key.SetName(key.GetName().ToLower());
-                
+                    key.SetName(key.GetName().ToLower(CultureInfo.InvariantCulture));
+
                 foreach (var fk in entity.GetForeignKeys())
-                    fk.SetConstraintName(fk.GetConstraintName().ToLower());
+                    fk.SetConstraintName(fk.GetConstraintName().ToLower(CultureInfo.InvariantCulture));
 
                 foreach (var index in entity.GetIndexes())
-                    index.SetDatabaseName(index.GetDatabaseName().ToLower());
+                    index.SetDatabaseName(index.GetDatabaseName().ToLower(CultureInfo.InvariantCulture));
             }
 
             if (Database.IsInMemory())
                 SeedMe(modelBuilder);
-        }      
-        
+        }
+
         public void BeginTransaction()
         {
             if (currentTransaction != null)
@@ -165,7 +166,7 @@ namespace Nisshi.Infrastructure
         {
             try
             {
-                currentTransaction?.Rollback();     
+                currentTransaction?.Rollback();
             }
             finally
             {
@@ -186,23 +187,23 @@ namespace Nisshi.Infrastructure
             var hasher = new PasswordHasher();
             var salt1 = Guid.NewGuid().ToByteArray();
             var salt2 = Guid.NewGuid().ToByteArray();
-            var users = new User[] 
+            var users = new User[]
             {
-                new User { Id = 1, Username = "chris", FirstName = "Chris", LastName = "Ali", Email = "chris@ali.com", 
+                new User { Id = 1, Username = "chris", FirstName = "Chris", LastName = "Ali", Email = "chris@ali.com",
                     Hash = hasher.Hash("test123", salt1), Salt = salt1, UserType = UserType.Administrator },
-                new User { Id = 2, Username = "somebodyElse", FirstName = "Somebody", LastName = "Else", Email = "somebody@else.com", 
+                new User { Id = 2, Username = "somebodyElse", FirstName = "Somebody", LastName = "Else", Email = "somebody@else.com",
                     Hash = hasher.Hash("test456", salt2), Salt = salt2, UserType = UserType.User },
             };
             modelBuilder.Entity<User>().HasData(users);
 
-            var categoryClasses = new CategoryClass[] 
+            var categoryClasses = new CategoryClass[]
             {
                 new CategoryClass { Id = 1, Category = "Airplane", Class = "Single Engine Land", CatClass = "ASEL" },
                 new CategoryClass { Id = 2, Category = "Airplane", Class = "Multi Engine Land", CatClass = "AMEL" },
             };
             modelBuilder.Entity<CategoryClass>().HasData(categoryClasses);
 
-            var manufacturers = new Manufacturer[] 
+            var manufacturers = new Manufacturer[]
             {
                 new Manufacturer { Id = 1, ManufacturerName = "Cessna" },
                 new Manufacturer { Id = 2, ManufacturerName = "Piper" },
@@ -227,7 +228,7 @@ namespace Nisshi.Infrastructure
             };
             modelBuilder.Entity<Model>().HasData(models);
 
-            var aircraft = new Aircraft[] 
+            var aircraft = new Aircraft[]
             {
                 new Aircraft { Id = 1, IdModel = models[1].Id, IdUser = users[0].Id, TailNumber = "N8445D" },
                 new Aircraft { Id = 2, IdModel = models[4].Id, IdUser = users[0].Id, TailNumber = "N5427D" },
@@ -247,23 +248,23 @@ namespace Nisshi.Infrastructure
 
             var logbookEntries = new LogbookEntry[]
             {
-                new LogbookEntry { Id = 1, Comments = "Test1", FlightDate = DateTime.Now.AddDays(-1), PIC = 2.0m, Night = 2.0m, NumLandings = 1, 
+                new LogbookEntry { Id = 1, Comments = "Test1", FlightDate = DateTime.Now.AddDays(-1), PIC = 2.0m, Night = 2.0m, NumLandings = 1,
                     NumInstrumentApproaches = 1, Route = $"{airports[0].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 2, Comments = "Test2", FlightDate = DateTime.Now.AddDays(-2), PIC = 2.7m, CrossCountry = 2.7m, NumLandings = 2, 
+                new LogbookEntry { Id = 2, Comments = "Test2", FlightDate = DateTime.Now.AddDays(-2), PIC = 2.7m, CrossCountry = 2.7m, NumLandings = 2,
                     NumInstrumentApproaches = 1, Route = $"{airports[1].AirportCode} {airports[2].AirportCode}", IdAircraft = aircraft[1].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 3, Comments = "Test3", FlightDate = DateTime.Now.AddDays(-3), PIC = 3.0m, CrossCountry = 3.0m, NumLandings = 3, 
+                new LogbookEntry { Id = 3, Comments = "Test3", FlightDate = DateTime.Now.AddDays(-3), PIC = 3.0m, CrossCountry = 3.0m, NumLandings = 3,
                     NumInstrumentApproaches = 4, Route = $"{airports[0].AirportCode} {airports[2].AirportCode}", IdAircraft = aircraft[1].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 4, Comments = "Test4", FlightDate = DateTime.Now.AddDays(-4), PIC = 1.2m, CrossCountry = 1.2m, NumLandings = 1, 
+                new LogbookEntry { Id = 4, Comments = "Test4", FlightDate = DateTime.Now.AddDays(-4), PIC = 1.2m, CrossCountry = 1.2m, NumLandings = 1,
                     NumInstrumentApproaches = 1, Route = $"{airports[2].AirportCode} {airports[0].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 5, Comments = "Test5", FlightDate = DateTime.Now.AddDays(-5), PIC = 2.0m, CrossCountry = 2.0m, NumLandings = 1, 
+                new LogbookEntry { Id = 5, Comments = "Test5", FlightDate = DateTime.Now.AddDays(-5), PIC = 2.0m, CrossCountry = 2.0m, NumLandings = 1,
                     NumInstrumentApproaches = 3, Route = $"{airports[1].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[2].Id, IdUser = users[1].Id },
-                new LogbookEntry { Id = 6, Comments = "Test6", FlightDate = DateTime.Now.AddDays(-6), PIC = 1.3m, CrossCountry = 1.3m, Night = 1.3m, NumLandings = 4, 
+                new LogbookEntry { Id = 6, Comments = "Test6", FlightDate = DateTime.Now.AddDays(-6), PIC = 1.3m, CrossCountry = 1.3m, Night = 1.3m, NumLandings = 4,
                     NumInstrumentApproaches = 2, Route = $"{airports[0].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[4].Id, IdUser = users[1].Id },
-                new LogbookEntry { Id = 7, Comments = "Test7", FlightDate = DateTime.Now.AddDays(-7), PIC = 2.0m, NumLandings = 1, 
+                new LogbookEntry { Id = 7, Comments = "Test7", FlightDate = DateTime.Now.AddDays(-7), PIC = 2.0m, NumLandings = 1,
                     NumInstrumentApproaches = 1, Route = $"{airports[1].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[4].Id, IdUser = users[1].Id },
-                new LogbookEntry { Id = 8, Comments = "Test8", FlightDate = DateTime.Now.AddDays(-8), PIC = 4.2m, CrossCountry = 4.2m, NumLandings = 2, 
+                new LogbookEntry { Id = 8, Comments = "Test8", FlightDate = DateTime.Now.AddDays(-8), PIC = 4.2m, CrossCountry = 4.2m, NumLandings = 2,
                     NumInstrumentApproaches = 2, Route = $"{airports[1].AirportCode} {airports[2].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 9, Comments = "Test9", FlightDate = DateTime.Now.AddDays(-9), PIC = 1.1m, Night = 2.0m, NumLandings = 1, 
+                new LogbookEntry { Id = 9, Comments = "Test9", FlightDate = DateTime.Now.AddDays(-9), PIC = 1.1m, Night = 2.0m, NumLandings = 1,
                     NumInstrumentApproaches = 1, Route = $"{airports[2].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
             };
             modelBuilder.Entity<LogbookEntry>().HasData(logbookEntries);

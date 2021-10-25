@@ -44,10 +44,10 @@ namespace Nisshi.IntegrationTests.Requests.Aircrafts
             var testAircraft = await Helpers.CreateTestAircraft(fixture, user);
             var testAircraft1 = await Helpers.CreateTestAircraft(fixture, user);
             var testAircraft2 = await Helpers.CreateTestAircraft(fixture, user);
-            
-            await fixture.GetNisshiContext().Aircraft.AddRangeAsync(new[] {testAircraft,testAircraft1,testAircraft2});
+
+            await fixture.GetNisshiContext().Aircraft.AddRangeAsync(new[] { testAircraft, testAircraft1, testAircraft2 });
             await fixture.GetNisshiContext().SaveChangesAsync();
-            
+
             var aircraftResponse = await fixture.SendAsync(new GetAll.Query());
 
             Assert.NotNull(aircraftResponse);

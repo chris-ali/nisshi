@@ -1,10 +1,11 @@
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 
 namespace Nisshi.Requests.LogbookEntries
 {
@@ -27,8 +28,9 @@ namespace Nisshi.Requests.LogbookEntries
                 var data = await context.LogbookEntries
                     .Include(x => x.Owner)
                     .FirstOrDefaultAsync(x => x.Id == request.id
-                        && x.Owner.Username.ToUpper() == username.ToUpper(), cancellationToken);
-                
+                        && x.Owner.Username.ToLower(CultureInfo.InvariantCulture) ==
+                            username.ToLower(CultureInfo.InvariantCulture), cancellationToken);
+
                 if (data == null)
                     throw new DomainException(typeof(LogbookEntry), Message.ItemDoesNotExist);
 

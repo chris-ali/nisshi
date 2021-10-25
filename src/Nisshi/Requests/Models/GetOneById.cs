@@ -1,13 +1,13 @@
 using System.Threading;
 using System.Threading.Tasks;
-using Nisshi.Infrastructure;
-using Nisshi.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Nisshi.Infrastructure;
+using Nisshi.Models;
 
 namespace Nisshi.Requests.Models
 {
-  public class GetOneById
+    public class GetOneById
     {
         public record Query(int id) : IRequest<Model>;
 

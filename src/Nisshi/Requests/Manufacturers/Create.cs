@@ -1,13 +1,14 @@
 using System;
+using System.Globalization;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure;
 using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
-using MediatR;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using FluentValidation;
 
 namespace Nisshi.Requests.Manufacturers
 {
@@ -35,12 +36,12 @@ namespace Nisshi.Requests.Manufacturers
             public async Task<Manufacturer> Handle(Command request, CancellationToken cancellationToken)
             {
                 var manufacturer = await context.Manufacturers
-                    .Where(x => x.ManufacturerName.ToUpper() == request.manufacturer.ManufacturerName.ToUpper())
+                    .Where(x => x.ManufacturerName.ToLower(CultureInfo.InvariantCulture) == request.manufacturer.ManufacturerName.ToLower(CultureInfo.InvariantCulture))
                     .FirstOrDefaultAsync(cancellationToken);
 
                 if (manufacturer != null)
                     throw new DomainException(typeof(Manufacturer), Message.ItemExistsAlready);
-                
+
                 request.manufacturer.DateCreated = request.manufacturer.DateUpdated = DateTime.Now;
 
                 await context.AddAsync<Manufacturer>(request.manufacturer, cancellationToken);

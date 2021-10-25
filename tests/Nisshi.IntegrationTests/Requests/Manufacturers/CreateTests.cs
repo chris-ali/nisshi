@@ -29,7 +29,7 @@ namespace Nisshi.IntegrationTests.Requests.Manufacturers
             Assert.NotNull(manufacturerResponse);
 
             var fromDb = await fixture.GetNisshiContext().Manufacturers.FindAsync(manufacturerResponse.Id);
-            
+
             Assert.NotNull(fromDb);
 
             Assert.Equal(fromDb.ManufacturerName, manufacturerResponse.ManufacturerName);
@@ -51,7 +51,7 @@ namespace Nisshi.IntegrationTests.Requests.Manufacturers
             Assert.NotNull(manufacturerResponse);
 
             var fromDb = await fixture.GetNisshiContext().Manufacturers.FindAsync(manufacturerResponse.Id);
-            
+
             Assert.NotNull(fromDb);
 
             await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new Create.Command(manufacturerRequest)));
