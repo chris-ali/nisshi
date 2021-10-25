@@ -17,5 +17,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 5.0.x
+    - name: Change to Project Directory
+      run: cd /home/runner/work/nisshi/nisshi/build
     - name: Build and Test
-      run: dotnet run -p /home/runner/work/nisshi/nisshi/build/build.csproj
+      run: dotnet build && dotnet run
