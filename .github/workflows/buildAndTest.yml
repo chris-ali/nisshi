@@ -19,7 +19,7 @@ jobs:
         dotnet-version: 5.0.x
     - name: Build and Test
       run: |
-        pwd
+        ls
         cd build
         dotnet build 
         dotnet run
