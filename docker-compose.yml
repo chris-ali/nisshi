@@ -21,5 +21,12 @@ services:
     environment:
      - ASPNETCORE_Nisshi_DatabaseProvider=${ASPNETCORE_Nisshi_DatabaseProvider}
      - ASPNETCORE_Nisshi_ConnectionString=${ASPNETCORE_Nisshi_ConnectionString}
+     - ASPNETCORE_URLS=https://+;http://+
+     - ASPNETCORE_Kestrel__Certificates__Default__Password=${ASPNETCORE_Nisshi_CertificatePassword}
+     - ASPNETCORE_Kestrel__Certificates__Default__Path=${ASPNETCORE_Nisshi_CertificatePath}
+     - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_Nisshi_Environment}
     ports:
-     - ${NISSHI_LOCAL_PORT}:${NISSHI_DOCKER_PORT}
+     - ${NISSHI_LOCAL_HTTP_PORT}:${NISSHI_DOCKER_HTTP_PORT}
+     - ${NISSHI_LOCAL_HTTPS_PORT}:${NISSHI_DOCKER_HTTPS_PORT}
+    volumes:
+     - ~/.aspnet/https:/https:ro
