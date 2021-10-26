@@ -15,8 +15,9 @@ RUN dotnet run -p build/build.csproj
 # Stage 2 - Runtime Container
 FROM mcr.microsoft.com/dotnet/aspnet:5.0.11-alpine3.13-amd64
 
-RUN apk add --no-cache tzdata
+RUN apk add --no-cache tzdata nodejs \ npm
 COPY --from=build /build/publish /app
+RUN npm install
 WORKDIR /app
 EXPOSE 5000
 
