@@ -27,7 +27,7 @@ namespace Nisshi
         /// <summary>
         /// Path relative from this class to the root of the Angular client project
         /// </summary>
-        private readonly string SPA_PATH = "../../ClientApp";
+        private readonly string SPA_PATH = "ClientApp";
 
         public Startup(IConfiguration configuration)
         {

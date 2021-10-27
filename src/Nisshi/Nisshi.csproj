@@ -5,7 +5,7 @@
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <IsPackable>false</IsPackable>
-    <SpaRoot>..\..\ClientApp\</SpaRoot>
+    <SpaRoot>ClientApp\</SpaRoot>
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
 
     <!-- Set this to true if you enable server-side prerendering -->
@@ -20,7 +20,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="5.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.10" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
@@ -45,6 +44,8 @@
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
 
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>
