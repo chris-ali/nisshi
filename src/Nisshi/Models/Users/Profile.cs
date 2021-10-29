@@ -1,4 +1,5 @@
 using System;
+using FluentValidation;
 
 namespace Nisshi.Models.Users
 {
@@ -66,5 +67,33 @@ namespace Nisshi.Models.Users
         /// Additional user preferences serialized in JSON dictionary forma
         /// </summary>
         public string Preferences { get; set; }
+
+        public class ProfileValidator : AbstractValidator<Profile>
+        {
+            public ProfileValidator()
+            {
+                RuleFor(x => x.Username).NotEmpty().WithMessage("NotEmpty")
+                    .MaximumLength(60).WithMessage("Length60");
+                RuleFor(x => x.Email).NotEmpty().WithMessage("NotEmpty")
+                    .MaximumLength(60).WithMessage("Length60");
+                RuleFor(x => x.FirstName).MaximumLength(60).WithMessage("Length60")
+                    .Unless(x => string.IsNullOrEmpty(x.FirstName));
+                RuleFor(x => x.LastName).MaximumLength(60).WithMessage("Length60")
+                    .Unless(x => string.IsNullOrEmpty(x.LastName));
+                // RuleFor(x => x.PasswordQuestion).NotEmpty().WithMessage("NotEmpty")
+                //     .MaximumLength(200).WithMessage("Length200")
+                //     .Unless(x => string.IsNullOrEmpty(x.PasswordQuestion));
+                // RuleFor(x => x.PasswordAnswer).NotEmpty().WithMessage("NotEmpty")
+                //     .MaximumLength(200).WithMessage("Length200")
+                //     .Unless(x => string.IsNullOrEmpty(x.PasswordAnswer));
+                RuleFor(x => x.LastBFR).LessThanOrEqualTo(DateTime.Now).WithMessage("PastDate")
+                    .Unless(x => x.LastBFR == null);
+                RuleFor(x => x.LastMedical).LessThanOrEqualTo(DateTime.Now).WithMessage("PastDate")
+                    .Unless(x => x.LastMedical == null);
+                RuleFor(x => x.License).Length(0, 45).WithMessage("Length45");
+                RuleFor(x => x.CertificateNumber).Length(0, 45).WithMessage("Length45");
+                RuleFor(x => x.MonthsToMedical).GreaterThanOrEqualTo(0).WithMessage("NonNegative");
+            }
+        }
     }
 }

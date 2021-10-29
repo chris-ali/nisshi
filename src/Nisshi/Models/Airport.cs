@@ -1,9 +1,10 @@
 using System;
+using FluentValidation;
 
 namespace Nisshi.Models
 {
     /// <summary>
-    /// Representation of an airport 
+    /// Representation of an airport
     /// </summary>
     public class Airport
     {
@@ -52,5 +53,18 @@ namespace Nisshi.Models
         /// Date entity was last updated
         /// </summary>
         public DateTime? DateUpdated { get; set; }
+
+        public class AirportValidator : AbstractValidator<Airport>
+        {
+            public AirportValidator()
+            {
+                RuleFor(x => x.AirportCode).NotEmpty().WithMessage("NotEmpty")
+                    .Length(3, 4).WithMessage("AirportCode");
+                RuleFor(x => x.FacilityName).NotEmpty().WithMessage("NotEmpty")
+                    .MaximumLength(100).WithMessage("Length100");
+                RuleFor(x => x.Latitude).InclusiveBetween(-90, 90).WithMessage("Latitude");
+                RuleFor(x => x.Longitude).InclusiveBetween(-180, 180).WithMessage("Longitude");
+            }
+        }
     }
 }

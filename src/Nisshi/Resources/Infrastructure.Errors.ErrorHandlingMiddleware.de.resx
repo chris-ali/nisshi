@@ -82,14 +82,14 @@
     <data name="InvalidCredentials" xml:space="preserve">
         <value>Ungueltige Username/Kennwort! Bitte versuchen Sie nochmal.</value>
     </data>
-	<data name="NotFutureDate" xml:space="preserve">
+    <data name="NotFutureDate" xml:space="preserve">
         <value>Date cannot be in the future</value>
     </data>
-	<data name="NotPastDate" xml:space="preserve">
+    <data name="NotPastDate" xml:space="preserve">
         <value>Date cannot be in the past</value>
     </data>
-    <data name="Length30" xml:space="preserve">
-        <value>Field must be less than 30 characters</value>
+    <data name="Length20" xml:space="preserve">
+        <value>Field must be less than 20 characters</value>
     </data>
     <data name="Length45" xml:space="preserve">
         <value>Field must be less than 45 characters</value>
@@ -103,7 +103,7 @@
     <data name="Length1000" xml:space="preserve">
         <value>Field must be less than 1000 characters</value>
     </data>
-    <data name="NotNull" xml:space="preserve">
+    <data name="NotEmpty" xml:space="preserve">
         <value>Field must be filled in</value>
     </data>
     <data name="DayDuration" xml:space="preserve">
@@ -115,10 +115,19 @@
     <data name="InvalidEmail" xml:space="preserve">
         <value>Invalid email address</value>
     </data>
-	<data name="InvalidUsername" xml:space="preserve">
+    <data name="InvalidUsername" xml:space="preserve">
         <value>Invalid username; must be 8-20 characters with no spaces and no special characters besides - and _</value>
     </data>
     <data name="InvalidPassword" xml:space="preserve">
         <value>Invalid password; must be 8-20 characters with at least: one capital, one number and one special character</value>
+    </data>
+    <data name="Latitude" xml:space="preserve">
+        <value>Latitude must be between +/- 90 degrees</value>
+    </data>
+    <data name="Longitude" xml:space="preserve">
+        <value>Longitude must be between +/- 180 degrees</value>
+    </data>
+    <data name="AirportCode" xml:space="preserve">
+        <value>Airport code is not valid</value>
     </data>
 </root>

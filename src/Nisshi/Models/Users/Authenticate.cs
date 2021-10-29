@@ -15,8 +15,10 @@ namespace Nisshi.Models.Users
         {
             public AuthenticateValidator()
             {
-                RuleFor(x => x.Username).NotNull().NotEmpty().MaximumLength(128);
-                RuleFor(x => x.Password).NotNull().NotEmpty().MaximumLength(20);
+                RuleFor(x => x.Username).NotEmpty().WithMessage("NotEmpty")
+                    .MaximumLength(60).WithMessage("Length60");
+                RuleFor(x => x.Password).NotNull().WithMessage("NotEmpty")
+                    .MaximumLength(20).WithMessage("Length20");
             }
         }
     }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using FluentValidation;
 
 namespace Nisshi.Models
 {
@@ -19,12 +20,12 @@ namespace Nisshi.Models
         public CategoryClass CategoryClass { get; set; }
 
         /// <summary>
-        /// The type name of this aircraft 
+        /// The type name of this aircraft
         /// </summary>
         public string TypeName { get; set; }
 
         /// <summary>
-        /// The family for the model 
+        /// The family for the model
         /// (e.g., PA28-160 and PA28-180 are both PA28s)
         /// </summary>
         public string Family { get; set; }
@@ -65,7 +66,7 @@ namespace Nisshi.Models
         public bool IsTurbine { get; set; }
 
         /// <summary>
-        /// For type-rated turbine aircraft, 
+        /// For type-rated turbine aircraft,
         /// indicates certification for single-pilot operations
         /// </summary>
         public bool IsCertifiedSinglePilot { get; set; }
@@ -105,5 +106,16 @@ namespace Nisshi.Models
         /// </summary>
         [JsonIgnore]
         public virtual List<Aircraft> Aircraft { get; set; }
+
+        public class ModelValidator : AbstractValidator<Model>
+        {
+            public ModelValidator()
+            {
+                RuleFor(x => x.ModelName).NotEmpty().WithMessage("NotEmpty")
+                    .MaximumLength(45).WithMessage("Length45");
+                RuleFor(x => x.Family).Length(0, 45).WithMessage("Length45");
+                RuleFor(x => x.TypeName).Length(0, 45).WithMessage("Length45");
+            }
+        }
     }
 }
