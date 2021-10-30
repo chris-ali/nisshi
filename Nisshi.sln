@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B42BCE2D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nisshi.IntegrationTests", "tests\Nisshi.IntegrationTests\Nisshi.IntegrationTests.csproj", "{F3551BC6-A129-400A-827A-84E7F721EAA9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBD}") = "Nisshi.UnitTests", "tests\Nisshi.UnitTests\Nisshi.UnitTests.csproj", "{F3551BC6-A129-400A-827A-84E7F721EAA0}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "build", "build\build.csproj", "{FB755C62-4D2E-4856-892A-611153B705E8}"
 EndProject
 Global

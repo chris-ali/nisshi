@@ -118,10 +118,10 @@ namespace Nisshi.Models
                     .Unless(x => x.LastAltimeter == null);
                 RuleFor(x => x.LastELT).LessThanOrEqualTo(DateTime.Now).WithMessage("PastDate")
                     .Unless(x => x.LastELT == null);
+                RuleFor(x => x.LastTransponder).LessThanOrEqualTo(DateTime.Now).WithMessage("FutureDate")
+                    .Unless(x => x.LastTransponder == null);
                 RuleFor(x => x.RegistrationDue).GreaterThanOrEqualTo(DateTime.Now).WithMessage("FutureDate")
                     .Unless(x => x.RegistrationDue == null);
-                RuleFor(x => x.LastTransponder).GreaterThanOrEqualTo(DateTime.Now).WithMessage("FutureDate")
-                    .Unless(x => x.LastTransponder == null);
                 RuleFor(x => x.Last100Hobbs).GreaterThanOrEqualTo(0).WithMessage("NonNegative");
                 RuleFor(x => x.LastOilHobbs).GreaterThanOrEqualTo(0).WithMessage("NonNegative");
                 RuleFor(x => x.LastEngineHobbs).GreaterThanOrEqualTo(0).WithMessage("NonNegative");

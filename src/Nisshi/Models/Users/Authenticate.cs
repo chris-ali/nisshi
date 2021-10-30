@@ -17,7 +17,7 @@ namespace Nisshi.Models.Users
             {
                 RuleFor(x => x.Username).NotEmpty().WithMessage("NotEmpty")
                     .MaximumLength(60).WithMessage("Length60");
-                RuleFor(x => x.Password).NotNull().WithMessage("NotEmpty")
+                RuleFor(x => x.Password).NotEmpty().WithMessage("NotEmpty")
                     .MaximumLength(20).WithMessage("Length20");
             }
         }
