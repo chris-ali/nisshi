@@ -20,7 +20,9 @@ namespace Nisshi.Requests.LogbookEntries
         {
             public CommandValidator()
             {
-                RuleFor(x => x.logbookEntry).NotNull().WithMessage(Message.NotNull.ToString());
+                RuleFor(x => x.logbookEntry).NotNull()
+                    .WithMessage(Message.NotNull.ToString())
+                    .SetValidator(new LogbookEntry.LogbookEntryValidator());
             }
         }
 

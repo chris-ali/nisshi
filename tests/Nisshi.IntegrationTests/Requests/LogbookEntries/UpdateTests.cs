@@ -28,9 +28,9 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
             var logbookEntryRequest = await Helpers.SaveAndGet<LogbookEntry>(fixture, testLogbookEntry);
 
             logbookEntryRequest.Comments = "New test comments.";
-            logbookEntryRequest.CrossCountry = 99.9m;
+            logbookEntryRequest.CrossCountry = 19.9m;
             logbookEntryRequest.FlightDate = DateTime.Today.AddMonths(12);
-            logbookEntryRequest.NumLandings = 99;
+            logbookEntryRequest.NumLandings = 18;
 
             var logbookEntryResponse = await fixture.SendAsync(new Update.Command(logbookEntryRequest));
 

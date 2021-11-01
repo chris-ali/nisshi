@@ -29,7 +29,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
             {
                 Username = Helpers.TestUserName,
                 Email = Helpers.TestEmailAddress,
-                Password = "test123!"
+                Password = "Test123!"
             };
 
             var response = await fixture.SendAsync(new Register.Command(registration));
@@ -61,7 +61,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
             {
                 Username = Helpers.TestUserName,
                 Email = "test2@test.com",
-                Password = "test123!"
+                Password = "Test123!"
             };
 
             await Assert.ThrowsAsync<InvalidCredentialException>(() => fixture.SendAsync(new Register.Command(registration)));
@@ -76,7 +76,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
             {
                 Username = "test2User",
                 Email = Helpers.TestEmailAddress,
-                Password = "test123!"
+                Password = "Test123!"
             };
 
             await Assert.ThrowsAsync<InvalidCredentialException>(() => fixture.SendAsync(new Register.Command(registration)));

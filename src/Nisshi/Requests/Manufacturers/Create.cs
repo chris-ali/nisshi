@@ -20,7 +20,9 @@ namespace Nisshi.Requests.Manufacturers
         {
             public CommandValidator()
             {
-                RuleFor(x => x.manufacturer).NotNull().WithMessage(Message.NotNull.ToString());
+                RuleFor(x => x.manufacturer).NotNull()
+                    .WithMessage(Message.NotNull.ToString())
+                    .SetValidator(new Manufacturer.ManufacturerValidator());
             }
         }
 

@@ -19,7 +19,9 @@ namespace Nisshi.Requests.Airports
         {
             public CommandValidator()
             {
-                RuleFor(x => x.airport).NotNull().WithMessage(Message.NotNull.ToString());
+                RuleFor(x => x.airport).NotNull()
+                    .WithMessage(Message.NotNull.ToString())
+                    .SetValidator(new Airport.AirportValidator());
             }
         }
 

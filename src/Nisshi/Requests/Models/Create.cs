@@ -20,7 +20,9 @@ namespace Nisshi.Requests.Models
         {
             public CommandValidator()
             {
-                RuleFor(x => x.model).NotNull().WithMessage(Message.NotNull.ToString());
+                RuleFor(x => x.model).NotNull()
+                    .WithMessage(Message.NotNull.ToString())
+                    .SetValidator(new Model.ModelValidator());
             }
         }
 

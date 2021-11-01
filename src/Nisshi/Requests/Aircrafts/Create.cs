@@ -22,7 +22,9 @@ namespace Nisshi.Requests.Aircrafts
         {
             public CommandValidator()
             {
-                RuleFor(x => x.aircraft).NotNull().WithMessage(Message.NotNull.ToString());
+                RuleFor(x => x.aircraft).NotNull()
+                    .WithMessage(Message.NotNull.ToString())
+                    .SetValidator(new Aircraft.AircraftValidator());
             }
         }
 
