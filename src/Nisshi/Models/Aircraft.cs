@@ -108,19 +108,19 @@ namespace Nisshi.Models
             {
                 RuleFor(x => x.TailNumber).NotEmpty().WithMessage("NotEmpty")
                     .MaximumLength(20).WithMessage("Length20");
-                RuleFor(x => x.LastAnnual).LessThanOrEqualTo(DateTime.Now).WithMessage("PastDate")
+                RuleFor(x => x.LastAnnual).LessThanOrEqualTo(DateTime.Now).WithMessage("NotFutureDate")
                     .Unless(x => x.LastAnnual == null);
-                RuleFor(x => x.LastPitotStatic).LessThanOrEqualTo(DateTime.Now).WithMessage("PastDate")
+                RuleFor(x => x.LastPitotStatic).LessThanOrEqualTo(DateTime.Now).WithMessage("NotFutureDate")
                     .Unless(x => x.LastPitotStatic == null);
-                RuleFor(x => x.LastVOR).LessThanOrEqualTo(DateTime.Now).WithMessage("PastDate")
+                RuleFor(x => x.LastVOR).LessThanOrEqualTo(DateTime.Now).WithMessage("NotFutureDate")
                     .Unless(x => x.LastVOR == null);
-                RuleFor(x => x.LastAltimeter).LessThanOrEqualTo(DateTime.Now).WithMessage("PastDate")
+                RuleFor(x => x.LastAltimeter).LessThanOrEqualTo(DateTime.Now).WithMessage("NotFutureDate")
                     .Unless(x => x.LastAltimeter == null);
-                RuleFor(x => x.LastELT).LessThanOrEqualTo(DateTime.Now).WithMessage("PastDate")
+                RuleFor(x => x.LastELT).LessThanOrEqualTo(DateTime.Now).WithMessage("NotFutureDate")
                     .Unless(x => x.LastELT == null);
-                RuleFor(x => x.LastTransponder).LessThanOrEqualTo(DateTime.Now).WithMessage("FutureDate")
+                RuleFor(x => x.LastTransponder).LessThanOrEqualTo(DateTime.Now).WithMessage("NotPastDate")
                     .Unless(x => x.LastTransponder == null);
-                RuleFor(x => x.RegistrationDue).GreaterThanOrEqualTo(DateTime.Now).WithMessage("FutureDate")
+                RuleFor(x => x.RegistrationDue).GreaterThanOrEqualTo(DateTime.Now).WithMessage("NotPastDate")
                     .Unless(x => x.RegistrationDue == null);
                 RuleFor(x => x.Last100Hobbs).GreaterThanOrEqualTo(0).WithMessage("NonNegative");
                 RuleFor(x => x.LastOilHobbs).GreaterThanOrEqualTo(0).WithMessage("NonNegative");

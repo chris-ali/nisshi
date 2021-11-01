@@ -59,25 +59,25 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="InternalServerError" xml:space="preserve">
-        <value>Ein interner Serverfehler ist geschehen.</value>
+        <value>内サーバーエーラが起こりました。</value>
     </data>
     <data name="UsernameExists" xml:space="preserve">
-        <value>Username ist bereits im System vorhanden. Bitte versuchen Sie einen anderen Wert.</value>
+        <value>このユーサー名はもう利用されていまいます。</value>
     </data>
     <data name="EmailExists" xml:space="preserve">
-        <value>Email ist bereits im System vorhanden. Bitte versuchen Sie einen anderen Wert.</value>
+        <value>このメールアドレスはもう利用されていまいます。</value>
     </data>
     <data name="ItemDoesNotExist" xml:space="preserve">
-        <value>ist nicht im System vorhanden.</value>
+        <value>という実体はシステムに探索できませんでした。</value>
     </data>
     <data name="ItemExistsAlready" xml:space="preserve">
-        <value>ist bereits im System vorhanden.</value>
+        <value>という実体はシステムにもうあります。</value>
     </data>
     <data name="NotNull" xml:space="preserve">
-        <value>Daten muss fuer diese Anfrage vorhanden sein, und darf nicht null sein.</value>
+        <value>空列のリクエストは不許可です。</value>
     </data>
     <data name="NotLoggedIn" xml:space="preserve">
-        <value>Angemeldete Konto wurde nicht gefunden! Bitte versuchen Sie nochmal anzumelden.</value>
+        <value>ログインされたユーザーは探索できませんでした。再度ログインしてください。</value>
     </data>
     <data name="InvalidCredentials" xml:space="preserve">
         <value>Ungueltige Username/Kennwort! Bitte versuchen Sie nochmal.</value>
