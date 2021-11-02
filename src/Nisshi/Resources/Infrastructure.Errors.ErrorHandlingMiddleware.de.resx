@@ -110,7 +110,7 @@
         <value>Dauer muss weniger als 24 Stunden.</value>
     </data>
     <data name="NonNegative" xml:space="preserve">
-        <value>Feld muss groesser als 0. </value>
+        <value>Feld muss nicht negative sein. </value>
     </data>
     <data name="InvalidEmail" xml:space="preserve">
         <value>Ungueltige Emailaddresse</value>

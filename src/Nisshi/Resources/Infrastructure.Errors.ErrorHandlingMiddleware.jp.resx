@@ -80,54 +80,54 @@
         <value>ログインされたユーザーは探索できませんでした。再度ログインしてください。</value>
     </data>
     <data name="InvalidCredentials" xml:space="preserve">
-        <value>Ungueltige Username/Kennwort! Bitte versuchen Sie nochmal.</value>
+        <value>無効のパスワードかユーザー名。　再度ログインしてください。</value>
     </data>
     <data name="NotFutureDate" xml:space="preserve">
-        <value>Datum darf nicht in der Zukunft.</value>
+        <value>将来の時日は不許可です。</value>
     </data>
     <data name="NotPastDate" xml:space="preserve">
-        <value>Datum darf nicht in der Vergangenheit.</value>
+        <value>過去の時日は不許可です。</value>
     </data>
     <data name="Length20" xml:space="preserve">
-        <value>Feld muss weniger als 20 Buchstaben</value>
+        <value>20字以下のデータファイルは必要です。</value>
     </data>
     <data name="Length45" xml:space="preserve">
-        <value>Feld muss weniger als 45 Buchstaben</value>
+        <value>45字以下のデータファイルは必要です。</value>
     </data>
     <data name="Length60" xml:space="preserve">
-        <value>Feld muss weniger als 60 Buchstaben</value>
+        <value>60字以下のデータファイルは必要です。</value>
     </data>
     <data name="Length200" xml:space="preserve">
-        <value>Feld muss weniger als 200 Buchstaben</value>
+        <value>200字以下のデータファイルは必要です。</value>
     </data>
     <data name="Length1000" xml:space="preserve">
-        <value>Feld muss weniger als 1000 Buchstaben</value>
+        <value>1000字以下のデータファイルは必要です。</value>
     </data>
     <data name="NotEmpty" xml:space="preserve">
-        <value>Feld muss ausgefuellt.</value>
+        <value>空列のデータファイルは不許可です。</value>
     </data>
     <data name="DayDuration" xml:space="preserve">
-        <value>Dauer muss weniger als 24 Stunden.</value>
+        <value>継続時間は24時間以下必要です。</value>
     </data>
     <data name="NonNegative" xml:space="preserve">
-        <value>Feld muss groesser als 0. </value>
+        <value>マイナスのデータファイルは不許可です。</value>
     </data>
     <data name="InvalidEmail" xml:space="preserve">
-        <value>Ungueltige Emailaddresse</value>
+        <value>メールアドレスは不許可です。</value>
     </data>
     <data name="InvalidUsername" xml:space="preserve">
-        <value>Ungueltiger Benutzername; muss zwischen 8-20 Buchstaben sein, mit keine Leerschritten und ausser - und _ keine Sondercharakteren</value>
+        <value>ユーザー名は不許可です。条件は８字から２０字までで、空白なしで、ーと＿という字OKです。</value>
     </data>
     <data name="InvalidPassword" xml:space="preserve">
-        <value>Ungultiges passwort; muss zwischen 8-20 Charakteren mit wenigstens: einem Grossbuchstabe, einem Nummer und einem Sondercharakter</value>
+        <value>パスワードは不許可です。条件は８字から２０字までで、せめて小文字を１字で、せめて大文字を１字でせめて番号を１字でせめて特殊文字を１字です。</value>
     </data>
     <data name="Latitude" xml:space="preserve">
-        <value>Latituede muss zwischen +/- 90 Grad.</value>
+        <value>許可の緯度は+/-90度です。</value>
     </data>
     <data name="Longitude" xml:space="preserve">
-        <value>Laengengrad muss zwischen +/- 180 Grad.</value>
+        <value>許可の軽度は+/-180度です。</value>
     </data>
     <data name="AirportCode" xml:space="preserve">
-        <value>Flughafencode ist nicht gueltig.</value>
+        <value>空港記号は不許可です。</value>
     </data>
 </root>
