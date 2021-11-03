@@ -18,6 +18,7 @@ services:
      - db
     build: .
     env_file: ./.env
+    command: sh -c './wait-for db:${MYSQL_DOCKER_PORT} -- dotnet Nisshi.dll'
     environment:
      - ASPNETCORE_Nisshi_DatabaseProvider=${ASPNETCORE_Nisshi_DatabaseProvider}
      - ASPNETCORE_Nisshi_ConnectionString=${ASPNETCORE_Nisshi_ConnectionString}
