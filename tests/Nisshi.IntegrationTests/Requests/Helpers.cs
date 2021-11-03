@@ -29,7 +29,7 @@ namespace Nisshi.IntegrationTests.Requests
             {
                 Email = TestEmailAddress,
                 Username = TestUserName,
-                Password = "test123!"
+                Password = "Test123!"
             });
 
             var user = await fixture.GetNisshiContext().Users
@@ -66,7 +66,7 @@ namespace Nisshi.IntegrationTests.Requests
                 LastPitotStatic = DateTime.Today.AddDays(-4),
                 LastTransponder = DateTime.Today.AddDays(-5),
                 LastVOR = DateTime.Today.AddDays(-6),
-                RegistrationDue = DateTime.Today.AddDays(-7),
+                RegistrationDue = DateTime.Today.AddDays(7),
                 Notes = "Test notes.",
             };
         }
@@ -161,7 +161,7 @@ namespace Nisshi.IntegrationTests.Requests
         /// <returns></returns>
         private static decimal RandomDuration(Random rand)
         {
-            return (decimal)(rand.NextDouble() * rand.Next(0, 10));
+            return (decimal)(rand.NextDouble() * rand.Next(0, 5));
         }
 
         /// <summary>

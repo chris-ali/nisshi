@@ -62,24 +62,72 @@
         <value>Ein interner Serverfehler ist geschehen.</value>
     </data>
     <data name="UsernameExists" xml:space="preserve">
-        <value>Username existiert bereits im System. Bitte versuchen Sie einen anderen Wert.</value>
+        <value>Username ist bereits im System vorhanden. Bitte versuchen Sie einen anderen Wert.</value>
     </data>
     <data name="EmailExists" xml:space="preserve">
-        <value>Email existiert bereits im System. Bitte versuchen Sie einen anderen Wert.</value>
+        <value>Email ist bereits im System vorhanden. Bitte versuchen Sie einen anderen Wert.</value>
     </data>
     <data name="ItemDoesNotExist" xml:space="preserve">
-        <value>existiert nicht im System.</value>
+        <value>ist nicht im System vorhanden.</value>
     </data>
     <data name="ItemExistsAlready" xml:space="preserve">
-        <value>existiert bereits im System.</value>
+        <value>ist bereits im System vorhanden.</value>
     </data>
     <data name="NotNull" xml:space="preserve">
-        <value>Daten muss fuer diese for this Anfrage gewesen sein, und darf nicht null sein.</value>
+        <value>Daten muss fuer diese Anfrage vorhanden sein, und darf nicht null sein.</value>
     </data>
     <data name="NotLoggedIn" xml:space="preserve">
         <value>Angemeldete Konto wurde nicht gefunden! Bitte versuchen Sie nochmal anzumelden.</value>
     </data>
     <data name="InvalidCredentials" xml:space="preserve">
         <value>Ungueltige Username/Kennwort! Bitte versuchen Sie nochmal.</value>
+    </data>
+    <data name="NotFutureDate" xml:space="preserve">
+        <value>Datum darf nicht in der Zukunft.</value>
+    </data>
+    <data name="NotPastDate" xml:space="preserve">
+        <value>Datum darf nicht in der Vergangenheit.</value>
+    </data>
+    <data name="Length20" xml:space="preserve">
+        <value>Feld muss weniger als 20 Buchstaben</value>
+    </data>
+    <data name="Length45" xml:space="preserve">
+        <value>Feld muss weniger als 45 Buchstaben</value>
+    </data>
+    <data name="Length60" xml:space="preserve">
+        <value>Feld muss weniger als 60 Buchstaben</value>
+    </data>
+    <data name="Length200" xml:space="preserve">
+        <value>Feld muss weniger als 200 Buchstaben</value>
+    </data>
+    <data name="Length1000" xml:space="preserve">
+        <value>Feld muss weniger als 1000 Buchstaben</value>
+    </data>
+    <data name="NotEmpty" xml:space="preserve">
+        <value>Feld muss ausgefuellt.</value>
+    </data>
+    <data name="DayDuration" xml:space="preserve">
+        <value>Dauer muss weniger als 24 Stunden.</value>
+    </data>
+    <data name="NonNegative" xml:space="preserve">
+        <value>Feld muss nicht negative sein. </value>
+    </data>
+    <data name="InvalidEmail" xml:space="preserve">
+        <value>Ungueltige Emailaddresse</value>
+    </data>
+    <data name="InvalidUsername" xml:space="preserve">
+        <value>Ungueltiger Benutzername; muss zwischen 8-20 Buchstaben sein, mit keine Leerschritten und ausser - und _ keine Sondercharakteren</value>
+    </data>
+    <data name="InvalidPassword" xml:space="preserve">
+        <value>Ungultiges passwort; muss zwischen 8-20 Charakteren mit wenigstens: einem Grossbuchstabe, einem Nummer und einem Sondercharakter</value>
+    </data>
+    <data name="Latitude" xml:space="preserve">
+        <value>Latituede muss zwischen +/- 90 Grad.</value>
+    </data>
+    <data name="Longitude" xml:space="preserve">
+        <value>Laengengrad muss zwischen +/- 180 Grad.</value>
+    </data>
+    <data name="AirportCode" xml:space="preserve">
+        <value>Flughafencode ist nicht gueltig.</value>
     </data>
 </root>

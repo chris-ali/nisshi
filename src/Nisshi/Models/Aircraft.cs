@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using FluentValidation;
 using Nisshi.Infrastructure.Enums;
 using Nisshi.Models.Users;
 
@@ -84,7 +85,7 @@ namespace Nisshi.Models
         public Model Model { get; set; }
 
         /// <summary>
-        /// Associated logbook entries of this aircraft 
+        /// Associated logbook entries of this aircraft
         /// </summary>
         [JsonIgnore]
         public virtual List<LogbookEntry> LogbookEntries { get; set; } = new();
@@ -100,5 +101,31 @@ namespace Nisshi.Models
         /// </summary>
         [JsonIgnore]
         public virtual User Owner { get; set; }
+
+        public class AircraftValidator : AbstractValidator<Aircraft>
+        {
+            public AircraftValidator()
+            {
+                RuleFor(x => x.TailNumber).NotEmpty().WithMessage("NotEmpty")
+                    .MaximumLength(20).WithMessage("Length20");
+                RuleFor(x => x.LastAnnual).LessThanOrEqualTo(DateTime.Now).WithMessage("NotFutureDate")
+                    .Unless(x => x.LastAnnual == null);
+                RuleFor(x => x.LastPitotStatic).LessThanOrEqualTo(DateTime.Now).WithMessage("NotFutureDate")
+                    .Unless(x => x.LastPitotStatic == null);
+                RuleFor(x => x.LastVOR).LessThanOrEqualTo(DateTime.Now).WithMessage("NotFutureDate")
+                    .Unless(x => x.LastVOR == null);
+                RuleFor(x => x.LastAltimeter).LessThanOrEqualTo(DateTime.Now).WithMessage("NotFutureDate")
+                    .Unless(x => x.LastAltimeter == null);
+                RuleFor(x => x.LastELT).LessThanOrEqualTo(DateTime.Now).WithMessage("NotFutureDate")
+                    .Unless(x => x.LastELT == null);
+                RuleFor(x => x.LastTransponder).LessThanOrEqualTo(DateTime.Now).WithMessage("NotPastDate")
+                    .Unless(x => x.LastTransponder == null);
+                RuleFor(x => x.RegistrationDue).GreaterThanOrEqualTo(DateTime.Now).WithMessage("NotPastDate")
+                    .Unless(x => x.RegistrationDue == null);
+                RuleFor(x => x.Last100Hobbs).GreaterThanOrEqualTo(0).WithMessage("NonNegative");
+                RuleFor(x => x.LastOilHobbs).GreaterThanOrEqualTo(0).WithMessage("NonNegative");
+                RuleFor(x => x.LastEngineHobbs).GreaterThanOrEqualTo(0).WithMessage("NonNegative");
+            }
+        }
     }
 }

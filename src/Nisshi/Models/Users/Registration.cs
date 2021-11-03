@@ -17,9 +17,14 @@ namespace Nisshi.Models.Users
         {
             public RegistrationValidator()
             {
-                RuleFor(x => x.Username).NotNull().NotEmpty().MaximumLength(128);
-                RuleFor(x => x.Password).NotNull().NotEmpty().MaximumLength(20);
-                RuleFor(x => x.Email).NotNull().EmailAddress().MaximumLength(100);
+                // 8-20 characters, at least one lower case, one upper case, one number, one special
+                var passRegex = @"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,20}$";
+
+                RuleFor(x => x.Username).NotEmpty().WithMessage("NotEmpty")
+                    .MaximumLength(60).WithMessage("Length60");
+                RuleFor(x => x.Password).Matches(passRegex).WithMessage("InvalidPassword");
+                RuleFor(x => x.Email).EmailAddress().WithMessage("InvalidEmail")
+                    .MaximumLength(60).WithMessage("Length60");
             }
         }
     }

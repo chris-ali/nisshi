@@ -29,7 +29,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
             {
                 Username = user.Username,
                 Email = user.Email,
-                Password = "test456!",
+                Password = "Test456!",
                 CertificateNumber = "123456",
                 CFIExpiration = DateTime.Today.AddMonths(12),
                 IsInstructor = true,
@@ -84,7 +84,7 @@ namespace Nisshi.IntegrationTests.Requests.Users
             {
                 Username = "nobody",
                 Email = "nobody@test.com",
-                Password = "test456!",
+                Password = "Test456!",
                 CertificateNumber = "123456",
                 CFIExpiration = DateTime.Today.AddMonths(12),
                 IsInstructor = true,

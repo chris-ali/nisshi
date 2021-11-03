@@ -19,7 +19,9 @@ namespace Nisshi.Requests.Users
         {
             public CommandValidator()
             {
-                RuleFor(x => x.edit).NotNull().WithMessage(Message.NotNull.ToString());
+                RuleFor(x => x.edit).NotNull()
+                    .WithMessage(Message.NotNull.ToString())
+                    .SetValidator(new Profile.ProfileValidator());
             }
         }
 

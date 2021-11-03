@@ -59,75 +59,75 @@
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
     <data name="InternalServerError" xml:space="preserve">
-        <value>An internal error has occurred.</value>
+        <value>内サーバーエーラが起こりました。</value>
     </data>
     <data name="UsernameExists" xml:space="preserve">
-        <value>Username already exists in the system. Please try a different value.</value>
+        <value>このユーサー名はもう利用されていまいます。</value>
     </data>
     <data name="EmailExists" xml:space="preserve">
-        <value>Email already exists in the system. Please try a different value.</value>
+        <value>このメールアドレスはもう利用されていまいます。</value>
     </data>
     <data name="ItemDoesNotExist" xml:space="preserve">
-        <value>does not exist in the system.</value>
+        <value>という実体はシステムに探索できませんでした。</value>
     </data>
     <data name="ItemExistsAlready" xml:space="preserve">
-        <value>already exists in the System.</value>
+        <value>という実体はシステムにもうあります。</value>
     </data>
     <data name="NotNull" xml:space="preserve">
-        <value>Data must be present for this request and cannot be null.</value>
+        <value>空列のリクエストは不許可です。</value>
     </data>
     <data name="NotLoggedIn" xml:space="preserve">
-        <value>Logged in user was not found! Please try to authenticate again.</value>
+        <value>ログインされたユーザーは探索できませんでした。再度ログインしてください。</value>
     </data>
     <data name="InvalidCredentials" xml:space="preserve">
-        <value>Invalid Username/Password! Please try again.</value>
+        <value>無効のパスワードかユーザー名。　再度ログインしてください。</value>
     </data>
     <data name="NotFutureDate" xml:space="preserve">
-        <value>Date cannot be in the future.</value>
+        <value>将来の時日は不許可です。</value>
     </data>
     <data name="NotPastDate" xml:space="preserve">
-        <value>Date cannot be in the past.</value>
+        <value>過去の時日は不許可です。</value>
     </data>
     <data name="Length20" xml:space="preserve">
-        <value>Field must be less than 20 characters.</value>
+        <value>20字以下のデータファイルは必要です。</value>
     </data>
     <data name="Length45" xml:space="preserve">
-        <value>Field must be less than 45 characters.</value>
+        <value>45字以下のデータファイルは必要です。</value>
     </data>
     <data name="Length60" xml:space="preserve">
-        <value>Field must be less than 60 characters.</value>
+        <value>60字以下のデータファイルは必要です。</value>
     </data>
     <data name="Length200" xml:space="preserve">
-        <value>Field must be less than 200 characters.</value>
+        <value>200字以下のデータファイルは必要です。</value>
     </data>
     <data name="Length1000" xml:space="preserve">
-        <value>Field must be less than 1000 characters.</value>
+        <value>1000字以下のデータファイルは必要です。</value>
     </data>
     <data name="NotEmpty" xml:space="preserve">
-        <value>Field must be filled in.</value>
+        <value>空列のデータファイルは不許可です。</value>
     </data>
     <data name="DayDuration" xml:space="preserve">
-        <value>Duration must be less than 24 hours.</value>
+        <value>継続時間は24時間以下必要です。</value>
     </data>
     <data name="NonNegative" xml:space="preserve">
-        <value>Field must be non-negative.</value>
+        <value>マイナスのデータファイルは不許可です。</value>
     </data>
     <data name="InvalidEmail" xml:space="preserve">
-        <value>Invalid email address.</value>
+        <value>メールアドレスは不許可です。</value>
     </data>
     <data name="InvalidUsername" xml:space="preserve">
-        <value>Invalid username; must be 8-20 characters with no spaces and no special characters besides - and _</value>
+        <value>ユーザー名は不許可です。条件は８字から２０字までで、空白なしで、ーと＿という字OKです。</value>
     </data>
     <data name="InvalidPassword" xml:space="preserve">
-        <value>Invalid password; must be 8-20 characters with at least: one capital, one number and one special character.</value>
+        <value>パスワードは不許可です。条件は８字から２０字までで、せめて小文字を１字で、せめて大文字を１字でせめて番号を１字でせめて特殊文字を１字です。</value>
     </data>
     <data name="Latitude" xml:space="preserve">
-        <value>Latitude must be between +/- 90 degrees.</value>
+        <value>許可の緯度は+/-90度です。</value>
     </data>
     <data name="Longitude" xml:space="preserve">
-        <value>Latitude must be between +/- 180 degrees.</value>
+        <value>許可の軽度は+/-180度です。</value>
     </data>
     <data name="AirportCode" xml:space="preserve">
-        <value>Airport code is not valid.</value>
+        <value>空港記号は不許可です。</value>
     </data>
 </root>
