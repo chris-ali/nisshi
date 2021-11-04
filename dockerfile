@@ -19,10 +19,9 @@ RUN apk add --update tzdata npm
 COPY --from=build /build/publish /app
 RUN npm install
 
-COPY --from=build /build/wait-for /app/wait-for
+# wait-for waits for db to be online before starting webapp
+COPY --from=build /build/resources/wait-for /app/wait-for
 RUN chmod +x /app/wait-for
 
 WORKDIR /app
 EXPOSE 5000
-
-#ENTRYPOINT [ "dotnet", "Nisshi.dll" ]
