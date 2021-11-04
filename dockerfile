@@ -15,9 +15,14 @@ RUN dotnet run -p build/build.csproj
 FROM mcr.microsoft.com/dotnet/aspnet:5.0.11-alpine3.13-amd64
 
 RUN apk add --update tzdata npm
+
 COPY --from=build /build/publish /app
 RUN npm install
+
+COPY --from=build /build/wait-for /app/wait-for
+RUN chmod +x /app/wait-for
+
 WORKDIR /app
 EXPOSE 5000
 
-ENTRYPOINT [ "dotnet", "Nisshi.dll" ]
+#ENTRYPOINT [ "dotnet", "Nisshi.dll" ]
