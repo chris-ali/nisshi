@@ -4,6 +4,8 @@ import { Observable, ReplaySubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { User } from 'app/core/user/user.types';
 
+const API_URL = 'api/users/';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -47,7 +49,7 @@ export class UserService
      */
     get(): Observable<User>
     {
-        return this._httpClient.get<User>('api/common/user').pipe(
+        return this._httpClient.get<User>(API_URL).pipe(
             tap((user) => {
                 this._user.next(user);
             })
@@ -61,7 +63,7 @@ export class UserService
      */
     update(user: User): Observable<any>
     {
-        return this._httpClient.patch<User>('api/common/user', {user}).pipe(
+        return this._httpClient.patch<User>(API_URL, {user}).pipe(
             map((response) => {
                 this._user.next(response);
             })
