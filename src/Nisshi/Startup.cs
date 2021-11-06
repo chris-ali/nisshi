@@ -20,9 +20,8 @@ namespace Nisshi
 {
     public class Startup
     {
-        private const string DEFAULT_DB_PROVIDER = "mysql";
-        private const string DEFAULT_DB_CONNECTION_STRING =
-            "server=localhost;uid=nisshiuser;pwd=saishoNoYuuza1?;database=nisshi";
+        private const string DEFAULT_DB_PROVIDER = "inmemory";
+        private const string DEFAULT_DB_CONNECTION_STRING = "";
 
         /// <summary>
         /// Path relative from this class to the root of the Angular client project
