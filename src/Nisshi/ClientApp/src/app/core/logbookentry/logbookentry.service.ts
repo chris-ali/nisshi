@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ApiService } from '../base/api.service';
-import { Aircraft } from './aircraft.types';
+import { LogbookEntry } from './logbookentry.types';
 
-const URL = 'aircraft/';
+const URL = 'logbookentries/';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AircraftService
+export class LogbookEntryService
 {
-    private _aircraft: ReplaySubject<Aircraft> = new ReplaySubject<Aircraft>(1);
+    private _logbookentry: ReplaySubject<LogbookEntry> = new ReplaySubject<LogbookEntry>(1);
 
     /**
      * Constructor
@@ -23,65 +23,65 @@ export class AircraftService
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Get a single aircraft for the current logged in user
+     * Get a single logbook entry for the current logged in user
      *
      * @param id
      */
-    getOne(id: number): Observable<Aircraft>
+    getOne(id: number): Observable<LogbookEntry>
     {
         return this._api.get(`${URL}${id}`).pipe(
-            tap((aircraft) => {
+            tap((logbookentry) => {
 
             })
         );
     }
 
     /**
-     * Get the current logged in user's aircraft
+     * Get the current logged in user's logbook entries
      */
-    getAll(): Observable<Aircraft[]>
+    getAll(): Observable<LogbookEntry[]>
     {
         return this._api.get(`${URL}user`).pipe(
-            tap((aircraft) => {
+            tap((logbookentry) => {
 
             })
         );
     }
 
     /**
-     * Update the aircraft
+     * Update the logbook entry
      *
-     * @param aircraft
+     * @param logbookentry
      */
-    update(aircraft: Aircraft): Observable<any>
+    update(logbookentry: LogbookEntry): Observable<any>
     {
-        return this._api.put(URL, {aircraft}).pipe(
+        return this._api.put(URL, {logbookentry}).pipe(
             map((response) => {
-                this._aircraft.next(response);
+                this._logbookentry.next(response);
             })
         );
     }
 
     /**
-     * Saves a new aircraft
+     * Saves a new logbook entry
      *
-     * @param aircraft
+     * @param logbookentry
      */
-    create(aircraft: Aircraft): Observable<any>
+    create(logbookentry: LogbookEntry): Observable<any>
     {
-        return this._api.post(URL, {aircraft}).pipe(
+        return this._api.post(URL, {logbookentry}).pipe(
             map((response) => {
-                this._aircraft.next(response);
+                this._logbookentry.next(response);
             })
         );
     }
 
     /**
-     * Deletes the aircraft
+     * Deletes the logbook entry
      *
-     * @param aircraft
+     * @param logbookentry
      */
-     delete(id: number): Observable<Aircraft>
+     delete(id: number): Observable<LogbookEntry>
      {
         return this._api.delete(`${URL}${id}`);
      }
