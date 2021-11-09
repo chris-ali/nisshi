@@ -1,22 +1,22 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
+import { ApiService } from '../base/api.service';
 import { Aircraft } from './aircraft.types';
 
-const API_URL = 'api/aircraft/';
+const URL = 'aircraft/';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AircraftService {
-
-    private _aircraft: ReplaySubject<Aircraft> = new ReplaySubject<Aircraft>();
+export class AircraftService
+{
+    private _aircraft: ReplaySubject<Aircraft> = new ReplaySubject<Aircraft>(1);
 
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient) { }
+    constructor(private _api: ApiService) { }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -29,9 +29,9 @@ export class AircraftService {
      */
     getOne(id: number): Observable<Aircraft>
     {
-        return this._httpClient.get<Aircraft>(API_URL + id).pipe(
+        return this._api.get(`${URL}${id}`).pipe(
             tap((aircraft) => {
-                this._aircraft.next(aircraft);
+
             })
         );
     }
@@ -41,11 +41,9 @@ export class AircraftService {
      */
     getAll(): Observable<Aircraft[]>
     {
-        return this._httpClient.get<Aircraft[]>(API_URL).pipe(
+        return this._api.get(URL).pipe(
             tap((aircraft) => {
-                aircraft.forEach(function(air) {
-                    this._aircraft.next(air);
-                })
+
             })
         );
     }
@@ -57,7 +55,7 @@ export class AircraftService {
      */
     update(aircraft: Aircraft): Observable<any>
     {
-        return this._httpClient.put<Aircraft>(API_URL, {aircraft}).pipe(
+        return this._api.put(URL, {aircraft}).pipe(
             map((response) => {
                 this._aircraft.next(response);
             })
@@ -69,9 +67,13 @@ export class AircraftService {
      *
      * @param aircraft
      */
-    create(aircraft: Aircraft): Observable<Aircraft>
+    create(aircraft: Aircraft): Observable<any>
     {
-        return this._httpClient.post<Aircraft>(API_URL, {aircraft});
+        return this._api.post(URL, {aircraft}).pipe(
+            map((response) => {
+                this._aircraft.next(response);
+            })
+        );
     }
 
     /**
@@ -81,6 +83,6 @@ export class AircraftService {
      */
      delete(id: number): Observable<Aircraft>
      {
-        return this._httpClient.delete<Aircraft>(API_URL + id);
+        return this._api.delete(`${URL}${id}`);
      }
 }
