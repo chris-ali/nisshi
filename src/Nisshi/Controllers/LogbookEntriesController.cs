@@ -17,8 +17,8 @@ namespace Nisshi.Controllers
         {
         }
 
-        [HttpGet("user")]
-        public async Task<IEnumerable<LogbookEntry>> GetManyByUsername(CancellationToken cancellationToken)
+        [HttpGet("all")]
+        public async Task<IEnumerable<LogbookEntry>> GetAll(CancellationToken cancellationToken)
         {
             return await mediator.Send(new GetAll.Query(), cancellationToken);
         }

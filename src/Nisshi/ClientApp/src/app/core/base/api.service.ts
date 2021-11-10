@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
+
+const OPTIONS = { headers: new HttpHeaders({'Content-Type': 'application/json'}) };
 
 /**
  * Base API service that handles REST verbs and has pipes for additional
@@ -24,25 +26,25 @@ export class ApiService {
 
     get(path: string, params: HttpParams = new HttpParams()): Observable<any>
     {
-        return this._http.get(`${environment.api_url}${path}`, { params })
+        return this._http.get(`${environment.api_url}${path}`, OPTIONS)
             .pipe(catchError(this.formatErrors));
     }
 
     put(path: string, body: Object = {}): Observable<any>
     {
-        return this._http.put(`${environment.api_url}${path}`, JSON.stringify(body))
+        return this._http.put(`${environment.api_url}${path}`, JSON.stringify(body), OPTIONS)
             .pipe(catchError(this.formatErrors));
     }
 
     post(path: string, body: Object = {}): Observable<any>
     {
-        return this._http.post(`${environment.api_url}${path}`, JSON.stringify(body))
+        return this._http.post(`${environment.api_url}${path}`, JSON.stringify(body), OPTIONS)
             .pipe(catchError(this.formatErrors));
     }
 
     delete(path: string): Observable<any>
     {
-        return this._http.delete(`${environment.api_url}${path}`)
+        return this._http.delete(`${environment.api_url}${path}`, OPTIONS)
             .pipe(catchError(this.formatErrors));
     }
 

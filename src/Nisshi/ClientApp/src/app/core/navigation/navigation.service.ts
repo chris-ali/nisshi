@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, ReplaySubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Navigation } from 'app/core/navigation/navigation.types';
+import { ApiService } from '../base/api.service';
+
+const URL = 'common/navigation';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +16,7 @@ export class NavigationService
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient)
+    constructor(private _api: ApiService)
     {
     }
 
@@ -39,7 +41,7 @@ export class NavigationService
      */
     get(): Observable<Navigation>
     {
-        return this._httpClient.get<Navigation>('api/common/navigation').pipe(
+        return this._api.get(`${URL}`).pipe(
             tap((navigation) => {
                 this._navigation.next(navigation);
             })

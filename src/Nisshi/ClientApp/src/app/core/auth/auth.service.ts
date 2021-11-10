@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { AuthUtils } from 'app/core/auth/auth.utils';
 import { UserService } from 'app/core/user/user.service';
+import { ApiService } from '../base/api.service';
+
+const URL = 'users/';
 
 @Injectable()
 export class AuthService
@@ -14,7 +16,7 @@ export class AuthService
      * Constructor
      */
     constructor(
-        private _httpClient: HttpClient,
+        private _api: ApiService,
         private _userService: UserService
     )
     {
@@ -49,7 +51,7 @@ export class AuthService
      */
     forgotPassword(email: string): Observable<any>
     {
-        return this._httpClient.post('api/auth/forgot-password', email);
+        return this._api.post(`${URL}forgot-password`, email);
     }
 
     /**
@@ -59,7 +61,7 @@ export class AuthService
      */
     resetPassword(password: string): Observable<any>
     {
-        return this._httpClient.post('api/auth/reset-password', password);
+        return this._api.post(`${URL}reset-password`, password);
     }
 
     /**
@@ -75,7 +77,7 @@ export class AuthService
             return throwError('User is already logged in.');
         }
 
-        return this._httpClient.post('api/auth/sign-in', credentials).pipe(
+        return this._api.post(`${URL}sign-in`, credentials).pipe(
             switchMap((response: any) => {
 
                 // Store the access token in the local storage
@@ -99,7 +101,7 @@ export class AuthService
     signInUsingToken(): Observable<any>
     {
         // Renew token
-        return this._httpClient.post('api/auth/refresh-access-token', {
+        return this._api.post(`${URL}refresh-access-token`, {
             accessToken: this.accessToken
         }).pipe(
             catchError(() =>
@@ -146,7 +148,7 @@ export class AuthService
      */
     signUp(user: { name: string; email: string; password: string; company: string }): Observable<any>
     {
-        return this._httpClient.post('api/auth/sign-up', user);
+        return this._api.post(`${URL}sign-up`, user);
     }
 
     /**
@@ -156,7 +158,7 @@ export class AuthService
      */
     unlockSession(credentials: { email: string; password: string }): Observable<any>
     {
-        return this._httpClient.post('api/auth/unlock-session', credentials);
+        return this._api.post(`${URL}unlock-session`, credentials);
     }
 
     /**

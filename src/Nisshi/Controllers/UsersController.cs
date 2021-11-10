@@ -29,7 +29,7 @@ namespace Nisshi.Controllers
             return await mediator.Send(new UpdateProfile.Command(edit), cancellationToken);
         }
 
-        [HttpPost]
+        [HttpPost("register")]
         public async Task<ActionResult<LoggedIn>> Register([FromBody] Registration registration, CancellationToken cancellationToken)
         {
             return await mediator.Send(new Register.Command(registration), cancellationToken);
