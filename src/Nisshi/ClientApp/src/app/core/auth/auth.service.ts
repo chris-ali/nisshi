@@ -29,12 +29,13 @@ export class AuthService
      */
     set accessToken(token: string)
     {
-        localStorage.setItem('accessToken', token);
+        localStorage.setItem('accessToken', token ?? '');
     }
 
     get accessToken(): string
     {
-        return localStorage.getItem('accessToken') ?? '';
+        var token = localStorage.getItem('accessToken');
+        return token == 'undefined' ? '' : token;
     }
 
     // -----------------------------------------------------------------------------------------------------

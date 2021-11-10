@@ -7,7 +7,7 @@ import { LogbookEntry } from './logbookentry.types';
 const URL = 'logbookentries/';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class LogbookEntryService
 {

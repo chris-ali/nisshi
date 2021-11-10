@@ -7,7 +7,7 @@ import { CategoryClass } from './categoryclass.types';
 const URL = 'categoryclasses/';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class CategoryClassService
 {

@@ -7,7 +7,7 @@ import { Aircraft } from './aircraft.types';
 const URL = 'aircraft/';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class AircraftService
 {
