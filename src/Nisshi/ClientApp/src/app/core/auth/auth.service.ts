@@ -77,11 +77,11 @@ export class AuthService
             return throwError('User is already logged in.');
         }
 
-        return this._api.post(`${URL}sign-in`, credentials).pipe(
+        return this._api.post(`${URL}login`, credentials).pipe(
             switchMap((response: any) => {
 
                 // Store the access token in the local storage
-                this.accessToken = response.accessToken;
+                this.accessToken = response.token;
 
                 // Set the authenticated flag to true
                 this._authenticated = true;
@@ -112,7 +112,7 @@ export class AuthService
             switchMap((response: any) => {
 
                 // Store the access token in the local storage
-                this.accessToken = response.accessToken;
+                this.accessToken = response.token;
 
                 // Set the authenticated flag to true
                 this._authenticated = true;
@@ -144,11 +144,11 @@ export class AuthService
     /**
      * Sign up
      *
-     * @param user
+     * @param registration
      */
-    signUp(user: { name: string; email: string; password: string; company: string }): Observable<any>
+    signUp(registration: { name: string; email: string; password: string }): Observable<any>
     {
-        return this._api.post(`${URL}sign-up`, user);
+        return this._api.post(`${URL}register`, registration);
     }
 
     /**
