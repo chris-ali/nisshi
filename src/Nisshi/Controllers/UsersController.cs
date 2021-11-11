@@ -40,5 +40,11 @@ namespace Nisshi.Controllers
         {
             return await mediator.Send(new Requests.Users.Login.Command(authenticate), cancellationToken);
         }
+
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult<LoggedIn>> RefreshToken(CancellationToken cancellationToken)
+        {
+            return await mediator.Send(new Requests.Users.RefreshToken.Command(), cancellationToken);
+        }
     }
 }
