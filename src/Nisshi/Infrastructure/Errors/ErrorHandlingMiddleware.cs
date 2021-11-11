@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 namespace Nisshi.Infrastructure.Errors
 {
     /// <summary>
-    /// Invokes requests, handling exceptions by logging them and returning 
+    /// Invokes requests, handling exceptions by logging them and returning
     /// error messages in a friendlier format for responses
     /// </summary>
     public class ErrorHandlingMiddleware
@@ -60,7 +60,7 @@ namespace Nisshi.Infrastructure.Errors
                     result = JsonSerializer.Serialize(new { errors = localizer[ice.Message].Value });
                     break;
                 case AuthenticationException ae:
-                    context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                    context.Response.StatusCode = (int)HttpStatusCode.NotFound;
                     result = JsonSerializer.Serialize(new { errors = localizer[ae.Message].Value });
                     break;
                 case DomainException de:

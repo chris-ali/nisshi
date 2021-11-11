@@ -1,8 +1,16 @@
 export interface User
 {
-    id: string;
-    name: string;
+    username: string;
     email: string;
-    avatar?: string;
-    status?: string;
+    firstName: string;
+    lastName: string;
+    passwordQuestion?: string;
+    lastLoginDate?: Date;
+    lastBFR?: Date;
+    lastMedical?: Date;
+    isInstructor?: boolean;
+    cfiExpiration?: Date;
+    license?: string;
+    certificateNumber?: string;
+    preferences: string;
 }

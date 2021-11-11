@@ -1,18 +1,19 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure;
-using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
 
 namespace Nisshi.Requests.LogbookEntries
 {
+    /// <summary>
+    /// Gets all logbook entries for the currently logged in user
+    /// </summary>
     public class GetAll
     {
         public record Query() : IRequest<IList<LogbookEntry>>;

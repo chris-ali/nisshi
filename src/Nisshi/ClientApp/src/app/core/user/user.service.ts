@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable, ReplaySubject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { User } from 'app/core/user/user.types';
+import { ApiService } from '../base/api.service';
+
+const URL = 'users';
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +16,7 @@ export class UserService
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient)
+    constructor(private _api: ApiService)
     {
     }
 
@@ -47,7 +49,7 @@ export class UserService
      */
     get(): Observable<User>
     {
-        return this._httpClient.get<User>('api/common/user').pipe(
+        return this._api.get(URL).pipe(
             tap((user) => {
                 this._user.next(user);
             })
@@ -61,7 +63,7 @@ export class UserService
      */
     update(user: User): Observable<any>
     {
-        return this._httpClient.patch<User>('api/common/user', {user}).pipe(
+        return this._api.put(URL, {user}).pipe(
             map((response) => {
                 this._user.next(response);
             })

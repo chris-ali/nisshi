@@ -47,7 +47,6 @@ export class AuthSignUpComponent implements OnInit
                 name      : ['', Validators.required],
                 email     : ['', [Validators.required, Validators.email]],
                 password  : ['', Validators.required],
-                company   : [''],
                 agreements: ['', Validators.requiredTrue]
             }
         );
@@ -93,7 +92,7 @@ export class AuthSignUpComponent implements OnInit
                     // Set the alert
                     this.alert = {
                         type   : 'error',
-                        message: 'Something went wrong, please try again.'
+                        message: response.errors
                     };
 
                     // Show the alert

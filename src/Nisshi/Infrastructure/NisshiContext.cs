@@ -190,9 +190,9 @@ namespace Nisshi.Infrastructure
             var users = new User[]
             {
                 new User { Id = 1, Username = "chris", FirstName = "Chris", LastName = "Ali", Email = "chris@ali.com",
-                    Hash = hasher.Hash("test123", salt1), Salt = salt1, UserType = UserType.Administrator },
+                    Hash = hasher.Hash("tesT123!", salt1), Salt = salt1, UserType = UserType.Administrator },
                 new User { Id = 2, Username = "somebodyElse", FirstName = "Somebody", LastName = "Else", Email = "somebody@else.com",
-                    Hash = hasher.Hash("test456", salt2), Salt = salt2, UserType = UserType.User },
+                    Hash = hasher.Hash("tesT456!", salt2), Salt = salt2, UserType = UserType.User },
             };
             modelBuilder.Entity<User>().HasData(users);
 

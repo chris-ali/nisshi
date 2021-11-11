@@ -14,6 +14,9 @@ using Nisshi.Models;
 /// </summary>
 namespace Nisshi.Requests.Aircrafts
 {
+    /// <summary>
+    /// Gets all aircraft for the currently logged in user
+    /// </summary>
     public class GetAll
     {
         public record Query() : IRequest<IList<Aircraft>>;
