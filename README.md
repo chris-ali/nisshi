@@ -38,6 +38,6 @@ Any changes to the Angular project in `./src/Nisshi/ClientApp` will automaticall
 
 This project has full Docker support and can be build and deployed by simply running `docker-compose up -d` from the project root directory. 
 
-If Docker is not desired, you can run `dotnet run -p build/build.csproj` from the project root directory to build the project, which will output the published artifacts in `./publish`. You may need to install the dotnet-format tool first, which can be done using `dotnet tool install -g dotnet-format`
+If Docker is not desired, you can run `dotnet run -p build/build.csproj` from the project root directory to build the project, which will output the published artifacts in `./publish`. You may need to install the dotnet-format tool first, which can be done running: `dotnet tool install -g dotnet-format`
 
 PRs and pushes/merges to `master` will trigger the GitHub build pipeline which runs a project-wide format check, and then builds and tests the project.
