@@ -1,3 +1,6 @@
+import { CategoryClass } from "../categoryclass/categoryclass.types";
+import { Manufacturer } from "../manufacturer/manufacturer.types";
+
 export interface Model
 {
     id: number;
@@ -15,6 +18,6 @@ export interface Model
     isSimOnly: boolean;
     IsMotorGlider: boolean;
     isHelicopter: boolean;
-    idCategoryClass: number;
-    idManufacturer: number;
+    categoryClass: CategoryClass;
+    manufacturer: Manufacturer;
 }

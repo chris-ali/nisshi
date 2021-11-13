@@ -1,22 +1,70 @@
 <div class="flex flex-col flex-auto min-w-0">
 
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    Aircraft
+                </h2>
+            </div>
+        </div>
+    </div>
+
     <!-- Main -->
     <div class="flex-auto p-6 sm:p-10">
 
-        <!-- Card #3 - Flippable card -->
+        <div class="mb-6 sm:mb-12">
+            <mat-button-toggle-group
+                class="flex flex-wrap -m-2"
+                [(ngModel)]="selectedFilter"
+                (change)="onFilterChange($event)">
+                <ng-container *ngFor="let filter of filters">
+                    <mat-button-toggle
+                        class="m-2"
+                        [value]="filter">
+                        <span class="text-secondary">{{filter | titlecase}}</span>
+                        <span class="ml-1.5 font-medium text-secondary">({{aircraftCount[filter]}})</span>
+                    </mat-button-toggle>
+                </ng-container>
+            </mat-button-toggle-group>
+        </div>
+
         <fuse-card *ngFor="let air of aircraft"
-            class="flex flex-col max-w-80 w-full filter-article filter-interactive"
+            class="flex flex-col md:flex-row max-w-80 md:max-w-160 w-full filter-{{air.instanceType == 1 ? 'real' : 'sim'}}"
             [flippable]="true"
             [face]="'front'"
             #flippableCard01="fuseCard">
             <ng-container fuseCardFront>
-                <img
-                    class="object-cover"
-                    src="assets/images/cards/03-320x200.jpg"
-                    alt="Card cover image">
-                <div class="m-8 mb-4">
-                    <div class="text-2xl font-semibold leading-tight">Tail Number: {{air.tailNumber}}</div>
-                    <div class="mt-4">From rocky mountains to crystal clear lakes, there are the places you must see and enjoy.</div>
+                <div class="flex-0 w-80 md:w-64">
+                    <img
+                        class="object-cover"
+                        src="assets/images/cards/03-320x200.jpg"
+                        alt="Card cover image">
+                </div>
+                <div class="flex flex-col flex-auto m-8 mb-4">
+                    <div class="text-2xl font-semibold leading-tight">
+                        {{air.model?.manufacturer?.manufacturerName}} {{air.model?.modelName}}
+                    </div>
+                    <div class="-mr-3">
+                        <button
+                            mat-icon-button
+                            [matMenuTriggerFor]="flippableCard01Menu">
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:dots-vertical'"></mat-icon>
+                        </button>
+                        <mat-menu #flippableCard01Menu="matMenu">
+                            <button mat-menu-item (click)="editClick(air)">Edit</button>
+                            <button mat-menu-item (click)="deleteClick(air)">Delete</button>
+                        </mat-menu>
+                    </div>
+                    <div class="mt-4">{{air.tailNumber}}</div>
+                    <div class="mt-4" *ngIf="air.notes">
+                        <div>Aircraft Notes</div>
+                        <div class="text-secondary text-md">{{air.notes}}</div>
+                    </div>
                     <div class="mt-3 -mx-3">
                         <button
                             class="px-3"
@@ -37,16 +85,49 @@
                         <mat-icon [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
                     </button>
                     <div class="m-4 mt-3">
-                        <div class="text-2xl font-semibold leading-tight">
-                            Most beautiful and quite places to see
+                        <mat-checkbox
+                            class="my-1"
+                            [color]="'primary'"
+                            [checked]="air.instanceType == 1">
+                            Is Simulated
+                        </mat-checkbox>
+                    </div>
+                    <div class="flex flex-col my-2" *ngIf="air.instanceType == 1">
+                        <div class="my-2" *ngIf="air.lastAnnual">
+                            <div>Last Annual Inspection</div>
+                            <div class="text-secondary text-md">{{air.lastAnnual}}</div>
                         </div>
-                        <div class="mt-4">
-                            From rocky mountains to crystal clear lakes, these are the places you must see and enjoy.
-                            You can bring your own food and have a little picnic on top of the amazing grasslands.
+                        <div class="my-2" *ngIf="air.last100Hobbs">
+                            <div>Last 100 Hour Inspection (Hobbs Time)</div>
+                            <div class="text-secondary text-md">{{air.last100Hobbs}}</div>
                         </div>
-                        <div class="mt-4">
-                            From rocky mountains to crystal clear lakes, these are the places you must see and enjoy.
-                            You can bring your own food and have a little picnic on top of the amazing grasslands.
+                        <div class="my-2" *ngIf="air.lastOilHobbs">
+                            <div>Last Oil Change (Hobbs Time)</div>
+                            <div class="text-secondary text-md">{{air.lastOilHobbs}}</div>
+                        </div>
+                        <div class="my-2" *ngIf="air.registrationDue">
+                            <div>Registration Due Date</div>
+                            <div class="text-secondary text-md">{{air.registrationDue}}</div>
+                        </div>
+                        <div class="my-2" *ngIf="air.lastPitotStatic">
+                            <div>Last Pitot Static Inspection</div>
+                            <div class="text-secondary text-md">{{air.lastPitotStatic}}</div>
+                        </div>
+                        <div class="my-2" *ngIf="air.lastVOR">
+                            <div>Last VOR Inspection</div>
+                            <div class="text-secondary text-md">{{air.lastVOR}}</div>
+                        </div>
+                        <div class="my-2" *ngIf="air.lastAltimeter">
+                            <div>Last Altimeter Inspection</div>
+                            <div class="text-secondary text-md">{{air.lastAltimeter}}</div>
+                        </div>
+                        <div class="my-2" *ngIf="air.lastTransponder">
+                            <div>Last Transponder Inspection</div>
+                            <div class="text-secondary text-md">{{air.lastTransponder}}</div>
+                        </div>
+                        <div class="my-2" *ngIf="air.lastELT">
+                            <div>Last ELT Inpsection</div>
+                            <div class="text-secondary text-md">{{air.lastELT}}</div>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, QueryList, Renderer2, ViewChildren, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { FuseCardComponent } from '@fuse/components/card';
 import { AircraftService } from 'app/core/aircraft/aircraft.service';
@@ -14,10 +14,9 @@ import { Aircraft } from 'app/core/aircraft/aircraft.types';
             }
         `
     ],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    encapsulation: ViewEncapsulation.None
 })
-export class ViewComponent implements AfterViewInit
+export class ViewComponent implements AfterViewInit, OnInit
 {
     @ViewChildren(FuseCardComponent, {read: ElementRef}) private aircraftCardList: QueryList<ElementRef>;
     aircraft: Aircraft[];
@@ -40,6 +39,10 @@ export class ViewComponent implements AfterViewInit
     ngAfterViewInit(): void
     {
         this.calculateAircraftPerFilter();
+    }
+
+    ngOnInit(): void
+    {
         this.aircraftService.getAll().subscribe(aircraft => this.aircraft = aircraft);
     }
 

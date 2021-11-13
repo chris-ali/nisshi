@@ -1,5 +1,5 @@
 export interface Manufacturer
 {
     id: number;
-    ManufacturerName: string;
+    manufacturerName: string;
 }

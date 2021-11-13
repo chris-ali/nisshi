@@ -35,8 +35,10 @@ namespace Nisshi.Requests.Aircrafts
                 var username = accessor.GetCurrentUserName();
 
                 var data = await context.Aircraft
-                    //.Include(x => x.Model)
                     .Include(x => x.Owner)
+                    .Include(x => x.Model)
+                        .ThenInclude(x => x.Manufacturer)
+                    .Include(x => x.Model.CategoryClass)
                     .Where(x => x.Owner.Username.ToLower(CultureInfo.InvariantCulture) ==
                         username.ToLower(CultureInfo.InvariantCulture))
                     .ToListAsync(cancellationToken);

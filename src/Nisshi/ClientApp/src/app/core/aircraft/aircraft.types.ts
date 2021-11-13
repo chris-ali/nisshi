@@ -1,3 +1,5 @@
+import { Model } from "../model/model.types";
+
 export interface Aircraft
 {
     id: number;
@@ -14,5 +16,5 @@ export interface Aircraft
     lastEngineHobbs?: number;
     registrationDue?: number;
     notes?: string;
-    idModel: number;
+    model: Model;
 }
