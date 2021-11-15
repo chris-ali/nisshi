@@ -1,6 +1,7 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { FuseCardComponent } from '@fuse/components/card';
+import { TranslocoService } from '@ngneat/transloco';
 import { AircraftService } from 'app/core/aircraft/aircraft.service';
 import { Aircraft } from 'app/core/aircraft/aircraft.types';
 
@@ -9,7 +10,7 @@ import { Aircraft } from 'app/core/aircraft/aircraft.types';
     templateUrl  : './view.component.html',
     styles         : [
         `
-            cards fuse-card {
+            fuse-card {
                 margin: 16px;
             }
         `
@@ -28,7 +29,8 @@ export class ViewComponent implements AfterViewInit, OnInit
      * Constructor
      */
     constructor(private renderer2: Renderer2,
-                private aircraftService: AircraftService)
+                private aircraftService: AircraftService,
+                public translateService: TranslocoService)
     {
     }
 
@@ -38,7 +40,9 @@ export class ViewComponent implements AfterViewInit, OnInit
 
     ngAfterViewInit(): void
     {
-        this.calculateAircraftPerFilter();
+        this.aircraftCardList.changes.subscribe(() => {
+            this.calculateAircraftPerFilter();
+        })
     }
 
     ngOnInit(): void
