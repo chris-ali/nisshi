@@ -28,8 +28,7 @@ export class ViewComponent implements AfterViewInit, OnInit
     /**
      * Constructor
      */
-    constructor(private renderer2: Renderer2,
-                private aircraftService: AircraftService,
+    constructor(private aircraftService: AircraftService,
                 public translateService: TranslocoService)
     {
     }
@@ -63,6 +62,26 @@ export class ViewComponent implements AfterViewInit, OnInit
     {
         this.selectedFilter = change.value;
         this.aircraftService.getAll().subscribe(aircraft => this.aircraft = aircraft);
+    }
+
+    /**
+     * When the edit menu item is clicked; redirects to edit view
+     *
+     * @param air
+     */
+    onEdit(air: Aircraft): void
+    {
+
+    }
+
+    /**
+     * When the delete menu item is clicked; opens confirm dialog and then deletes the aircraft
+     *
+     * @param air
+     */
+    onDelete(air: Aircraft): void
+    {
+
     }
 
     // -----------------------------------------------------------------------------------------------------
