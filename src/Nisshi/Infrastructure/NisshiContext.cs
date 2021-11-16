@@ -230,11 +230,16 @@ namespace Nisshi.Infrastructure
 
             var aircraft = new Aircraft[]
             {
-                new Aircraft { Id = 1, IdModel = models[1].Id, IdUser = users[0].Id, TailNumber = "N8445D" },
-                new Aircraft { Id = 2, IdModel = models[4].Id, IdUser = users[0].Id, TailNumber = "N5427D" },
-                new Aircraft { Id = 3, IdModel = models[0].Id, IdUser = users[1].Id, TailNumber = "N9440D" },
-                new Aircraft { Id = 4, IdModel = models[0].Id, IdUser = users[1].Id, TailNumber = "N9441D" },
-                new Aircraft { Id = 5, IdModel = models[0].Id, IdUser = users[1].Id, TailNumber = "N9442D" },
+                new Aircraft { Id = 1, IdModel = models[1].Id, IdUser = users[0].Id, TailNumber = "N8445D", InstanceType = InstanceType.Real, Last100Hobbs = 235, LastAnnual = DateTime.Now.AddMonths(-5),
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
+                new Aircraft { Id = 2, IdModel = models[4].Id, IdUser = users[0].Id, TailNumber = "N5427D", InstanceType = InstanceType.Simulation,
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
+                new Aircraft { Id = 3, IdModel = models[0].Id, IdUser = users[1].Id, TailNumber = "N9440D", InstanceType = InstanceType.Real, LastOilHobbs = 1330, LastTransponder = DateTime.Now.AddMonths(-4),
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
+                new Aircraft { Id = 4, IdModel = models[0].Id, IdUser = users[1].Id, TailNumber = "N9441D", InstanceType = InstanceType.Simulation,
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
+                new Aircraft { Id = 5, IdModel = models[0].Id, IdUser = users[1].Id, TailNumber = "N9442D", InstanceType = InstanceType.Real, LastEngineHobbs = 3242, LastPitotStatic = DateTime.Now.AddMonths(-4),
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
             };
             modelBuilder.Entity<Aircraft>().HasData(aircraft);
 

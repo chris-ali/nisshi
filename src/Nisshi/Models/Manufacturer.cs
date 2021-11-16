@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using FluentValidation;
 
 namespace Nisshi.Models
@@ -10,6 +11,7 @@ namespace Nisshi.Models
     {
         public string ManufacturerName { get; set; }
 
+        [JsonIgnore]
         public virtual List<Model> Models { get; set; } = new();
 
         public class ManufacturerValidator : AbstractValidator<Manufacturer>

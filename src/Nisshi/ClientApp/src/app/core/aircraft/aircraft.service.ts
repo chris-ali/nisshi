@@ -41,11 +41,7 @@ export class AircraftService
      */
     getAll(): Observable<Aircraft[]>
     {
-        return this._api.get(`${URL}user`).pipe(
-            tap((aircraft) => {
-
-            })
-        );
+        return this._api.get(`${URL}all`);
     }
 
     /**

@@ -14,7 +14,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title: 'Aircraft',
         type : 'basic',
         icon : 'mat_outline:flight',
-        link : '/aircraft'
+        link : '/aircraft/view'
     },
     {
         id   : 'logbook',
@@ -58,7 +58,7 @@ export const compactNavigation: FuseNavigationItem[] = [
         title: 'Aircraft',
         type : 'basic',
         icon : 'mat_outline:flight',
-        link : '/aircraft'
+        link : '/aircraft/view'
     },
     {
         id   : 'logbook',
