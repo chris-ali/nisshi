@@ -15,10 +15,11 @@
             <button
                 class="ml-3"
                 mat-flat-button
-                [color]="'accent'">
+                [color]="'accent'"
+                [routerLink]="['../form']">
                 <mat-icon
                     class="icon-size-5 mr-2"
-                    [svgIcon]="'heroicons_solid:link'"></mat-icon>
+                    [svgIcon]="'heroicons_solid:view-grid-add'"></mat-icon>
                 Add New
             </button>
         </div>
@@ -48,7 +49,8 @@
             class="flex flex-col md:flex-row max-w-80 md:max-w-160 w-full {{air.instanceType == 1 ? 'filter-real' : 'filter-sim'}}"
             [flippable]="true"
             [face]="'front'"
-            #flippableCard01="fuseCard">
+            #flippableCard01="fuseCard"
+            id = {{air.id}}>
             <ng-container fuseCardFront>
                 <div class="flex items-center justify-between">
                     <div class="flex-0 w-80 md:w-64">
