@@ -43,20 +43,40 @@ namespace Nisshi.IntegrationTests.Requests.Models
         [Fact]
         public async Task Get_Many_Should_Find_Two()
         {
-            var aircraftResponse = await fixture.SendAsync(new GetManyByPartialName.Query("182"));
+            var modelResponse = await fixture.SendAsync(new GetManyByPartialName.Query("182"));
 
-            Assert.NotNull(aircraftResponse);
-            Assert.Equal(2, aircraftResponse.Count);
+            Assert.NotNull(modelResponse);
+            Assert.Equal(2, modelResponse.Count);
         }
 
         [Fact]
         public async Task Get_Many_Should_Find_None()
         {
             var user = await Helpers.RegisterAndGetTestUser(fixture);
-            var aircraftResponse = await fixture.SendAsync(new GetManyByPartialName.Query("441"));
+            var modelResponse = await fixture.SendAsync(new GetManyByPartialName.Query("441"));
 
-            Assert.NotNull(aircraftResponse);
-            Assert.Equal(0, aircraftResponse.Count);
+            Assert.NotNull(modelResponse);
+            Assert.Equal(0, modelResponse.Count);
+        }
+
+        [Fact]
+        public async Task Get_Many_By_Manufacturer_Should_Find_Some()
+        {
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
+            var modelResponse = await fixture.SendAsync(new GetManyByManufacturer.Query(1));
+
+            Assert.NotNull(modelResponse);
+            Assert.NotEmpty(modelResponse);
+        }
+
+        [Fact]
+        public async Task Get_Many_By_Nonexistant_Manufacturer_Should_Find_None()
+        {
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
+            var modelResponse = await fixture.SendAsync(new GetManyByManufacturer.Query(100));
+
+            Assert.NotNull(modelResponse);
+            Assert.Empty(modelResponse);
         }
 
         public void Dispose()

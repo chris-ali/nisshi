@@ -18,6 +18,15 @@ namespace Nisshi.IntegrationTests.Requests.Manufacturers
         }
 
         [Fact]
+        public async Task Should_Find_Many()
+        {
+            var manufacturerResponse = await fixture.SendAsync(new GetAll.Query());
+
+            Assert.NotNull(manufacturerResponse);
+            Assert.NotEmpty(manufacturerResponse);
+        }
+
+        [Fact]
         public async Task Should_Find_One()
         {
             var manufacturerResponse = await fixture.SendAsync(new GetManyByPartialName.Query("Ces"));
