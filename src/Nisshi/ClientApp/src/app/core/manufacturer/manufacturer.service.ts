@@ -23,6 +23,20 @@ export class ManufacturerService
     // -----------------------------------------------------------------------------------------------------
 
     /**
+     * Gets all manufacturers
+     *
+     * @param partialName
+     */
+     getAll(): Observable<Manufacturer[]>
+     {
+         return this._api.get(`${URL}`).pipe(
+             tap((manufacturer) => {
+
+             })
+         );
+     }
+
+    /**
      * Searches for manufacturers by name
      *
      * @param partialName
