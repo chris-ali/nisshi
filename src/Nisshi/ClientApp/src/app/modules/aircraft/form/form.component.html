@@ -6,7 +6,7 @@
             <!-- Title -->
             <div class="mt-2">
                 <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
-                    Aircraft
+                    {{this.isAddMode ? 'Add' : 'Edit' }} Aircraft
                 </h2>
             </div>
         </div>
@@ -24,34 +24,37 @@
             </p>
         </div>
 
-        <form class="flex flex-col mt-4 px-8 pt-10 bg-card shadow rounded overflow-hidden">
+        <form
+            [formGroup]="form"
+            (ngSubmit)="onSubmit()"
+            class="flex flex-col mt-4 px-8 pt-10 bg-card shadow rounded overflow-hidden">
             <div class="flex flex-col gt-xs:flex-row gt-xs:items-start">
                 <div class="gt-xs:max-w-80 gt-xs:pr-12">
-                    <p class="text-lg font-medium">Basic information</p>
-                    <p class="text-secondary mb-6">
-                        Set your login preferences, help us personalize your experience and make big account changes here
-                    </p>
+                    <p class="text-lg font-medium">Primary Information</p>
                 </div>
                 <div class="flex-auto min-w-64">
                     <div class="flex">
                         <mat-form-field class="flex-auto">
-                            <mat-label>Email Address</mat-label>
+                            <mat-label>Tail Number</mat-label>
                             <input
+                                id="tailNumber"
                                 matInput
-                                [placeholder]="'mail@company.com'">
+                                [formControlName]="'tailNumber'"
+                                maxlength="20">
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:mail'"></mat-icon>
+                            <mat-error *ngIf="form.get('tailNumber').hasError('required')">
+                                Tail Number is required
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="flex">
                         <mat-form-field class="flex-auto">
-                            <mat-label>Country / Region</mat-label>
+                            <mat-label>Manufacturer</mat-label>
                             <mat-select>
-                                <mat-option value="country-1">Country 1</mat-option>
-                                <mat-option value="country-2">Country 2</mat-option>
-                                <mat-option value="country-3">Country 3</mat-option>
+                                <mat-option *ngFor="let manu of manufacturers" value="manu.id">{{manu.manufacturerName}}</mat-option>
                             </mat-select>
                             <mat-icon
                                 class="icon-size-5"
@@ -61,11 +64,9 @@
                     </div>
                     <div class="flex">
                         <mat-form-field class="flex-auto">
-                            <mat-label>Language</mat-label>
+                            <mat-label>Model</mat-label>
                             <mat-select>
-                                <mat-option value="language-1">Language 1</mat-option>
-                                <mat-option value="language-2">Language 2</mat-option>
-                                <mat-option value="language-3">Language 3</mat-option>
+                                <mat-option *ngFor="let modoel of models" value="model.id">{{model.modelName}}</mat-option>
                             </mat-select>
                             <mat-icon
                                 class="icon-size-5"
