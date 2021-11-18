@@ -41,23 +41,23 @@ export class FormComponent implements OnInit {
 
     ngOnInit(): void
     {
-        this.id = this.route.snapshot.params['id'];
+        this.id = this.route.snapshot.params['id'] ?? 0;
         this.isAddMode = !this.id;
 
-        this.formBuilder.group({
+        this.form = this.formBuilder.group({
             id: [this.id],
             tailNumber: ['', [Validators.required, Validators.maxLength(20)]],
             instanceType: [1],
-            lastAnnual: [''],
-            lastPitotStatic: [''],
-            lastVOR: [''],
-            lastAltimeter: [''],
-            lastTransponder: [''],
-            lastELT: [''],
-            last100Hobbs: ['', [Validators.min(0), Validators.max(999999)]],
-            lastOilHobbs: ['', [Validators.min(0), Validators.max(999999)]],
-            lastEngineHobbs: ['', [Validators.min(0), Validators.max(999999)]],
-            registrationDue: [''],
+            lastAnnual: [null],
+            lastPitotStatic: [null],
+            lastVOR: [null],
+            lastAltimeter: [null],
+            lastTransponder: [null],
+            lastELT: [null],
+            last100Hobbs: [0, [Validators.min(0), Validators.max(999999)]],
+            lastOilHobbs: [0, [Validators.min(0), Validators.max(999999)]],
+            lastEngineHobbs: [0, [Validators.min(0), Validators.max(999999)]],
+            registrationDue: [null],
             notes: [''],
             idModel: ['', Validators.nullValidator]
         });
@@ -98,6 +98,7 @@ export class FormComponent implements OnInit {
      */
     selectedManufacturerChanged(id: number): void
     {
+        this.models = [];
         this.modelService.getManyByManufacturer(id)
             .subscribe(models => this.models = models);
     }

@@ -63,7 +63,7 @@
                         <mat-form-field class="flex-auto">
                             <mat-label>Model</mat-label>
                             <mat-select
-                                [formControlName="idModel"]>
+                                [formControlName]="'idModel'">
                                 <mat-option *ngIf="!manufacturerSelect.value" value="">Select a Manufacturer</mat-option>
                                 <mat-option *ngFor="let model of models" [value]="model.id">{{model.modelName}}</mat-option>
                             </mat-select>
@@ -82,7 +82,7 @@
                             class="flex flex-col"
                             [color]="'primary'"
                             [value]="1"
-                            [formControlName="instanceType"]
+                            [formControlName]="'instanceType'"
                             #instanceRadio>
                             <mat-radio-button
                                 class="mb-2"
@@ -117,7 +117,7 @@
                                 [placeholder]="'Any notes or details pertinent to this aircraft'"
                                 [rows]="3"
                                 maxlength="200"
-                                [formControlName="notes"]></textarea>
+                                [formControlName]="'notes'"></textarea>
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
@@ -131,7 +131,7 @@
                                 matInput
                                 [matDatepicker]="lastAnnualPicker"
                                 [placeholder]="'Choose a date'"
-                                [formControlName="lastAnnual"]>
+                                [formControlName]="'lastAnnual'">
                             <mat-datepicker-toggle
                                 matSuffix
                                 [for]="lastAnnualPicker"></mat-datepicker-toggle>
@@ -145,7 +145,7 @@
                                 matInput
                                 [matDatepicker]="lastPitotStaticPicker"
                                 [placeholder]="'Choose a date'"
-                                [formControlName="lastPitotStatic"]>
+                                [formControlName]="'lastPitotStatic'">
                             <mat-datepicker-toggle
                                 matSuffix
                                 [for]="lastPitotStaticPicker"></mat-datepicker-toggle>
@@ -159,7 +159,7 @@
                                 matInput
                                 [matDatepicker]="lastVORPicker"
                                 [placeholder]="'Choose a date'"
-                                [formControlName="lastVOR"]>
+                                [formControlName]="'lastVOR'">
                             <mat-datepicker-toggle
                                 matSuffix
                                 [for]="lastVORPicker"></mat-datepicker-toggle>
@@ -173,7 +173,7 @@
                                 matInput
                                 [matDatepicker]="lastAltimeterPicker"
                                 [placeholder]="'Choose a date'"
-                                [formControlName="lastAltimeter"]>
+                                [formControlName]="'lastAltimeter'">
                             <mat-datepicker-toggle
                                 matSuffix
                                 [for]="lastAltimeterPicker"></mat-datepicker-toggle>
@@ -187,7 +187,7 @@
                                 matInput
                                 [matDatepicker]="lastTransponderPicker"
                                 [placeholder]="'Choose a date'"
-                                [formControlName="lastTransponder"]>
+                                [formControlName]="'lastTransponder'">
                             <mat-datepicker-toggle
                                 matSuffix
                                 [for]="lastTransponderPicker"></mat-datepicker-toggle>
@@ -201,7 +201,7 @@
                                 matInput
                                 [matDatepicker]="lastELTPicker"
                                 [placeholder]="'Choose a date'"
-                                [formControlName="lastELT"]>
+                                [formControlName]="'lastELT'">
                             <mat-datepicker-toggle
                                 matSuffix
                                 [for]="lastELTPicker"></mat-datepicker-toggle>
@@ -215,7 +215,7 @@
                                 matInput
                                 [matDatepicker]="registrationDuePicker"
                                 [placeholder]="'Choose a date'"
-                                [formControlName="registrationDue"]>
+                                [formControlName]="'registrationDue'">
                             <mat-datepicker-toggle
                                 matSuffix
                                 [for]="registrationDuePicker"></mat-datepicker-toggle>
@@ -229,7 +229,7 @@
                                 type="number"
                                 matInput
                                 [placeholder]="'Enter an hour value'"
-                                [formControlName="lastOilHobbs">
+                                [formControlName]="'lastOilHobbs'">
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
@@ -249,7 +249,7 @@
                                 type="number"
                                 matInput
                                 [placeholder]="'Enter an hour value'"
-                                [formControlName="last100Hobbs">
+                                [formControlName]="'last100Hobbs'">
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
@@ -269,7 +269,7 @@
                                 type="number"
                                 matInput
                                 [placeholder]="'Enter an hour value'"
-                                [formControlName="lastEngineHobbs"]>
+                                [formControlName]="'lastEngineHobbs'">
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
