@@ -54,11 +54,11 @@ export class FormComponent implements OnInit {
             lastAltimeter: [''],
             lastTransponder: [''],
             lastELT: [''],
-            last100Hobbs: ['', Validators.min(0)],
-            lastOilHobbs: ['', Validators.min(0)],
-            lastEngineHobbs: ['', Validators.min(0)],
+            last100Hobbs: ['', [Validators.min(0), Validators.max(999999)]],
+            lastOilHobbs: ['', [Validators.min(0), Validators.max(999999)]],
+            lastEngineHobbs: ['', [Validators.min(0), Validators.max(999999)]],
             registrationDue: [''],
-            notes: ['', Validators.maxLength(200)],
+            notes: [''],
             idModel: ['', Validators.nullValidator]
         });
 
@@ -76,6 +76,9 @@ export class FormComponent implements OnInit {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
+    /**
+     * When submit button is clicked, either create or update aircraft object
+     */
     onSubmit(): void
     {
         if (this.form.invalid)
@@ -87,9 +90,16 @@ export class FormComponent implements OnInit {
             this.editAircraft();
     }
 
-    selectedManufacturerChanged(): void
+    /**
+     * On manufacturer dropdown selection change, get
+     * models for manufacturers and then fill in models dropdown
+     *
+     * @param id
+     */
+    selectedManufacturerChanged(id: number): void
     {
-
+        this.modelService.getManyByManufacturer(id)
+            .subscribe(models => this.models = models);
     }
 
     // -----------------------------------------------------------------------------------------------------

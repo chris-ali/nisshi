@@ -11,6 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from 'app/shared/shared.module';
 import { FormComponent } from 'app/modules/aircraft/form/form.component';
 import { Route, RouterModule } from '@angular/router';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 export const routes: Route[] = [
     {
@@ -38,6 +39,7 @@ export const routes: Route[] = [
         MatMenuModule,
         MatRadioModule,
         MatSelectModule,
+        MatDatepickerModule,
         SharedModule
     ]
 })
