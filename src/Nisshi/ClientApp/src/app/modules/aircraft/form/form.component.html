@@ -38,7 +38,7 @@
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
-                                [svgIcon]="'heroicons_solid:mail'"></mat-icon>
+                                [svgIcon]="'heroicons_solid:hashtag'"></mat-icon>
                             <mat-error *ngIf="form.get('tailNumber').hasError('required')">
                                 Please enter a Tail Number
                             </mat-error>
@@ -49,14 +49,13 @@
                             <mat-label>Manufacturer</mat-label>
                             <mat-select
                                 #manufacturerSelect
+                                [formControlName]="'idManufacturer'"
                                 (selectionChange)="selectedManufacturerChanged(manufacturerSelect.value)">
                                 <mat-option value=""></mat-option>
-                                <mat-option *ngFor="let manu of manufacturers" [value]="manu.id">{{manu.manufacturerName}}</mat-option>
+                                <mat-option *ngFor="let manu of manufacturers" [value]="manu.id">
+                                    {{manu.manufacturerName}}
+                                </mat-option>
                             </mat-select>
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:location-marker'"></mat-icon>
                         </mat-form-field>
                     </div>
                     <div class="flex">
@@ -65,12 +64,10 @@
                             <mat-select
                                 [formControlName]="'idModel'">
                                 <mat-option *ngIf="!manufacturerSelect.value" value="">Select a Manufacturer</mat-option>
-                                <mat-option *ngFor="let model of models" [value]="model.id">{{model.modelName}}</mat-option>
+                                <mat-option *ngFor="let model of models" [value]="model.id">
+                                    {{model.modelName}}
+                                </mat-option>
                             </mat-select>
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:translate'"></mat-icon>
                             <mat-error *ngIf="form.get('idModel').hasError('required')">
                                 Please select an aircraft model
                             </mat-error>
@@ -124,174 +121,175 @@
                                 [svgIcon]="'heroicons_solid:menu-alt-2'"></mat-icon>
                         </mat-form-field>
                     </div>
-                    <div class="flex">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Date of Last Annual Inspection</mat-label>
-                            <input
-                                matInput
-                                [matDatepicker]="lastAnnualPicker"
-                                [placeholder]="'Choose a date'"
-                                [formControlName]="'lastAnnual'">
-                            <mat-datepicker-toggle
-                                matSuffix
-                                [for]="lastAnnualPicker"></mat-datepicker-toggle>
-                            <mat-datepicker #lastAnnualPicker></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div class="flex">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Date of Last Pitot Static Inspection</mat-label>
-                            <input
-                                matInput
-                                [matDatepicker]="lastPitotStaticPicker"
-                                [placeholder]="'Choose a date'"
-                                [formControlName]="'lastPitotStatic'">
-                            <mat-datepicker-toggle
-                                matSuffix
-                                [for]="lastPitotStaticPicker"></mat-datepicker-toggle>
-                            <mat-datepicker #lastPitotStaticPicker></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div class="flex">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Date of Last VOR Inspection</mat-label>
-                            <input
-                                matInput
-                                [matDatepicker]="lastVORPicker"
-                                [placeholder]="'Choose a date'"
-                                [formControlName]="'lastVOR'">
-                            <mat-datepicker-toggle
-                                matSuffix
-                                [for]="lastVORPicker"></mat-datepicker-toggle>
-                            <mat-datepicker #lastVORPicker></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div class="flex">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Date of Last Altimeter Inspection</mat-label>
-                            <input
-                                matInput
-                                [matDatepicker]="lastAltimeterPicker"
-                                [placeholder]="'Choose a date'"
-                                [formControlName]="'lastAltimeter'">
-                            <mat-datepicker-toggle
-                                matSuffix
-                                [for]="lastAltimeterPicker"></mat-datepicker-toggle>
-                            <mat-datepicker #lastAltimeterPicker></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div class="flex">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Date of Last Transponder Inspection</mat-label>
-                            <input
-                                matInput
-                                [matDatepicker]="lastTransponderPicker"
-                                [placeholder]="'Choose a date'"
-                                [formControlName]="'lastTransponder'">
-                            <mat-datepicker-toggle
-                                matSuffix
-                                [for]="lastTransponderPicker"></mat-datepicker-toggle>
-                            <mat-datepicker #lastTransponderPicker></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div class="flex">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Date of Last ELT Inspection</mat-label>
-                            <input
-                                matInput
-                                [matDatepicker]="lastELTPicker"
-                                [placeholder]="'Choose a date'"
-                                [formControlName]="'lastELT'">
-                            <mat-datepicker-toggle
-                                matSuffix
-                                [for]="lastELTPicker"></mat-datepicker-toggle>
-                            <mat-datepicker #lastELTPicker></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div class="flex">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Expiration Date of Aircraft Registration</mat-label>
-                            <input
-                                matInput
-                                [matDatepicker]="registrationDuePicker"
-                                [placeholder]="'Choose a date'"
-                                [formControlName]="'registrationDue'">
-                            <mat-datepicker-toggle
-                                matSuffix
-                                [for]="registrationDuePicker"></mat-datepicker-toggle>
-                            <mat-datepicker #registrationDuePicker></mat-datepicker>
-                        </mat-form-field>
-                    </div>
-                    <div class="flex">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Hobbs Time of Last Oil Change</mat-label>
-                            <input
-                                type="number"
-                                matInput
-                                [placeholder]="'Enter an hour value'"
-                                [formControlName]="'lastOilHobbs'">
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
-                            <mat-error *ngIf="form.get('lastOilHobbs').hasError('min')">
-                                Hobbs time must be non-negative
-                            </mat-error>
-                            <mat-error *ngIf="form.get('lastOilHobbs').hasError('max')">
-                                Hobbs time must be less than 1000000 hours
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="flex">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Hobbs Time of Last 100 Hour Inspection</mat-label>
-                            <input
-                                type="number"
-                                matInput
-                                [placeholder]="'Enter an hour value'"
-                                [formControlName]="'last100Hobbs'">
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
-                            <mat-error *ngIf="form.get('last100Hobbs').hasError('min')">
-                                Hobbs time must be non-negative
-                            </mat-error>
-                            <mat-error *ngIf="form.get('last100Hobbs').hasError('max')">
-                                Hobbs time must be less than 1000000 hours
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="flex">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Hobbs Time of Last Engine Overhaul</mat-label>
-                            <input
-                                type="number"
-                                matInput
-                                [placeholder]="'Enter an hour value'"
-                                [formControlName]="'lastEngineHobbs'">
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
-                            <mat-error *ngIf="form.get('lastEngineHobbs').hasError('min')">
-                                Hobbs time must be non-negative
-                            </mat-error>
-                            <mat-error *ngIf="form.get('lastEngineHobbs').hasError('max')">
-                                Hobbs time must be less than 1000000 hours
-                            </mat-error>
-                        </mat-form-field>
+                    <div> <!--Add hidden class if simulated-->
+                        <div class="flex">
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Date of Last Annual Inspection</mat-label>
+                                <input
+                                    matInput
+                                    [matDatepicker]="lastAnnualPicker"
+                                    [placeholder]="'Choose a date'"
+                                    [formControlName]="'lastAnnual'">
+                                <mat-datepicker-toggle
+                                    matSuffix
+                                    [for]="lastAnnualPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #lastAnnualPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex">
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Date of Last Pitot Static Inspection</mat-label>
+                                <input
+                                    matInput
+                                    [matDatepicker]="lastPitotStaticPicker"
+                                    [placeholder]="'Choose a date'"
+                                    [formControlName]="'lastPitotStatic'">
+                                <mat-datepicker-toggle
+                                    matSuffix
+                                    [for]="lastPitotStaticPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #lastPitotStaticPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex">
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Date of Last VOR Inspection</mat-label>
+                                <input
+                                    matInput
+                                    [matDatepicker]="lastVORPicker"
+                                    [placeholder]="'Choose a date'"
+                                    [formControlName]="'lastVOR'">
+                                <mat-datepicker-toggle
+                                    matSuffix
+                                    [for]="lastVORPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #lastVORPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex">
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Date of Last Altimeter Inspection</mat-label>
+                                <input
+                                    matInput
+                                    [matDatepicker]="lastAltimeterPicker"
+                                    [placeholder]="'Choose a date'"
+                                    [formControlName]="'lastAltimeter'">
+                                <mat-datepicker-toggle
+                                    matSuffix
+                                    [for]="lastAltimeterPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #lastAltimeterPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex">
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Date of Last Transponder Inspection</mat-label>
+                                <input
+                                    matInput
+                                    [matDatepicker]="lastTransponderPicker"
+                                    [placeholder]="'Choose a date'"
+                                    [formControlName]="'lastTransponder'">
+                                <mat-datepicker-toggle
+                                    matSuffix
+                                    [for]="lastTransponderPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #lastTransponderPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex">
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Date of Last ELT Inspection</mat-label>
+                                <input
+                                    matInput
+                                    [matDatepicker]="lastELTPicker"
+                                    [placeholder]="'Choose a date'"
+                                    [formControlName]="'lastELT'">
+                                <mat-datepicker-toggle
+                                    matSuffix
+                                    [for]="lastELTPicker"></mat-datepicker-toggle>
+                                <mat-datepicker #lastELTPicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex">
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Expiration Date of Aircraft Registration</mat-label>
+                                <input
+                                    matInput
+                                    [matDatepicker]="registrationDuePicker"
+                                    [placeholder]="'Choose a date'"
+                                    [formControlName]="'registrationDue'">
+                                <mat-datepicker-toggle
+                                    matSuffix
+                                    [for]="registrationDuePicker"></mat-datepicker-toggle>
+                                <mat-datepicker #registrationDuePicker></mat-datepicker>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex">
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Hobbs Time of Last Oil Change</mat-label>
+                                <input
+                                    type="number"
+                                    matInput
+                                    [placeholder]="'Enter an hour value'"
+                                    [formControlName]="'lastOilHobbs'">
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                                <mat-error *ngIf="form.get('lastOilHobbs').hasError('min')">
+                                    Hobbs time must be non-negative
+                                </mat-error>
+                                <mat-error *ngIf="form.get('lastOilHobbs').hasError('max')">
+                                    Hobbs time must be less than 1000000 hours
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex">
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Hobbs Time of Last 100 Hour Inspection</mat-label>
+                                <input
+                                    type="number"
+                                    matInput
+                                    [placeholder]="'Enter an hour value'"
+                                    [formControlName]="'last100Hobbs'">
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                                <mat-error *ngIf="form.get('last100Hobbs').hasError('min')">
+                                    Hobbs time must be non-negative
+                                </mat-error>
+                                <mat-error *ngIf="form.get('last100Hobbs').hasError('max')">
+                                    Hobbs time must be less than 1000000 hours
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex">
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Hobbs Time of Last Engine Overhaul</mat-label>
+                                <input
+                                    type="number"
+                                    matInput
+                                    [placeholder]="'Enter an hour value'"
+                                    [formControlName]="'lastEngineHobbs'">
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                                <mat-error *ngIf="form.get('lastEngineHobbs').hasError('min')">
+                                    Hobbs time must be non-negative
+                                </mat-error>
+                                <mat-error *ngIf="form.get('lastEngineHobbs').hasError('max')">
+                                    Hobbs time must be less than 1000000 hours
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
                     </div>
 
                 </div>
             </div>
 
-            <mat-divider class="mt-4 mb-12"></mat-divider>
-
             <div class="flex items-center justify-end border-t -mx-8 mt-8 px-8 py-5 bg-gray-50 dark:bg-gray-700">
                 <button
-                    routerLink="../view"
-                    mat-button>
+                    [routerLink]="['/aircraft/view']"
+                    mat-button
+                    type="button">
                     Cancel
                 </button>
                 <button

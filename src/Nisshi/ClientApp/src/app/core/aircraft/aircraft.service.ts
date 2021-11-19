@@ -51,7 +51,7 @@ export class AircraftService
      */
     update(aircraft: Aircraft): Observable<any>
     {
-        return this._api.put(URL, {aircraft}).pipe(
+        return this._api.put(URL, aircraft).pipe(
             map((response) => {
                 this._aircraft.next(response);
             })
@@ -65,7 +65,7 @@ export class AircraftService
      */
     create(aircraft: Aircraft): Observable<any>
     {
-        return this._api.post(URL, {aircraft}).pipe(
+        return this._api.post(URL, aircraft).pipe(
             map((response) => {
                 this._aircraft.next(response);
             })

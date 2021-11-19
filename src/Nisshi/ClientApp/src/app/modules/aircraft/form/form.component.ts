@@ -17,7 +17,7 @@ import { Model } from 'app/core/model/model.types';
 })
 export class FormComponent implements OnInit {
 
-    id: string;
+    id: number;
     isAddMode: boolean;
     form: FormGroup;
     models: Model[];
@@ -41,7 +41,7 @@ export class FormComponent implements OnInit {
 
     ngOnInit(): void
     {
-        this.id = this.route.snapshot.params['id'] ?? 0;
+        this.id = parseInt(this.route.snapshot.params['id']) ?? 0;
         this.isAddMode = !this.id;
 
         this.form = this.formBuilder.group({
@@ -59,7 +59,8 @@ export class FormComponent implements OnInit {
             lastEngineHobbs: [0, [Validators.min(0), Validators.max(999999)]],
             registrationDue: [null],
             notes: [''],
-            idModel: ['', Validators.nullValidator]
+            idModel: ['', Validators.nullValidator],
+            idManufacturer: [0] // Not a field on aircraft, but needed to set dropdown on edit
         });
 
         this.manufacturerService.getAll()
@@ -67,8 +68,17 @@ export class FormComponent implements OnInit {
 
         if (!this.isAddMode)
         {
-            this.aircraftService.getOne(parseInt(this.id))
-                .subscribe(aircraft => this.form.patchValue(aircraft));
+            this.aircraftService.getOne(this.id)
+                .subscribe(aircraft => {
+                    this.form.patchValue(aircraft);
+
+                    this.models = [];
+                    this.modelService.getManyByManufacturer(aircraft.model.idManufacturer)
+                        .subscribe(models => {
+                            this.models = models
+                            this.form.patchValue({idManufacturer: aircraft.model.idManufacturer});
+                        });
+                });
         }
     }
 
@@ -112,7 +122,7 @@ export class FormComponent implements OnInit {
         this.aircraftService.create(this.form.value)
             .subscribe({
                 next: () => {
-                    this.router.navigate(['../view'], { relativeTo: this.route });
+                    this.router.navigate(['/aircraft/view']);
                     this.confirmation.alert('Updated Successfully', 'Aircraft was created successfully!', true);
                 },
                 error: error => {
@@ -126,7 +136,7 @@ export class FormComponent implements OnInit {
         this.aircraftService.update(this.form.value)
             .subscribe({
                 next: () => {
-                    this.router.navigate(['../view'], { relativeTo: this.route });
+                    this.router.navigate(['/aircraft/view']);
                     this.confirmation.alert('Updated Successfully', 'Aircraft was updated successfully!', true);
                 },
                 error: error => {
