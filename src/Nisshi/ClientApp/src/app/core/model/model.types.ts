@@ -19,5 +19,6 @@ export interface Model
     IsMotorGlider: boolean;
     isHelicopter: boolean;
     categoryClass: CategoryClass;
+    idManufacturer: number;
     manufacturer: Manufacturer;
 }

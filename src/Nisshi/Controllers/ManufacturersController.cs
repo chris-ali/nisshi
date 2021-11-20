@@ -16,7 +16,13 @@ namespace Nisshi.Controllers
         {
         }
 
-        [HttpGet("{partialName}")]
+        [HttpGet]
+        public async Task<IEnumerable<Manufacturer>> GetAll(CancellationToken cancellationToken)
+        {
+            return await mediator.Send(new GetAll.Query(), cancellationToken);
+        }
+
+        [HttpGet("search/{partialName}")]
         public async Task<IEnumerable<Manufacturer>> GetManyByPartialName(string partialName, CancellationToken cancellationToken)
         {
             return await mediator.Send(new GetManyByPartialName.Query(partialName), cancellationToken);

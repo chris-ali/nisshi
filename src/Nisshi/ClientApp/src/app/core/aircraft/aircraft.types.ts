@@ -16,5 +16,6 @@ export interface Aircraft
     lastEngineHobbs?: number;
     registrationDue?: number;
     notes?: string;
+    idModel: number;
     model: Model;
 }
