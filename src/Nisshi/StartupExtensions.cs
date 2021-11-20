@@ -126,8 +126,8 @@ namespace Nisshi
         public static IEdmModel CreateEdmModel(this IServiceCollection services)
         {
             var builder = new ODataConventionModelBuilder();
-            builder.EntitySet<Aircraft>("Aircraft");
-            builder.EntitySet<LogbookEntry>("LogbookEntries");
+            builder.EntitySet<Aircraft>("aircraft");
+            builder.EntitySet<LogbookEntry>("logbookEntries");
 
             return builder.GetEdmModel();
         }

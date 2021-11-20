@@ -51,7 +51,7 @@ namespace Nisshi
                 {
                     opt.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                 })
-                .AddOData(opt => opt.AddRouteComponents("odata", services.CreateEdmModel()));
+                .AddOData(opt => opt.AddRouteComponents("api", services.CreateEdmModel()).Filter());
 
             services.AddLocalization(x => x.ResourcesPath = "Resources");
 

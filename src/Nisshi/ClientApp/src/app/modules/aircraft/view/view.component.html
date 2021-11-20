@@ -46,7 +46,7 @@
 
         <fuse-card
             *ngFor="let air of aircraft"
-            class="flex flex-col md:flex-row max-w-80 md:max-w-160 w-full {{air.instanceType == 1 ? 'filter-real' : 'filter-sim'}}"
+            class="flex flex-col md:flex-row max-w-80 md:max-w-160 w-full {{air.instanceType == 1 ? 'filter-real' : 'filter-simulation'}}"
             [flippable]="true"
             [face]="'front'"
             #flippableCard01="fuseCard"

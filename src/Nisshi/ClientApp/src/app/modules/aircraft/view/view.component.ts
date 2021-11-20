@@ -27,9 +27,9 @@ export class ViewComponent implements AfterViewInit, OnInit
 {
     @ViewChildren(FuseCardComponent, {read: ElementRef}) private aircraftCardList: QueryList<ElementRef>;
     aircraft: Aircraft[];
-    filters: string[] = ['all', 'sim', 'real'];
-    aircraftCount: any = {};
+    filters: string[] = ['all', 'simulation', 'real'];
     selectedFilter: string = 'all';
+    aircraftCount: any = {};
 
     /**
      * Constructor
@@ -50,7 +50,7 @@ export class ViewComponent implements AfterViewInit, OnInit
     {
         this.aircraftCardList.changes.subscribe(() => {
             this.calculateAircraftPerFilter();
-        })
+        });
     }
 
     ngOnInit(): void
@@ -63,14 +63,14 @@ export class ViewComponent implements AfterViewInit, OnInit
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * When a filter badge is clicked, refresh the list
+     * Filters cards when a filter badge is clicked
      *
      * @param change
      */
     onFilterChange(change: MatButtonToggleChange): void
     {
         this.selectedFilter = change.value;
-        this.aircraftService.getAll().subscribe(aircraft => this.aircraft = aircraft);
+        this.filterAircraftCards();
     }
 
     /**
@@ -133,10 +133,32 @@ export class ViewComponent implements AfterViewInit, OnInit
             else
             {
                 count = this.aircraftCount[filter] = this.aircraftCardList
-                    .filter(card => card.nativeElement.classList.contains('filter-' + filter)).length;
+                    .filter(card => card.nativeElement.classList.contains(`filter-${filter}`)).length;
             }
 
             this.aircraftCount[filter] = count;
+        });
+    }
+
+    /**
+     * Filters aircraft cards by setting hidden class,
+     *  depending on the filter selected
+     */
+    private filterAircraftCards(): void
+    {
+        this.aircraftCardList.forEach(card =>  {
+            var classList = card.nativeElement.classList;
+            if (this.selectedFilter == 'all')
+            {
+                classList.remove('hidden');
+            }
+            else
+            {
+                if (classList.contains(`filter-${this.selectedFilter}`))
+                    classList.remove('hidden');
+                else
+                    classList.add('hidden');
+            }
         });
     }
 }

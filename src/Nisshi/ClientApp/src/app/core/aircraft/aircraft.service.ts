@@ -29,19 +29,18 @@ export class AircraftService
      */
     getOne(id: number): Observable<Aircraft>
     {
-        return this._api.get(`${URL}${id}`).pipe(
-            tap((aircraft) => {
-
-            })
-        );
+        return this._api.get(`${URL}${id}`).pipe();
     }
 
     /**
      * Get the current logged in user's aircraft
+     *
+     * @param filter Optional - OData filter query; question mark not needed
      */
-    getAll(): Observable<Aircraft[]>
+    getAll(filter?: string): Observable<Aircraft[]>
     {
-        return this._api.get(`${URL}all`);
+        var filterQuery = filter ? `?${filter}`: "";
+        return this._api.get(`${URL}all${filterQuery}`);
     }
 
     /**
