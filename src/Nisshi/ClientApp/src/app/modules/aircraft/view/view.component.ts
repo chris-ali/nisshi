@@ -1,13 +1,18 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FuseCardComponent } from '@fuse/components/card';
 import { TranslocoService } from '@ngneat/transloco';
 import { AircraftService } from 'app/core/aircraft/aircraft.service';
 import { Aircraft } from 'app/core/aircraft/aircraft.types';
 import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
 
+/**
+ * Component that displays all aircraft available to the user,
+ * filterable by instance type and editable/deleteable
+ */
 @Component({
-    selector     : 'aircraft/view',
+    selector     : 'aircraft-view',
     templateUrl  : './view.component.html',
     styles         : [
         `
@@ -31,7 +36,9 @@ export class ViewComponent implements AfterViewInit, OnInit
      */
     constructor(private aircraftService: AircraftService,
                 public translateService: TranslocoService,
-                private confirmation: ConfirmationService)
+                private confirmation: ConfirmationService,
+                private router: Router,
+                private route: ActivatedRoute)
     {
     }
 
@@ -71,9 +78,9 @@ export class ViewComponent implements AfterViewInit, OnInit
      *
      * @param air
      */
-     editClick(air: Aircraft): void
+    editClick(air: Aircraft): void
     {
-
+        this.router.navigate([`../edit/${air.id}`], { relativeTo: this.route });
     }
 
     /**
@@ -81,7 +88,7 @@ export class ViewComponent implements AfterViewInit, OnInit
      *
      * @param air
      */
-     deleteClick(air: Aircraft): void
+    deleteClick(air: Aircraft): void
     {
         var message = "Are you sure you want to delete this aircraft? <span class=\"font-medium\">This action will remove all logbook entries associated with it and cannot be undone!</span>";
         const confirmDelete = this.confirmation.confirm("Delete Aircraft", message, "Delete", "Cancel");
@@ -89,12 +96,17 @@ export class ViewComponent implements AfterViewInit, OnInit
         confirmDelete.afterClosed().subscribe(result => {
             if (result == "confirmed")
             {
-                this.aircraftService.delete(air.id).subscribe(() => {
-                    this.aircraft = this.aircraft.filter(x => x.id != air.id);
-                    this.aircraftCardList.filter(x => x.nativeElement.id == air.id).pop()
-                        .nativeElement.classList.add("hidden");
+                this.aircraftService.delete(air.id).subscribe({
+                    next: () => {
+                        this.aircraft = this.aircraft.filter(x => x.id != air.id);
+                        this.aircraftCardList.filter(x => x.nativeElement.id == air.id).pop()
+                            .nativeElement.classList.add("hidden");
 
-                    this.confirmation.alert("Aircraft Deleted", "Aircraft was successfully deleted!", true);
+                        this.confirmation.alert("Aircraft Deleted", "Aircraft was successfully deleted!", true);
+                    },
+                    error: error => {
+                        this.confirmation.alert("An error was encountered!", error);
+                    }
                 });
             }
         });

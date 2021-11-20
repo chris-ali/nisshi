@@ -1,3 +1,5 @@
+import { Aircraft } from "../aircraft/aircraft.types";
+
 export interface LogbookEntry
 {
     id: number;
@@ -22,4 +24,5 @@ export interface LogbookEntry
     route: string;
     comments: string;
     idAircraft: number;
+    aircraft: Aircraft;
 }

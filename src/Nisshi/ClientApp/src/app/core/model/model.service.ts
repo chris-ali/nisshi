@@ -37,6 +37,20 @@ export class ModelService
     }
 
     /**
+     * Searches for models by manufacturer id
+     *
+     * @param id manufacturer id
+     */
+     getManyByManufacturer(id: number): Observable<Model[]>
+     {
+         return this._api.get(`${URL}manufacturer/${id}`).pipe(
+             tap((model) => {
+
+             })
+         );
+     }
+
+    /**
      * Searches for models by name
      *
      * @param partialName
