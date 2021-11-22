@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Nisshi.Infrastructure.Security;
 using Nisshi.Models;
 using Nisshi.Requests.LogbookEntries;
@@ -17,6 +18,7 @@ namespace Nisshi.Controllers
         {
         }
 
+        [EnableQuery(AllowedQueryOptions = AllowedQueryOptions.Filter, PageSize = 50)]
         [HttpGet("all")]
         public async Task<IEnumerable<LogbookEntry>> GetAll(CancellationToken cancellationToken)
         {

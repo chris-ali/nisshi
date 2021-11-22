@@ -5,8 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OData.Edm;
+using Microsoft.OData.ModelBuilder;
 using Microsoft.OpenApi.Models;
 using Nisshi.Infrastructure.Security;
+using Nisshi.Models;
 
 namespace Nisshi
 {
@@ -108,11 +111,25 @@ namespace Nisshi
                 sw.DocInclusionPredicate((version, apiDescription) => true);
 
                 // TODO Is this needed?
-                // sw.TagActionsBy(x => new List<string>() 
-                // { 
-                //     x.GroupName ?? throw new InvalidOperationException() 
+                // sw.TagActionsBy(x => new List<string>()
+                // {
+                //     x.GroupName ?? throw new InvalidOperationException()
                 // });
             });
+        }
+
+        /// <summary>
+        /// Creates an Entity Data Model for OData
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns>Entity Data Model</returns>
+        public static IEdmModel CreateEdmModel(this IServiceCollection services)
+        {
+            var builder = new ODataConventionModelBuilder();
+            builder.EntitySet<Aircraft>("aircraft");
+            builder.EntitySet<LogbookEntry>("logbookEntries");
+
+            return builder.GetEdmModel();
         }
     }
 }

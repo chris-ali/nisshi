@@ -16,6 +16,7 @@ Implements:
 - xUnit integration tests
 - i18n support for English, German and Japanese
 - [dotnet-format](https://github.com/dotnet/format) tool to enforce style
+- [OData](https://github.com/OData/AspNetCoreOData) for some queries
 
 ## Development Environment
 
