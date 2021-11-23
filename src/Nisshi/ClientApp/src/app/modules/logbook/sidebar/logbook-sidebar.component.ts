@@ -19,40 +19,6 @@ import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types
                 [mode]="'side'"
                 [name]="'logbook-sidebar-navigation'"
                 [opened]="true"></fuse-vertical-navigation>
-
-            <!-- Storage -->
-            <div class="mx-6 mt-2">
-                <div class="flex items-center">
-                    <mat-icon
-                        class="mr-2 icon-size-5"
-                        [svgIcon]="'heroicons_solid:database'"></mat-icon>
-                    <div class="text-lg font-semibold">Storage</div>
-                </div>
-                <div class="flex flex-col flex-auto mt-4">
-                    <span class="text-sm leading-none mb-3">19.9 GB of 100 GB used</span>
-                    <mat-progress-bar
-                        [mode]="'determinate'"
-                        [color]="'primary'"
-                        [value]="19.9"></mat-progress-bar>
-                </div>
-            </div>
-
-            <!-- Users -->
-            <div class="mx-6 mt-10">
-                <div class="flex items-center">
-                    <mat-icon
-                        class="mr-2 icon-size-5"
-                        [svgIcon]="'heroicons_solid:users'"></mat-icon>
-                    <div class="text-lg font-semibold">Users</div>
-                </div>
-                <div class="flex flex-col flex-auto mt-4">
-                    <span class="text-sm leading-none mb-3">8 of 20 users used</span>
-                    <mat-progress-bar
-                        [mode]="'determinate'"
-                        [color]="'accent'"
-                        [value]="40"></mat-progress-bar>
-                </div>
-            </div>
         </div>
     `,
     styles       : [
@@ -144,50 +110,6 @@ export class LogbookSidebarComponent
                         title: 'Assigned to my team',
                         type : 'basic',
                         icon : 'heroicons_outline:users'
-                    }
-                ]
-            },
-            {
-                title   : 'Settings',
-                type    : 'group',
-                children: [
-                    {
-                        title   : 'General',
-                        type    : 'collapsable',
-                        icon    : 'heroicons_outline:cog',
-                        children: [
-                            {
-                                title: 'Tasks',
-                                type : 'basic'
-                            },
-                            {
-                                title: 'Users',
-                                type : 'basic'
-                            },
-                            {
-                                title: 'Teams',
-                                type : 'basic'
-                            }
-                        ]
-                    },
-                    {
-                        title   : 'Account',
-                        type    : 'collapsable',
-                        icon    : 'heroicons_outline:user-circle',
-                        children: [
-                            {
-                                title: 'Personal',
-                                type : 'basic'
-                            },
-                            {
-                                title: 'Payment',
-                                type : 'basic'
-                            },
-                            {
-                                title: 'Security',
-                                type : 'basic'
-                            }
-                        ]
                     }
                 ]
             },

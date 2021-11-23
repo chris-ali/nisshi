@@ -41,6 +41,6 @@ export const routes: Route[] = [
         SharedModule
     ]
 })
-export class ViewModule
+export class AircraftViewModule
 {
 }
