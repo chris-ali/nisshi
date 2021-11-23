@@ -13,7 +13,7 @@ import { ConfirmationService } from 'app/core/confirmation/confirmation.service'
  */
 @Component({
     selector     : 'aircraft-view',
-    templateUrl  : './view.component.html',
+    templateUrl  : './aircraft-view.component.html',
     styles         : [
         `
             fuse-card {

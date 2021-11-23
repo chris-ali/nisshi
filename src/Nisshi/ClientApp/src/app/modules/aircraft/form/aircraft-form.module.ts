@@ -1,46 +1,50 @@
 import { NgModule } from '@angular/core';
-import { Route, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { FuseCardModule } from '@fuse/components/card';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 import { SharedModule } from 'app/shared/shared.module';
-import { ViewComponent } from 'app/modules/aircraft/view/view.component';
+import { AircraftFormComponent } from 'app/modules/aircraft/form/aircraft-form.component';
+import { Route, RouterModule } from '@angular/router';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 export const routes: Route[] = [
     {
-        path     : '',
-        component: ViewComponent
+        path     : 'add',
+        component: AircraftFormComponent
+    },
+    {
+        path     : 'edit/:id',
+        component: AircraftFormComponent
     }
 ];
 
 @NgModule({
     declarations: [
-        ViewComponent
+        AircraftFormComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
         MatButtonModule,
-        MatButtonToggleModule,
         MatCheckboxModule,
         MatDividerModule,
         MatFormFieldModule,
         MatIconModule,
         MatInputModule,
         MatMenuModule,
-        MatProgressBarModule,
-        MatTooltipModule,
-        FuseCardModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
         SharedModule
     ]
 })
-export class ViewModule
+export class FormModule
 {
 }

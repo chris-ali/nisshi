@@ -34,6 +34,7 @@
         "@fullcalendar/rrule": "4.4.2",
         "@fullcalendar/timegrid": "4.4.2",
         "@ngneat/transloco": "2.22.0",
+        "@swimlane/ngx-datatable": "^20.0.0",
         "apexcharts": "3.28.1",
         "crypto-js": "3.3.0",
         "highlight.js": "11.2.0",

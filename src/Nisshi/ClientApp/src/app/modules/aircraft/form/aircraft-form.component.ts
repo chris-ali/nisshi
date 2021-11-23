@@ -13,9 +13,9 @@ import { Model } from 'app/core/model/model.types';
  */
 @Component({
     selector: 'aircraft-form',
-    templateUrl: './form.component.html'
+    templateUrl: './aircraft-form.component.html'
 })
-export class FormComponent implements OnInit {
+export class AircraftFormComponent implements OnInit {
 
     id: number;
     isAddMode: boolean;
