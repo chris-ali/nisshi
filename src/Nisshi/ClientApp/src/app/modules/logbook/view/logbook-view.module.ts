@@ -12,8 +12,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from 'app/shared/shared.module';
-import { ViewComponent as LogbookViewComponent } from 'app/modules/logbook/view/logbook-view.component';
+import { LogbookViewComponent as LogbookViewComponent } from 'app/modules/logbook/view/logbook-view.component';
 import { LogbookSidebarModule } from 'app/modules/logbook/sidebar/logbook-sidebar.module';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 export const routes: Route[] = [
     {
@@ -40,7 +41,8 @@ export const routes: Route[] = [
         MatProgressBarModule,
         MatTooltipModule,
         SharedModule,
-        LogbookSidebarModule
+        LogbookSidebarModule,
+        NgxDatatableModule
     ]
 })
 export class LogbookViewModule
