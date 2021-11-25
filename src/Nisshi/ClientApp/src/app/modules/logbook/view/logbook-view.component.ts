@@ -6,14 +6,15 @@ import { LogbookEntry } from 'app/core/logbookentry/logbookentry.types';
 @Component({
   selector: 'logbook-view',
   templateUrl: './logbook-view.component.html',
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./logbook-view.scss']
 })
 export class LogbookViewComponent implements OnInit
 {
     @ViewChild('logbookTable') table: any;
 
     drawerMode: 'over' | 'side' = 'side';
-    drawerOpened: boolean = true;
+    drawerOpened: boolean = false;
 
     ColumnMode = ColumnMode;
 

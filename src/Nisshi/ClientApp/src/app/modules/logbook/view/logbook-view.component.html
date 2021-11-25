@@ -42,75 +42,124 @@
                 class="flex-auto p-6 sm:p-10 overflow-y-auto"
                 cdkScrollable>
 
-                <!-- CONTENT GOES HERE -->
-                <div class="h-400 min-h-400 max-h-400 border-2 border-dashed border-gray-300 rounded-2xl">
+                <ngx-datatable
+                    #logbookTable
+                    class="material fullscreen"
+                    [rows]="logbookEntries"
+                    [columnMode]="ColumnMode.force"
+                    [headerHeight]="50"
+                    [footerHeight]="50"
+                    rowHeight="auto"
+                    [limit]="10">
 
-                    <div>
-                        <ngx-datatable
-                            #logbookTable
-                            class="material expandable"
-                            [rows]="logbookEntries"
-                            [columnMode]="ColumnMode.force"
-                            [headerHeight]="50"
-                            [footerHeight]="50"
-                            rowHeight="auto"
-                            [limit]="10"
-                        >
-                            <!-- Column Templates -->
-                            <ngx-datatable-column
-                                [width]="50"
-                                [resizeable]="false"
-                                [sortable]="false"
-                                [draggable]="false"
-                                [canAutoResize]="false"
-                            >
-                                <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-                                <a
-                                    href="javascript:void(0)"
-                                    [class.datatable-icon-right]="!expanded"
-                                    [class.datatable-icon-down]="expanded"
-                                    title="Expand/Collapse Row"
-                                    (click)="toggleExpandRow(row)"
-                                >
-                                </a>
-                                </ng-template>
-                            </ngx-datatable-column>
-                            <ngx-datatable-column name="Index" [width]="80">
-                                <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
-                                <strong>{{ rowIndex }}</strong>
-                                </ng-template>
-                            </ngx-datatable-column>
-                            <ngx-datatable-column name="Expanded" [width]="80">
-                                <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-                                <strong>{{ expanded === 1 }}</strong>
-                                </ng-template>
-                            </ngx-datatable-column>
-                            <ngx-datatable-column name="Name" [width]="200">
-                                <ng-template let-value="value" ngx-datatable-cell-template>
-                                <strong>{{ value }}</strong>
-                                </ng-template>
-                            </ngx-datatable-column>
-                            <ngx-datatable-column name="Gender" [width]="300">
-                                <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-                                <i [innerHTML]="row['name']"></i> and <i>{{ value }}</i>
-                                </ng-template>
-                            </ngx-datatable-column>
-                            <ngx-datatable-column name="Age"></ngx-datatable-column>
+                    <!-- Column Templates -->
+                    <ngx-datatable-column
+                        [width]="50"
+                        [resizeable]="false"
+                        [sortable]="false"
+                        [draggable]="false"
+                        [canAutoResize]="false">
+                        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+                        <a
+                            href="javascript:void(0)"
+                            [class.datatable-icon-right]="!expanded"
+                            [class.datatable-icon-down]="expanded"
+                            title="Expand/Collapse Row"
+                            (click)="toggleExpandRow(row)">
+                        </a>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Date of Flight">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.flightDate }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Instrument Approaches">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.numInstrumentApproaches }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Landings">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.numLandings }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Night Landings">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.numNightLandings }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Full Stop Landings">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.numFullStopLandings }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Multiengine">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.multiEngine }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Simulated Instrument">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.simulatedInstrument }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Actual Instrument">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.IMC }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Dual Received">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.dualReceived }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Dual Given">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.dualGiven }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Pilot in Command">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.PIC }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Second in Command">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.SIC }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Ground Simulator">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.groundSim }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Total Time">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.totalFlightTime }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Route">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.route }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Comments">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.comments }}
+                        </ng-template>
+                    </ngx-datatable-column>
 
-                            <!-- Row Detail Template -->
-                            <ngx-datatable-row-detail [rowHeight]="100" #myDetailRow>
-                                <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-                                <div style="padding-left:35px;">
-                                    <div><strong>Address</strong></div>
-                                    <div>{{ row.address.city }}, {{ row.address.state }}</div>
-                                </div>
-                                </ng-template>
-                            </ngx-datatable-row-detail>
+                    <!-- Row Detail Template -->
+                    <ngx-datatable-row-detail [rowHeight]="50" #myDetailRow>
+                        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+                        <div style="padding-left:35px;">
+                            {{ row.aircraft.tailNumber }}, {{ row.aircraft.model.manufacturer.manufacturerName }} {{ row.aircraft.model.modelName }}
+                        </div>
+                        </ng-template>
+                    </ngx-datatable-row-detail>
 
-                        </ngx-datatable>
-                      </div>
-
-                </div>
+                </ngx-datatable>
 
             </div>
 

@@ -10,7 +10,7 @@ export interface LogbookEntry
     numFullStopLandings: number;
     crossCountry: number;
     multiEngine: number;
-    Night: number;
+    night: number;
     IMC: number;
     simulatedInstrument: number;
     dualReceived: number;

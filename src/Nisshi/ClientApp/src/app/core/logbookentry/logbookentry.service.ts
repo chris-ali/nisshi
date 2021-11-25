@@ -41,7 +41,7 @@ export class LogbookEntryService
      */
     getAll(): Observable<LogbookEntry[]>
     {
-        return this._api.get(`${URL}user`).pipe(
+        return this._api.get(`${URL}all`).pipe(
             tap((logbookentry) => {
 
             })

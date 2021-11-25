@@ -33,7 +33,8 @@ namespace Nisshi.Requests.LogbookEntries
 
                 var data = await context.LogbookEntries
                     .Include(x => x.Aircraft)
-                        .ThenInclude(x => x.Model)
+                    .Include(x => x.Aircraft.Model)
+                    .Include(x => x.Aircraft.Model.Manufacturer)
                     .Include(x => x.Owner)
                     .Where(x => x.Owner.Username.ToLower(CultureInfo.InvariantCulture) ==
                         username.ToLower(CultureInfo.InvariantCulture))
