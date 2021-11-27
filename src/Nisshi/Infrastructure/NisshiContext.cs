@@ -214,17 +214,17 @@ namespace Nisshi.Infrastructure
 
             var models = new Model[]
             {
-                new Model { Id = 1, Family = "172", ModelName = "172N", IdManufacturer = manufacturers[0].Id, IdCategoryClass = categoryClasses[0].Id },
-                new Model { Id = 2, Family = "182", ModelName = "182Q", IdManufacturer = manufacturers[0].Id, IdCategoryClass = categoryClasses[0].Id, IsSimOnly = true },
-                new Model { Id = 3, Family = "182", ModelName = "182S", IdManufacturer = manufacturers[0].Id, IdCategoryClass = categoryClasses[0].Id },
-                new Model { Id = 4, Family = "PA-28", ModelName = "PA-28-160", IdManufacturer = manufacturers[1].Id, IdCategoryClass = categoryClasses[0].Id },
-                new Model { Id = 5, Family = "PA-28", ModelName = "PA-28-200", IdManufacturer = manufacturers[1].Id, IdCategoryClass = categoryClasses[1].Id },
-                new Model { Id = 6, Family = "PA-44", ModelName = "PA-44-200", IdManufacturer = manufacturers[1].Id, IdCategoryClass = categoryClasses[1].Id },
-                new Model { Id = 7, Family = "Bonanza", ModelName = "A36", IdManufacturer = manufacturers[2].Id, IdCategoryClass = categoryClasses[0].Id },
-                new Model { Id = 8, Family = "Bonanza", ModelName = "V35", IdManufacturer = manufacturers[2].Id, IdCategoryClass = categoryClasses[0].Id, IsSimOnly = true },
-                new Model { Id = 9, Family = "Baron", ModelName = "B58", IdManufacturer = manufacturers[2].Id, IdCategoryClass = categoryClasses[0].Id },
-                new Model { Id = 10, Family = "M20", ModelName = "M20J", IdManufacturer = manufacturers[3].Id, IdCategoryClass = categoryClasses[0].Id },
-                new Model { Id = 11, Family = "M20", ModelName = "M20F", IdManufacturer = manufacturers[3].Id, IdCategoryClass = categoryClasses[0].Id },
+                new Model { Id = 1, Family = "172", TypeName = "C172", ModelName = "172N", IdManufacturer = manufacturers[0].Id, IdCategoryClass = categoryClasses[0].Id },
+                new Model { Id = 2, Family = "182", TypeName = "C182", ModelName = "182Q", IdManufacturer = manufacturers[0].Id, IdCategoryClass = categoryClasses[0].Id, IsSimOnly = true },
+                new Model { Id = 3, Family = "182", TypeName = "C182", ModelName = "182S", IdManufacturer = manufacturers[0].Id, IdCategoryClass = categoryClasses[0].Id },
+                new Model { Id = 4, Family = "PA-28", TypeName = "PA28", ModelName = "PA-28-160", IdManufacturer = manufacturers[1].Id, IdCategoryClass = categoryClasses[0].Id },
+                new Model { Id = 5, Family = "PA-28", TypeName = "PA28", ModelName = "PA-28-200", IdManufacturer = manufacturers[1].Id, IdCategoryClass = categoryClasses[1].Id },
+                new Model { Id = 6, Family = "PA-44", TypeName = "PA44", ModelName = "PA-44-200", IdManufacturer = manufacturers[1].Id, IdCategoryClass = categoryClasses[1].Id },
+                new Model { Id = 7, Family = "Bonanza", TypeName = "BE36", ModelName = "A36", IdManufacturer = manufacturers[2].Id, IdCategoryClass = categoryClasses[0].Id },
+                new Model { Id = 8, Family = "Bonanza", TypeName = "BE35", ModelName = "V35", IdManufacturer = manufacturers[2].Id, IdCategoryClass = categoryClasses[0].Id, IsSimOnly = true },
+                new Model { Id = 9, Family = "Baron", TypeName = "BE58", ModelName = "B58", IdManufacturer = manufacturers[2].Id, IdCategoryClass = categoryClasses[0].Id },
+                new Model { Id = 10, Family = "M20", TypeName = "M20", ModelName = "M20J", IdManufacturer = manufacturers[3].Id, IdCategoryClass = categoryClasses[0].Id },
+                new Model { Id = 11, Family = "M20", TypeName = "M20", ModelName = "M20F", IdManufacturer = manufacturers[3].Id, IdCategoryClass = categoryClasses[0].Id },
             };
             modelBuilder.Entity<Model>().HasData(models);
 
