@@ -46,11 +46,17 @@
                     #logbookTable
                     class="material fullscreen"
                     [rows]="logbookEntries"
-                    [columnMode]="ColumnMode.force"
+                    [columnMode]="ColumnMode.standard"
                     [headerHeight]="50"
                     [footerHeight]="50"
                     rowHeight="auto"
-                    [limit]="10">
+                    [limit]="10"
+                    [scrollbarH]="true"
+                    [summaryRow]="enableSummary"
+                    summaryHeight="55"
+                    [summaryPosition]="summaryPosition"
+                    (select)="onSelect($event)"
+                    [selectionType]="SelectionType.multiClick">
 
                     <!-- Column Templates -->
                     <ngx-datatable-column
@@ -71,82 +77,82 @@
                     </ngx-datatable-column>
                     <ngx-datatable-column name="Date of Flight">
                         <ng-template let-row="row" ngx-datatable-cell-template>
-                            {{ row.flightDate }}
+                            {{ row.flightDate | date: 'shortDate' : '' : translateService.getActiveLang() }}
                         </ng-template>
                     </ngx-datatable-column>
-                    <ngx-datatable-column name="Instrument Approaches">
-                        <ng-template let-row="row" ngx-datatable-cell-template>
-                            {{ row.numInstrumentApproaches }}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="Landings">
-                        <ng-template let-row="row" ngx-datatable-cell-template>
-                            {{ row.numLandings }}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="Night Landings">
-                        <ng-template let-row="row" ngx-datatable-cell-template>
-                            {{ row.numNightLandings }}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="Full Stop Landings">
-                        <ng-template let-row="row" ngx-datatable-cell-template>
-                            {{ row.numFullStopLandings }}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="Multiengine">
-                        <ng-template let-row="row" ngx-datatable-cell-template>
-                            {{ row.multiEngine }}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="Simulated Instrument">
-                        <ng-template let-row="row" ngx-datatable-cell-template>
-                            {{ row.simulatedInstrument }}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="Actual Instrument">
-                        <ng-template let-row="row" ngx-datatable-cell-template>
-                            {{ row.IMC }}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="Dual Received">
-                        <ng-template let-row="row" ngx-datatable-cell-template>
-                            {{ row.dualReceived }}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="Dual Given">
-                        <ng-template let-row="row" ngx-datatable-cell-template>
-                            {{ row.dualGiven }}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="Pilot in Command">
-                        <ng-template let-row="row" ngx-datatable-cell-template>
-                            {{ row.PIC }}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="Second in Command">
-                        <ng-template let-row="row" ngx-datatable-cell-template>
-                            {{ row.SIC }}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="Ground Simulator">
-                        <ng-template let-row="row" ngx-datatable-cell-template>
-                            {{ row.groundSim }}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="Total Time">
-                        <ng-template let-row="row" ngx-datatable-cell-template>
-                            {{ row.totalFlightTime }}
-                        </ng-template>
-                    </ngx-datatable-column>
-                    <ngx-datatable-column name="Route">
+                    <ngx-datatable-column name="Route" [sortable]="false">
                         <ng-template let-row="row" ngx-datatable-cell-template>
                             {{ row.route }}
                         </ng-template>
                     </ngx-datatable-column>
-                    <ngx-datatable-column name="Comments">
+                    <ngx-datatable-column name="Comments" [sortable]="false">
                         <ng-template let-row="row" ngx-datatable-cell-template>
                             {{ row.comments }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Instrument Approaches" [summaryFunc]="sumColumn">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.numInstrumentApproaches ?? 0 }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Landings" [summaryFunc]="sumColumn">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.numLandings ?? 0 }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Night Landings" [summaryFunc]="sumColumn">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.numNightLandings ?? 0 }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Full Stop Landings" [summaryFunc]="sumColumn">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.numFullStopLandings ?? 0 }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Pilot in Command" [summaryFunc]="sumColumn">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.PIC ?? 0 }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Second in Command" [summaryFunc]="sumColumn">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.SIC ?? 0 }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Multiengine" [summaryFunc]="sumColumn">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.multiEngine ?? 0 }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Simulated Instrument" [summaryFunc]="sumColumn">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.simulatedInstrument ?? 0 }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Actual Instrument" [summaryFunc]="sumColumn">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.IMC ?? 0 }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Dual Received" [summaryFunc]="sumColumn">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.dualReceived ?? 0 }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Dual Given" [summaryFunc]="sumColumn">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.dualGiven ?? 0 }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Ground Simulator" [summaryFunc]="sumColumn">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.groundSim ?? 0 }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column name="Total Time" [summaryFunc]="sumColumn">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.totalFlightTime ?? 0 }}
                         </ng-template>
                     </ngx-datatable-column>
 
