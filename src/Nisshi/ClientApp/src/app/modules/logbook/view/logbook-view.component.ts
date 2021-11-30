@@ -5,6 +5,7 @@ import { ColumnMode } from '@swimlane/ngx-datatable';
 import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
 import { LogbookEntryService } from 'app/core/logbookentry/logbookentry.service';
 import { LogbookEntry } from 'app/core/logbookentry/logbookentry.types';
+import { UserService } from 'app/core/user/user.service';
 
 @Component({
   selector: 'logbook-view',
@@ -23,11 +24,14 @@ export class LogbookViewComponent implements OnInit
     drawerMode: 'over' | 'side' = 'side';
     drawerOpened: boolean = false;
 
+    preferences: any;
+
     /**
      * Constructor
      */
     constructor(private logbookEntryService: LogbookEntryService,
                 public translateService: TranslocoService,
+                private userService: UserService,
                 private confirmation: ConfirmationService,
                 private router: Router,
                 private route: ActivatedRoute)
@@ -42,6 +46,10 @@ export class LogbookViewComponent implements OnInit
         this.logbookEntryService.getAll().subscribe(entries => {
             this.logbookEntries = entries;
         });
+
+        this.userService.get().subscribe(user => {
+            this.preferences = user.preferences;
+        })
     }
 
     // -----------------------------------------------------------------------------------------------------
