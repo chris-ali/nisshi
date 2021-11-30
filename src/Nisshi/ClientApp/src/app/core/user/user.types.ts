@@ -1,3 +1,5 @@
+import { Preferences } from "./preferences.types";
+
 export interface User
 {
     username: string;
@@ -12,5 +14,5 @@ export interface User
     cfiExpiration?: Date;
     license?: string;
     certificateNumber?: string;
-    preferences: string;
+    preferences: Preferences;
 }

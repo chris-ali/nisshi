@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
+import { Preferences } from 'app/core/user/preferences.types';
 import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user.types';
 
 @Component({
     selector     : 'logbook-sidebar',
@@ -20,97 +22,97 @@ import { UserService } from 'app/core/user/user.service';
                         <div class="flex flex-col">
                             <mat-checkbox
                                 class="mb-2"
-                                [formControlName]="'logbook.showTailNumber'"
+                                [formControlName]="'showTailNumber'"
                                 [color]="'primary'">
                                 Tail Number
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
-                                [formControlName]="'logbook.showTypeName'"
+                                [formControlName]="'showTypeName'"
                                 [color]="'primary'">
                                 Type
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
-                                [formControlName]="'logbook.showApproaches'"
+                                [formControlName]="'showApproaches'"
                                 [color]="'primary'">
                                 Approaches
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
-                                [formControlName]="'logbook.showLandings'"
+                                [formControlName]="'showLandings'"
                                 [color]="'primary'">
                                 Landings
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
-                                [formControlName]="'logbook.showNightLandings'"
+                                [formControlName]="'showNightLandings'"
                                 [color]="'primary'">
                                 Night Landings
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
-                                [formControlName]="'logbook.showFullStopLandings'"
+                                [formControlName]="'showFullStopLandings'"
                                 [color]="'primary'">
                                 Full Stop Landings
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
-                                [formControlName]="'logbook.showPIC'"
+                                [formControlName]="'showPIC'"
                                 [color]="'primary'">
                                 PIC
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
-                                [formControlName]="'logbook.showSIC'"
+                                [formControlName]="'showSIC'"
                                 [color]="'primary'">
                                 SIC
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
-                                [formControlName]="'logbook.showMultiEngine'"
+                                [formControlName]="'showMultiEngine'"
                                 [color]="'primary'">
                                 Multi
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
-                                [formControlName]="'logbook.showSimulatedInstrument'"
+                                [formControlName]="'showSimulatedInstrument'"
                                 [color]="'primary'">
                                 Simulated IMC
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
-                                [formControlName]="'logbook.showIMC'"
+                                [formControlName]="'showIMC'"
                                 [color]="'primary'">
                                 Actual IMC
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
-                                [formControlName]="'logbook.showDualReceived'"
+                                [formControlName]="'showDualReceived'"
                                 [color]="'primary'">
                                 Dual Received
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
-                                [formControlName]="'logbook.showDualGiven'"
+                                [formControlName]="'showDualGiven'"
                                 [color]="'primary'">
                                 Dual Given
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
-                                [formControlName]="'logbook.showGroundSim'"
+                                [formControlName]="'showGroundSim'"
                                 [color]="'primary'">
                                 Ground Sim
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
-                                [formControlName]="'logbook.showTotalTime'"
+                                [formControlName]="'showTotalTime'"
                                 [color]="'primary'">
                                 Total Time
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
-                                [formControlName]="'logbook.showComments'"
+                                [formControlName]="'showComments'"
                                 [color]="'primary'">
                                 Comments
                             </mat-checkbox>
@@ -150,6 +152,7 @@ export class LogbookSidebarComponent implements OnInit
 {
     menuData: FuseNavigationItem[];
     form: FormGroup;
+    user: User;
 
     /**
      * Constructor
@@ -192,46 +195,6 @@ export class LogbookSidebarComponent implements OnInit
                 ]
             },
             {
-                title   : 'Tasks',
-                type    : 'group',
-                children: [
-                    {
-                        title: 'All tasks',
-                        type : 'basic',
-                        icon : 'heroicons_outline:clipboard-list',
-                        badge: {
-                            title  : '49',
-                            classes: 'px-2 bg-primary text-on-primary rounded-full'
-                        }
-                    },
-                    {
-                        title: 'Ongoing tasks',
-                        type : 'basic',
-                        icon : 'heroicons_outline:clipboard-copy'
-                    },
-                    {
-                        title: 'Completed tasks',
-                        type : 'basic',
-                        icon : 'heroicons_outline:clipboard-check'
-                    },
-                    {
-                        title: 'Abandoned tasks',
-                        type : 'basic',
-                        icon : 'heroicons_outline:clipboard'
-                    },
-                    {
-                        title: 'Assigned to me',
-                        type : 'basic',
-                        icon : 'heroicons_outline:user'
-                    },
-                    {
-                        title: 'Assigned to my team',
-                        type : 'basic',
-                        icon : 'heroicons_outline:users'
-                    }
-                ]
-            },
-            {
                 type: 'divider'
             }
         ];
@@ -240,16 +203,33 @@ export class LogbookSidebarComponent implements OnInit
     ngOnInit(): void
     {
         this.formBuilder.group({
-
+            showTailNumber: [true],
+            showTypeName: [true],
+            showApproaches: [true],
+            showLandings: [true],
+            showNightLandings: [true],
+            showFullStopLandings: [true],
+            showPIC: [true],
+            showSIC: [true],
+            showMultiEngine: [true],
+            showSimulatedInstrument: [true],
+            showIMC: [true],
+            showDualReceived: [true],
+            showDualGiven: [true],
+            showGroundSim: [true],
+            showTotalTime: [true],
+            showComments: [true]
         });
 
         this.userService.get().subscribe(user => {
-            //this.form.patchValue(user.preferences);
-        })
+            this.user = user;
+            this.form.patchValue(user.preferences.logbook);
+        });
     }
 
     onPreferencesChanged(): void
     {
-
+        this.user.preferences.logbook = this.form.value;
+        this.userService.update(this.user)
     }
 }
