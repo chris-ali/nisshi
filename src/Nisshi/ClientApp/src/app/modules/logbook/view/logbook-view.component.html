@@ -10,8 +10,10 @@
             [opened]="drawerOpened"
             [position]="'end'"
             #matDrawer>
-            <!-- Demo sidebar -->
-            <logbook-sidebar></logbook-sidebar>
+
+            <logbook-sidebar
+                (preferencesChanged)="onPreferencesChanged($event)"
+                [logbookOptions]="logbookOptions"></logbook-sidebar>
         </mat-drawer>
 
         <!-- Drawer content -->

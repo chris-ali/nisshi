@@ -5,6 +5,7 @@ import { ColumnMode } from '@swimlane/ngx-datatable';
 import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
 import { LogbookEntryService } from 'app/core/logbookentry/logbookentry.service';
 import { LogbookEntry } from 'app/core/logbookentry/logbookentry.types';
+import { LogbookOptions } from 'app/core/user/preferences.types';
 import { UserService } from 'app/core/user/user.service';
 
 @Component({
@@ -24,7 +25,7 @@ export class LogbookViewComponent implements OnInit
     drawerMode: 'over' | 'side' = 'side';
     drawerOpened: boolean = false;
 
-    preferences: any;
+    logbookOptions: LogbookOptions;
 
     /**
      * Constructor
@@ -48,8 +49,8 @@ export class LogbookViewComponent implements OnInit
         });
 
         this.userService.get().subscribe(user => {
-            this.preferences = user.preferences;
-        })
+            this.logbookOptions = user.preferences.logbookOptions;
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -122,5 +123,15 @@ export class LogbookViewComponent implements OnInit
                 });
             }
         });
+    }
+
+    /**
+     * When the sidebar updates logbook options, update them here as well
+     *
+     * @param options
+     */
+    onPreferencesChanged(options: LogbookOptions): void
+    {
+        this.logbookOptions = options;
     }
 }

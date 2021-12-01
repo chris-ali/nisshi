@@ -1,9 +1,7 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
-import { Preferences } from 'app/core/user/preferences.types';
-import { UserService } from 'app/core/user/user.service';
-import { User } from 'app/core/user/user.types';
+import { LogbookOptions } from 'app/core/user/preferences.types';
 
 @Component({
     selector     : 'logbook-sidebar',
@@ -15,7 +13,7 @@ import { User } from 'app/core/user/user.types';
             <div class="flex-auto p-6 sm:p-10">
                 <form
                     [formGroup]="form"
-                    (ngSubmit)="onPreferencesChanged()"
+                    (ngSubmit)="onSubmit()"
                     class="flex flex-col mt-4 px-8 pt-10 bg-card shadow rounded overflow-hidden">
                     <div class="flex flex-col gt-sm:flex-row">
                         <span class="font-semibold mb-2">Show/Hide Columns</span>
@@ -119,7 +117,7 @@ import { User } from 'app/core/user/user.types';
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-end border-t -mx-8 mt-8 px-8 py-5 bg-gray-50 dark:bg-gray-700">
+                    <div class="flex items-center justify-end -mx-8 mt-8 px-8 py-5">
                         <button
                             class="px-6 ml-3"
                             mat-flat-button
@@ -150,16 +148,36 @@ import { User } from 'app/core/user/user.types';
 })
 export class LogbookSidebarComponent implements OnInit
 {
+    @Input() logbookOptions: LogbookOptions;
+    @Output() preferencesChanged = new EventEmitter();
+
     menuData: FuseNavigationItem[];
     form: FormGroup;
-    user: User;
 
     /**
      * Constructor
      */
-    constructor(private userService: UserService,
-                private formBuilder: FormBuilder)
+    constructor(private formBuilder: FormBuilder)
     {
+        this.form = this.formBuilder.group({
+            showTailNumber: [true],
+            showTypeName: [true],
+            showApproaches: [true],
+            showLandings: [true],
+            showNightLandings: [true],
+            showFullStopLandings: [true],
+            showPIC: [true],
+            showSIC: [true],
+            showMultiEngine: [true],
+            showSimulatedInstrument: [true],
+            showIMC: [true],
+            showDualReceived: [true],
+            showDualGiven: [true],
+            showGroundSim: [true],
+            showTotalTime: [true],
+            showComments: [true]
+        });
+
         this.menuData = [
             {
                 title   : 'Actions',
@@ -200,36 +218,20 @@ export class LogbookSidebarComponent implements OnInit
         ];
     }
 
+    // -----------------------------------------------------------------------------------------------------
+    // @ Lifecycle hooks
+    // -----------------------------------------------------------------------------------------------------
+
     ngOnInit(): void
     {
-        this.formBuilder.group({
-            showTailNumber: [true],
-            showTypeName: [true],
-            showApproaches: [true],
-            showLandings: [true],
-            showNightLandings: [true],
-            showFullStopLandings: [true],
-            showPIC: [true],
-            showSIC: [true],
-            showMultiEngine: [true],
-            showSimulatedInstrument: [true],
-            showIMC: [true],
-            showDualReceived: [true],
-            showDualGiven: [true],
-            showGroundSim: [true],
-            showTotalTime: [true],
-            showComments: [true]
-        });
-
-        this.userService.get().subscribe(user => {
-            this.user = user;
-            this.form.patchValue(user.preferences.logbook);
-        });
     }
 
-    onPreferencesChanged(): void
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    onSubmit(): void
     {
-        this.user.preferences.logbook = this.form.value;
-        this.userService.update(this.user)
+        this.preferencesChanged.emit(this.form.value);
     }
 }
