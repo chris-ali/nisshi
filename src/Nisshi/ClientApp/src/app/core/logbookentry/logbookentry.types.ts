@@ -10,13 +10,13 @@ export interface LogbookEntry
     numFullStopLandings: number;
     crossCountry: number;
     multiEngine: number;
-    Night: number;
-    IMC: number;
+    night: number;
+    imc: number;
     simulatedInstrument: number;
     dualReceived: number;
     dualGiven: number;
-    PIC: number;
-    SIC: number;
+    pic: number;
+    sic: number;
     groundSim: number;
     hobbsStart: number;
     hobbsEnd: number;

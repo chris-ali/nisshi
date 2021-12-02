@@ -1,0 +1,240 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <mat-drawer-container class="flex-auto h-full">
+
+        <!-- Drawer -->
+        <mat-drawer
+            class="w-72 dark:bg-gray-900"
+            [autoFocus]="false"
+            [mode]="drawerMode"
+            [opened]="drawerOpened"
+            [position]="'end'"
+            #matDrawer>
+
+            <logbook-sidebar
+                (preferencesChanged)="onPreferencesChanged($event)"
+                [logbookOptions]="preferences.logbookOptions"></logbook-sidebar>
+        </mat-drawer>
+
+        <!-- Drawer content -->
+        <mat-drawer-content class="flex flex-col overflow-hidden">
+
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+                <div class="flex-1 min-w-0">
+                    <!-- Title -->
+                    <div class="mt-2">
+                        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                            Logbook
+                        </h2>
+                    </div>
+                </div>
+                <!-- Actions -->
+                <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                    <button
+                        mat-icon-button
+                        (click)="matDrawer.toggle()">
+                        <mat-icon [svgIcon]="'heroicons_outline:menu'"></mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main -->
+            <div
+                class="flex-auto p-6 sm:p-10 overflow-y-auto"
+                cdkScrollable>
+
+                <ngx-datatable
+                    #logbookTable
+                    class="material fullscreen {{this.preferences.theme == 'dark' ? 'dark' : ''}}"
+                    [rows]="logbookEntries"
+                    [columnMode]="ColumnMode.standard"
+                    [headerHeight]="50"
+                    [footerHeight]="50"
+                    rowHeight="auto"
+                    [limit]="10"
+                    [scrollbarH]="true"
+                    [summaryRow]="enableSummary"
+                    summaryHeight="55"
+                    [summaryPosition]="summaryPosition"
+                    (activate)="rowClick($event)">
+
+                    <!-- Column Templates -->
+                    <ngx-datatable-column
+                        [width]="50"
+                        [resizeable]="false"
+                        [sortable]="false"
+                        [draggable]="false"
+                        [canAutoResize]="false"
+                        [summaryTemplate]="sumSummaryCell">
+                        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+                        <a
+                            href="javascript:void(0)"
+                            [class.datatable-icon-right]="!expanded"
+                            [class.datatable-icon-down]="expanded"
+                            title="Expand/Collapse Row">
+                        </a>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Date"
+                        [width]="80">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.flightDate | date: 'shortDate' : '' : translateService.getActiveLang() }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Route"
+                        prop="route"
+                        [sortable]="false"
+                        [width]="80">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Aircraft"
+                        prop="aircraft.tailNumber"
+                        *ngIf="this.preferences.logbookOptions.showTailNumber"
+                        [sortable]="false"
+                        [width]="80">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Type"
+                        prop="aircraft.model.typeName"
+                        *ngIf="this.preferences.logbookOptions.showTypeName"
+                        [sortable]="false"
+                        [width]="80">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Approaches"
+                        prop="numInstrumentApproaches"
+                        *ngIf="this.preferences.logbookOptions.showApproaches"
+                        [summaryFunc]="sumColumn"
+                        [width]="100">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Landings"
+                        prop="numLandings"
+                        *ngIf="this.preferences.logbookOptions.showLandings"
+                        [summaryFunc]="sumColumn"
+                        [width]="100">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Night Landings"
+                        prop="numNightLandings"
+                        *ngIf="this.preferences.logbookOptions.showNightLandings"
+                        [summaryFunc]="sumColumn"
+                        [width]="110">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Full Stop Landings"
+                        prop="numFullStopLandings"
+                        *ngIf="this.preferences.logbookOptions.showFullStopLandings"
+                        [summaryFunc]="sumColumn"
+                        [width]="130">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="PIC"
+                        prop="pic"
+                        *ngIf="this.preferences.logbookOptions.showPIC"
+                        [summaryFunc]="sumColumn"
+                        [width]="50">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="SIC"
+                        prop="sic"
+                        *ngIf="this.preferences.logbookOptions.showSIC"
+                        [summaryFunc]="sumColumn"
+                        [width]="50">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Multi"
+                        prop="multiEngine"
+                        *ngIf="this.preferences.logbookOptions.showMultiEngine"
+                        [summaryFunc]="sumColumn"
+                        [width]="50">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Simulated IMC"
+                        prop="simulatedInstrument"
+                        *ngIf="this.preferences.logbookOptions.showSimulatedInstrument"
+                        [summaryFunc]="sumColumn"
+                        [width]="80">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Actual IMC"
+                        prop="imc"
+                        *ngIf="this.preferences.logbookOptions.showIMC"
+                        [summaryFunc]="sumColumn"
+                        [width]="80">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Dual Received"
+                        prop="dualReceived"
+                        *ngIf="this.preferences.logbookOptions.showDualReceived"
+                        [summaryFunc]="sumColumn"
+                        [width]="80">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Dual Given"
+                        prop="dualGiven"
+                        *ngIf="this.preferences.logbookOptions.showDualGiven"
+                        [summaryFunc]="sumColumn"
+                        [width]="80">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Ground Sim"
+                        prop="groundSim"
+                        *ngIf="this.preferences.logbookOptions.showGroundSim"
+                        [summaryFunc]="sumColumn"
+                        [width]="80">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Total Time"
+                        prop="totalFlightTime"
+                        *ngIf="this.preferences.logbookOptions.showTotalTime"
+                        [summaryFunc]="sumColumn"
+                        [width]="80">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Comments"
+                        prop="comments"
+                        *ngIf="this.preferences.logbookOptions.showComments"
+                        [sortable]="false">
+                    </ngx-datatable-column>
+
+                    <!-- Row Detail Template -->
+                    <ngx-datatable-row-detail [rowHeight]="60" #myDetailRow>
+                        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+                        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                            <button
+                                mat-flat-button
+                                [color]="'accent'"
+                                (click)="editClick(row)">
+                                <mat-icon [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
+                                Edit
+                            </button>
+                            &nbsp;
+                            <button
+                                mat-flat-button
+                                color="warn"
+                                (click)="deleteClick(row)">
+                                <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
+                                Delete
+                            </button>
+                        </div>
+                        </ng-template>
+                    </ngx-datatable-row-detail>
+
+                    <!-- Summary Template -->
+                    <ng-template #sumSummaryCell>
+                        Sum
+                    </ng-template>
+
+                </ngx-datatable>
+
+            </div>
+
+        </mat-drawer-content>
+
+    </mat-drawer-container>
+
+</div>

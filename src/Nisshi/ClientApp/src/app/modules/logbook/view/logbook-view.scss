@@ -1,0 +1,29 @@
+@import '~@swimlane/ngx-datatable/index.css';
+@import '~@swimlane/ngx-datatable/themes/material.scss';
+@import '~@swimlane/ngx-datatable/assets/icons.css';
+
+.fullscreen {
+    position: absolute !important;
+    height: auto !important;
+    top: 7.125rem;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .dark {
+    background: #181b24;
+  }
+
+  .dark nav {
+    background: #232837;
+  }
+
+  .dark nav a {
+    color: #fff;
+  }
+
+  .dark nav h4 {
+    color: #72809b;
+  }

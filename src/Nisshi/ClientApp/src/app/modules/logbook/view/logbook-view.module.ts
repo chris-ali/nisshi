@@ -8,22 +8,24 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { FuseCardModule } from '@fuse/components/card';
 import { SharedModule } from 'app/shared/shared.module';
-import { ViewComponent } from 'app/modules/aircraft/view/view.component';
+import { LogbookViewComponent as LogbookViewComponent } from 'app/modules/logbook/view/logbook-view.component';
+import { LogbookSidebarModule } from 'app/modules/logbook/sidebar/logbook-sidebar.module';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 export const routes: Route[] = [
     {
         path     : '',
-        component: ViewComponent
+        component: LogbookViewComponent
     }
 ];
 
 @NgModule({
     declarations: [
-        ViewComponent
+        LogbookViewComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -35,12 +37,14 @@ export const routes: Route[] = [
         MatIconModule,
         MatInputModule,
         MatMenuModule,
+        MatSidenavModule,
         MatProgressBarModule,
         MatTooltipModule,
-        FuseCardModule,
-        SharedModule
+        SharedModule,
+        LogbookSidebarModule,
+        NgxDatatableModule
     ]
 })
-export class ViewModule
+export class LogbookViewModule
 {
 }

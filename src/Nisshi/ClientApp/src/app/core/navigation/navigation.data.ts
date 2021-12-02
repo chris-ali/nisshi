@@ -21,7 +21,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title: 'Logbook',
         type : 'basic',
         icon : 'heroicons_outline:book-open',
-        link : '/logbook'
+        link : '/logbook/view'
     },
     {
         id   : 'trip',
@@ -65,7 +65,7 @@ export const compactNavigation: FuseNavigationItem[] = [
         title: 'Logbook',
         type : 'basic',
         icon : 'heroicons_outline:book-open',
-        link : '/logbook'
+        link : '/logbook/view'
     },
     {
         id   : 'trip',
@@ -102,14 +102,14 @@ export const futuristicNavigation: FuseNavigationItem[] = [
         title: 'Aircraft',
         type : 'basic',
         icon : 'mat_outline:flight',
-        link : '/aircraft'
+        link : '/aircraft/view'
     },
     {
         id   : 'logbook',
         title: 'Logbook',
         type : 'basic',
         icon : 'heroicons_outline:book-open',
-        link : '/logbook'
+        link : '/logbook/view'
     },
     {
         id   : 'trip',
@@ -146,14 +146,14 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         title: 'Aircraft',
         type : 'basic',
         icon : 'mat_outline:flight',
-        link : '/aircraft'
+        link : '/aircraft/view'
     },
     {
         id   : 'logbook',
         title: 'Logbook',
         type : 'basic',
         icon : 'heroicons_outline:book-open',
-        link : '/logbook'
+        link : '/logbook/view'
     },
     {
         id   : 'trip',

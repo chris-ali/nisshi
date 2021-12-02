@@ -73,8 +73,9 @@ export const appRoutes: Route[] = [
         },
         children   : [
             {path: 'example', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
-            {path: 'aircraft/view', loadChildren: () => import('app/modules/aircraft/view/view.module').then(m => m.ViewModule)},
-            {path: 'aircraft', loadChildren: () => import('app/modules/aircraft/form/form.module').then(m => m.FormModule)},
+            {path: 'aircraft/view', loadChildren: () => import('app/modules/aircraft/view/aircraft-view.module').then(m => m.AircraftViewModule)},
+            {path: 'aircraft', loadChildren: () => import('app/modules/aircraft/form/aircraft-form.module').then(m => m.AircraftFormModule)},
+            {path: 'logbook/view', loadChildren: () => import('app/modules/logbook/view/logbook-view.module').then(m => m.LogbookViewModule)},
         ]
     }
 ];
