@@ -14,7 +14,7 @@ import { LogbookOptions } from 'app/core/preferences/preferences.types';
                 <form
                     [formGroup]="form"
                     (ngSubmit)="onSubmit()"
-                    class="flex flex-col mt-4 px-8 pt-4 bg-card shadow rounded overflow-hidden">
+                    class="flex flex-col mt-4 px-8 pt-4 overflow-hidden">
                     <div class="flex flex-col gt-sm:flex-row">
                         <span class="font-semibold mb-2">Show/Hide Columns</span>
                         <div class="flex flex-col">
@@ -187,26 +187,6 @@ export class LogbookSidebarComponent implements OnInit
         });
 
         this.form.patchValue(this.logbookOptions);
-
-        this.menuData = [
-            {
-                title   : 'Actions',
-                subtitle: 'Task, project & team',
-                type    : 'group',
-                children: [
-                    {
-                        title: 'Create task',
-                        type : 'basic',
-                        icon : 'heroicons_outline:plus-circle'
-                    },
-                    {
-                        title: 'Create team',
-                        type : 'basic',
-                        icon : 'heroicons_outline:user-group'
-                    }
-                ]
-            }
-        ];
     }
 
     // -----------------------------------------------------------------------------------------------------

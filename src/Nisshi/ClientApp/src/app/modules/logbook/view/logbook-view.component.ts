@@ -6,8 +6,7 @@ import { ConfirmationService } from 'app/core/confirmation/confirmation.service'
 import { LogbookEntryService } from 'app/core/logbookentry/logbookentry.service';
 import { LogbookEntry } from 'app/core/logbookentry/logbookentry.types';
 import { PreferencesService } from 'app/core/preferences/preferences.service';
-import { LogbookOptions } from 'app/core/preferences/preferences.types';
-import { UserService } from 'app/core/user/user.service';
+import { LogbookOptions, Preferences } from 'app/core/preferences/preferences.types';
 
 @Component({
   selector: 'logbook-view',
@@ -26,7 +25,7 @@ export class LogbookViewComponent implements OnInit
     drawerMode: 'over' | 'side' = 'side';
     drawerOpened: boolean = false;
 
-    logbookOptions: LogbookOptions;
+    preferences: Preferences;
 
     /**
      * Constructor
@@ -50,7 +49,7 @@ export class LogbookViewComponent implements OnInit
             this.logbookEntries = entries;
         });
 
-        this.logbookOptions = this.preferencesService.preferences$.logbookOptions;
+        this.preferences = this.preferencesService.preferences$;
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -132,10 +131,7 @@ export class LogbookViewComponent implements OnInit
      */
     onPreferencesChanged(options: LogbookOptions): void
     {
-        this.logbookOptions = options;
-
-        var updated = this.preferencesService.preferences$;
-        updated.logbookOptions = options;
-        this.preferencesService.preferences = updated;
+        this.preferences.logbookOptions = options;
+        this.preferencesService.preferences = this.preferences;
     }
 }
