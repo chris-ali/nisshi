@@ -92,96 +92,112 @@
                     <ngx-datatable-column
                         name="Aircraft"
                         prop="aircraft.tailNumber"
+                        *ngIf="this.logbookOptions.showTailNumber"
                         [sortable]="false"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Type"
                         prop="aircraft.model.typeName"
+                        *ngIf="this.logbookOptions.showTypeName"
                         [sortable]="false"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Approaches"
                         prop="numInstrumentApproaches"
+                        *ngIf="this.logbookOptions.showApproaches"
                         [summaryFunc]="sumColumn"
                         [width]="100">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Landings"
                         prop="numLandings"
+                        *ngIf="this.logbookOptions.showLandings"
                         [summaryFunc]="sumColumn"
                         [width]="100">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Night Landings"
                         prop="numNightLandings"
+                        *ngIf="this.logbookOptions.showNightLandings"
                         [summaryFunc]="sumColumn"
                         [width]="110">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Full Stop Landings"
                         prop="numFullStopLandings"
+                        *ngIf="this.logbookOptions.showFullStopLandings"
                         [summaryFunc]="sumColumn"
                         [width]="130">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="PIC"
                         prop="pic"
+                        *ngIf="this.logbookOptions.showPIC"
                         [summaryFunc]="sumColumn"
                         [width]="50">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="SIC"
                         prop="sic"
+                        *ngIf="this.logbookOptions.showSIC"
                         [summaryFunc]="sumColumn"
                         [width]="50">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Multi"
                         prop="multiEngine"
+                        *ngIf="this.logbookOptions.showMultiEngine"
                         [summaryFunc]="sumColumn"
                         [width]="50">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Simulated IMC"
                         prop="simulatedInstrument"
+                        *ngIf="this.logbookOptions.showSimulatedInstrument"
                         [summaryFunc]="sumColumn"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Actual IMC"
                         prop="imc"
+                        *ngIf="this.logbookOptions.showIMC"
                         [summaryFunc]="sumColumn"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Dual Received"
                         prop="dualReceived"
+                        *ngIf="this.logbookOptions.showDualReceived"
                         [summaryFunc]="sumColumn"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Dual Given"
                         prop="dualGiven"
+                        *ngIf="this.logbookOptions.showDualGiven"
                         [summaryFunc]="sumColumn"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Ground Sim"
                         prop="groundSim"
+                        *ngIf="this.logbookOptions.showGroundSim"
                         [summaryFunc]="sumColumn"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Total Time"
                         prop="totalFlightTime"
+                        *ngIf="this.logbookOptions.showTotalTime"
                         [summaryFunc]="sumColumn"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Comments"
                         prop="comments"
+                        *ngIf="this.logbookOptions.showComments"
                         [sortable]="false">
                     </ngx-datatable-column>
 

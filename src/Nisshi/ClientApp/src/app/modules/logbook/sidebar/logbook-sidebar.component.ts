@@ -1,20 +1,20 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
-import { LogbookOptions } from 'app/core/user/preferences.types';
+import { LogbookOptions } from 'app/core/preferences/preferences.types';
 
 @Component({
     selector     : 'logbook-sidebar',
     template     : `
         <div class="py-10">
 
-            <div class="mx-6 text-3xl font-bold tracking-tighter">Logbook Options</div>
+            <div class="mx-6 text-3xl font-bold tracking-tighter">Options</div>
 
-            <div class="flex-auto p-6 sm:p-10">
+            <div class="flex-auto p-6 sm:p-5">
                 <form
                     [formGroup]="form"
                     (ngSubmit)="onSubmit()"
-                    class="flex flex-col mt-4 px-8 pt-10 bg-card shadow rounded overflow-hidden">
+                    class="flex flex-col mt-4 px-8 pt-4 bg-card shadow rounded overflow-hidden">
                     <div class="flex flex-col gt-sm:flex-row">
                         <span class="font-semibold mb-2">Show/Hide Columns</span>
                         <div class="flex flex-col">
@@ -117,7 +117,7 @@ import { LogbookOptions } from 'app/core/user/preferences.types';
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-end -mx-8 mt-8 px-8 py-5">
+                    <div class="flex items-center -mx-8 px-8 py-4">
                         <button
                             class="px-6 ml-3"
                             mat-flat-button
@@ -159,6 +159,14 @@ export class LogbookSidebarComponent implements OnInit
      */
     constructor(private formBuilder: FormBuilder)
     {
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Lifecycle hooks
+    // -----------------------------------------------------------------------------------------------------
+
+    ngOnInit(): void
+    {
         this.form = this.formBuilder.group({
             showTailNumber: [true],
             showTypeName: [true],
@@ -178,6 +186,8 @@ export class LogbookSidebarComponent implements OnInit
             showComments: [true]
         });
 
+        this.form.patchValue(this.logbookOptions);
+
         this.menuData = [
             {
                 title   : 'Actions',
@@ -193,37 +203,10 @@ export class LogbookSidebarComponent implements OnInit
                         title: 'Create team',
                         type : 'basic',
                         icon : 'heroicons_outline:user-group'
-                    },
-                    {
-                        title: 'Create project',
-                        type : 'basic',
-                        icon : 'heroicons_outline:briefcase'
-                    },
-                    {
-                        title: 'Create user',
-                        type : 'basic',
-                        icon : 'heroicons_outline:user-add'
-                    },
-                    {
-                        title   : 'Assign user or team',
-                        subtitle: 'Assign to a task or a project',
-                        type    : 'basic',
-                        icon    : 'heroicons_outline:badge-check'
                     }
                 ]
-            },
-            {
-                type: 'divider'
             }
         ];
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Lifecycle hooks
-    // -----------------------------------------------------------------------------------------------------
-
-    ngOnInit(): void
-    {
     }
 
     // -----------------------------------------------------------------------------------------------------

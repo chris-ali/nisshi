@@ -5,7 +5,8 @@ import { ColumnMode } from '@swimlane/ngx-datatable';
 import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
 import { LogbookEntryService } from 'app/core/logbookentry/logbookentry.service';
 import { LogbookEntry } from 'app/core/logbookentry/logbookentry.types';
-import { LogbookOptions } from 'app/core/user/preferences.types';
+import { PreferencesService } from 'app/core/preferences/preferences.service';
+import { LogbookOptions } from 'app/core/preferences/preferences.types';
 import { UserService } from 'app/core/user/user.service';
 
 @Component({
@@ -32,11 +33,12 @@ export class LogbookViewComponent implements OnInit
      */
     constructor(private logbookEntryService: LogbookEntryService,
                 public translateService: TranslocoService,
-                private userService: UserService,
+                private preferencesService: PreferencesService,
                 private confirmation: ConfirmationService,
                 private router: Router,
                 private route: ActivatedRoute)
-    { }
+    {
+    }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -48,9 +50,7 @@ export class LogbookViewComponent implements OnInit
             this.logbookEntries = entries;
         });
 
-        this.userService.get().subscribe(user => {
-            this.logbookOptions = user.preferences.logbookOptions;
-        });
+        this.logbookOptions = this.preferencesService.preferences$.logbookOptions;
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -133,5 +133,9 @@ export class LogbookViewComponent implements OnInit
     onPreferencesChanged(options: LogbookOptions): void
     {
         this.logbookOptions = options;
+
+        var updated = this.preferencesService.preferences$;
+        updated.logbookOptions = options;
+        this.preferencesService.preferences = updated;
     }
 }

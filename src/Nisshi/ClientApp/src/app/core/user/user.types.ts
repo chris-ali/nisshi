@@ -1,4 +1,4 @@
-import { Preferences } from "./preferences.types";
+import { Preferences } from "../preferences/preferences.types";
 
 export interface User
 {
