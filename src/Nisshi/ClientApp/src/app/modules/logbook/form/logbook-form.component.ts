@@ -48,25 +48,39 @@ export class LogbookFormComponent implements OnInit
 
         this.form = this.formBuilder.group({
             id: [this.id],
-            tailNumber: ['', [Validators.required, Validators.maxLength(20)]],
-            instanceType: [1],
-            lastAnnual: [null],
-            lastPitotStatic: [null],
-            lastVOR: [null],
-            lastAltimeter: [null],
-            lastTransponder: [null],
-            lastELT: [null],
-            last100Hobbs: [0, [Validators.min(0), Validators.max(999999)]],
-            lastOilHobbs: [0, [Validators.min(0), Validators.max(999999)]],
-            lastEngineHobbs: [0, [Validators.min(0), Validators.max(999999)]],
-            registrationDue: [null],
-            notes: [''],
-            idModel: ['', Validators.nullValidator],
-            idManufacturer: [0] // Not a field on logbook, but needed to set dropdown on edit
+            flightDate: [null],
+            numInstrumentApproaches: [0, [Validators.min(0), Validators.max(999999)]],
+            numLandings: [0, [Validators.min(0), Validators.max(999999)]],
+            numNightLandings: [0, [Validators.min(0), Validators.max(999999)]],
+            numFullStopLandings: [0, [Validators.min(0), Validators.max(999999)]],
+            crossCountry: [0, [Validators.min(0), Validators.max(1000)]],
+            multiEngine: [0, [Validators.min(0), Validators.max(1000)]],
+            night: [0, [Validators.min(0), Validators.max(1000)]],
+            imc: [0, [Validators.min(0), Validators.max(1000)]],
+            simulatedInstrument: [0, [Validators.min(0), Validators.max(1000)]],
+            dualReceived: [0, [Validators.min(0), Validators.max(1000)]],
+            dualGiven: [0, [Validators.min(0), Validators.max(1000)]],
+            pic: [0, [Validators.min(0), Validators.max(1000)]],
+            sic: [0, [Validators.min(0), Validators.max(1000)]],
+            groundSim: [0, [Validators.min(0), Validators.max(1000)]],
+            hobbsStart: [0, [Validators.min(0), Validators.max(999999)]],
+            hobbsEnd: [0, [Validators.min(0), Validators.max(999999)]],
+            totalFlightTime: [0, [Validators.min(0), Validators.max(1000)]],
+            route: ['', [Validators.required, Validators.maxLength(60)]],
+            comments: ['', Validators.maxLength(500)],
+            idAircraft: ['', Validators.nullValidator]
         });
 
         this.aircraftService.getAll()
             .subscribe(airs => this.aircraft = airs);
+
+        if (!this.isAddMode)
+        {
+            this.logbookEntryService.getOne(this.id)
+                .subscribe(entry => {
+                    this.form.patchValue(entry);
+                });
+        }
     }
 
     // -----------------------------------------------------------------------------------------------------

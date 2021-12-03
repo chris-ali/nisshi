@@ -29,18 +29,18 @@
                 <div class="flex-auto min-w-64">
                     <div class="flex">
                         <mat-form-field class="flex-auto">
-                            <mat-label>Tail Number</mat-label>
+                            <mat-label>Date of Flight</mat-label>
                             <input
-                                id="tailNumber"
                                 matInput
-                                [formControlName]="'tailNumber'"
-                                maxlength="20">
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:hashtag'"></mat-icon>
-                            <mat-error *ngIf="form.get('tailNumber').hasError('required')">
-                                Please enter a Tail Number
+                                [matDatepicker]="flightDate"
+                                [placeholder]="'Choose a date'"
+                                [formControlName]="'flightDate'">
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="flightDate"></mat-datepicker-toggle>
+                            <mat-datepicker #flightDate></mat-datepicker>
+                            <mat-error *ngIf="form.get('route').hasError('required')">
+                                Please select a flight date
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -55,27 +55,48 @@
                                     {{air.tailNumber}} - {{air.model?.manufacturer?.manufacturerName}} {{air.model?.modelName}}
                                 </mat-option>
                             </mat-select>
+                            <mat-error *ngIf="form.get('idAircraft').hasError('required')">
+                                Please select an aircraft
+                            </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex flex-col mt-8">
-                        <span class="font-semibold mb-2">Is this aircraft simulated?</span>
-                        <mat-radio-group
-                            class="flex flex-col"
-                            [color]="'primary'"
-                            [value]="1"
-                            [formControlName]="'instanceType'"
-                            #instanceRadio>
-                            <mat-radio-button
-                                class="mb-2"
-                                [value]="2">
-                                Yes
-                            </mat-radio-button>
-                            <mat-radio-button
-                                class="mb-2"
-                                [value]="1">
-                                No
-                            </mat-radio-button>
-                        </mat-radio-group>
+                    <div class="flex">
+                        <mat-form-field class="fuse-mat-textarea flex-auto">
+                            <mat-label>Route of Flight</mat-label>
+                            <textarea
+                                matInput
+                                [placeholder]="'Enter the route flown using ICAO airport codes'"
+                                [rows]="3"
+                                maxlength="200"
+                                [formControlName]="'route'"></textarea>
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:menu-alt-2'"></mat-icon>
+                            <mat-error *ngIf="form.get('route').hasError('required')">
+                                Please enter the route flown
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Total Time</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter an hour value'"
+                                [formControlName]="'totalFlightTime'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('totalFlightTime').hasError('min')">
+                                Total flight time must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('totalFlightTime').hasError('max')">
+                                Total flight time must be less than 1000000 hours
+                            </mat-error>
+                        </mat-form-field>
                     </div>
                 </div>
             </div>
@@ -92,178 +113,242 @@
                 <div class="flex-auto min-w-64">
                     <div class="flex">
                         <mat-form-field class="fuse-mat-textarea flex-auto">
-                            <mat-label>Aircraft Notes</mat-label>
+                            <mat-label>Comments</mat-label>
                             <textarea
                                 matInput
-                                [placeholder]="'Any notes or details pertinent to this aircraft'"
+                                [placeholder]="'Any notes or details pertinent to this flight'"
                                 [rows]="3"
                                 maxlength="200"
-                                [formControlName]="'notes'"></textarea>
+                                [formControlName]="'comments'"></textarea>
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:menu-alt-2'"></mat-icon>
                         </mat-form-field>
                     </div>
-                    <div> <!--Add hidden class if simulated-->
-                        <div class="flex">
-                            <mat-form-field class="flex-auto">
-                                <mat-label>Date of Last Annual Inspection</mat-label>
-                                <input
-                                    matInput
-                                    [matDatepicker]="lastAnnualPicker"
-                                    [placeholder]="'Choose a date'"
-                                    [formControlName]="'lastAnnual'">
-                                <mat-datepicker-toggle
-                                    matSuffix
-                                    [for]="lastAnnualPicker"></mat-datepicker-toggle>
-                                <mat-datepicker #lastAnnualPicker></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                        <div class="flex">
-                            <mat-form-field class="flex-auto">
-                                <mat-label>Date of Last Pitot Static Inspection</mat-label>
-                                <input
-                                    matInput
-                                    [matDatepicker]="lastPitotStaticPicker"
-                                    [placeholder]="'Choose a date'"
-                                    [formControlName]="'lastPitotStatic'">
-                                <mat-datepicker-toggle
-                                    matSuffix
-                                    [for]="lastPitotStaticPicker"></mat-datepicker-toggle>
-                                <mat-datepicker #lastPitotStaticPicker></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                        <div class="flex">
-                            <mat-form-field class="flex-auto">
-                                <mat-label>Date of Last VOR Inspection</mat-label>
-                                <input
-                                    matInput
-                                    [matDatepicker]="lastVORPicker"
-                                    [placeholder]="'Choose a date'"
-                                    [formControlName]="'lastVOR'">
-                                <mat-datepicker-toggle
-                                    matSuffix
-                                    [for]="lastVORPicker"></mat-datepicker-toggle>
-                                <mat-datepicker #lastVORPicker></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                        <div class="flex">
-                            <mat-form-field class="flex-auto">
-                                <mat-label>Date of Last Altimeter Inspection</mat-label>
-                                <input
-                                    matInput
-                                    [matDatepicker]="lastAltimeterPicker"
-                                    [placeholder]="'Choose a date'"
-                                    [formControlName]="'lastAltimeter'">
-                                <mat-datepicker-toggle
-                                    matSuffix
-                                    [for]="lastAltimeterPicker"></mat-datepicker-toggle>
-                                <mat-datepicker #lastAltimeterPicker></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                        <div class="flex">
-                            <mat-form-field class="flex-auto">
-                                <mat-label>Date of Last Transponder Inspection</mat-label>
-                                <input
-                                    matInput
-                                    [matDatepicker]="lastTransponderPicker"
-                                    [placeholder]="'Choose a date'"
-                                    [formControlName]="'lastTransponder'">
-                                <mat-datepicker-toggle
-                                    matSuffix
-                                    [for]="lastTransponderPicker"></mat-datepicker-toggle>
-                                <mat-datepicker #lastTransponderPicker></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                        <div class="flex">
-                            <mat-form-field class="flex-auto">
-                                <mat-label>Date of Last ELT Inspection</mat-label>
-                                <input
-                                    matInput
-                                    [matDatepicker]="lastELTPicker"
-                                    [placeholder]="'Choose a date'"
-                                    [formControlName]="'lastELT'">
-                                <mat-datepicker-toggle
-                                    matSuffix
-                                    [for]="lastELTPicker"></mat-datepicker-toggle>
-                                <mat-datepicker #lastELTPicker></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                        <div class="flex">
-                            <mat-form-field class="flex-auto">
-                                <mat-label>Expiration Date of Aircraft Registration</mat-label>
-                                <input
-                                    matInput
-                                    [matDatepicker]="registrationDuePicker"
-                                    [placeholder]="'Choose a date'"
-                                    [formControlName]="'registrationDue'">
-                                <mat-datepicker-toggle
-                                    matSuffix
-                                    [for]="registrationDuePicker"></mat-datepicker-toggle>
-                                <mat-datepicker #registrationDuePicker></mat-datepicker>
-                            </mat-form-field>
-                        </div>
-                        <div class="flex">
-                            <mat-form-field class="flex-auto">
-                                <mat-label>Hobbs Time of Last Oil Change</mat-label>
-                                <input
-                                    type="number"
-                                    matInput
-                                    [placeholder]="'Enter an hour value'"
-                                    [formControlName]="'lastOilHobbs'">
-                                <mat-icon
-                                    class="icon-size-5"
-                                    matPrefix
-                                    [svgIcon]="'heroicons_solid:clock'"></mat-icon>
-                                <mat-error *ngIf="form.get('lastOilHobbs').hasError('min')">
-                                    Hobbs time must be non-negative
-                                </mat-error>
-                                <mat-error *ngIf="form.get('lastOilHobbs').hasError('max')">
-                                    Hobbs time must be less than 1000000 hours
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="flex">
-                            <mat-form-field class="flex-auto">
-                                <mat-label>Hobbs Time of Last 100 Hour Inspection</mat-label>
-                                <input
-                                    type="number"
-                                    matInput
-                                    [placeholder]="'Enter an hour value'"
-                                    [formControlName]="'last100Hobbs'">
-                                <mat-icon
-                                    class="icon-size-5"
-                                    matPrefix
-                                    [svgIcon]="'heroicons_solid:clock'"></mat-icon>
-                                <mat-error *ngIf="form.get('last100Hobbs').hasError('min')">
-                                    Hobbs time must be non-negative
-                                </mat-error>
-                                <mat-error *ngIf="form.get('last100Hobbs').hasError('max')">
-                                    Hobbs time must be less than 1000000 hours
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-                        <div class="flex">
-                            <mat-form-field class="flex-auto">
-                                <mat-label>Hobbs Time of Last Engine Overhaul</mat-label>
-                                <input
-                                    type="number"
-                                    matInput
-                                    [placeholder]="'Enter an hour value'"
-                                    [formControlName]="'lastEngineHobbs'">
-                                <mat-icon
-                                    class="icon-size-5"
-                                    matPrefix
-                                    [svgIcon]="'heroicons_solid:clock'"></mat-icon>
-                                <mat-error *ngIf="form.get('lastEngineHobbs').hasError('min')">
-                                    Hobbs time must be non-negative
-                                </mat-error>
-                                <mat-error *ngIf="form.get('lastEngineHobbs').hasError('max')">
-                                    Hobbs time must be less than 1000000 hours
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Number of Instrument Approaches</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the number of approaches'"
+                                [formControlName]="'numInstrumentApproaches'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Number of Landings</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the number of landings'"
+                                [formControlName]="'numLandings'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Number of Night Landings</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the number of night landings'"
+                                [formControlName]="'numLandings'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Number of Full Stop Landings</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the number of full stop landings'"
+                                [formControlName]="'numLandings'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Cross Country</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the cross country duration'"
+                                [formControlName]="'crossCountry'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Multi Engine</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the multi engine duration'"
+                                [formControlName]="'multiEngine'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Night</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the night duration'"
+                                [formControlName]="'night'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Actual IMC</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the duration under actual IMC'"
+                                [formControlName]="'imc'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Simulated IMC</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the duration under simulated IMC'"
+                                [formControlName]="'simulatedInstrument'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Dual Received</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the dual instruction duration received'"
+                                [formControlName]="'dualReceived'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Dual Given</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the dual instruction duration given'"
+                                [formControlName]="'dualGiven'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>PIC</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the duration as PIC'"
+                                [formControlName]="'pic'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>SIC</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the duration as SIC'"
+                                [formControlName]="'sic'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Ground Simulator</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the ground simulator duration'"
+                                [formControlName]="'groundSim'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Hobbs Start</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the start time of the Hobbs meter'"
+                                [formControlName]="'hobbsStart'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Hobbs End</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the end time of the Hobbs meter'"
+                                [formControlName]="'hobbsEnd'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                        </mat-form-field>
                     </div>
 
                 </div>
