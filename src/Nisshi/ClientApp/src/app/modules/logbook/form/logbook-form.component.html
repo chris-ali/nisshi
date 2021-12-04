@@ -23,7 +23,7 @@
                 <div class="gt-xs:max-w-80 gt-xs:pr-12">
                     <p class="text-lg font-medium">Primary Information</p>
                     <p class="text-secondary mb-6">
-                        Required items for this entry
+                        Required items for this flight
                     </p>
                 </div>
                 <div class="flex-auto min-w-64">
@@ -63,16 +63,16 @@
                     <div class="flex">
                         <mat-form-field class="fuse-mat-textarea flex-auto">
                             <mat-label>Route of Flight</mat-label>
-                            <textarea
+                            <input
+                                id="route"
                                 matInput
                                 [placeholder]="'Enter the route flown using ICAO airport codes'"
-                                [rows]="3"
-                                maxlength="200"
-                                [formControlName]="'route'"></textarea>
+                                [formControlName]="'route'"
+                                maxlength="20">
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
-                                [svgIcon]="'heroicons_solid:menu-alt-2'"></mat-icon>
+                                [svgIcon]="'heroicons_solid:hashtag'"></mat-icon>
                             <mat-error *ngIf="form.get('route').hasError('required')">
                                 Please enter the route flown
                             </mat-error>
@@ -91,10 +91,10 @@
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
                             <mat-error *ngIf="form.get('totalFlightTime').hasError('min')">
-                                Total flight time must be non-negative
+                                Total flight duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('totalFlightTime').hasError('max')">
-                                Total flight time must be less than 1000000 hours
+                                Total flight duration must be less than 1000000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -107,7 +107,7 @@
                 <div class="gt-xs:max-w-80 gt-xs:pr-12">
                     <p class="text-lg font-medium">Additional Information</p>
                     <p class="text-secondary mb-6">
-                        Optional items to better keep track of this aircraft
+                        Optional items to better record this flight
                     </p>
                 </div>
                 <div class="flex-auto min-w-64">
@@ -126,6 +126,8 @@
                                 [svgIcon]="'heroicons_solid:menu-alt-2'"></mat-icon>
                         </mat-form-field>
                     </div>
+                </div>
+                <div class="flex-auto min-w-64 sm:items-center sm:justify-between">
                     <div class="flex">
                         <mat-form-field class="flex-auto">
                             <mat-label>Number of Instrument Approaches</mat-label>
@@ -138,6 +140,12 @@
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('numInstrumentApproaches').hasError('min')">
+                                Number of instrument approaches must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('numInstrumentApproaches').hasError('max')">
+                                Number of instrument approaches must be less than 1000000
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="flex">
@@ -152,6 +160,12 @@
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('numLandings').hasError('min')">
+                                Number of landings must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('numLandings').hasError('max')">
+                                Number of landings must be less than 1000000
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="flex">
@@ -161,25 +175,37 @@
                                 type="number"
                                 matInput
                                 [placeholder]="'Enter the number of night landings'"
-                                [formControlName]="'numLandings'">
+                                [formControlName]="'numNightLandings'">
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('numNightLandings').hasError('min')">
+                                Number of night landings must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('numNightLandings').hasError('max')">
+                                Number of night landings must be less than 1000000
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="flex">
                         <mat-form-field class="flex-auto">
-                            <mat-label>Number of Full Stop Landings</mat-label>
+                            <mat-label>Number of Full-Stop Landings</mat-label>
                             <input
                                 type="number"
                                 matInput
                                 [placeholder]="'Enter the number of full stop landings'"
-                                [formControlName]="'numLandings'">
+                                [formControlName]="'numFullStopLandings'">
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('numFullStopLandings').hasError('min')">
+                                Number of full-stop landings must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('numFullStopLandings').hasError('max')">
+                                Number of full-stop landings must be less than 1000000
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="flex">
@@ -194,6 +220,12 @@
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('crossCountry').hasError('min')">
+                                Cross country duration must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('crossCountry').hasError('max')">
+                                Cross country duration must be less than 1000000 hours
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="flex">
@@ -208,6 +240,12 @@
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('multiEngine').hasError('min')">
+                                Multi engine duration must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('multiEngine').hasError('max')">
+                                Multi engine duration must be less than 1000000 hours
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="flex">
@@ -222,6 +260,12 @@
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('night').hasError('min')">
+                                Night duration must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('night').hasError('max')">
+                                Night duration must be less than 1000000 hours
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="flex">
@@ -236,6 +280,12 @@
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('imc').hasError('min')">
+                                Actual IMC duration must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('imc').hasError('max')">
+                                Actual IMC duration must be less than 1000000 hours
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="flex">
@@ -250,20 +300,34 @@
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('simulatedInstrument').hasError('min')">
+                                Simulated IMC duration must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('simulatedInstrument').hasError('max')">
+                                Simulated IMC duration must be less than 1000000 hours
+                            </mat-error>
                         </mat-form-field>
                     </div>
+                </div>
+                <div class="flex-auto min-w-64 sm:items-center sm:justify-between">
                     <div class="flex">
                         <mat-form-field class="flex-auto">
                             <mat-label>Dual Received</mat-label>
                             <input
                                 type="number"
                                 matInput
-                                [placeholder]="'Enter the dual instruction duration received'"
+                                [placeholder]="'Enter the received dual instruction duration'"
                                 [formControlName]="'dualReceived'">
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('dualReceived').hasError('min')">
+                                Received dual instruction duration must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('dualReceived').hasError('max')">
+                                Received dual instruction duration must be less than 1000000 hours
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="flex">
@@ -272,12 +336,18 @@
                             <input
                                 type="number"
                                 matInput
-                                [placeholder]="'Enter the dual instruction duration given'"
+                                [placeholder]="'Enter the given dual instruction duration'"
                                 [formControlName]="'dualGiven'">
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('dualGiven').hasError('min')">
+                                Given dual instruction duration must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('dualGiven').hasError('max')">
+                                Given dual instruction duration must be less than 1000000 hours
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="flex">
@@ -292,6 +362,12 @@
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('pic').hasError('min')">
+                                PIC duration must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('pic').hasError('max')">
+                                PIC duration must be less than 1000000 hours
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="flex">
@@ -306,6 +382,12 @@
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('sic').hasError('min')">
+                                SIC duration must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('sic').hasError('max')">
+                                SIC duration must be less than 1000000 hours
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="flex">
@@ -320,6 +402,12 @@
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('groundSim').hasError('min')">
+                                Ground simulator duration must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('groundSim').hasError('max')">
+                                Ground simulator duration must be less than 1000000 hours
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="flex">
@@ -334,6 +422,12 @@
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('hobbsStart').hasError('min')">
+                                Hobbs start time must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('hobbsStart').hasError('max')">
+                                Hobbs start time must be less than 1000000 hours
+                            </mat-error>
                         </mat-form-field>
                     </div>
                     <div class="flex">
@@ -348,6 +442,12 @@
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('hobbsEnd').hasError('min')">
+                                Hobbs end time must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('hobbsEnd').hasError('max')">
+                                Hobbs end time must be less than 1000000 hours
+                            </mat-error>
                         </mat-form-field>
                     </div>
 
