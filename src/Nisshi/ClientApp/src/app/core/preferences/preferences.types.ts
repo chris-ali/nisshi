@@ -16,6 +16,8 @@ export interface LogbookOptions
     showFullStopLandings: boolean;
     showPIC: boolean;
     showSIC: boolean;
+    showCrossCountry: boolean;
+    showNight: boolean;
     showMultiEngine: boolean;
     showSimulatedInstrument: boolean;
     showIMC: boolean;

@@ -132,6 +132,20 @@
                         [width]="130">
                     </ngx-datatable-column>
                     <ngx-datatable-column
+                        name="Night"
+                        prop="night"
+                        *ngIf="this.preferences.logbookOptions.showNight"
+                        [summaryFunc]="sumColumn"
+                        [width]="80">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Cross Country"
+                        prop="crossCountry"
+                        *ngIf="this.preferences.logbookOptions.showCrossCountry"
+                        [summaryFunc]="sumColumn"
+                        [width]="80">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
                         name="PIC"
                         prop="pic"
                         *ngIf="this.preferences.logbookOptions.showPIC"

@@ -9,6 +9,8 @@ import { AircraftService } from 'app/core/aircraft/aircraft.service';
 import { AirportService } from 'app/core/airport/airport.service';
 import { Aircraft } from 'app/core/aircraft/aircraft.types';
 import { Airport } from 'app/core/airport/airport.types';
+import { Preferences } from 'app/core/preferences/preferences.types';
+import { PreferencesService } from 'app/core/preferences/preferences.service';
 
 /**
  * Form that adds/edits an logbook
@@ -24,6 +26,7 @@ export class LogbookFormComponent implements OnInit
     form: FormGroup;
     aircraft: Aircraft[];
     airports: Airport[];
+    preferences: Preferences;
 
     /**
      * Constructor
@@ -32,6 +35,7 @@ export class LogbookFormComponent implements OnInit
                 private logbookEntryService: LogbookEntryService,
                 private aircraftService: AircraftService,
                 private airportService: AirportService,
+                private preferencesService: PreferencesService,
                 private route: ActivatedRoute,
                 private router: Router,
                 private confirmation: ConfirmationService)
@@ -81,6 +85,8 @@ export class LogbookFormComponent implements OnInit
                     this.form.patchValue(entry);
                 });
         }
+
+        this.preferences = this.preferencesService.preferences$;
     }
 
     // -----------------------------------------------------------------------------------------------------

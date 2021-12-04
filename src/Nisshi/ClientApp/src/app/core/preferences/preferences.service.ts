@@ -60,6 +60,8 @@ export class PreferencesService
                 showLandings: true,
                 showNightLandings: true,
                 showFullStopLandings: true,
+                showCrossCountry: true,
+                showNight: true,
                 showPIC: true,
                 showSIC: true,
                 showMultiEngine: true,

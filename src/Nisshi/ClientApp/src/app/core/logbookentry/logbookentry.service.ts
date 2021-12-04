@@ -55,7 +55,7 @@ export class LogbookEntryService
      */
     update(logbookentry: LogbookEntry): Observable<any>
     {
-        return this._api.put(URL, {logbookentry}).pipe(
+        return this._api.put(URL, logbookentry).pipe(
             map((response) => {
                 this._logbookentry.next(response);
             })
@@ -69,7 +69,7 @@ export class LogbookEntryService
      */
     create(logbookentry: LogbookEntry): Observable<any>
     {
-        return this._api.post(URL, {logbookentry}).pipe(
+        return this._api.post(URL, logbookentry).pipe(
             map((response) => {
                 this._logbookentry.next(response);
             })
