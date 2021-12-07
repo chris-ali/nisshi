@@ -1,7 +1,8 @@
 export interface Preferences
 {
-    theme: string;
     layout: string;
+    scheme: string;
+    theme: string;
     language: string;
     logbookOptions: LogbookOptions;
 }

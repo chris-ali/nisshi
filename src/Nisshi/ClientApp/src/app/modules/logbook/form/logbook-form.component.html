@@ -127,8 +127,8 @@
                         </mat-form-field>
                     </div>
                 </div>
-                <div class="flex flex-col flex-auto min-w-64 sm:items-center sm:justify-between">
-                    <div class="flex" *ngIf="this.preferences.logbookOptions.showApproaches">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 min-w-64 justify-between">
+                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showApproaches">
                         <mat-form-field class="flex-auto">
                             <mat-label>Number of Instrument Approaches</mat-label>
                             <input
@@ -148,7 +148,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex" *ngIf="this.preferences.logbookOptions.showLandings">
+                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showLandings">
                         <mat-form-field class="flex-auto">
                             <mat-label>Number of Landings</mat-label>
                             <input
@@ -168,7 +168,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex" *ngIf="this.preferences.logbookOptions.showNightLandings">
+                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showNightLandings">
                         <mat-form-field class="flex-auto">
                             <mat-label>Number of Night Landings</mat-label>
                             <input
@@ -188,7 +188,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex" *ngIf="this.preferences.logbookOptions.showFullStopLandings">
+                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showFullStopLandings">
                         <mat-form-field class="flex-auto">
                             <mat-label>Number of Full-Stop Landings</mat-label>
                             <input
@@ -208,7 +208,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex" *ngIf="this.preferences.logbookOptions.showCrossCountry">
+                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showCrossCountry">
                         <mat-form-field class="flex-auto">
                             <mat-label>Cross Country</mat-label>
                             <input
@@ -228,7 +228,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex" *ngIf="this.preferences.logbookOptions.showMultiEngine">
+                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showMultiEngine">
                         <mat-form-field class="flex-auto">
                             <mat-label>Multi Engine</mat-label>
                             <input
@@ -248,7 +248,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex" *ngIf="this.preferences.logbookOptions.showNight">
+                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showNight">
                         <mat-form-field class="flex-auto">
                             <mat-label>Night</mat-label>
                             <input
@@ -268,7 +268,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex" *ngIf="this.preferences.logbookOptions.showIMC">
+                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showIMC">
                         <mat-form-field class="flex-auto">
                             <mat-label>Actual IMC</mat-label>
                             <input
@@ -288,7 +288,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex" *ngIf="this.preferences.logbookOptions.showSimulatedInstrument">
+                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showSimulatedInstrument">
                         <mat-form-field class="flex-auto">
                             <mat-label>Simulated IMC</mat-label>
                             <input
@@ -308,9 +308,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                </div>
-                <div class="flex flex-col flex-auto min-w-64 sm:items-center sm:justify-between">
-                    <div class="flex" *ngIf="this.preferences.logbookOptions.showDualReceived">
+                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showDualReceived">
                         <mat-form-field class="flex-auto">
                             <mat-label>Dual Received</mat-label>
                             <input
@@ -330,7 +328,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex" *ngIf="this.preferences.logbookOptions.showDualGiven">
+                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showDualGiven">
                         <mat-form-field class="flex-auto">
                             <mat-label>Dual Given</mat-label>
                             <input
@@ -350,7 +348,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex" *ngIf="this.preferences.logbookOptions.showPIC">
+                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showPIC">
                         <mat-form-field class="flex-auto">
                             <mat-label>PIC</mat-label>
                             <input
@@ -370,7 +368,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex" *ngIf="this.preferences.logbookOptions.showSIC">
+                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showSIC">
                         <mat-form-field class="flex-auto">
                             <mat-label>SIC</mat-label>
                             <input
@@ -390,7 +388,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex" *ngIf="this.preferences.logbookOptions.showGroundSim">
+                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showGroundSim">
                         <mat-form-field class="flex-auto">
                             <mat-label>Ground Simulator</mat-label>
                             <input
@@ -410,7 +408,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex">
+                    <div class="flex mx-2">
                         <mat-form-field class="flex-auto">
                             <mat-label>Hobbs Start</mat-label>
                             <input
@@ -430,7 +428,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex">
+                    <div class="flex mx-2">
                         <mat-form-field class="flex-auto">
                             <mat-label>Hobbs End</mat-label>
                             <input

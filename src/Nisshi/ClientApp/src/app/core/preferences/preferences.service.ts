@@ -50,9 +50,10 @@ export class PreferencesService
     private createDefaultPreferences(): Preferences
     {
         return {
+            layout: 'modern',
+            scheme: 'default',
             theme: 'light',
             language: 'en',
-            layout: 'modern',
             logbookOptions: {
                 showTailNumber: true,
                 showTypeName: true,
