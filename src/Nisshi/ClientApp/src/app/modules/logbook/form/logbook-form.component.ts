@@ -47,7 +47,7 @@ export class LogbookFormComponent implements OnInit
 
     ngOnInit(): void
     {
-        this.id = parseInt(this.route.snapshot.params['id']) ?? 0;
+        this.id = parseInt(this.route.snapshot.params['id'] ?? '0');
         this.isAddMode = !this.id;
 
         this.form = this.formBuilder.group({
@@ -130,7 +130,7 @@ export class LogbookFormComponent implements OnInit
                     this.confirmation.alert('Updated Successfully', 'Logbook entry was created successfully!', true);
                 },
                 error: error => {
-                    this.confirmation.alert('An error has occurred', error);
+                    this.confirmation.alert('An error has occurred', this.confirmation.formatErrors(error));
                 }
             });
     }
@@ -144,7 +144,7 @@ export class LogbookFormComponent implements OnInit
                     this.confirmation.alert('Updated Successfully', 'Logbook entry was updated successfully!', true);
                 },
                 error: error => {
-                    this.confirmation.alert('An error has occurred', error);
+                    this.confirmation.alert('An error has occurred', this.confirmation.formatErrors(error));
                 }
             });
     }

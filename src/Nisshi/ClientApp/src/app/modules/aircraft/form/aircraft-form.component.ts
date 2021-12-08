@@ -41,7 +41,7 @@ export class AircraftFormComponent implements OnInit
 
     ngOnInit(): void
     {
-        this.id = parseInt(this.route.snapshot.params['id']) ?? 0;
+        this.id = parseInt(this.route.snapshot.params['id'] ?? '0');
         this.isAddMode = !this.id;
 
         this.form = this.formBuilder.group({
@@ -126,7 +126,7 @@ export class AircraftFormComponent implements OnInit
                     this.confirmation.alert('Updated Successfully', 'Aircraft was created successfully!', true);
                 },
                 error: error => {
-                    this.confirmation.alert('An error has occurred', error);
+                    this.confirmation.alert('An error has occurred', this.confirmation.formatErrors(error));
                 }
             });
     }
@@ -140,7 +140,7 @@ export class AircraftFormComponent implements OnInit
                     this.confirmation.alert('Updated Successfully', 'Aircraft was updated successfully!', true);
                 },
                 error: error => {
-                    this.confirmation.alert('An error has occurred', error);
+                    this.confirmation.alert('An error has occurred', this.confirmation.formatErrors(error));
                 }
             });
     }
