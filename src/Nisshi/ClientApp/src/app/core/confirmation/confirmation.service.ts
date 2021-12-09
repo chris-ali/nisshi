@@ -11,7 +11,6 @@ import { FuseConfirmationDialogComponent } from '@fuse/services/confirmation/dia
 })
 export class ConfirmationService
 {
-
     /**
      * Constructor
      */
@@ -87,5 +86,24 @@ export class ConfirmationService
             },
             "dismissible": true
         });
+    }
+
+    /**
+     * Given a dictionary of error messages, formats the error
+     * into an unordered list string
+     *
+     * @param error
+     * @returns Formated error message
+     */
+    formatErrors(error: any): string
+    {
+        var message = '<ul>'
+
+        for (const [key, value] of Object.entries(error?.errors))
+            message += `<li>${key}: ${value}</li>`;
+
+        message += '</ul>';
+
+        return message;
     }
 }

@@ -50,9 +50,10 @@ export class PreferencesService
     private createDefaultPreferences(): Preferences
     {
         return {
+            layout: 'modern',
+            scheme: 'default',
             theme: 'light',
             language: 'en',
-            layout: 'modern',
             logbookOptions: {
                 showTailNumber: true,
                 showTypeName: true,
@@ -60,6 +61,8 @@ export class PreferencesService
                 showLandings: true,
                 showNightLandings: true,
                 showFullStopLandings: true,
+                showCrossCountry: true,
+                showNight: true,
                 showPIC: true,
                 showSIC: true,
                 showMultiEngine: true,

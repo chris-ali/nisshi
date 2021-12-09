@@ -76,6 +76,7 @@ export const appRoutes: Route[] = [
             {path: 'aircraft/view', loadChildren: () => import('app/modules/aircraft/view/aircraft-view.module').then(m => m.AircraftViewModule)},
             {path: 'aircraft', loadChildren: () => import('app/modules/aircraft/form/aircraft-form.module').then(m => m.AircraftFormModule)},
             {path: 'logbook/view', loadChildren: () => import('app/modules/logbook/view/logbook-view.module').then(m => m.LogbookViewModule)},
+            {path: 'logbook', loadChildren: () => import('app/modules/logbook/form/logbook-form.module').then(m => m.LogbookFormModule)},
         ]
     }
 ];

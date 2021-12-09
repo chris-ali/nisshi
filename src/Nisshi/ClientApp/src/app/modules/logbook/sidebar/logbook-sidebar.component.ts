@@ -56,6 +56,18 @@ import { LogbookOptions } from 'app/core/preferences/preferences.types';
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
+                                [formControlName]="'showNight'"
+                                [color]="'primary'">
+                                Night
+                            </mat-checkbox>
+                            <mat-checkbox
+                                class="mb-2"
+                                [formControlName]="'showCrossCountry'"
+                                [color]="'primary'">
+                                Cross Country
+                            </mat-checkbox>
+                            <mat-checkbox
+                                class="mb-2"
                                 [formControlName]="'showPIC'"
                                 [color]="'primary'">
                                 PIC
@@ -174,6 +186,8 @@ export class LogbookSidebarComponent implements OnInit
             showLandings: [true],
             showNightLandings: [true],
             showFullStopLandings: [true],
+            showNight: [true],
+            showCrossCountry: [true],
             showPIC: [true],
             showSIC: [true],
             showMultiEngine: [true],
