@@ -3,8 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LogbookEntryService } from 'app/core/logbookentry/logbookentry.service';
 import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
-import { Manufacturer } from 'app/core/manufacturer/manufacturer.types';
-import { Model } from 'app/core/model/model.types';
 import { AircraftService } from 'app/core/aircraft/aircraft.service';
 import { AirportService } from 'app/core/airport/airport.service';
 import { Aircraft } from 'app/core/aircraft/aircraft.types';
@@ -59,6 +57,7 @@ export class LogbookFormComponent implements OnInit
             numFullStopLandings: [0, [Validators.min(0), Validators.max(999999)]],
             crossCountry: [0, [Validators.min(0), Validators.max(1000)]],
             multiEngine: [0, [Validators.min(0), Validators.max(1000)]],
+            turbine: [0, [Validators.min(0), Validators.max(1000)]],
             night: [0, [Validators.min(0), Validators.max(1000)]],
             imc: [0, [Validators.min(0), Validators.max(1000)]],
             simulatedInstrument: [0, [Validators.min(0), Validators.max(1000)]],
@@ -105,16 +104,6 @@ export class LogbookFormComponent implements OnInit
             this.addLogbookEntry();
         else
             this.editLogbookEntry();
-    }
-
-    /**
-     * On manufacturer dropdown selection change, get
-     * models for manufacturers and then fill in models dropdown
-     *
-     * @param id
-     */
-    selectedManufacturerChanged(id: number): void
-    {
     }
 
     // -----------------------------------------------------------------------------------------------------

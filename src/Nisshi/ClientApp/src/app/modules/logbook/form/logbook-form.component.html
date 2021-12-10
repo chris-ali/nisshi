@@ -94,7 +94,7 @@
                                 Total flight duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('totalFlightTime').hasError('max')">
-                                Total flight duration must be less than 1000000 hours
+                                Total flight duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -224,7 +224,7 @@
                                 Cross country duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('crossCountry').hasError('max')">
-                                Cross country duration must be less than 1000000 hours
+                                Cross country duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -244,7 +244,27 @@
                                 Multi engine duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('multiEngine').hasError('max')">
-                                Multi engine duration must be less than 1000000 hours
+                                Multi engine duration must be less than 1000 hours
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showTurbine">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Turbine</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the turbine duration'"
+                                [formControlName]="'turbine'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('turbine').hasError('min')">
+                                Turbine duration must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('turbine').hasError('max')">
+                                Turbine duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -264,7 +284,7 @@
                                 Night duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('night').hasError('max')">
-                                Night duration must be less than 1000000 hours
+                                Night duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -284,7 +304,7 @@
                                 Actual IMC duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('imc').hasError('max')">
-                                Actual IMC duration must be less than 1000000 hours
+                                Actual IMC duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -304,7 +324,7 @@
                                 Simulated IMC duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('simulatedInstrument').hasError('max')">
-                                Simulated IMC duration must be less than 1000000 hours
+                                Simulated IMC duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -324,7 +344,7 @@
                                 Received dual instruction duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('dualReceived').hasError('max')">
-                                Received dual instruction duration must be less than 1000000 hours
+                                Received dual instruction duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -344,7 +364,7 @@
                                 Given dual instruction duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('dualGiven').hasError('max')">
-                                Given dual instruction duration must be less than 1000000 hours
+                                Given dual instruction duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -364,7 +384,7 @@
                                 PIC duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('pic').hasError('max')">
-                                PIC duration must be less than 1000000 hours
+                                PIC duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -384,7 +404,7 @@
                                 SIC duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('sic').hasError('max')">
-                                SIC duration must be less than 1000000 hours
+                                SIC duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -404,7 +424,7 @@
                                 Ground simulator duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('groundSim').hasError('max')">
-                                Ground simulator duration must be less than 1000000 hours
+                                Ground simulator duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -424,7 +444,7 @@
                                 Hobbs start time must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('hobbsStart').hasError('max')">
-                                Hobbs start time must be less than 1000000 hours
+                                Hobbs start time must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -444,7 +464,7 @@
                                 Hobbs end time must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('hobbsEnd').hasError('max')">
-                                Hobbs end time must be less than 1000000 hours
+                                Hobbs end time must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>

@@ -20,6 +20,7 @@ export interface LogbookOptions
     showCrossCountry: boolean;
     showNight: boolean;
     showMultiEngine: boolean;
+    showTurbine: boolean;
     showSimulatedInstrument: boolean;
     showIMC: boolean;
     showDualReceived: boolean;

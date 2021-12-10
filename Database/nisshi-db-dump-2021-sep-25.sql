@@ -42,7 +42,6 @@ CREATE TABLE `users` (
   `CFIExpiration` datetime DEFAULT NULL COMMENT 'Expiration date of certificate',
   `License` varchar(45) DEFAULT NULL COMMENT 'Pilot''s license',
   `CertificateNumber` varchar(45) DEFAULT NULL COMMENT 'Pilot certificate number',
-  `Preferences` json DEFAULT NULL COMMENT 'Additional preferences, in JSON dictionary format.',
   `DateCreated` date DEFAULT NULL,
   `DateUpdated` date DEFAULT NULL,
   PRIMARY KEY (`Id`)
@@ -223,6 +222,7 @@ CREATE TABLE `logbookentries` (
   `NumFullStopLandings` int(10) unsigned NOT NULL DEFAULT '0',
   `CrossCountry` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
   `MultiEngine` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
+  `Turbine` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
   `Night` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
   `IMC` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
   `SimulatedInstrument` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',

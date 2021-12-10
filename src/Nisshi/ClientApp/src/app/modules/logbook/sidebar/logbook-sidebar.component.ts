@@ -86,6 +86,12 @@ import { LogbookOptions } from 'app/core/preferences/preferences.types';
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
+                                [formControlName]="'showTurbine'"
+                                [color]="'primary'">
+                                Turbine
+                            </mat-checkbox>
+                            <mat-checkbox
+                                class="mb-2"
                                 [formControlName]="'showSimulatedInstrument'"
                                 [color]="'primary'">
                                 Simulated IMC
@@ -191,6 +197,7 @@ export class LogbookSidebarComponent implements OnInit
             showPIC: [true],
             showSIC: [true],
             showMultiEngine: [true],
+            showTurbine: [true],
             showSimulatedInstrument: [true],
             showIMC: [true],
             showDualReceived: [true],

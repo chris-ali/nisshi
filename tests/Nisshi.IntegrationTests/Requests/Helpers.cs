@@ -143,6 +143,7 @@ namespace Nisshi.IntegrationTests.Requests
                 Night = RandomDuration(rand),
                 PIC = RandomDuration(rand),
                 SIC = RandomDuration(rand),
+                Turbine = RandomDuration(rand),
                 TotalFlightTime = RandomDuration(rand),
                 SimulatedInstrument = RandomDuration(rand),
                 NumFullStopLandings = rand.Next(0, 10),

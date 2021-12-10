@@ -66,6 +66,7 @@ export class PreferencesService
                 showPIC: true,
                 showSIC: true,
                 showMultiEngine: true,
+                showTurbine: true,
                 showSimulatedInstrument: true,
                 showIMC: true,
                 showDualReceived: true,

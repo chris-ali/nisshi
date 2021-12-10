@@ -77,7 +77,6 @@ namespace Nisshi.Requests.Users
                 toBeUpdated.LastName = toUpdateWith.LastName;
                 toBeUpdated.License = toUpdateWith.License;
                 toBeUpdated.MonthsToMedical = toUpdateWith.MonthsToMedical;
-                toBeUpdated.Preferences = toUpdateWith.Preferences;
             }
         }
     }

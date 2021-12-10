@@ -14,5 +14,4 @@ export interface User
     cfiExpiration?: Date;
     license?: string;
     certificateNumber?: string;
-    preferences: Preferences;
 }

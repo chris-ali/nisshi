@@ -12,7 +12,7 @@
             #matDrawer>
 
             <logbook-sidebar
-                (preferencesChanged)="onPreferencesChanged($event)"
+                (preferencesChanged)="matDrawer.toggle(); onPreferencesChanged($event);"
                 [logbookOptions]="preferences.logbookOptions"></logbook-sidebar>
         </mat-drawer>
 
@@ -175,6 +175,13 @@
                         *ngIf="this.preferences.logbookOptions.showMultiEngine"
                         [summaryFunc]="sumColumn"
                         [width]="50">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Turbine"
+                        prop="turbine"
+                        *ngIf="this.preferences.logbookOptions.showTurbine"
+                        [summaryFunc]="sumColumn"
+                        [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Simulated IMC"
