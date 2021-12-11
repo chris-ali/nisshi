@@ -88,11 +88,6 @@ namespace Nisshi.Models.Users
         public string CertificateNumber { get; set; }
 
         /// <summary>
-        /// Additional user preferences serialized in JSON dictionary forma
-        /// </summary>
-        public string Preferences { get; set; }
-
-        /// <summary>
         /// Associated aircraft belonging to the user
         /// </summary>
         [JsonIgnore]

@@ -81,6 +81,7 @@ namespace Nisshi.Requests.LogbookEntries
                 toBeUpdated.Route = toUpdateWith.Route;
                 toBeUpdated.SIC = toUpdateWith.SIC;
                 toBeUpdated.SimulatedInstrument = toUpdateWith.SimulatedInstrument;
+                toBeUpdated.Turbine = toUpdateWith.Turbine;
                 toBeUpdated.TotalFlightTime = toUpdateWith.TotalFlightTime;
                 toBeUpdated.IdAircraft = toUpdateWith.IdAircraft;
             }

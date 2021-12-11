@@ -1,7 +1,10 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { take } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import { AvailableLangs, TranslocoService } from '@ngneat/transloco';
 import { FuseNavigationService, FuseVerticalNavigationComponent } from '@fuse/components/navigation';
+import { AppConfig } from 'app/core/config/app.config';
+import { FuseConfigService } from '@fuse/services/config';
+import { Subject } from 'rxjs';
 
 @Component({
     selector       : 'languages',
@@ -15,6 +18,7 @@ export class LanguagesComponent implements OnInit, OnDestroy
     availableLangs: AvailableLangs;
     activeLang: string;
     flagCodes: any;
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
      * Constructor
@@ -22,7 +26,8 @@ export class LanguagesComponent implements OnInit, OnDestroy
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseNavigationService: FuseNavigationService,
-        private _translocoService: TranslocoService
+        private _translocoService: TranslocoService,
+        private _fuseConfigService: FuseConfigService
     )
     {
     }
@@ -36,6 +41,13 @@ export class LanguagesComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+        // Use the app config to set language preferences
+        this._fuseConfigService.config$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((config: AppConfig) => {
+                this._translocoService.setActiveLang(config.language);
+            });
+
         // Get the available languages from transloco
         this.availableLangs = this._translocoService.getAvailableLangs();
 
@@ -62,6 +74,8 @@ export class LanguagesComponent implements OnInit, OnDestroy
      */
     ngOnDestroy(): void
     {
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -77,6 +91,9 @@ export class LanguagesComponent implements OnInit, OnDestroy
     {
         // Set the active lang
         this._translocoService.setActiveLang(lang);
+
+        // Update the app config
+        this._fuseConfigService.config = {language: lang};
     }
 
     /**

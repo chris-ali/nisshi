@@ -63,11 +63,6 @@ namespace Nisshi.Models.Users
         /// </summary>
         public string CertificateNumber { get; set; }
 
-        /// <summary>
-        /// Additional user preferences serialized in JSON dictionary forma
-        /// </summary>
-        public string Preferences { get; set; }
-
         public class ProfileValidator : AbstractValidator<Profile>
         {
             public ProfileValidator()

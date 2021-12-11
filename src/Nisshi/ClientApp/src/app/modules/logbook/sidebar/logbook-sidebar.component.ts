@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
-import { LogbookOptions } from 'app/core/preferences/preferences.types';
+import { LogbookOptions } from 'app/core/config/app.config';
+
 
 @Component({
     selector     : 'logbook-sidebar',
@@ -83,6 +84,12 @@ import { LogbookOptions } from 'app/core/preferences/preferences.types';
                                 [formControlName]="'showMultiEngine'"
                                 [color]="'primary'">
                                 Multi
+                            </mat-checkbox>
+                            <mat-checkbox
+                                class="mb-2"
+                                [formControlName]="'showTurbine'"
+                                [color]="'primary'">
+                                Turbine
                             </mat-checkbox>
                             <mat-checkbox
                                 class="mb-2"
@@ -191,6 +198,7 @@ export class LogbookSidebarComponent implements OnInit
             showPIC: [true],
             showSIC: [true],
             showMultiEngine: [true],
+            showTurbine: [true],
             showSimulatedInstrument: [true],
             showIMC: [true],
             showDualReceived: [true],

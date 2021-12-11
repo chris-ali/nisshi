@@ -1,12 +1,14 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
 import { LogbookEntryService } from 'app/core/logbookentry/logbookentry.service';
 import { LogbookEntry } from 'app/core/logbookentry/logbookentry.types';
-import { PreferencesService } from 'app/core/preferences/preferences.service';
-import { LogbookOptions, Preferences } from 'app/core/preferences/preferences.types';
+import { AppConfig, LogbookOptions } from 'app/core/config/app.config';
+import { FuseConfigService } from '@fuse/services/config';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'logbook-view',
@@ -14,7 +16,7 @@ import { LogbookOptions, Preferences } from 'app/core/preferences/preferences.ty
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./logbook-view.scss']
 })
-export class LogbookViewComponent implements OnInit
+export class LogbookViewComponent implements OnInit, OnDestroy
 {
     @ViewChild('logbookTable') table: any;
     enableSummary = true;
@@ -25,14 +27,15 @@ export class LogbookViewComponent implements OnInit
     drawerMode: 'over' | 'side' = 'side';
     drawerOpened: boolean = false;
 
-    preferences: Preferences;
+    appConfig: AppConfig;
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
      * Constructor
      */
     constructor(private logbookEntryService: LogbookEntryService,
                 public translateService: TranslocoService,
-                private preferencesService: PreferencesService,
+                private fuseConfigService: FuseConfigService,
                 private confirmation: ConfirmationService,
                 private router: Router,
                 private route: ActivatedRoute)
@@ -49,8 +52,23 @@ export class LogbookViewComponent implements OnInit
             this.logbookEntries = entries;
         });
 
-        this.preferences = this.preferencesService.preferences$;
+        // Subscribe to config changes
+        this.fuseConfigService.config$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((config: AppConfig) => {
+                this.appConfig = config;
+            });
     }
+
+    /**
+     * On destroy
+     */
+     ngOnDestroy(): void
+     {
+         // Unsubscribe from all subscriptions
+         this._unsubscribeAll.next();
+         this._unsubscribeAll.complete();
+     }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -129,9 +147,8 @@ export class LogbookViewComponent implements OnInit
      *
      * @param options
      */
-    onPreferencesChanged(options: LogbookOptions): void
+    onAppConfigChanged(options: LogbookOptions): void
     {
-        this.preferences.logbookOptions = options;
-        this.preferencesService.preferences = this.preferences;
+        this.fuseConfigService.config = {logbookOptions: options};
     }
 }

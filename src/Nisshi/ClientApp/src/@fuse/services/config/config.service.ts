@@ -33,10 +33,19 @@ export class FuseConfigService
 
         // Execute the observable
         this._config.next(config);
+
+        // Persist the config in localStorage
+        localStorage.setItem('appConfig', JSON.stringify(config));
     }
 
     get config$(): Observable<any>
     {
+        // Get config from localStorage and update observable if found
+        var fromStorage = localStorage.getItem('appConfig');
+
+        if (fromStorage != null && fromStorage != "undefined")
+            this._config.next(JSON.parse(fromStorage));
+
         return this._config.asObservable();
     }
 

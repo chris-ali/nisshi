@@ -94,7 +94,7 @@
                                 Total flight duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('totalFlightTime').hasError('max')">
-                                Total flight duration must be less than 1000000 hours
+                                Total flight duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -111,7 +111,7 @@
                     </p>
                 </div>
                 <div class="flex-auto min-w-64">
-                    <div class="flex" *ngIf="this.preferences.logbookOptions.showComments">
+                    <div class="flex" *ngIf="this.appConfig.logbookOptions.showComments">
                         <mat-form-field class="fuse-mat-textarea flex-auto">
                             <mat-label>Comments</mat-label>
                             <textarea
@@ -128,7 +128,7 @@
                     </div>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 min-w-64 justify-between">
-                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showApproaches">
+                    <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showApproaches">
                         <mat-form-field class="flex-auto">
                             <mat-label>Number of Instrument Approaches</mat-label>
                             <input
@@ -148,7 +148,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showLandings">
+                    <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showLandings">
                         <mat-form-field class="flex-auto">
                             <mat-label>Number of Landings</mat-label>
                             <input
@@ -168,7 +168,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showNightLandings">
+                    <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showNightLandings">
                         <mat-form-field class="flex-auto">
                             <mat-label>Number of Night Landings</mat-label>
                             <input
@@ -188,7 +188,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showFullStopLandings">
+                    <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showFullStopLandings">
                         <mat-form-field class="flex-auto">
                             <mat-label>Number of Full-Stop Landings</mat-label>
                             <input
@@ -208,7 +208,7 @@
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showCrossCountry">
+                    <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showCrossCountry">
                         <mat-form-field class="flex-auto">
                             <mat-label>Cross Country</mat-label>
                             <input
@@ -224,11 +224,11 @@
                                 Cross country duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('crossCountry').hasError('max')">
-                                Cross country duration must be less than 1000000 hours
+                                Cross country duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showMultiEngine">
+                    <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showMultiEngine">
                         <mat-form-field class="flex-auto">
                             <mat-label>Multi Engine</mat-label>
                             <input
@@ -244,11 +244,31 @@
                                 Multi engine duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('multiEngine').hasError('max')">
-                                Multi engine duration must be less than 1000000 hours
+                                Multi engine duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showNight">
+                    <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showTurbine">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Turbine</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the turbine duration'"
+                                [formControlName]="'turbine'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('turbine').hasError('min')">
+                                Turbine duration must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('turbine').hasError('max')">
+                                Turbine duration must be less than 1000 hours
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showNight">
                         <mat-form-field class="flex-auto">
                             <mat-label>Night</mat-label>
                             <input
@@ -264,11 +284,11 @@
                                 Night duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('night').hasError('max')">
-                                Night duration must be less than 1000000 hours
+                                Night duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showIMC">
+                    <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showIMC">
                         <mat-form-field class="flex-auto">
                             <mat-label>Actual IMC</mat-label>
                             <input
@@ -284,11 +304,11 @@
                                 Actual IMC duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('imc').hasError('max')">
-                                Actual IMC duration must be less than 1000000 hours
+                                Actual IMC duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showSimulatedInstrument">
+                    <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showSimulatedInstrument">
                         <mat-form-field class="flex-auto">
                             <mat-label>Simulated IMC</mat-label>
                             <input
@@ -304,11 +324,11 @@
                                 Simulated IMC duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('simulatedInstrument').hasError('max')">
-                                Simulated IMC duration must be less than 1000000 hours
+                                Simulated IMC duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showDualReceived">
+                    <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showDualReceived">
                         <mat-form-field class="flex-auto">
                             <mat-label>Dual Received</mat-label>
                             <input
@@ -324,11 +344,11 @@
                                 Received dual instruction duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('dualReceived').hasError('max')">
-                                Received dual instruction duration must be less than 1000000 hours
+                                Received dual instruction duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showDualGiven">
+                    <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showDualGiven">
                         <mat-form-field class="flex-auto">
                             <mat-label>Dual Given</mat-label>
                             <input
@@ -344,11 +364,11 @@
                                 Given dual instruction duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('dualGiven').hasError('max')">
-                                Given dual instruction duration must be less than 1000000 hours
+                                Given dual instruction duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showPIC">
+                    <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showPIC">
                         <mat-form-field class="flex-auto">
                             <mat-label>PIC</mat-label>
                             <input
@@ -364,11 +384,11 @@
                                 PIC duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('pic').hasError('max')">
-                                PIC duration must be less than 1000000 hours
+                                PIC duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showSIC">
+                    <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showSIC">
                         <mat-form-field class="flex-auto">
                             <mat-label>SIC</mat-label>
                             <input
@@ -384,11 +404,11 @@
                                 SIC duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('sic').hasError('max')">
-                                SIC duration must be less than 1000000 hours
+                                SIC duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex mx-2" *ngIf="this.preferences.logbookOptions.showGroundSim">
+                    <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showGroundSim">
                         <mat-form-field class="flex-auto">
                             <mat-label>Ground Simulator</mat-label>
                             <input
@@ -404,7 +424,7 @@
                                 Ground simulator duration must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('groundSim').hasError('max')">
-                                Ground simulator duration must be less than 1000000 hours
+                                Ground simulator duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -424,7 +444,7 @@
                                 Hobbs start time must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('hobbsStart').hasError('max')">
-                                Hobbs start time must be less than 1000000 hours
+                                Hobbs start time must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -444,7 +464,7 @@
                                 Hobbs end time must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('hobbsEnd').hasError('max')">
-                                Hobbs end time must be less than 1000000 hours
+                                Hobbs end time must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>

@@ -41,14 +41,13 @@ namespace Nisshi.IntegrationTests.Requests.Users
                 MonthsToMedical = 5,
                 PasswordAnswer = "Test answer.",
                 PasswordQuestion = "Test question?",
-                Preferences = "{option: value, option2: value2}"
             };
 
             var updateResponse = await fixture.SendAsync(new UpdateProfile.Command(profileRequest));
 
             Assert.NotNull(updateResponse);
 
-            // Need to call a request, no idea why EF context.Find() doesn't work for User 
+            // Need to call a request, no idea why EF context.Find() doesn't work for User
             var fromDb = await fixture.SendAsync(new GetCurrent.Query());
 
             Assert.NotNull(fromDb);
@@ -66,7 +65,6 @@ namespace Nisshi.IntegrationTests.Requests.Users
             Assert.Equal(fromDb.License, updateResponse.License);
             Assert.Equal(fromDb.PasswordAnswer, updateResponse.PasswordAnswer);
             Assert.Equal(fromDb.PasswordQuestion, updateResponse.PasswordQuestion);
-            Assert.Equal(fromDb.Preferences, updateResponse.Preferences);
         }
 
         [Fact]
@@ -96,7 +94,6 @@ namespace Nisshi.IntegrationTests.Requests.Users
                 MonthsToMedical = 5,
                 PasswordAnswer = "Test answer.",
                 PasswordQuestion = "Test question?",
-                Preferences = "{option: value, option2: value2}"
             };
 
             await Assert.ThrowsAsync<DomainException>(() => fixture.SendAsync(new UpdateProfile.Command(profileRequest)));

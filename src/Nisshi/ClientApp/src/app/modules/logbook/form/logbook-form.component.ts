@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LogbookEntryService } from 'app/core/logbookentry/logbookentry.service';
 import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
-import { Manufacturer } from 'app/core/manufacturer/manufacturer.types';
-import { Model } from 'app/core/model/model.types';
 import { AircraftService } from 'app/core/aircraft/aircraft.service';
 import { AirportService } from 'app/core/airport/airport.service';
 import { Aircraft } from 'app/core/aircraft/aircraft.types';
 import { Airport } from 'app/core/airport/airport.types';
-import { Preferences } from 'app/core/preferences/preferences.types';
-import { PreferencesService } from 'app/core/preferences/preferences.service';
+import { AppConfig } from 'app/core/config/app.config';
+import { Subject } from 'rxjs';
+import { FuseConfigService } from '@fuse/services/config';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * Form that adds/edits an logbook
@@ -19,14 +19,15 @@ import { PreferencesService } from 'app/core/preferences/preferences.service';
     selector: 'logbook-form',
     templateUrl: './logbook-form.component.html'
 })
-export class LogbookFormComponent implements OnInit
+export class LogbookFormComponent implements OnInit, OnDestroy
 {
     id: number;
     isAddMode: boolean;
     form: FormGroup;
     aircraft: Aircraft[];
     airports: Airport[];
-    preferences: Preferences;
+    appConfig: AppConfig;
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
      * Constructor
@@ -35,7 +36,7 @@ export class LogbookFormComponent implements OnInit
                 private logbookEntryService: LogbookEntryService,
                 private aircraftService: AircraftService,
                 private airportService: AirportService,
-                private preferencesService: PreferencesService,
+                private fuseConfigService: FuseConfigService,
                 private route: ActivatedRoute,
                 private router: Router,
                 private confirmation: ConfirmationService)
@@ -59,6 +60,7 @@ export class LogbookFormComponent implements OnInit
             numFullStopLandings: [0, [Validators.min(0), Validators.max(999999)]],
             crossCountry: [0, [Validators.min(0), Validators.max(1000)]],
             multiEngine: [0, [Validators.min(0), Validators.max(1000)]],
+            turbine: [0, [Validators.min(0), Validators.max(1000)]],
             night: [0, [Validators.min(0), Validators.max(1000)]],
             imc: [0, [Validators.min(0), Validators.max(1000)]],
             simulatedInstrument: [0, [Validators.min(0), Validators.max(1000)]],
@@ -86,7 +88,12 @@ export class LogbookFormComponent implements OnInit
                 });
         }
 
-        this.preferences = this.preferencesService.preferences$;
+        // Subscribe to config changes
+        this.fuseConfigService.config$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((config: AppConfig) => {
+                this.appConfig = config;
+            });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -108,14 +115,14 @@ export class LogbookFormComponent implements OnInit
     }
 
     /**
-     * On manufacturer dropdown selection change, get
-     * models for manufacturers and then fill in models dropdown
-     *
-     * @param id
+     * On destroy
      */
-    selectedManufacturerChanged(id: number): void
-    {
-    }
+     ngOnDestroy(): void
+     {
+         // Unsubscribe from all subscriptions
+         this._unsubscribeAll.next();
+         this._unsubscribeAll.complete();
+     }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Private methods

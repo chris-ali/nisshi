@@ -12,8 +12,8 @@
             #matDrawer>
 
             <logbook-sidebar
-                (preferencesChanged)="onPreferencesChanged($event)"
-                [logbookOptions]="preferences.logbookOptions"></logbook-sidebar>
+                (preferencesChanged)="matDrawer.toggle(); onAppConfigChanged($event);"
+                [logbookOptions]="appConfig.logbookOptions"></logbook-sidebar>
         </mat-drawer>
 
         <!-- Drawer content -->
@@ -56,7 +56,7 @@
 
                 <ngx-datatable
                     #logbookTable
-                    class="material fullscreen {{this.preferences.theme == 'dark' ? 'dark' : ''}}"
+                    class="material fullscreen {{this.appConfig.theme == 'dark' ? 'dark' : ''}}"
                     [rows]="logbookEntries"
                     [columnMode]="ColumnMode.standard"
                     [headerHeight]="50"
@@ -102,126 +102,133 @@
                     <ngx-datatable-column
                         name="Aircraft"
                         prop="aircraft.tailNumber"
-                        *ngIf="this.preferences.logbookOptions.showTailNumber"
+                        *ngIf="this.appConfig.logbookOptions.showTailNumber"
                         [sortable]="false"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Type"
                         prop="aircraft.model.typeName"
-                        *ngIf="this.preferences.logbookOptions.showTypeName"
+                        *ngIf="this.appConfig.logbookOptions.showTypeName"
                         [sortable]="false"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Approaches"
                         prop="numInstrumentApproaches"
-                        *ngIf="this.preferences.logbookOptions.showApproaches"
+                        *ngIf="this.appConfig.logbookOptions.showApproaches"
                         [summaryFunc]="sumColumn"
                         [width]="100">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Landings"
                         prop="numLandings"
-                        *ngIf="this.preferences.logbookOptions.showLandings"
+                        *ngIf="this.appConfig.logbookOptions.showLandings"
                         [summaryFunc]="sumColumn"
                         [width]="100">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Night Landings"
                         prop="numNightLandings"
-                        *ngIf="this.preferences.logbookOptions.showNightLandings"
+                        *ngIf="this.appConfig.logbookOptions.showNightLandings"
                         [summaryFunc]="sumColumn"
                         [width]="110">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Full Stop Landings"
                         prop="numFullStopLandings"
-                        *ngIf="this.preferences.logbookOptions.showFullStopLandings"
+                        *ngIf="this.appConfig.logbookOptions.showFullStopLandings"
                         [summaryFunc]="sumColumn"
                         [width]="130">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Night"
                         prop="night"
-                        *ngIf="this.preferences.logbookOptions.showNight"
+                        *ngIf="this.appConfig.logbookOptions.showNight"
                         [summaryFunc]="sumColumn"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Cross Country"
                         prop="crossCountry"
-                        *ngIf="this.preferences.logbookOptions.showCrossCountry"
+                        *ngIf="this.appConfig.logbookOptions.showCrossCountry"
                         [summaryFunc]="sumColumn"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="PIC"
                         prop="pic"
-                        *ngIf="this.preferences.logbookOptions.showPIC"
+                        *ngIf="this.appConfig.logbookOptions.showPIC"
                         [summaryFunc]="sumColumn"
                         [width]="50">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="SIC"
                         prop="sic"
-                        *ngIf="this.preferences.logbookOptions.showSIC"
+                        *ngIf="this.appConfig.logbookOptions.showSIC"
                         [summaryFunc]="sumColumn"
                         [width]="50">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Multi"
                         prop="multiEngine"
-                        *ngIf="this.preferences.logbookOptions.showMultiEngine"
+                        *ngIf="this.appConfig.logbookOptions.showMultiEngine"
                         [summaryFunc]="sumColumn"
                         [width]="50">
                     </ngx-datatable-column>
                     <ngx-datatable-column
+                        name="Turbine"
+                        prop="turbine"
+                        *ngIf="this.appConfig.logbookOptions.showTurbine"
+                        [summaryFunc]="sumColumn"
+                        [width]="80">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
                         name="Simulated IMC"
                         prop="simulatedInstrument"
-                        *ngIf="this.preferences.logbookOptions.showSimulatedInstrument"
+                        *ngIf="this.appConfig.logbookOptions.showSimulatedInstrument"
                         [summaryFunc]="sumColumn"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Actual IMC"
                         prop="imc"
-                        *ngIf="this.preferences.logbookOptions.showIMC"
+                        *ngIf="this.appConfig.logbookOptions.showIMC"
                         [summaryFunc]="sumColumn"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Dual Received"
                         prop="dualReceived"
-                        *ngIf="this.preferences.logbookOptions.showDualReceived"
+                        *ngIf="this.appConfig.logbookOptions.showDualReceived"
                         [summaryFunc]="sumColumn"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Dual Given"
                         prop="dualGiven"
-                        *ngIf="this.preferences.logbookOptions.showDualGiven"
+                        *ngIf="this.appConfig.logbookOptions.showDualGiven"
                         [summaryFunc]="sumColumn"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Ground Sim"
                         prop="groundSim"
-                        *ngIf="this.preferences.logbookOptions.showGroundSim"
+                        *ngIf="this.appConfig.logbookOptions.showGroundSim"
                         [summaryFunc]="sumColumn"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Total Time"
                         prop="totalFlightTime"
-                        *ngIf="this.preferences.logbookOptions.showTotalTime"
+                        *ngIf="this.appConfig.logbookOptions.showTotalTime"
                         [summaryFunc]="sumColumn"
                         [width]="80">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Comments"
                         prop="comments"
-                        *ngIf="this.preferences.logbookOptions.showComments"
+                        *ngIf="this.appConfig.logbookOptions.showComments"
                         [sortable]="false">
                     </ngx-datatable-column>
 

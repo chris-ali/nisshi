@@ -27,6 +27,8 @@ namespace Nisshi.Models
 
         public decimal MultiEngine { get; set; }
 
+        public decimal Turbine { get; set; }
+
         public decimal Night { get; set; }
 
         public decimal IMC { get; set; }
