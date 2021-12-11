@@ -4,9 +4,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FuseConfigService } from '@fuse/services/config';
 import { FuseTailwindService } from '@fuse/services/tailwind';
-import { appConfig, AppConfig, Scheme, Theme } from 'app/core/config/app.config';
+import { AppConfig, Scheme, Theme } from 'app/core/config/app.config';
 import { Layout } from 'app/layout/layout.types';
-import { AppConfigService } from 'app/core/config/appconfig.service';
 
 @Component({
     selector     : 'settings',
@@ -38,8 +37,7 @@ export class SettingsComponent implements OnInit, OnDestroy
     constructor(
         private _router: Router,
         private _fuseConfigService: FuseConfigService,
-        private _fuseTailwindService: FuseTailwindService,
-        private _appConfigService: AppConfigService
+        private _fuseTailwindService: FuseTailwindService
     )
     {
     }
@@ -68,8 +66,6 @@ export class SettingsComponent implements OnInit, OnDestroy
                 // Store the config
                 this.config = config;
             });
-
-        //this.config = this._appConfigService.appConfig$;
     }
 
     /**
@@ -103,8 +99,6 @@ export class SettingsComponent implements OnInit, OnDestroy
 
             // Set the config
             this._fuseConfigService.config = {layout};
-
-            this._appConfigService.appConfig = this._fuseConfigService.config;
         });
     }
 
@@ -116,8 +110,6 @@ export class SettingsComponent implements OnInit, OnDestroy
     setScheme(scheme: Scheme): void
     {
         this._fuseConfigService.config = {scheme};
-
-        this._appConfigService.appConfig = this._fuseConfigService.config;
     }
 
     /**
@@ -128,7 +120,5 @@ export class SettingsComponent implements OnInit, OnDestroy
     setTheme(theme: Theme): void
     {
         this._fuseConfigService.config = {theme};
-
-        this._appConfigService.appConfig = this._fuseConfigService.config;
     }
 }

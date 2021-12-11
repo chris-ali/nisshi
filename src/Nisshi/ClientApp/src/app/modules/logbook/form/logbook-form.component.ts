@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LogbookEntryService } from 'app/core/logbookentry/logbookentry.service';
@@ -8,7 +8,9 @@ import { AirportService } from 'app/core/airport/airport.service';
 import { Aircraft } from 'app/core/aircraft/aircraft.types';
 import { Airport } from 'app/core/airport/airport.types';
 import { AppConfig } from 'app/core/config/app.config';
-import { AppConfigService } from 'app/core/config/appconfig.service';
+import { Subject } from 'rxjs';
+import { FuseConfigService } from '@fuse/services/config';
+import { takeUntil } from 'rxjs/operators';
 
 /**
  * Form that adds/edits an logbook
@@ -17,7 +19,7 @@ import { AppConfigService } from 'app/core/config/appconfig.service';
     selector: 'logbook-form',
     templateUrl: './logbook-form.component.html'
 })
-export class LogbookFormComponent implements OnInit
+export class LogbookFormComponent implements OnInit, OnDestroy
 {
     id: number;
     isAddMode: boolean;
@@ -25,6 +27,7 @@ export class LogbookFormComponent implements OnInit
     aircraft: Aircraft[];
     airports: Airport[];
     appConfig: AppConfig;
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
      * Constructor
@@ -33,7 +36,7 @@ export class LogbookFormComponent implements OnInit
                 private logbookEntryService: LogbookEntryService,
                 private aircraftService: AircraftService,
                 private airportService: AirportService,
-                private appConfigService: AppConfigService,
+                private fuseConfigService: FuseConfigService,
                 private route: ActivatedRoute,
                 private router: Router,
                 private confirmation: ConfirmationService)
@@ -85,7 +88,12 @@ export class LogbookFormComponent implements OnInit
                 });
         }
 
-        this.appConfig = this.appConfigService.appConfig$;
+        // Subscribe to config changes
+        this.fuseConfigService.config$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((config: AppConfig) => {
+                this.appConfig = config;
+            });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -105,6 +113,16 @@ export class LogbookFormComponent implements OnInit
         else
             this.editLogbookEntry();
     }
+
+    /**
+     * On destroy
+     */
+     ngOnDestroy(): void
+     {
+         // Unsubscribe from all subscriptions
+         this._unsubscribeAll.next();
+         this._unsubscribeAll.complete();
+     }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Private methods

@@ -1,12 +1,14 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
 import { LogbookEntryService } from 'app/core/logbookentry/logbookentry.service';
 import { LogbookEntry } from 'app/core/logbookentry/logbookentry.types';
-import { AppConfigService } from 'app/core/config/appconfig.service';
 import { AppConfig, LogbookOptions } from 'app/core/config/app.config';
+import { FuseConfigService } from '@fuse/services/config';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'logbook-view',
@@ -14,7 +16,7 @@ import { AppConfig, LogbookOptions } from 'app/core/config/app.config';
   encapsulation: ViewEncapsulation.None,
   styleUrls: ['./logbook-view.scss']
 })
-export class LogbookViewComponent implements OnInit
+export class LogbookViewComponent implements OnInit, OnDestroy
 {
     @ViewChild('logbookTable') table: any;
     enableSummary = true;
@@ -26,13 +28,14 @@ export class LogbookViewComponent implements OnInit
     drawerOpened: boolean = false;
 
     appConfig: AppConfig;
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
      * Constructor
      */
     constructor(private logbookEntryService: LogbookEntryService,
                 public translateService: TranslocoService,
-                private appConfigService: AppConfigService,
+                private fuseConfigService: FuseConfigService,
                 private confirmation: ConfirmationService,
                 private router: Router,
                 private route: ActivatedRoute)
@@ -49,8 +52,23 @@ export class LogbookViewComponent implements OnInit
             this.logbookEntries = entries;
         });
 
-        this.appConfig = this.appConfigService.appConfig$;
+        // Subscribe to config changes
+        this.fuseConfigService.config$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((config: AppConfig) => {
+                this.appConfig = config;
+            });
     }
+
+    /**
+     * On destroy
+     */
+     ngOnDestroy(): void
+     {
+         // Unsubscribe from all subscriptions
+         this._unsubscribeAll.next();
+         this._unsubscribeAll.complete();
+     }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -131,7 +149,6 @@ export class LogbookViewComponent implements OnInit
      */
     onAppConfigChanged(options: LogbookOptions): void
     {
-        this.appConfig.logbookOptions = options;
-        this.appConfigService.appConfig = this.appConfig;
+        this.fuseConfigService.config = {logbookOptions: options};
     }
 }
