@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
-import { LogbookOptions } from 'app/core/preferences/preferences.types';
+import { LogbookOptions } from 'app/core/config/app.config';
+
 
 @Component({
     selector     : 'logbook-sidebar',

@@ -5,8 +5,8 @@ import { ColumnMode } from '@swimlane/ngx-datatable';
 import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
 import { LogbookEntryService } from 'app/core/logbookentry/logbookentry.service';
 import { LogbookEntry } from 'app/core/logbookentry/logbookentry.types';
-import { PreferencesService } from 'app/core/preferences/preferences.service';
-import { LogbookOptions, Preferences } from 'app/core/preferences/preferences.types';
+import { AppConfigService } from 'app/core/config/appconfig.service';
+import { AppConfig, LogbookOptions } from 'app/core/config/app.config';
 
 @Component({
   selector: 'logbook-view',
@@ -25,14 +25,14 @@ export class LogbookViewComponent implements OnInit
     drawerMode: 'over' | 'side' = 'side';
     drawerOpened: boolean = false;
 
-    preferences: Preferences;
+    appConfig: AppConfig;
 
     /**
      * Constructor
      */
     constructor(private logbookEntryService: LogbookEntryService,
                 public translateService: TranslocoService,
-                private preferencesService: PreferencesService,
+                private appConfigService: AppConfigService,
                 private confirmation: ConfirmationService,
                 private router: Router,
                 private route: ActivatedRoute)
@@ -49,7 +49,7 @@ export class LogbookViewComponent implements OnInit
             this.logbookEntries = entries;
         });
 
-        this.preferences = this.preferencesService.preferences$;
+        this.appConfig = this.appConfigService.appConfig$;
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -129,9 +129,9 @@ export class LogbookViewComponent implements OnInit
      *
      * @param options
      */
-    onPreferencesChanged(options: LogbookOptions): void
+    onAppConfigChanged(options: LogbookOptions): void
     {
-        this.preferences.logbookOptions = options;
-        this.preferencesService.preferences = this.preferences;
+        this.appConfig.logbookOptions = options;
+        this.appConfigService.appConfig = this.appConfig;
     }
 }

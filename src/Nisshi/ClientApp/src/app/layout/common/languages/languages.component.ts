@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { take } from 'rxjs/operators';
 import { AvailableLangs, TranslocoService } from '@ngneat/transloco';
 import { FuseNavigationService, FuseVerticalNavigationComponent } from '@fuse/components/navigation';
+import { AppConfigService } from 'app/core/config/appconfig.service';
+import { AppConfig } from 'app/core/config/app.config';
 
 @Component({
     selector       : 'languages',
@@ -15,6 +17,7 @@ export class LanguagesComponent implements OnInit, OnDestroy
     availableLangs: AvailableLangs;
     activeLang: string;
     flagCodes: any;
+    appConfig: AppConfig;
 
     /**
      * Constructor
@@ -22,7 +25,8 @@ export class LanguagesComponent implements OnInit, OnDestroy
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseNavigationService: FuseNavigationService,
-        private _translocoService: TranslocoService
+        private _translocoService: TranslocoService,
+        private _appConfigService: AppConfigService
     )
     {
     }
@@ -36,11 +40,20 @@ export class LanguagesComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+        // Use the app config to save language preferences
+        this.appConfig = this._appConfigService.appConfig$;
+
+        this._translocoService.setActiveLang(this.appConfig.language);
+
         // Get the available languages from transloco
         this.availableLangs = this._translocoService.getAvailableLangs();
 
         // Subscribe to language changes
         this._translocoService.langChanges$.subscribe((activeLang) => {
+
+            // Update the app config
+            this.appConfig.language = activeLang;
+            this._appConfigService.appConfig = this.appConfig;
 
             // Get the active lang
             this.activeLang = activeLang;
