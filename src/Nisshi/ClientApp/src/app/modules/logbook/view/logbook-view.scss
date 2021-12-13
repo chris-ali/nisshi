@@ -18,8 +18,10 @@
     color: #fff;
 
     .datatable-header {
-        background: transparent;
-        color: #72809b;
+        .datatable-header-cell {
+            background: transparent;
+            color: #fff;
+        }
     }
 
     .datatable-body {
@@ -30,8 +32,8 @@
                 color: #fff;
             }
 
-            &:hover {
-                background: #171b24;
+            &:hover, &:hover .datatable-row-group {
+                background: #232837;
                 transition-property: background;
                 transition-duration: 0.3s;
                 transition-timing-function: linear;
