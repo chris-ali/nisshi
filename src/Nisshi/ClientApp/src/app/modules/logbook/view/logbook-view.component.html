@@ -56,7 +56,7 @@
 
                 <ngx-datatable
                     #logbookTable
-                    class="material fullscreen {{this.appConfig.theme == 'dark' ? 'dark' : ''}}"
+                    class="material fullscreen {{this.appConfig.scheme == 'dark' ? 'dark' : ''}}"
                     [rows]="logbookEntries"
                     [columnMode]="ColumnMode.standard"
                     [headerHeight]="50"
