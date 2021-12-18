@@ -16,6 +16,7 @@ import { settingsRoutes } from './settings.routing';
 import { SettingsComponent } from './settings.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { SettingsThemeComponent } from './theme/theme.component';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
     declarations: [
@@ -35,6 +36,7 @@ import { SettingsThemeComponent } from './theme/theme.component';
         MatSidenavModule,
         MatSlideToggleModule,
         MatDatepickerModule,
+        MatNativeDateModule,
         FuseAlertModule,
         SharedModule
     ]

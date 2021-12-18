@@ -3,6 +3,7 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector       : 'settings',
@@ -24,7 +25,8 @@ export class SettingsComponent implements OnInit, OnDestroy
      */
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
-        private _fuseMediaWatcherService: FuseMediaWatcherService
+        private _fuseMediaWatcherService: FuseMediaWatcherService,
+        private route: ActivatedRoute
     )
     {
     }
@@ -38,6 +40,9 @@ export class SettingsComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+        // Pick the selected panel from the URL
+        this.selectedPanel = this.route.snapshot.params['view'] ?? 'profile';
+
         // Setup available panels
         this.panels = [
             {
