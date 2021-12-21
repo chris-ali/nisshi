@@ -63,7 +63,7 @@ export class UserService
      */
     update(user: User): Observable<any>
     {
-        return this._api.put(URL, {user}).pipe(
+        return this._api.put(URL, user).pipe(
             map((response) => {
                 this._user.next(response);
             })

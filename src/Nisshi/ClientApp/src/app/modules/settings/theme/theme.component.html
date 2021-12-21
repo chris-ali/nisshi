@@ -1,15 +1,11 @@
 <div class="w-full max-w-3xl">
 
-    <div class="flex flex-col w-full overflow-auto bg-card">
-        <div class="w-full">
-            <div class="text-xl">Theme</div>
-            <div class="text-secondary">Change the colors and layout of the site</div>
-        </div>
+    <div class="flex flex-col w-full">
 
-        <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+        <div class="gap-6 w-full mt-8">
 
             <!-- Colors -->
-            <div class="text-md font-semibold text-secondary">Colors</div>
+            <mat-label>Colors</mat-label>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6">
                 <ng-container *ngFor="let theme of themes">
                     <div
@@ -32,8 +28,8 @@
             <div class="mt-11 mb-10 border-t"></div>
 
             <!-- Scheme -->
-            <div class="text-md font-semibold text-secondary">Scheme</div>
-            <div class="grid grid-cols-3 gap-3 justify-items-start mt-6">
+            <mat-label>Scheme</mat-label>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6">
                 <!-- Auto -->
                 <div
                     class="flex items-center py-3 pl-5 pr-6 rounded-full cursor-pointer ring-inset ring-primary bg-hover"
@@ -89,7 +85,7 @@
             <div class="mt-11 mb-10 border-t"></div>
 
             <!-- Layout -->
-            <div class="text-md font-semibold text-secondary">Layout</div>
+            <mat-label>Layout</mat-label>
             <div class="grid grid-cols-3 gap-3 mt-6">
 
                 <!-- Empty -->
