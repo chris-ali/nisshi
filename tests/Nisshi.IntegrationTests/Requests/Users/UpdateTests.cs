@@ -29,7 +29,6 @@ namespace Nisshi.IntegrationTests.Requests.Users
             {
                 Username = user.Username,
                 Email = user.Email,
-                Password = "Test456!",
                 CertificateNumber = "123456",
                 CFIExpiration = DateTime.Today.AddMonths(12),
                 IsInstructor = true,
@@ -52,8 +51,6 @@ namespace Nisshi.IntegrationTests.Requests.Users
 
             Assert.NotNull(fromDb);
 
-            Assert.NotEqual(user.Hash, updateResponse.Hash);
-            Assert.NotEqual(user.Salt, updateResponse.Salt);
             Assert.Equal(fromDb.FirstName, updateResponse.FirstName);
             Assert.Equal(fromDb.LastName, updateResponse.LastName);
             Assert.Equal(fromDb.LastBFR, updateResponse.LastBFR);
@@ -82,7 +79,6 @@ namespace Nisshi.IntegrationTests.Requests.Users
             {
                 Username = "nobody",
                 Email = "nobody@test.com",
-                Password = "Test456!",
                 CertificateNumber = "123456",
                 CFIExpiration = DateTime.Today.AddMonths(12),
                 IsInstructor = true,

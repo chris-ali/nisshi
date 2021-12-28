@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
@@ -11,17 +13,17 @@ using Nisshi.Models.Users;
 
 namespace Nisshi.Requests.Users
 {
-    public class UpdateProfile
+    public class ChangePassword
     {
-        public record Command(Profile edit) : IRequest<User>;
+        public record Command(ChangePasswordModel change) : IRequest<User>;
 
         public class CommandValidator : AbstractValidator<Command>
         {
             public CommandValidator()
             {
-                RuleFor(x => x.edit).NotNull()
+                RuleFor(x => x.change).NotNull()
                     .WithMessage(Message.NotNull.ToString())
-                    .SetValidator(new Profile.ProfileValidator());
+                    .SetValidator(new ChangePasswordModel.ChangePasswordValidator());
             }
         }
 
@@ -45,31 +47,22 @@ namespace Nisshi.Requests.Users
                 if (user == null)
                     throw new DomainException(typeof(User), Message.ItemDoesNotExist);
 
-                Update(ref user, request.edit);
-                user.DateUpdated = DateTime.Now;
+                var authenticated = user.Hash.SequenceEqual(await hasher.HashAsync(request.change.OldPassword ??
+                    throw new InvalidOperationException(), user.Salt, cancellationToken));
+
+                if (!authenticated)
+                    throw new AuthenticationException(Message.InvalidCredentials.ToString());
+
+                user.DateUpdated = user.LastPasswordChangedDate = DateTime.Now;
+
+                var iodized = Guid.NewGuid().ToByteArray();
+                user.Salt = iodized;
+                user.Hash = await hasher.HashAsync(request.change.NewPassword, iodized, cancellationToken);
 
                 context.Update<User>(user);
                 await context.SaveChangesAsync(cancellationToken);
 
                 return user;
-            }
-
-            /// <summary>
-            /// Updates User object from database with object in request
-            /// </summary>
-            /// <param name="toBeUpdated"></param>
-            /// <param name="toUpdateWith"></param>
-            private void Update(ref User toBeUpdated, Profile toUpdateWith)
-            {
-                toBeUpdated.CertificateNumber = toUpdateWith.CertificateNumber;
-                toBeUpdated.CFIExpiration = toUpdateWith.CFIExpiration;
-                toBeUpdated.FirstName = toUpdateWith.FirstName;
-                toBeUpdated.IsInstructor = toUpdateWith.IsInstructor;
-                toBeUpdated.LastBFR = toUpdateWith.LastBFR;
-                toBeUpdated.LastMedical = toUpdateWith.LastMedical;
-                toBeUpdated.LastName = toUpdateWith.LastName;
-                toBeUpdated.License = toUpdateWith.License;
-                toBeUpdated.MonthsToMedical = toUpdateWith.MonthsToMedical;
             }
         }
     }
