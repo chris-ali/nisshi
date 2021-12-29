@@ -65,6 +65,17 @@ export class AuthService
     }
 
     /**
+     * Change password
+     *
+     * @param password
+     */
+     changePassword(change:
+        { oldPassword: string, newPassword: string, repeatPassword: string} ): Observable<any>
+    {
+        return this._api.post(`${URL}change-password`, change);
+    }
+
+    /**
      * Sign in
      *
      * @param credentials

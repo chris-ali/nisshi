@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from 'app/core/auth/auth.service';
+import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
 
 @Component({
     selector       : 'settings-security',
@@ -9,13 +12,16 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class SettingsSecurityComponent implements OnInit
 {
-    securityForm: FormGroup;
+    form: FormGroup;
 
     /**
      * Constructor
      */
     constructor(
-        private _formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private authService: AuthService,
+        private confirmation: ConfirmationService,
+        private router: Router
     )
     {
     }
@@ -29,10 +35,30 @@ export class SettingsSecurityComponent implements OnInit
      */
     ngOnInit(): void
     {
+        var pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,20}$";
+
         // Create the form
-        this.securityForm = this._formBuilder.group({
-            currentPassword  : [''],
-            newPassword      : ['']
+        this.form = this.formBuilder.group({
+            oldPassword: ['', [Validators.required]],
+            newPassword: ['', [Validators.required, Validators.pattern(pattern)]],
+            repeatPassword: ['', [Validators.required, Validators.pattern(pattern)]]
         });
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    onSubmit(): void
+    {
+        this.authService.changePassword(this.form.value).subscribe({
+            next: () => {
+                this.router.navigate(['/']);
+                this.confirmation.alert('Updated Successfully', 'Profile was updated successfully!', true);
+            },
+            error: error => {
+                this.confirmation.alert('An error has occurred', this.confirmation.formatErrors(error));
+            }
+        })
     }
 }

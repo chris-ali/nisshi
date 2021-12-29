@@ -1,7 +1,9 @@
 <div class="w-full max-w-3xl">
 
     <!-- Form -->
-    <form [formGroup]="securityForm">
+    <form
+        [formGroup]="form"
+        (submit)="onSubmit()">
 
         <!-- Section -->
         <div class="w-full">
@@ -17,9 +19,12 @@
                         [svgIcon]="'heroicons_solid:key'"
                         matPrefix></mat-icon>
                     <input
-                        [formControlName]="'currentPassword'"
+                        [formControlName]="'oldPassword'"
                         type="password"
                         matInput>
+                    <mat-error *ngIf="form.get('oldPassword').hasError('required')">
+                        Please enter your current password
+                    </mat-error>
                 </mat-form-field>
             </div>
             <!-- New password -->
@@ -34,6 +39,12 @@
                         [formControlName]="'newPassword'"
                         type="password"
                         matInput>
+                    <mat-error *ngIf="form.get('newPassword').hasError('required')">
+                        Please enter your new password
+                    </mat-error>
+                    <mat-error *ngIf="form.get('newPassword').hasError('pattern')">
+                        New password must meet the requirements
+                    </mat-error>
                 </mat-form-field>
                 <div class="mt-1 text-md text-hint">Minimum 8 characters. Must include at least one number, letter and special character.</div>
             </div>
@@ -46,8 +57,15 @@
                         [svgIcon]="'heroicons_solid:key'"
                         matPrefix></mat-icon>
                     <input
+                        [formControlName]="'repeatPassword'"
                         type="password"
                         matInput>
+                    <mat-error *ngIf="form.get('repeatPassword').hasError('required')">
+                        Please confirm your new password
+                    </mat-error>
+                    <mat-error *ngIf="form.get('repeatPassword').hasError('pattern')">
+                        New password must meet the requirements
+                    </mat-error>
                 </mat-form-field>
                 <div class="mt-1 text-md text-hint">Minimum 8 characters. Must include at least one number, letter and special character.</div>
             </div>
@@ -60,13 +78,14 @@
         <div class="flex items-center justify-end">
             <button
                 mat-stroked-button
+                [routerLink]="['/']"
                 type="button">
                 Cancel
             </button>
             <button
                 class="ml-4"
                 mat-flat-button
-                type="button"
+                type="submit"
                 [color]="'primary'">Save
             </button>
         </div>
