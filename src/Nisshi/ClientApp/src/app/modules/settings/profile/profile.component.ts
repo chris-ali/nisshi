@@ -51,6 +51,7 @@ export class SettingsAccountComponent implements OnInit
         // Populate form with current user profile
         this.userService.get().subscribe(user => {
             this.form.patchValue(user);
+            this.showCFIExpiration = user.isInstructor;
         });
     }
 

@@ -3,7 +3,7 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
     selector       : 'settings',
@@ -26,7 +26,8 @@ export class SettingsComponent implements OnInit, OnDestroy
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private router: Router
     )
     {
     }
@@ -109,6 +110,7 @@ export class SettingsComponent implements OnInit, OnDestroy
     goToPanel(panel: string): void
     {
         this.selectedPanel = panel;
+        this.router.navigate(['/settings/' + panel])
 
         // Close the drawer on 'over' mode
         if ( this.drawerMode === 'over' )
