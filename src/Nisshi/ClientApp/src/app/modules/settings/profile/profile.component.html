@@ -1,0 +1,163 @@
+<div class="w-full max-w-3xl">
+
+    <!-- Form -->
+    <form
+        [formGroup]="form"
+        (ngSubmit)="onSubmit()">
+
+        <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+            <div class="sm:col-span-4">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>Username</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:user'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'username'"
+                        matInput>
+                    <mat-error *ngIf="form.get('username').hasError('required')">
+                        Please enter a Username
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-4">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>First Name</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:user'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'firstName'"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-4">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>Last Name</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:user'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'lastName'"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>Date of Last BFR</mat-label>
+                    <input
+                        matInput
+                        [matDatepicker]="lastBFR"
+                        [placeholder]="'Choose a date'"
+                        [formControlName]="'lastBFR'">
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="lastBFR"></mat-datepicker-toggle>
+                    <mat-datepicker #lastBFR></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>Date of Last Medical Examination</mat-label>
+                    <input
+                        matInput
+                        [matDatepicker]="lastMedical"
+                        [placeholder]="'Choose a date'"
+                        [formControlName]="'lastMedical'">
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="lastMedical"></mat-datepicker-toggle>
+                    <mat-datepicker #lastMedical></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>Pilot License</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:globe-alt'"
+                        matPrefix></mat-icon>
+                    <mat-select [formControlName]="'license'">
+                        <mat-option [value]="'student'">Student</mat-option>
+                        <mat-option [value]="'sport'">Sport</mat-option>
+                        <mat-option [value]="'private'">Private</mat-option>
+                        <mat-option [value]="'commercial'">Commercial</mat-option>
+                        <mat-option [value]="'atp'">Airline Transport</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>License Number</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:office-building'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'certificateNumber'"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="sm:col-span-2">
+                <span class="fuse-mat-no-subscript w-full">Are you a Certified Flight Instructor?</span>
+                <mat-radio-group
+                    class="flex flex-col"
+                    [color]="'primary'"
+                    [value]="false"
+                    [formControlName]="'isInstructor'"
+                    #instanceRadio>
+                    <mat-radio-button
+                        class="mb-2"
+                        [value]="true"
+                        (change)="this.showCFIExpiration = true;">
+                        Yes
+                    </mat-radio-button>
+                    <mat-radio-button
+                        class="mb-2"
+                        [value]="false"
+                        (change)="this.showCFIExpiration = false;">
+                        No
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="sm:col-span-2" [hidden]="!this.showCFIExpiration">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>Date of CFI Expiration</mat-label>
+                    <input
+                        matInput
+                        [matDatepicker]="cfiExpiration"
+                        [placeholder]="'Choose a date'"
+                        [formControlName]="'cfiExpiration'">
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="cfiExpiration"></mat-datepicker-toggle>
+                    <mat-datepicker #cfiExpiration></mat-datepicker>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="mt-11 mb-10 border-t"></div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end">
+            <button
+                mat-stroked-button
+                [routerLink]="['/']"
+                type="button">
+                Cancel
+            </button>
+            <button
+                class="ml-4"
+                mat-flat-button
+                type="submit"
+                [color]="'primary'">
+                Save
+            </button>
+        </div>
+    </form>
+
+</div>

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -8,21 +8,12 @@ import { AppConfig, Scheme, Theme } from 'app/core/config/app.config';
 import { Layout } from 'app/layout/layout.types';
 
 @Component({
-    selector     : 'settings',
-    templateUrl  : './settings.component.html',
-    styles       : [
-        `
-            settings {
-                position: static;
-                display: block;
-                flex: none;
-                width: auto;
-            }
-        `
-    ],
-    encapsulation: ViewEncapsulation.None
+    selector       : 'settings-theme',
+    templateUrl    : './theme.component.html',
+    encapsulation  : ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SettingsComponent implements OnInit, OnDestroy
+export class SettingsThemeComponent implements OnInit
 {
     config: AppConfig;
     layout: Layout;

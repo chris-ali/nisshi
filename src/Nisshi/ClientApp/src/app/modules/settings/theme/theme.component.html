@@ -1,42 +1,11 @@
-<div
-    class="fixed flex items-center justify-center right-0 w-10 h-10 shadow-lg rounded-l-lg z-90 cursor-pointer bg-red-600 bg-opacity-90 print:hidden"
-    [class.lg:right-0]="config.layout === 'centered' || config.layout === 'material'"
-    [class.lg:right-16]="config.layout !== 'centered' && config.layout !== 'material'"
-    style="top: 275px"
-    (click)="settingsDrawer.toggle()">
-    <mat-icon
-        class="icon-size-5 text-white animate-spin-slow"
-        [svgIcon]="'heroicons_solid:cog'"></mat-icon>
-</div>
+<div class="w-full max-w-3xl">
 
-<fuse-drawer
-    class="w-screen min-w-screen sm:w-100 sm:min-w-100 z-999"
-    fixed
-    [mode]="'over'"
-    [name]="'settingsDrawer'"
-    [position]="'right'"
-    #settingsDrawer>
+    <div class="flex flex-col w-full">
 
-    <div class="flex flex-col w-full overflow-auto bg-card">
-        <div class="flex flex-row items-center px-6 h-20 min-h-20 text-white bg-primary">
-            <mat-icon
-                class="icon-size-7 text-current"
-                [svgIcon]="'heroicons_solid:cog'"></mat-icon>
-            <div class="ml-3 text-2xl font-semibold tracking-tight">Settings</div>
-            <button
-                class="ml-auto"
-                mat-icon-button
-                (click)="settingsDrawer.close()">
-                <mat-icon
-                    class="text-current"
-                    [svgIcon]="'heroicons_outline:x'"></mat-icon>
-            </button>
-        </div>
+        <div class="gap-6 w-full mt-8">
 
-        <div class="flex flex-col p-6">
-
-            <!-- Theme -->
-            <div class="text-md font-semibold text-secondary">THEME</div>
+            <!-- Colors -->
+            <mat-label>Colors</mat-label>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6">
                 <ng-container *ngFor="let theme of themes">
                     <div
@@ -55,11 +24,12 @@
                 </ng-container>
             </div>
 
-            <hr class="my-8">
+            <!-- Divider -->
+            <div class="mt-11 mb-10 border-t"></div>
 
             <!-- Scheme -->
-            <div class="text-md font-semibold text-secondary">SCHEME</div>
-            <div class="grid grid-cols-3 gap-3 justify-items-start mt-6">
+            <mat-label>Scheme</mat-label>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-6">
                 <!-- Auto -->
                 <div
                     class="flex items-center py-3 pl-5 pr-6 rounded-full cursor-pointer ring-inset ring-primary bg-hover"
@@ -111,10 +81,11 @@
                 </div>
             </div>
 
-            <hr class="my-8">
+            <!-- Divider -->
+            <div class="mt-11 mb-10 border-t"></div>
 
             <!-- Layout -->
-            <div class="text-md font-semibold text-secondary">LAYOUT</div>
+            <mat-label>Layout</mat-label>
             <div class="grid grid-cols-3 gap-3 mt-6">
 
                 <!-- Empty -->
@@ -471,4 +442,4 @@
 
     </div>
 
-</fuse-drawer>
+</div>

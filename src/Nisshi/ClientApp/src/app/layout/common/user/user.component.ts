@@ -76,4 +76,14 @@ export class UserComponent implements OnInit, OnDestroy
     {
         this._router.navigate(['/sign-out']);
     }
+
+    /**
+     * Navigates to a panel in the settings component
+     *
+     * @param panel
+     */
+    navigateToSettings(panel: String): void
+    {
+        this._router.navigate(['/settings/' + panel]);
+    }
 }

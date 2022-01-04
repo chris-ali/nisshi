@@ -41,6 +41,12 @@ namespace Nisshi.Controllers
             return await mediator.Send(new Requests.Users.Login.Command(authenticate), cancellationToken);
         }
 
+        [HttpPost("change-password")]
+        public async Task<ActionResult<User>> ChangePassword([FromBody] Models.Users.ChangePasswordModel change, CancellationToken cancellationToken)
+        {
+            return await mediator.Send(new Requests.Users.ChangePassword.Command(change), cancellationToken);
+        }
+
         [HttpPost("refresh-token")]
         public async Task<ActionResult<LoggedIn>> RefreshToken(CancellationToken cancellationToken)
         {

@@ -22,6 +22,7 @@ export class AircraftFormComponent implements OnInit
     form: FormGroup;
     models: Model[];
     manufacturers: Manufacturer[];
+    showDates = true;
 
     /**
      * Constructor

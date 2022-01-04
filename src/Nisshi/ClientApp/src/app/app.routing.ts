@@ -77,6 +77,7 @@ export const appRoutes: Route[] = [
             {path: 'aircraft', loadChildren: () => import('app/modules/aircraft/form/aircraft-form.module').then(m => m.AircraftFormModule)},
             {path: 'logbook/view', loadChildren: () => import('app/modules/logbook/view/logbook-view.module').then(m => m.LogbookViewModule)},
             {path: 'logbook', loadChildren: () => import('app/modules/logbook/form/logbook-form.module').then(m => m.LogbookFormModule)},
+            {path: 'settings', loadChildren: () => import('app/modules/settings/settings.module').then(m => m.SettingsModule)},
         ]
     }
 ];
