@@ -38,10 +38,13 @@ export class LogbookEntryService
 
     /**
      * Get the current logged in user's logbook entries
+     *
+     * @param filter Optional - OData filter query; question mark not needed
      */
-    getAll(): Observable<LogbookEntry[]>
+    getAll(filter?: string): Observable<LogbookEntry[]>
     {
-        return this._api.get(`${URL}all`).pipe(
+        var filterQuery = filter ? `?${filter}`: "";
+        return this._api.get(`${URL}all${filterQuery}`).pipe(
             tap((logbookentry) => {
 
             })
