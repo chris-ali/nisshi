@@ -9,6 +9,7 @@ import { AppConfig, LogbookOptions } from 'app/core/config/app.config';
 import { FuseConfigService } from '@fuse/services/config';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { entries } from 'lodash';
 
 @Component({
   selector: 'logbook-view',
@@ -150,5 +151,22 @@ export class LogbookViewComponent implements OnInit, OnDestroy
     onAppConfigChanged(options: LogbookOptions): void
     {
         this.fuseConfigService.config = {logbookOptions: options};
+    }
+
+    /**
+     * When the sidebar updates the filter, update the list of logbook entries
+     *
+     * @param filter
+     */
+    onFilterChanged(filter): void
+    {
+        var filterQuery = 'filter=' +
+            ' and flightDate gt ' + filter.fromDate +
+            ' and flightDate lt ' + filter.toDate +
+            ' and idAircraft eq ' + filter.idAircraft;
+
+        this.logbookEntryService.getAll().subscribe(entries => {
+            this.logbookEntries = entries;
+        })
     }
 }

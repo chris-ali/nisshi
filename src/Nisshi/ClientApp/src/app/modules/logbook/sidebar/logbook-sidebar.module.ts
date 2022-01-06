@@ -11,6 +11,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { SharedModule } from 'app/shared/shared.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatOptionModule } from '@angular/material/core';
 
 @NgModule({
     declarations: [
@@ -24,6 +26,8 @@ import { SharedModule } from 'app/shared/shared.module';
         MatCheckboxModule,
         MatDividerModule,
         MatFormFieldModule,
+        MatDatepickerModule,
+        MatOptionModule,
         MatMenuModule,
         MatInputModule,
         FuseNavigationModule,

@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
+import { AircraftService } from 'app/core/aircraft/aircraft.service';
+import { Aircraft } from 'app/core/aircraft/aircraft.types';
 import { LogbookOptions } from 'app/core/config/app.config';
 
 
@@ -20,14 +22,18 @@ export class LogbookSidebarComponent implements OnInit
 {
     @Input() logbookOptions: LogbookOptions;
     @Output() preferencesChanged = new EventEmitter();
+    @Output() filterChanged = new EventEmitter();
 
     menuData: FuseNavigationItem[];
     form: FormGroup;
+    filter: FormGroup;
+    aircraft: Aircraft[];
 
     /**
      * Constructor
      */
-    constructor(private formBuilder: FormBuilder)
+    constructor(private formBuilder: FormBuilder,
+                private aircraftService: AircraftService)
     {
     }
 
@@ -60,6 +66,16 @@ export class LogbookSidebarComponent implements OnInit
         });
 
         this.form.patchValue(this.logbookOptions);
+
+        this.filter = this.formBuilder.group({
+            fromDate: [''],
+            toDate: [''],
+            idAircraft: ['']
+        });
+
+        this.aircraftService.getAll().subscribe(airs => {
+            this.aircraft = airs;
+        });
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -69,5 +85,10 @@ export class LogbookSidebarComponent implements OnInit
     onSubmit(): void
     {
         this.preferencesChanged.emit(this.form.value);
+    }
+
+    onFilter(): void
+    {
+        this.filterChanged.emit(this.filter.value);
     }
 }

@@ -13,6 +13,7 @@
 
             <logbook-sidebar
                 (preferencesChanged)="matDrawer.toggle(); onAppConfigChanged($event);"
+                (filterChanged)="onFilterChanged($event);"
                 [logbookOptions]="appConfig.logbookOptions"></logbook-sidebar>
         </mat-drawer>
 

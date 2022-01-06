@@ -1,5 +1,61 @@
 <div class="py-10">
 
+    <div class="mx-6 text-3xl font-bold tracking-tighter">Filter By</div>
+
+    <div class="flex-auto p-6 sm:p-5">
+        <form
+            [formGroup]="filter"
+            (ngSubmit)="onFilter()"
+            class="flex flex-col mt-4 px-8 pt-4 overflow-hidden">
+            <div class="flex flex-col gt-sm:flex-row">
+                <mat-form-field class="flex-auto">
+                    <mat-label>From</mat-label>
+                    <input
+                        matInput
+                        [matDatepicker]="fromFilterPicker"
+                        [placeholder]="'Choose a date'"
+                        [formControlName]="'fromDate'">
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="fromFilterPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #fromFilterPicker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class="flex-auto">
+                    <mat-label>To</mat-label>
+                    <input
+                        matInput
+                        [matDatepicker]="toFilterPicker"
+                        [placeholder]="'Choose a date'"
+                        [formControlName]="'toDate'">
+                    <mat-datepicker-toggle
+                        matSuffix
+                        [for]="toFilterPicker"></mat-datepicker-toggle>
+                    <mat-datepicker #toFilterPicker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class="flex-auto">
+                    <mat-label>Aircraft</mat-label>
+                    <mat-select
+                        #manufacturerSelect
+                        [formControlName]="'idAircraft'">
+                        <mat-option value=""></mat-option>
+                        <mat-option *ngFor="let air of aircraft" [value]="air.id">
+                            {{air.tailNumber}} - {{air.model?.manufacturer?.manufacturerName}} {{air.model?.modelName}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div class="flex items-center -mx-8 px-8 py-4">
+                <button
+                    class="px-6 ml-3"
+                    mat-flat-button
+                    [color]="'primary'">
+                    Apply
+                </button>
+            </div>
+        </form>
+    </div>
+
     <div class="mx-6 text-3xl font-bold tracking-tighter">Options</div>
 
     <div class="flex-auto p-6 sm:p-5">
