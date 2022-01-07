@@ -160,13 +160,19 @@ export class LogbookViewComponent implements OnInit, OnDestroy
      */
     onFilterChanged(filter): void
     {
-        var filterQuery = 'filter=' +
-            ' and flightDate gt ' + filter.fromDate +
-            ' and flightDate lt ' + filter.toDate +
-            ' and idAircraft eq ' + filter.idAircraft;
+        var filterArray = [];
 
-        this.logbookEntryService.getAll().subscribe(entries => {
+        if (filter.fromDate)
+            filterArray.push(' flightDate gt ' + filter.fromDate.toISOString())
+        if (filter.toDate)
+            filterArray.push(' flightDate lt ' + filter.toDate.toISOString())
+        if (filter.idAircraft)
+            filterArray.push(' idAircraft eq ' + filter.idAircraft)
+
+        var filterQuery = filterArray.length > 0 ? 'filter=' + filterArray.join(' and ') : '';
+
+        this.logbookEntryService.getAll(filterQuery).subscribe(entries => {
             this.logbookEntries = entries;
-        })
+        });
     }
 }

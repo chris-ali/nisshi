@@ -35,7 +35,6 @@
                 <mat-form-field class="flex-auto">
                     <mat-label>Aircraft</mat-label>
                     <mat-select
-                        #manufacturerSelect
                         [formControlName]="'idAircraft'">
                         <mat-option value=""></mat-option>
                         <mat-option *ngFor="let air of aircraft" [value]="air.id">

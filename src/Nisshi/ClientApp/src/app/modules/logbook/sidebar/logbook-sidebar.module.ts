@@ -12,7 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { SharedModule } from 'app/shared/shared.module';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatOptionModule } from '@angular/material/core';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
     declarations: [
@@ -27,7 +28,9 @@ import { MatOptionModule } from '@angular/material/core';
         MatDividerModule,
         MatFormFieldModule,
         MatDatepickerModule,
+        MatNativeDateModule,
         MatOptionModule,
+        MatSelectModule,
         MatMenuModule,
         MatInputModule,
         FuseNavigationModule,
