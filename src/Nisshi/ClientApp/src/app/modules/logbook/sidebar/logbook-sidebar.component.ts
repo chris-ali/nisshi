@@ -70,7 +70,8 @@ export class LogbookSidebarComponent implements OnInit
         this.filter = this.formBuilder.group({
             fromDate: [''],
             toDate: [''],
-            idAircraft: ['']
+            idAircraft: [''],
+            instanceType: ['']
         });
 
         this.aircraftService.getAll().subscribe(airs => {

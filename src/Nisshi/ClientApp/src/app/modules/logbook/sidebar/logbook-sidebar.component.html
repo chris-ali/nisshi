@@ -6,10 +6,10 @@
         <form
             [formGroup]="filter"
             (ngSubmit)="onFilter()"
-            class="flex flex-col mt-4 px-8 pt-4 overflow-hidden">
+            class="flex flex-col mt-2 px-8 pt-2 overflow-hidden">
             <div class="flex flex-col gt-sm:flex-row">
                 <mat-form-field class="flex-auto">
-                    <mat-label>From</mat-label>
+                    <mat-label>From Date</mat-label>
                     <input
                         matInput
                         [matDatepicker]="fromFilterPicker"
@@ -21,7 +21,7 @@
                     <mat-datepicker #fromFilterPicker></mat-datepicker>
                 </mat-form-field>
                 <mat-form-field class="flex-auto">
-                    <mat-label>To</mat-label>
+                    <mat-label>To Date</mat-label>
                     <input
                         matInput
                         [matDatepicker]="toFilterPicker"
@@ -42,6 +42,30 @@
                         </mat-option>
                     </mat-select>
                 </mat-form-field>
+                <div class="flex flex-col">
+                    <span class="font-semibold mb-2">Aircraft Type</span>
+                    <mat-radio-group
+                        class="flex flex-col"
+                        [color]="'primary'"
+                        [value]=""
+                        [formControlName]="'instanceType'">
+                        <mat-radio-button
+                            class="mb-2"
+                            [value]="">
+                            All
+                        </mat-radio-button>
+                        <mat-radio-button
+                            class="mb-2"
+                            [value]="2">
+                            Simulated Only
+                        </mat-radio-button>
+                        <mat-radio-button
+                            class="mb-2"
+                            [value]="1">
+                            Real Only
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
             </div>
 
             <div class="flex items-center -mx-8 px-8 py-4">
@@ -61,7 +85,7 @@
         <form
             [formGroup]="form"
             (ngSubmit)="onSubmit()"
-            class="flex flex-col mt-4 px-8 pt-4 overflow-hidden">
+            class="flex flex-col mt-2 px-8 pt-2 overflow-hidden">
             <div class="flex flex-col gt-sm:flex-row">
                 <span class="font-semibold mb-2">Show/Hide Columns</span>
                 <div class="flex flex-col">

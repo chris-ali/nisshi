@@ -168,6 +168,8 @@ export class LogbookViewComponent implements OnInit, OnDestroy
             filterArray.push(' flightDate lt ' + filter.toDate.toISOString())
         if (filter.idAircraft)
             filterArray.push(' idAircraft eq ' + filter.idAircraft)
+        if (filter.instanceType)
+            filterArray.push(' aircraft/instanceType eq ' + filter.instanceType)
 
         var filterQuery = filterArray.length > 0 ? 'filter=' + filterArray.join(' and ') : '';
 
