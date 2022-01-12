@@ -10,6 +10,7 @@ import { FuseConfigService } from '@fuse/services/config';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AircraftService } from 'app/core/aircraft/aircraft.service';
+import { LogbookFilter } from 'app/core/ui/logbookfilter.types';
 
 @Component({
   selector: 'logbook-view',
@@ -162,7 +163,7 @@ export class LogbookViewComponent implements OnInit, OnDestroy
      *
      * @param filter
      */
-    onFilterChanged(filter): void
+    onFilterChanged(filter: LogbookFilter): void
     {
         var filterArray = [];
         this.activeFilters = [];
