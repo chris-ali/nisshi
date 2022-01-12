@@ -51,14 +51,13 @@
             </div>
 
             <div class="flex flex-col sm:flex-row flex-0 items-center p-4 sm:py-4 sm:px-10"
-                [hidden] = "this.activeFilters.length == 0">
-                <div class="pr-2">
+                [style.display]="activeFilters.length == 0 ? 'none !important' : ''">
+                <div class="pr-2 pt-2">
                     <h2 class="text-lg md:text-lg font-bold tracking-tight leading-7 sm:leading-10 truncate">
                         Active Filters:
                     </h2>
                 </div>
-                <mat-button-toggle-group
-                    class="flex flex-wrap -m-2">
+                <mat-button-toggle-group class="flex flex-wrap -m-2">
                     <ng-container *ngFor="let filter of activeFilters">
                         <mat-button-toggle
                             class="m-2"

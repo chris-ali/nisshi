@@ -51,7 +51,7 @@
                         [formControlName]="'instanceType'">
                         <mat-radio-button
                             class="mb-2"
-                            [value]="">
+                            [value]="''">
                             All
                         </mat-radio-button>
                         <mat-radio-button
@@ -74,6 +74,13 @@
                     mat-flat-button
                     [color]="'primary'">
                     Apply
+                </button>
+                <button
+                    class="px-6 ml-3"
+                    mat-stroked-button
+                    type="button"
+                    (click)="onClearFilter()">
+                    Clear All
                 </button>
             </div>
         </form>

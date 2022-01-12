@@ -92,4 +92,10 @@ export class LogbookSidebarComponent implements OnInit
     {
         this.filterChanged.emit(this.filter.value);
     }
+
+    onClearFilter(): void
+    {
+        this.filter.reset();
+        this.filterChanged.emit(this.filter.value);
+    }
 }

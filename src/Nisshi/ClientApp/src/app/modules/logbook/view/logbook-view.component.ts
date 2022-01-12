@@ -24,7 +24,7 @@ export class LogbookViewComponent implements OnInit, OnDestroy
     summaryPosition = 'bottom';
     ColumnMode = ColumnMode;
     logbookEntries: LogbookEntry[];
-    activeFilters: string[] = [];
+    activeFilters: string[];
 
     drawerMode: 'over' | 'side' = 'side';
     drawerOpened: boolean = false;
@@ -54,6 +54,8 @@ export class LogbookViewComponent implements OnInit, OnDestroy
         this.logbookEntryService.getAll().subscribe(entries => {
             this.logbookEntries = entries;
         });
+
+        this.activeFilters = [];
 
         // Subscribe to config changes
         this.fuseConfigService.config$
@@ -165,17 +167,17 @@ export class LogbookViewComponent implements OnInit, OnDestroy
         var filterArray = [];
         this.activeFilters = [];
 
-        if (filter.fromDate)
+        if (filter?.fromDate)
         {
             filterArray.push(` flightDate gt ${filter.fromDate.toISOString()}`);
-            this.activeFilters.push(`Flight Date: After ${filter.fromDate.toDateString()}`);
+            this.activeFilters.push(`After: ${filter.fromDate.toDateString()}`);
         }
-        if (filter.toDate)
+        if (filter?.toDate)
         {
             filterArray.push(` flightDate lt ${filter.toDate.toISOString()}`);
-            this.activeFilters.push(`Flight Date: Before ${filter.toDate.toDateString()}`);
+            this.activeFilters.push(`Before: ${filter.toDate.toDateString()}`);
         }
-        if (filter.idAircraft)
+        if (filter?.idAircraft)
         {
             filterArray.push(` idAircraft eq ${filter.idAircraft}`);
 
@@ -183,10 +185,10 @@ export class LogbookViewComponent implements OnInit, OnDestroy
                 this.activeFilters.push(`Aircraft:  ${air.tailNumber} - ${air.model?.manufacturer?.manufacturerName} ${air.model?.modelName}`);
             });
         }
-        if (filter.instanceType)
+        if (filter?.instanceType)
         {
             filterArray.push(` aircraft/instanceType eq Nisshi.Infrastructure.Enums.InstanceType'${filter.instanceType}'`);
-            this.activeFilters.push(`Type of Aircraft: ${filter.instanceType} Only`);
+            this.activeFilters.push(`Type: ${filter.instanceType} Only`);
         }
 
         var filterQuery = filterArray.length > 0 ? `filter=${filterArray.join(' and ')}` : '';
