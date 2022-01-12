@@ -3,13 +3,7 @@
 @import '~@swimlane/ngx-datatable/assets/icons.css';
 
 .fullscreen {
-    position: absolute !important;
-    height: auto !important;
-    top: 7.125rem;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
+    position: inherit !important;
 }
 
 .ngx-datatable.dark {

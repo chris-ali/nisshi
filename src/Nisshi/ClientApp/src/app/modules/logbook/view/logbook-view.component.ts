@@ -9,7 +9,7 @@ import { AppConfig, LogbookOptions } from 'app/core/config/app.config';
 import { FuseConfigService } from '@fuse/services/config';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { entries } from 'lodash';
+import { AircraftService } from 'app/core/aircraft/aircraft.service';
 
 @Component({
   selector: 'logbook-view',
@@ -24,6 +24,7 @@ export class LogbookViewComponent implements OnInit, OnDestroy
     summaryPosition = 'bottom';
     ColumnMode = ColumnMode;
     logbookEntries: LogbookEntry[];
+    activeFilters: string[] = [];
 
     drawerMode: 'over' | 'side' = 'side';
     drawerOpened: boolean = false;
@@ -35,6 +36,7 @@ export class LogbookViewComponent implements OnInit, OnDestroy
      * Constructor
      */
     constructor(private logbookEntryService: LogbookEntryService,
+                private aircraftService: AircraftService,
                 public translateService: TranslocoService,
                 private fuseConfigService: FuseConfigService,
                 private confirmation: ConfirmationService,
@@ -161,15 +163,31 @@ export class LogbookViewComponent implements OnInit, OnDestroy
     onFilterChanged(filter): void
     {
         var filterArray = [];
+        this.activeFilters = [];
 
         if (filter.fromDate)
-            filterArray.push(` flightDate gt ${filter.fromDate.toISOString()}`)
+        {
+            filterArray.push(` flightDate gt ${filter.fromDate.toISOString()}`);
+            this.activeFilters.push(`Flight Date: After ${filter.fromDate.toDateString()}`);
+        }
         if (filter.toDate)
-            filterArray.push(` flightDate lt ${filter.toDate.toISOString()}`)
+        {
+            filterArray.push(` flightDate lt ${filter.toDate.toISOString()}`);
+            this.activeFilters.push(`Flight Date: Before ${filter.toDate.toDateString()}`);
+        }
         if (filter.idAircraft)
-            filterArray.push(` idAircraft eq ${filter.idAircraft}`)
+        {
+            filterArray.push(` idAircraft eq ${filter.idAircraft}`);
+
+            this.aircraftService.getOne(filter.idAircraft).subscribe(air => {
+                this.activeFilters.push(`Aircraft:  ${air.tailNumber} - ${air.model?.manufacturer?.manufacturerName} ${air.model?.modelName}`);
+            });
+        }
         if (filter.instanceType)
-            filterArray.push(` aircraft/instanceType eq Nisshi.Infrastructure.Enums.InstanceType'${filter.instanceType}'`)
+        {
+            filterArray.push(` aircraft/instanceType eq Nisshi.Infrastructure.Enums.InstanceType'${filter.instanceType}'`);
+            this.activeFilters.push(`Type of Aircraft: ${filter.instanceType} Only`);
+        }
 
         var filterQuery = filterArray.length > 0 ? `filter=${filterArray.join(' and ')}` : '';
 
