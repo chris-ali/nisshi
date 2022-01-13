@@ -9,6 +9,8 @@ import { AppConfig, LogbookOptions } from 'app/core/config/app.config';
 import { FuseConfigService } from '@fuse/services/config';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { AircraftService } from 'app/core/aircraft/aircraft.service';
+import { LogbookFilter } from 'app/core/ui/logbookfilter.types';
 
 @Component({
   selector: 'logbook-view',
@@ -23,6 +25,7 @@ export class LogbookViewComponent implements OnInit, OnDestroy
     summaryPosition = 'bottom';
     ColumnMode = ColumnMode;
     logbookEntries: LogbookEntry[];
+    activeFilters: string[];
 
     drawerMode: 'over' | 'side' = 'side';
     drawerOpened: boolean = false;
@@ -34,6 +37,7 @@ export class LogbookViewComponent implements OnInit, OnDestroy
      * Constructor
      */
     constructor(private logbookEntryService: LogbookEntryService,
+                private aircraftService: AircraftService,
                 public translateService: TranslocoService,
                 private fuseConfigService: FuseConfigService,
                 private confirmation: ConfirmationService,
@@ -51,6 +55,8 @@ export class LogbookViewComponent implements OnInit, OnDestroy
         this.logbookEntryService.getAll().subscribe(entries => {
             this.logbookEntries = entries;
         });
+
+        this.activeFilters = [];
 
         // Subscribe to config changes
         this.fuseConfigService.config$
@@ -150,5 +156,46 @@ export class LogbookViewComponent implements OnInit, OnDestroy
     onAppConfigChanged(options: LogbookOptions): void
     {
         this.fuseConfigService.config = {logbookOptions: options};
+    }
+
+    /**
+     * When the sidebar updates the filter, update the list of logbook entries
+     *
+     * @param filter
+     */
+    onFilterChanged(filter: LogbookFilter): void
+    {
+        var filterArray = [];
+        this.activeFilters = [];
+
+        if (filter?.fromDate)
+        {
+            filterArray.push(` flightDate gt ${filter.fromDate.toISOString()}`);
+            this.activeFilters.push(`After: ${filter.fromDate.toDateString()}`);
+        }
+        if (filter?.toDate)
+        {
+            filterArray.push(` flightDate lt ${filter.toDate.toISOString()}`);
+            this.activeFilters.push(`Before: ${filter.toDate.toDateString()}`);
+        }
+        if (filter?.idAircraft)
+        {
+            filterArray.push(` idAircraft eq ${filter.idAircraft}`);
+
+            this.aircraftService.getOne(filter.idAircraft).subscribe(air => {
+                this.activeFilters.push(`Aircraft: ${air.tailNumber} - ${air.model?.manufacturer?.manufacturerName} ${air.model?.modelName}`);
+            });
+        }
+        if (filter?.instanceType)
+        {
+            filterArray.push(` aircraft/instanceType eq Nisshi.Infrastructure.Enums.InstanceType'${filter.instanceType}'`);
+            this.activeFilters.push(`Type: ${filter.instanceType} Only`);
+        }
+
+        var filterQuery = filterArray.length > 0 ? `filter=${filterArray.join(' and ')}` : '';
+
+        this.logbookEntryService.getAll(filterQuery).subscribe(entries => {
+            this.logbookEntries = entries;
+        });
     }
 }

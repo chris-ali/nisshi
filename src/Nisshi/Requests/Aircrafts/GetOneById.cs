@@ -31,6 +31,7 @@ namespace Nisshi.Requests.Aircrafts
                 var data = await context.Aircraft
                     .Include(x => x.Owner)
                     .Include(x => x.Model)
+                        .ThenInclude(x => x.Manufacturer)
                     .FirstOrDefaultAsync(x => x.Id == request.id
                         && x.Owner.Username.ToLower(CultureInfo.InvariantCulture) ==
                             username.ToLower(CultureInfo.InvariantCulture), cancellationToken);

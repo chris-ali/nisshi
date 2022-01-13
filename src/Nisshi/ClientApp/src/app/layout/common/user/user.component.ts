@@ -84,6 +84,6 @@ export class UserComponent implements OnInit, OnDestroy
      */
     navigateToSettings(panel: String): void
     {
-        this._router.navigate(['/settings/' + panel]);
+        this._router.navigate([`/settings/${panel}`]);
     }
 }

@@ -11,6 +11,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { SharedModule } from 'app/shared/shared.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
     declarations: [
@@ -24,8 +28,13 @@ import { SharedModule } from 'app/shared/shared.module';
         MatCheckboxModule,
         MatDividerModule,
         MatFormFieldModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatOptionModule,
+        MatSelectModule,
         MatMenuModule,
         MatInputModule,
+        MatRadioModule,
         FuseNavigationModule,
         SharedModule
     ],
