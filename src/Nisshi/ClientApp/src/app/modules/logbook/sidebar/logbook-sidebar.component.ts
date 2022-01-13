@@ -5,7 +5,6 @@ import { AircraftService } from 'app/core/aircraft/aircraft.service';
 import { Aircraft } from 'app/core/aircraft/aircraft.types';
 import { LogbookOptions } from 'app/core/config/app.config';
 
-
 @Component({
     selector     : 'logbook-sidebar',
     templateUrl  : './logbook-sidebar.component.html',
@@ -83,16 +82,25 @@ export class LogbookSidebarComponent implements OnInit
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
+    /**
+     * Called when options form is submitted
+     */
     onSubmit(): void
     {
         this.preferencesChanged.emit(this.form.value);
     }
 
+    /**
+     * Called when filter form is submitted
+     */
     onFilter(): void
     {
         this.filterChanged.emit(this.filter.value);
     }
 
+    /**
+     * Called when filter form is cleared
+     */
     onClearFilter(): void
     {
         this.filter.reset();

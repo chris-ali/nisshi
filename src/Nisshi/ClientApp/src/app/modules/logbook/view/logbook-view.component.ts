@@ -183,7 +183,7 @@ export class LogbookViewComponent implements OnInit, OnDestroy
             filterArray.push(` idAircraft eq ${filter.idAircraft}`);
 
             this.aircraftService.getOne(filter.idAircraft).subscribe(air => {
-                this.activeFilters.push(`Aircraft:  ${air.tailNumber} - ${air.model?.manufacturer?.manufacturerName} ${air.model?.modelName}`);
+                this.activeFilters.push(`Aircraft: ${air.tailNumber} - ${air.model?.manufacturer?.manufacturerName} ${air.model?.modelName}`);
             });
         }
         if (filter?.instanceType)
