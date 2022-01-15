@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure;
-using Nisshi.Infrastructure.Errors;
 using Nisshi.Models;
 
 namespace Nisshi.Requests.LogbookEntries

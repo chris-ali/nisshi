@@ -48,5 +48,17 @@ namespace Nisshi.Controllers
         {
             return await mediator.Send(new Delete.Command(id), cancellationToken);
         }
+
+        [HttpGet("analytics/totaltime/month")]
+        public async Task<IEnumerable<TotalTimeByMonth>> GetTotalTimeByMonth(CancellationToken cancellationToken)
+        {
+            return await mediator.Send(new GetSumTotalTimeGroupByMonth.Query(), cancellationToken);
+        }
+
+        [HttpGet("analytics/totaltime/catclass")]
+        public async Task<IEnumerable<TotalTimeByCategoryClass>> GetTotalTimeByCatClass(CancellationToken cancellationToken)
+        {
+            return await mediator.Send(new GetSumTotalTimeGroupByCatClass.Query(), cancellationToken);
+        }
     }
 }
