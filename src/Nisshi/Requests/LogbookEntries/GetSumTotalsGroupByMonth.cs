@@ -10,11 +10,11 @@ using Nisshi.Models;
 
 namespace Nisshi.Requests.LogbookEntries
 {
-    public class GetSumTotalTimeGroupByMonth
+    public class GetSumTotalsGroupByMonth
     {
-        public record Query() : IRequest<IList<TotalTimeByMonth>>;
+        public record Query() : IRequest<IList<TotalsByMonth>>;
 
-        public class QueryHandler : BaseHandler, IRequestHandler<Query, IList<TotalTimeByMonth>>
+        public class QueryHandler : BaseHandler, IRequestHandler<Query, IList<TotalsByMonth>>
         {
             private readonly ICurrentUserAccessor accessor;
 
@@ -23,7 +23,7 @@ namespace Nisshi.Requests.LogbookEntries
                 this.accessor = accessor;
             }
 
-            public async Task<IList<TotalTimeByMonth>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<IList<TotalsByMonth>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var username = accessor.GetCurrentUserName();
 
@@ -35,11 +35,21 @@ namespace Nisshi.Requests.LogbookEntries
                         Month = g.FlightDate.Value.Month,
                         Year = g.FlightDate.Value.Year
                     })
-                    .Select(s => new TotalTimeByMonth {
+                    .Select(s => new TotalsByMonth {
                         Month = s.Key.Month,
                         Year = s.Key.Year,
-                        TotalTimeSum = s.Sum(t => t.TotalFlightTime)
-                    }).ToListAsync(cancellationToken);
+                        TotalTimeSum = s.Sum(t => t.TotalFlightTime),
+                        InstrumentSum = s.Sum(t => t.IMC),
+                        NightSum = s.Sum(t => t.Night),
+                        CrossCountrySum = s.Sum(t => t.CrossCountry),
+                        TurbineSum = s.Sum(t => t.Turbine),
+                        PICSum = s.Sum(t => t.PIC),
+                        SICSum = s.Sum(t => t.SIC),
+                        DualGivenSum = s.Sum(t => t.DualGiven),
+                    })
+                    .OrderByDescending(x => x.Year)
+                    .ThenByDescending(x => x.Month)
+                    .ToListAsync(cancellationToken);
 
                 return data;
             }

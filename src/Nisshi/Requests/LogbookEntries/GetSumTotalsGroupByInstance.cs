@@ -10,11 +10,11 @@ using Nisshi.Models;
 
 namespace Nisshi.Requests.LogbookEntries
 {
-    public class GetSumTotalTimeGroupByCatClass
+    public class GetSumTotalsGroupByInstance
     {
-        public record Query() : IRequest<IList<TotalTimeByCategoryClass>>;
+        public record Query() : IRequest<IList<TotalsByInstanceType>>;
 
-        public class QueryHandler : BaseHandler, IRequestHandler<Query, IList<TotalTimeByCategoryClass>>
+        public class QueryHandler : BaseHandler, IRequestHandler<Query, IList<TotalsByInstanceType>>
         {
             private readonly ICurrentUserAccessor accessor;
 
@@ -23,23 +23,28 @@ namespace Nisshi.Requests.LogbookEntries
                 this.accessor = accessor;
             }
 
-            public async Task<IList<TotalTimeByCategoryClass>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<IList<TotalsByInstanceType>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var username = accessor.GetCurrentUserName();
 
                 var data = await context.LogbookEntries
                     .Include(x => x.Owner)
                     .Include(x => x.Aircraft)
-                        .ThenInclude(x => x.Model)
-                        .ThenInclude(x => x.CategoryClass)
                     .Where(x => x.Owner.Username.ToLower(CultureInfo.InvariantCulture) ==
                         username.ToLower(CultureInfo.InvariantCulture))
                     .GroupBy(g => new {
-                        CategoryClass = g.Aircraft.Model.CategoryClass.CatClass
+                        InstanceType = g.Aircraft.InstanceType
                     })
-                    .Select(s => new TotalTimeByCategoryClass {
-                        CategoryClass = s.Key.CategoryClass,
-                        TotalTimeSum = s.Sum(t => t.TotalFlightTime)
+                    .Select(s => new TotalsByInstanceType {
+                        Instance = s.Key.InstanceType,
+                        TotalTimeSum = s.Sum(t => t.TotalFlightTime),
+                        InstrumentSum = s.Sum(t => t.IMC),
+                        NightSum = s.Sum(t => t.Night),
+                        CrossCountrySum = s.Sum(t => t.CrossCountry),
+                        TurbineSum = s.Sum(t => t.Turbine),
+                        PICSum = s.Sum(t => t.PIC),
+                        SICSum = s.Sum(t => t.SIC),
+                        DualGivenSum = s.Sum(t => t.DualGiven),
                     }).ToListAsync(cancellationToken);
 
                 return data;
