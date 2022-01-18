@@ -48,29 +48,5 @@ namespace Nisshi.Controllers
         {
             return await mediator.Send(new Delete.Command(id), cancellationToken);
         }
-
-        [HttpGet("analytics/totals/month")]
-        public async Task<IEnumerable<TotalsByMonth>> GetTotalsByMonth(CancellationToken cancellationToken)
-        {
-            return await mediator.Send(new GetSumTotalsGroupByMonth.Query(), cancellationToken);
-        }
-
-        [HttpGet("analytics/totals/catclass")]
-        public async Task<IEnumerable<TotalsByCategoryClass>> GetTotalsByCatClass(CancellationToken cancellationToken)
-        {
-            return await mediator.Send(new GetSumTotalsGroupByCatClass.Query(), cancellationToken);
-        }
-
-        [HttpGet("analytics/totals/instance")]
-        public async Task<IEnumerable<TotalsByInstanceType>> GetTotalsByInstanceType(CancellationToken cancellationToken)
-        {
-            return await mediator.Send(new GetSumTotalsGroupByInstance.Query(), cancellationToken);
-        }
-
-        [HttpGet("analytics/totals/type")]
-        public async Task<IEnumerable<TotalsByType>> GetTotalsByType(CancellationToken cancellationToken)
-        {
-            return await mediator.Send(new GetSumTotalsGroupByType.Query(), cancellationToken);
-        }
     }
 }
