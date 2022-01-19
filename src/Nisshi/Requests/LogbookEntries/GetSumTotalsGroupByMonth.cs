@@ -47,11 +47,28 @@ namespace Nisshi.Requests.LogbookEntries
                         SICSum = s.Sum(t => t.SIC),
                         DualGivenSum = s.Sum(t => t.DualGiven),
                     })
-                    .OrderByDescending(x => x.Year)
-                    .ThenByDescending(x => x.Month)
                     .ToListAsync(cancellationToken);
 
-                return data;
+                // Fill in missing months in a year with zeroes if no entries were found
+                var blankEntries = new List<TotalsByMonth>();
+                foreach (var year in data.Select(x => x.Year).Distinct())
+                {
+                    for (int month = 1; month < 13; month++)
+                    {
+                        if (!data.Any(x => x.Month == month && x.Year == year))
+                        {
+                            blankEntries.Add(new TotalsByMonth {
+                                Month = month,
+                                Year = year
+                            });
+                        }
+                    }
+                }
+
+                data.AddRange(blankEntries);
+
+                return data.OrderByDescending(x => x.Year)
+                           .ThenByDescending(x => x.Month).ToList();
             }
         }
     }

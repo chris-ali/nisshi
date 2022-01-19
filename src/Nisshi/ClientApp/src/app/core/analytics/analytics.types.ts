@@ -1,23 +1,23 @@
 export interface TotalsAnalytics
 {
-    Month: number;
-    Year: number;
-    CategoryClass: string;
-    Type: string;
-    Instance: number;
-    TotalTimeSum: number;
-    NightSum: number;
-    InstrumentSum: number;
-    CrossCountrySum: number;
-    TurbineSum: number;
-    PICSum: number;
-    SICSum: number;
-    DualGivenSum: number;
+    month: number;
+    year: number;
+    categoryClass: string;
+    type: string;
+    instance: number;
+    totalTimeSum: number;
+    nightSum: number;
+    instrumentSum: number;
+    crossCountrySum: number;
+    turbineSum: number;
+    picSum: number;
+    sicSum: number;
+    dualGivenSum: number;
 }
 
 export interface LandingsAnalytics
 {
-    DayLandings: number;
-    NightLandings: number;
-    Approaches: number;
+    dayLandings: number;
+    nightLandings: number;
+    approaches: number;
 }
