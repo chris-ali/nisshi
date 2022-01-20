@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { forkJoin, Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ApiService } from '../base/api.service';
-import { TotalsAnalytics, LandingsAnalytics } from './analytics.types';
+import { TotalsAnalytics, LandingsAnalytics, AnalyticsCompendium } from './analytics.types';
 
 const URL = 'analytics/';
 
@@ -11,10 +11,50 @@ const URL = 'analytics/';
 })
 export class AnalyticsService
 {
+    private _analyticsData: Subject<AnalyticsCompendium> = new Subject<AnalyticsCompendium>();
+
     /**
      * Constructor
      */
     constructor(private _api: ApiService) { }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Accessors
+    // -----------------------------------------------------------------------------------------------------
+
+    get analytics$(): Observable<AnalyticsCompendium>
+    {
+        return this._analyticsData.asObservable();
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Get the current logged in user data
+     */
+    get(): any
+    {
+        forkJoin([
+            this.getTotalsByMonth(),
+            this.getTotalsByCatClass(),
+            this.getTotalsByType(),
+            this.getTotalsByInstanceType(),
+            this.getLandingsApproachesPast90Days()
+        ]).subscribe(([byMonth, byCatClass, byType, byInstanceType, landings]) => {
+            var analytics: AnalyticsCompendium =
+            {
+                totalsByMonth: byMonth,
+                totalsByCatClass: byCatClass,
+                totalsByType: byType,
+                totalsByInstance: byInstanceType,
+                landingsPast90Days: landings
+            };
+
+            this._analyticsData.next(analytics);
+        });
+    }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -59,6 +99,4 @@ export class AnalyticsService
     {
         return this._api.get(`${URL}currency/landings`).pipe();
     }
-
-    //TODO Map totals into list of totals using map, ie const names = users.map(u => u.name);
 }

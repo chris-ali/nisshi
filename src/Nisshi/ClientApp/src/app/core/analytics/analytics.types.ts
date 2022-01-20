@@ -21,3 +21,12 @@ export interface LandingsAnalytics
     nightLandings: number;
     approaches: number;
 }
+
+export interface AnalyticsCompendium
+{
+    totalsByMonth: TotalsAnalytics[];
+    totalsByCatClass: TotalsAnalytics[];
+    totalsByType: TotalsAnalytics[];
+    totalsByInstance: TotalsAnalytics[];
+    landingsPast90Days: LandingsAnalytics
+}
