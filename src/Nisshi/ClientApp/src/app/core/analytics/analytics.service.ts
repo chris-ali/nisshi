@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { forkJoin, Observable, Subject } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ApiService } from '../base/api.service';
-import { TotalsAnalytics, LandingsAnalytics, AnalyticsCompendium } from './analytics.types';
+import { TotalsAnalytics, LandingsAnalytics, AnalyticsCompendium, ChartData, SeriesData } from './analytics.types';
 
 const URL = 'analytics/';
 
@@ -63,33 +63,60 @@ export class AnalyticsService
     /**
      * Gets totals of all logbook entries grouped by month and year
      */
-    getTotalsByMonth(): Observable<TotalsAnalytics[]>
+    getTotalsByMonth(): Observable<ChartData>
     {
-        return this._api.get(`${URL}totals/month`).pipe();
+        return this._api.get(`${URL}totals/month`).pipe(
+            map((analytics: TotalsAnalytics[]) => {
+                var labels: string[] = [];
+                analytics.forEach(analytic => {
+                    labels.push(`${analytic.month}/${analytic.year}`);
+                });
+
+                return this.mapIntoChartData(analytics, 'totals-by-month', 'column', labels);
+            }
+        ));
     }
 
     /**
      * Gets totals of all logbook entries grouped by category and class
      */
-    getTotalsByCatClass(): Observable<TotalsAnalytics[]>
+    getTotalsByCatClass(): Observable<ChartData>
     {
-        return this._api.get(`${URL}totals/catclass`).pipe();
+        return this._api.get(`${URL}totals/catclass`).pipe(
+            map((analytics: TotalsAnalytics[]) => {
+                var labels = analytics.map(x => x.categoryClass);
+
+                return this.mapIntoChartData(analytics, 'totals-by-catclass', 'column', labels);
+            }
+        ));
     }
 
     /**
      * Gets totals of all logbook entries grouped by instance type (real vs sim)
      */
-    getTotalsByInstanceType(): Observable<TotalsAnalytics[]>
+    getTotalsByInstanceType(): Observable<ChartData>
     {
-        return this._api.get(`${URL}totals/instance`).pipe();
+        return this._api.get(`${URL}totals/instance`).pipe(
+            map((analytics: TotalsAnalytics[]) => {
+                var labels = analytics.map(x => x.instance);
+
+                return this.mapIntoChartData(analytics, 'totals-by-instance', 'column', labels);
+            }
+        ));
     }
 
     /**
      * Gets totals of all logbook entries grouped by aircraft type
      */
-    getTotalsByType(): Observable<TotalsAnalytics[]>
+    getTotalsByType(): Observable<ChartData>
     {
-        return this._api.get(`${URL}totals/type`).pipe();
+        return this._api.get(`${URL}totals/type`).pipe(
+            map((analytics: TotalsAnalytics[]) => {
+                var labels = analytics.map(x => x.type);
+
+                return this.mapIntoChartData(analytics, 'totals-by-type', 'column', labels);
+            }
+        ));
     }
 
     /**
@@ -98,5 +125,82 @@ export class AnalyticsService
     getLandingsApproachesPast90Days(): Observable<LandingsAnalytics>
     {
         return this._api.get(`${URL}currency/landings`).pipe();
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Private methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Formats analytics data into format charting library can use correctly
+     *
+     * @param analytics
+     * @param chartName
+     * @param type
+     * @param labels
+     * @returns formatted chart data
+     */
+    private mapIntoChartData(analytics: TotalsAnalytics[],
+        chartName: string,
+        type: string,
+        labels: string[]): ChartData
+    {
+        var series: Record<string, SeriesData[]> = {};
+        series[chartName] =
+            [
+                {
+                    name: 'total-time',
+                    type: type,
+                    data: analytics.map(x => x.totalTimeSum)
+                },
+                {
+                    name: 'imc',
+                    type: type,
+                    data: analytics.map(x => x.instrumentSum)
+                },
+                {
+                    name: 'multi',
+                    type: type,
+                    data: analytics.map(x => x.multiSum)
+                },
+                {
+                    name: 'dual-given',
+                    type: type,
+                    data: analytics.map(x => x.dualGivenSum)
+                },
+                {
+                    name: 'turbine',
+                    type: type,
+                    data: analytics.map(x => x.turbineSum)
+                },
+                {
+                    name: 'sic',
+                    type: type,
+                    data: analytics.map(x => x.sicSum)
+                },
+                {
+                    name: 'pic',
+                    type: type,
+                    data: analytics.map(x => x.picSum)
+                },
+                {
+                    name: 'night',
+                    type: type,
+                    data: analytics.map(x => x.nightSum)
+                },
+                {
+                    name: 'cross-country',
+                    type: type,
+                    data: analytics.map(x => x.crossCountrySum)
+                }
+            ];
+
+        var chartData: ChartData =
+        {
+            labels: labels,
+            series: series
+        };
+
+        return chartData;
     }
 }

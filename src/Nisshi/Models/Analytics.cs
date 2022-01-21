@@ -36,7 +36,7 @@ namespace Nisshi.Models
     /// </summary>
     public class TotalsByInstanceType : SumTotals
     {
-        public InstanceType Instance { get; set; }
+        public string Instance { get; set; }
     }
 
     /// <summary>

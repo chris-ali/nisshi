@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit, OnDestroy
     chartTotalsByType: ApexOptions = {};
     chartTotalsByInstance: ApexOptions = {};
     chartTotalsByCatClass: ApexOptions = {};
+
     analytics: AnalyticsCompendium;
     private _unsubscribeAll: Subject<AnalyticsCompendium> = new Subject<AnalyticsCompendium>();
 
@@ -128,7 +129,7 @@ export class DashboardComponent implements OnInit, OnDestroy
      */
     private _prepareChartData(): void
     {
-        // Github issues
+        // Totals by month issues
         this.chartTotalsByMonth = {
             chart      : {
                 fontFamily: 'inherit',
@@ -153,7 +154,7 @@ export class DashboardComponent implements OnInit, OnDestroy
             grid       : {
                 borderColor: 'var(--fuse-border)'
             },
-            labels     : this.analytics.githubIssues.labels,
+            labels     : this.analytics.totalsByMonth.labels,
             legend     : {
                 show: false
             },
@@ -162,7 +163,7 @@ export class DashboardComponent implements OnInit, OnDestroy
                     columnWidth: '50%'
                 }
             },
-            series     : this.analytics.githubIssues.series,
+            series     : this.analytics.totalsByMonth.series,
             states     : {
                 hover: {
                     filter: {
@@ -204,7 +205,7 @@ export class DashboardComponent implements OnInit, OnDestroy
             }
         };
 
-        // Task distribution
+        // Totals by type
         this.chartTotalsByType = {
             chart      : {
                 fontFamily: 'inherit',
@@ -218,7 +219,7 @@ export class DashboardComponent implements OnInit, OnDestroy
                     enabled: false
                 }
             },
-            labels     : this.analytics.taskDistribution.labels,
+            labels     : this.analytics.totalsByType.labels,
             legend     : {
                 position: 'bottom'
             },
@@ -232,7 +233,7 @@ export class DashboardComponent implements OnInit, OnDestroy
                     }
                 }
             },
-            series     : this.analytics.taskDistribution.series,
+            series     : this.analytics.totalsByType.series,
             states     : {
                 hover: {
                     filter: {
@@ -265,7 +266,7 @@ export class DashboardComponent implements OnInit, OnDestroy
             }
         };
 
-        // Budget distribution
+        // Totals by instance
         this.chartTotalsByInstance = {
             chart      : {
                 fontFamily: 'inherit',
@@ -303,7 +304,7 @@ export class DashboardComponent implements OnInit, OnDestroy
                     }
                 }
             },
-            series     : this.analytics.budgetDistribution.series,
+            series     : this.analytics.totalsByInstance.series,
             stroke     : {
                 width: 2
             },
@@ -321,7 +322,7 @@ export class DashboardComponent implements OnInit, OnDestroy
                         fontWeight: '500'
                     }
                 },
-                categories: this.analytics.budgetDistribution.categories
+                categories: this.analytics.totalsByInstance.categories
             },
             yaxis      : {
                 max       : (max: number): number => parseInt((max + 10).toFixed(0), 10),
@@ -344,7 +345,7 @@ export class DashboardComponent implements OnInit, OnDestroy
                 }
             },
             colors : ['#22D3EE'],
-            series : this.analytics.weeklyExpenses.series,
+            series : this.analytics.totalsByCatClass.series,
             stroke : {
                 curve: 'smooth'
             },
@@ -353,7 +354,7 @@ export class DashboardComponent implements OnInit, OnDestroy
             },
             xaxis  : {
                 type      : 'category',
-                categories: this.analytics.weeklyExpenses.labels
+                categories: this.analytics.totalsByCatClass.labels
             },
             yaxis  : {
                 labels: {

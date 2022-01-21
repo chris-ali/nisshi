@@ -4,7 +4,7 @@ export interface TotalsAnalytics
     year: number;
     categoryClass: string;
     type: string;
-    instance: number;
+    instance: string;
     totalTimeSum: number;
     nightSum: number;
     instrumentSum: number;
@@ -13,6 +13,7 @@ export interface TotalsAnalytics
     picSum: number;
     sicSum: number;
     dualGivenSum: number;
+    multiSum: number;
 }
 
 export interface LandingsAnalytics
@@ -24,9 +25,22 @@ export interface LandingsAnalytics
 
 export interface AnalyticsCompendium
 {
-    totalsByMonth: TotalsAnalytics[];
-    totalsByCatClass: TotalsAnalytics[];
-    totalsByType: TotalsAnalytics[];
-    totalsByInstance: TotalsAnalytics[];
+    totalsByMonth: any; //ChartData
+    totalsByCatClass: any; //ChartData
+    totalsByType: any; //ChartData
+    totalsByInstance: any; //ChartData
     landingsPast90Days: LandingsAnalytics
+}
+
+export interface SeriesData
+{
+    name: string;
+    type: string;
+    data: number[];
+}
+
+export interface ChartData
+{
+    labels: string[];
+    series: Record<string, SeriesData[]>;
 }

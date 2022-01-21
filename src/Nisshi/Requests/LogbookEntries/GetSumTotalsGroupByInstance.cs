@@ -36,7 +36,7 @@ namespace Nisshi.Requests.LogbookEntries
                         InstanceType = g.Aircraft.InstanceType
                     })
                     .Select(s => new TotalsByInstanceType {
-                        Instance = s.Key.InstanceType,
+                        Instance = s.Key.InstanceType.ToString(),
                         TotalTimeSum = s.Sum(t => t.TotalFlightTime),
                         InstrumentSum = s.Sum(t => t.IMC),
                         NightSum = s.Sum(t => t.Night),
