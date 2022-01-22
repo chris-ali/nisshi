@@ -129,7 +129,7 @@ export class DashboardComponent implements OnInit, OnDestroy
      */
     private _prepareChartData(): void
     {
-        // Totals by month issues
+        // Totals by month
         this.chartTotalsByMonth = {
             chart      : {
                 fontFamily: 'inherit',
@@ -280,7 +280,6 @@ export class DashboardComponent implements OnInit, OnDestroy
             colors     : ['#818CF8'],
             dataLabels : {
                 enabled   : true,
-                formatter : (val: number): string | number => `${val}%`,
                 textAnchor: 'start',
                 style     : {
                     fontSize  : '13px',

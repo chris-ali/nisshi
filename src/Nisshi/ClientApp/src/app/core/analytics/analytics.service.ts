@@ -132,7 +132,7 @@ export class AnalyticsService
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Formats analytics data into format charting library can use correctly
+     * Formats analytics data into a format apex chart can use correctly
      *
      * @param analytics
      * @param chartName
@@ -203,4 +203,17 @@ export class AnalyticsService
 
         return chartData;
     }
+
+    // private mapIntoChartData(analytics: TotalsAnalytics[], propertyToApply: keyof TotalsAnalytics, labels: string[])
+    // {
+    //     var series: Record<string, SeriesData[]> = {};
+    //     var type = 'line';
+    //     analytics.forEach(analytic => {
+    //         series[analytic[propertyToApply]] =
+    //         [
+    //             ...
+    //         ];
+    //     });
+    //     ...
+    // }
 }
