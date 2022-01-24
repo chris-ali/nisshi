@@ -39,6 +39,7 @@ namespace Nisshi.Requests.LogbookEntries
                         Month = s.Key.Month,
                         Year = s.Key.Year,
                         TotalTimeSum = s.Sum(t => t.TotalFlightTime),
+                        MultiSum = s.Sum(t => t.MultiEngine),
                         InstrumentSum = s.Sum(t => t.IMC),
                         NightSum = s.Sum(t => t.Night),
                         CrossCountrySum = s.Sum(t => t.CrossCountry),

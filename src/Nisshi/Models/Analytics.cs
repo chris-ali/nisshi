@@ -61,6 +61,8 @@ namespace Nisshi.Models
 
         public decimal NightSum { get; set; } = 0m;
 
+        public decimal MultiSum { get; set; } = 0m;
+
         public decimal InstrumentSum { get; set; } = 0m;
 
         public decimal CrossCountrySum { get; set; } = 0m;

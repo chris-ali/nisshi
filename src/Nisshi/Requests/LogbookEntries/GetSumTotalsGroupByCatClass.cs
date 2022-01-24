@@ -40,6 +40,7 @@ namespace Nisshi.Requests.LogbookEntries
                     .Select(s => new TotalsByCategoryClass {
                         CategoryClass = s.Key.CategoryClass,
                         TotalTimeSum = s.Sum(t => t.TotalFlightTime),
+                        MultiSum = s.Sum(t => t.MultiEngine),
                         InstrumentSum = s.Sum(t => t.IMC),
                         NightSum = s.Sum(t => t.Night),
                         CrossCountrySum = s.Sum(t => t.CrossCountry),

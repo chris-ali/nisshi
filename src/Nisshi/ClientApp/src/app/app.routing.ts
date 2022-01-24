@@ -73,6 +73,7 @@ export const appRoutes: Route[] = [
         },
         children   : [
             {path: 'example', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
+            {path: 'dashboard', loadChildren: () => import('app/modules/dashboard/dashboard.module').then(m => m.DashboardModule)},
             {path: 'aircraft/view', loadChildren: () => import('app/modules/aircraft/view/aircraft-view.module').then(m => m.AircraftViewModule)},
             {path: 'aircraft', loadChildren: () => import('app/modules/aircraft/form/aircraft-form.module').then(m => m.AircraftFormModule)},
             {path: 'logbook/view', loadChildren: () => import('app/modules/logbook/view/logbook-view.module').then(m => m.LogbookViewModule)},
@@ -81,3 +82,4 @@ export const appRoutes: Route[] = [
         ]
     }
 ];
+

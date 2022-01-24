@@ -1,9 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
 import { ApexOptions } from 'ng-apexcharts';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
-import { takeUntil } from 'rxjs/operators';
 import { AnalyticsCompendium } from 'app/core/analytics/analytics.types';
 
 @Component({
@@ -12,7 +10,7 @@ import { AnalyticsCompendium } from 'app/core/analytics/analytics.types';
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardComponent implements OnInit, OnDestroy
+export class DashboardComponent implements OnInit
 {
     chartTotalsByMonth: ApexOptions = {};
     chartTotalsByType: ApexOptions = {};
@@ -20,7 +18,6 @@ export class DashboardComponent implements OnInit, OnDestroy
     chartTotalsByCatClass: ApexOptions = {};
 
     analytics: AnalyticsCompendium;
-    private _unsubscribeAll: Subject<AnalyticsCompendium> = new Subject<AnalyticsCompendium>();
 
     /**
      * Constructor
@@ -41,14 +38,9 @@ export class DashboardComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         // Get the data
-        this._analyticsService.analytics$
-            .pipe(takeUntil(this._unsubscribeAll))
+        this._analyticsService.getAllAnalytics()
             .subscribe((response) => {
-
-                // Store the data
                 this.analytics = response;
-
-                // Prepare the chart data
                 this._prepareChartData();
             });
 
@@ -65,16 +57,6 @@ export class DashboardComponent implements OnInit, OnDestroy
                 }
             }
         };
-    }
-
-    /**
-     * On destroy
-     */
-    ngOnDestroy(): void
-    {
-        // Unsubscribe from all subscriptions
-        this._unsubscribeAll.next(null);
-        this._unsubscribeAll.complete();
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -129,7 +111,6 @@ export class DashboardComponent implements OnInit, OnDestroy
      */
     private _prepareChartData(): void
     {
-        // Totals by month
         this.chartTotalsByMonth = {
             chart      : {
                 fontFamily: 'inherit',
@@ -205,13 +186,12 @@ export class DashboardComponent implements OnInit, OnDestroy
             }
         };
 
-        // Totals by type
         this.chartTotalsByType = {
             chart      : {
                 fontFamily: 'inherit',
                 foreColor : 'inherit',
                 height    : '100%',
-                type      : 'polarArea',
+                type      : 'line',
                 toolbar   : {
                     show: false
                 },
@@ -266,98 +246,122 @@ export class DashboardComponent implements OnInit, OnDestroy
             }
         };
 
-        // Totals by instance
         this.chartTotalsByInstance = {
             chart      : {
                 fontFamily: 'inherit',
                 foreColor : 'inherit',
                 height    : '100%',
                 type      : 'polarArea',
-                sparkline : {
-                    enabled: true
+                toolbar   : {
+                    show: false
+                },
+                zoom      : {
+                    enabled: false
                 }
             },
-            colors     : ['#818CF8'],
-            dataLabels : {
-                enabled   : true,
-                textAnchor: 'start',
-                style     : {
-                    fontSize  : '13px',
-                    fontWeight: 500
-                },
-                background: {
-                    borderWidth: 0,
-                    padding    : 4
-                },
-                offsetY   : -15
-            },
-            markers    : {
-                strokeColors: '#818CF8',
-                strokeWidth : 4
+            labels     : this.analytics.totalsByInstance.labels,
+            legend     : {
+                position: 'bottom'
             },
             plotOptions: {
-                radar: {
-                    polygons: {
-                        strokeColors   : 'var(--fuse-border)',
+                polarArea: {
+                    spokes: {
                         connectorColors: 'var(--fuse-border)'
+                    },
+                    rings : {
+                        strokeColor: 'var(--fuse-border)'
                     }
                 }
             },
             series     : this.analytics.totalsByInstance.series,
+            states     : {
+                hover: {
+                    filter: {
+                        type : 'darken',
+                        value: 0.75
+                    }
+                }
+            },
             stroke     : {
                 width: 2
             },
-            tooltip    : {
-                theme: 'dark',
-                y    : {
-                    formatter: (val: number): string => `${val}%`
+            theme      : {
+                monochrome: {
+                    enabled       : true,
+                    color         : '#93C5FD',
+                    shadeIntensity: 0.75,
+                    shadeTo       : 'dark'
                 }
             },
-            xaxis      : {
-                labels    : {
-                    show : true,
-                    style: {
-                        fontSize  : '12px',
-                        fontWeight: '500'
-                    }
-                },
-                categories: this.analytics.totalsByInstance.categories
+            tooltip    : {
+                followCursor: true,
+                theme       : 'dark'
             },
             yaxis      : {
-                max       : (max: number): number => parseInt((max + 10).toFixed(0), 10),
-                tickAmount: 7
+                labels: {
+                    style: {
+                        colors: 'var(--fuse-text-secondary)'
+                    }
+                }
             }
         };
 
-        // Weekly expenses
         this.chartTotalsByCatClass = {
-            chart  : {
-                animations: {
-                    enabled: false
-                },
+            chart      : {
                 fontFamily: 'inherit',
                 foreColor : 'inherit',
                 height    : '100%',
                 type      : 'polarArea',
-                sparkline : {
-                    enabled: true
+                toolbar   : {
+                    show: false
+                },
+                zoom      : {
+                    enabled: false
                 }
             },
-            colors : ['#22D3EE'],
-            series : this.analytics.totalsByCatClass.series,
-            stroke : {
-                curve: 'smooth'
+            labels     : this.analytics.totalsByCatClass.labels,
+            legend     : {
+                position: 'bottom'
             },
-            tooltip: {
-                theme: 'dark'
+            plotOptions: {
+                polarArea: {
+                    spokes: {
+                        connectorColors: 'var(--fuse-border)'
+                    },
+                    rings : {
+                        strokeColor: 'var(--fuse-border)'
+                    }
+                }
             },
-            xaxis  : {
-                type      : 'category',
-                categories: this.analytics.totalsByCatClass.labels
+            series     : this.analytics.totalsByCatClass.series,
+            states     : {
+                hover: {
+                    filter: {
+                        type : 'darken',
+                        value: 0.75
+                    }
+                }
             },
-            yaxis  : {
+            stroke     : {
+                width: 2
+            },
+            theme      : {
+                monochrome: {
+                    enabled       : true,
+                    color         : '#93C5FD',
+                    shadeIntensity: 0.75,
+                    shadeTo       : 'dark'
+                }
+            },
+            tooltip    : {
+                followCursor: true,
+                theme       : 'dark'
+            },
+            yaxis      : {
                 labels: {
-                    formatter: (val): string => `$${val}`
+                    style: {
+                        colors: 'var(--fuse-text-secondary)'
+                    }
                 }
             }
         };

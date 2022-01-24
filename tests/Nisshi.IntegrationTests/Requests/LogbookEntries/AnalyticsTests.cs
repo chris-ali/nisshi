@@ -43,6 +43,9 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
             Assert.Equal(logbookEntryResponse.Sum(x => x.TotalFlightTime),
                 analyticsResponse.Sum(x => x.TotalTimeSum));
 
+            Assert.Equal(logbookEntryResponse.Sum(x => x.MultiEngine),
+                analyticsResponse.Sum(x => x.MultiSum));
+
             Assert.Equal(logbookEntryResponse.Sum(x => x.IMC),
                 analyticsResponse.Sum(x => x.InstrumentSum));
 
@@ -89,6 +92,9 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
 
             Assert.Equal(logbookEntryResponse.Sum(x => x.TotalFlightTime),
                 analyticsResponse.Sum(x => x.TotalTimeSum));
+
+            Assert.Equal(logbookEntryResponse.Sum(x => x.MultiEngine),
+                analyticsResponse.Sum(x => x.MultiSum));
 
             Assert.Equal(logbookEntryResponse.Sum(x => x.IMC),
                 analyticsResponse.Sum(x => x.InstrumentSum));
@@ -137,6 +143,9 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
             Assert.Equal(logbookEntryResponse.Sum(x => x.TotalFlightTime),
                 analyticsResponse.Sum(x => x.TotalTimeSum));
 
+            Assert.Equal(logbookEntryResponse.Sum(x => x.MultiEngine),
+                analyticsResponse.Sum(x => x.MultiSum));
+
             Assert.Equal(logbookEntryResponse.Sum(x => x.IMC),
                 analyticsResponse.Sum(x => x.InstrumentSum));
 
@@ -184,6 +193,9 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
 
             Assert.Equal(logbookEntryResponse.Sum(x => x.TotalFlightTime),
                 analyticsResponse.Sum(x => x.TotalTimeSum));
+
+            Assert.Equal(logbookEntryResponse.Sum(x => x.MultiEngine),
+                analyticsResponse.Sum(x => x.MultiSum));
 
             Assert.Equal(logbookEntryResponse.Sum(x => x.IMC),
                 analyticsResponse.Sum(x => x.InstrumentSum));
