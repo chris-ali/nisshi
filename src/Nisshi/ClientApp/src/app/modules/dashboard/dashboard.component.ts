@@ -3,6 +3,10 @@ import { Router } from '@angular/router';
 import { ApexOptions } from 'ng-apexcharts';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { AnalyticsCompendium } from 'app/core/analytics/analytics.types';
+import { UserService } from 'app/core/user/user.service';
+import { User } from 'app/core/user/user.types';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector       : 'dashboard',
@@ -10,7 +14,7 @@ import { AnalyticsCompendium } from 'app/core/analytics/analytics.types';
     encapsulation  : ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class DashboardComponent implements OnInit
+export class DashboardComponent implements OnInit, OnDestroy
 {
     chartTotalsByMonth: ApexOptions = {};
     chartTotalsByType: ApexOptions = {};
@@ -19,11 +23,15 @@ export class DashboardComponent implements OnInit
 
     analytics: AnalyticsCompendium;
 
+    private unsubscribeAll: Subject<any> = new Subject<any>();
+    user: User;
+
     /**
      * Constructor
      */
-    constructor(private _analyticsService: AnalyticsService,
-                private _router: Router
+    constructor(private analyticsService: AnalyticsService,
+                private userService: UserService,
+                private router: Router
     )
     {
     }
@@ -38,7 +46,7 @@ export class DashboardComponent implements OnInit
     ngOnInit(): void
     {
         // Get the data
-        this._analyticsService.getAllAnalytics()
+        this.analyticsService.getAllAnalytics()
             .subscribe((response) => {
                 this.analytics = response;
                 this._prepareChartData();
@@ -57,7 +65,23 @@ export class DashboardComponent implements OnInit
                 }
             }
         };
+
+        this.userService.user$
+            .pipe(takeUntil(this.unsubscribeAll))
+            .subscribe((user: User) => {
+                this.user = user;
+            });
     }
+
+    /**
+     * On destroy
+     */
+     ngOnDestroy(): void
+     {
+         // Unsubscribe from all subscriptions
+         this.unsubscribeAll.next();
+         this.unsubscribeAll.complete();
+     }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -91,7 +115,7 @@ export class DashboardComponent implements OnInit
     private _fixSvgFill(element: Element): void
     {
         // Current URL
-        const currentURL = this._router.url;
+        const currentURL = this.router.url;
 
         // 1. Find all elements with 'fill' attribute within the element
         // 2. Filter out the ones that doesn't have cross reference so we only left with the ones that use the 'url(#id)' syntax
@@ -191,7 +215,7 @@ export class DashboardComponent implements OnInit
                 fontFamily: 'inherit',
                 foreColor : 'inherit',
                 height    : '100%',
-                type      : 'line',
+                type      : 'polarArea',
                 toolbar   : {
                     show: false
                 },

@@ -65,7 +65,7 @@ export class AnalyticsService
                     labels.push(`${analytic.month}/${analytic.year}`);
                 });
 
-                return this.mapIntoChartData(analytics, 'totals-by-month', 'column', labels);
+                return this.mapIntoLineChartData(analytics, 'totals-by-month', 'column', labels);
             }
         ));
     }
@@ -79,7 +79,7 @@ export class AnalyticsService
             map((analytics: TotalsAnalytics[]) => {
                 var labels = analytics.map(x => x.categoryClass);
 
-                return this.mapIntoChartData(analytics, 'totals-by-catclass', 'column', labels);
+                return this.mapIntoPolarChartData(analytics, labels);
             }
         ));
     }
@@ -93,7 +93,7 @@ export class AnalyticsService
             map((analytics: TotalsAnalytics[]) => {
                 var labels = analytics.map(x => x.instance);
 
-                return this.mapIntoChartData(analytics, 'totals-by-instance', 'column', labels);
+                return this.mapIntoPolarChartData(analytics, labels);
             }
         ));
     }
@@ -107,7 +107,7 @@ export class AnalyticsService
             map((analytics: TotalsAnalytics[]) => {
                 var labels = analytics.map(x => x.type);
 
-                return this.mapIntoChartData(analytics, 'totals-by-type', 'column', labels);
+                return this.mapIntoPolarChartData(analytics, labels);
             }
         ));
     }
@@ -125,7 +125,7 @@ export class AnalyticsService
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Formats analytics data into a format apex chart can use correctly
+     * Formats analytics data into a format apex line chart can use correctly
      *
      * @param analytics
      * @param chartName
@@ -133,7 +133,7 @@ export class AnalyticsService
      * @param labels
      * @returns formatted chart data
      */
-    private mapIntoChartData(analytics: TotalsAnalytics[],
+    private mapIntoLineChartData(analytics: TotalsAnalytics[],
         chartName: string,
         type: string,
         labels: string[]): ChartData
@@ -192,6 +192,36 @@ export class AnalyticsService
         {
             labels: labels,
             series: series
+        };
+
+        return chartData;
+    }
+
+    /**
+     * Formats analytics data into a format apex polar chart can use correctly
+     *
+     * @param analytics
+     * @param chartName
+     * @param type
+     * @param labels
+     * @returns formatted chart data
+     */
+     private mapIntoPolarChartData(analytics: TotalsAnalytics[], labels: string[]): ChartData
+    {
+        var chartData: ChartData =
+        {
+            labels: labels,
+            series: {
+                'total-time': analytics.map(x => x.totalTimeSum),
+                'instrument': analytics.map(x => x.instrumentSum),
+                'multi': analytics.map(x => x.multiSum),
+                'dual-given': analytics.map(x => x.dualGivenSum),
+                'turbine': analytics.map(x => x.turbineSum),
+                'sic': analytics.map(x => x.sicSum),
+                'pic': analytics.map(x => x.picSum),
+                'night': analytics.map(x => x.nightSum),
+                'cross-country': analytics.map(x => x.crossCountrySum),
+            }
         };
 
         return chartData;

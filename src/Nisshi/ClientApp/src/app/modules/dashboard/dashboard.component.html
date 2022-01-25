@@ -7,7 +7,7 @@
                 <div class="flex flex-auto items-center min-w-0">
                     <div class="flex flex-col min-w-0 ml-4">
                         <ng-container *transloco="let t">
-                            <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">{{t('welcome-back')}}, Brian!</div>
+                            <div class="text-2xl md:text-5xl font-semibold tracking-tight leading-7 md:leading-snug truncate">{{t('welcome-back')}}, {{user.firstName}}!</div>
                         </ng-container>
                     </div>
                 </div>
@@ -113,20 +113,22 @@
                 <!-- Landings and Approaches Summary -->
                 <div class="sm:col-span-2 md:col-span-4 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
                     <div class="text-lg font-medium tracking-tight leading-6 truncate">Landings and Approaches Summary</div>
-                    <div class="flex flex-col flex-auto mt-6">
-                        <div class="font-medium text-secondary">In the Past 90 Days:</div>
+                    <div class="flex flex-col flex-auto mt-4">
+                        <div class="font-medium text-secondary">In the Past 90 Days</div>
 
-                        <div class="flex flex-col items-center mt-2">
-                            <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">{{analytics.landingsPast90Days.dayLandings}}</div>
-                            <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Day Landings</div>
-                        </div>
-                        <div class="flex flex-col items-center mt-2">
-                            <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{analytics.landingsPast90Days.nightLandings}}</div>
-                            <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Night Landings</div>
-                        </div>
-                        <div class="flex flex-col items-center mt-2">
-                            <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">{{analytics.landingsPast90Days.approaches}}</div>
-                            <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Approaches</div>
+                        <div class="flex-auto grid grid-cols-3 gap-4 mt-2">
+                            <div class="flex flex-col items-center m-4">
+                                <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">{{analytics.landingsPast90Days.dayLandings}}</div>
+                                <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Day Landings</div>
+                            </div>
+                            <div class="flex flex-col items-center m-4">
+                                <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-blue-500">{{analytics.landingsPast90Days.nightLandings}}</div>
+                                <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Night Landings</div>
+                            </div>
+                            <div class="flex flex-col items-center m-4">
+                                <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-green-500">{{analytics.landingsPast90Days.approaches}}</div>
+                                <div class="text-lg font-medium text-blue-600 dark:text-blue-500">Approaches</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -142,7 +144,7 @@
                             [labels]="chartTotalsByType.labels"
                             [legend]="chartTotalsByType.legend"
                             [plotOptions]="chartTotalsByType.plotOptions"
-                            [series]="chartTotalsByType.series['totals-by-type']"
+                            [series]="chartTotalsByType.series['total-time']"
                             [states]="chartTotalsByType.states"
                             [stroke]="chartTotalsByType.stroke"
                             [theme]="chartTotalsByType.theme"
@@ -162,7 +164,7 @@
                             [labels]="chartTotalsByCatClass.labels"
                             [legend]="chartTotalsByCatClass.legend"
                             [plotOptions]="chartTotalsByCatClass.plotOptions"
-                            [series]="chartTotalsByCatClass.series['totals-by-catclass']"
+                            [series]="chartTotalsByCatClass.series['total-time']"
                             [states]="chartTotalsByCatClass.states"
                             [stroke]="chartTotalsByCatClass.stroke"
                             [theme]="chartTotalsByCatClass.theme"
@@ -182,7 +184,7 @@
                             [labels]="chartTotalsByInstance.labels"
                             [legend]="chartTotalsByInstance.legend"
                             [plotOptions]="chartTotalsByInstance.plotOptions"
-                            [series]="chartTotalsByInstance.series['totals-by-instance']"
+                            [series]="chartTotalsByInstance.series['total-time']"
                             [states]="chartTotalsByInstance.states"
                             [stroke]="chartTotalsByInstance.stroke"
                             [theme]="chartTotalsByInstance.theme"

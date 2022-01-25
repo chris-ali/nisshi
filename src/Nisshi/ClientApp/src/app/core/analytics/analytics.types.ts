@@ -35,12 +35,12 @@ export interface AnalyticsCompendium
 export interface SeriesData
 {
     name: string;
-    type: string;
+    type?: string;
     data: number[];
 }
 
 export interface ChartData
 {
     labels: string[];
-    series: Record<string, SeriesData[]>;
+    series: Record<string, any>; // Can be number[] or SeriesData[]
 }
