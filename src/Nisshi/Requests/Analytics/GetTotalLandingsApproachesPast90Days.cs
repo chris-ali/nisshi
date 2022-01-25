@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Nisshi.Infrastructure;
 using Nisshi.Models;
 
-namespace Nisshi.Requests.LogbookEntries
+namespace Nisshi.Requests.Analytics
 {
     public class GetTotalLandingsApproachesPast90Days
     {

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Nisshi.Infrastructure.Enums;
+using Nisshi.Requests.Analytics;
 using Nisshi.Requests.LogbookEntries;
 using Xunit;
 
@@ -17,6 +18,54 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
         public AnalyticsTests()
         {
             this.fixture = new SliceFixture();
+        }
+
+        [Fact]
+        public async Task Should_Sum_Totals()
+        {
+            var user = await Helpers.RegisterAndGetTestUser(fixture);
+
+            for (int i = 0; i < 200; i++)
+            {
+                var testLogbookEntry = await Helpers.CreateTestLogbookEntry(fixture, user);
+                await fixture.GetNisshiContext().LogbookEntries.AddAsync(testLogbookEntry);
+            }
+
+            await fixture.GetNisshiContext().SaveChangesAsync();
+
+            var analyticsResponse = await fixture.SendAsync(new GetSumTotals.Query());
+            Assert.NotNull(analyticsResponse);
+
+            var logbookEntryResponse = await fixture.SendAsync(new GetAll.Query());
+            Assert.NotNull(logbookEntryResponse);
+            Assert.True(logbookEntryResponse.Count > 0);
+
+            Assert.Equal(logbookEntryResponse.Sum(x => x.TotalFlightTime),
+                analyticsResponse.TotalTimeSum);
+
+            Assert.Equal(logbookEntryResponse.Sum(x => x.MultiEngine),
+                analyticsResponse.MultiSum);
+
+            Assert.Equal(logbookEntryResponse.Sum(x => x.IMC),
+                analyticsResponse.InstrumentSum);
+
+            Assert.Equal(logbookEntryResponse.Sum(x => x.Turbine),
+                analyticsResponse.TurbineSum);
+
+            Assert.Equal(logbookEntryResponse.Sum(x => x.Night),
+                analyticsResponse.NightSum);
+
+            Assert.Equal(logbookEntryResponse.Sum(x => x.CrossCountry),
+                analyticsResponse.CrossCountrySum);
+
+            Assert.Equal(logbookEntryResponse.Sum(x => x.PIC),
+                analyticsResponse.PICSum);
+
+            Assert.Equal(logbookEntryResponse.Sum(x => x.SIC),
+                analyticsResponse.SICSum);
+
+            Assert.Equal(logbookEntryResponse.Sum(x => x.DualGiven),
+                analyticsResponse.DualGivenSum);
         }
 
         [Fact]

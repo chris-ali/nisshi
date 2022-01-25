@@ -55,7 +55,7 @@ namespace Nisshi.Models
     /// <summary>
     /// Contains various type of logbook entry time sums
     /// </summary>
-    public abstract class SumTotals
+    public class SumTotals
     {
         public decimal TotalTimeSum { get; set; } = 0m;
 

@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nisshi.Infrastructure.Security;
 using Nisshi.Models;
-using Nisshi.Requests.LogbookEntries;
+using Nisshi.Requests.Analytics;
 
 namespace Nisshi.Controllers
 {
@@ -15,6 +15,12 @@ namespace Nisshi.Controllers
     {
         public AnalyticsController(IMediator mediator) : base(mediator)
         {
+        }
+
+        [HttpGet("totals")]
+        public async Task<SumTotals> GetTotals(CancellationToken cancellationToken)
+        {
+            return await mediator.Send(new GetSumTotals.Query(), cancellationToken);
         }
 
         [HttpGet("totals/month")]
