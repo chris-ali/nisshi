@@ -25,6 +25,7 @@ export interface LandingsAnalytics
 
 export interface AnalyticsCompendium
 {
+    summedTotals: TotalsAnalytics
     totalsByMonth: any; //ChartData
     totalsByCatClass: any; //ChartData
     totalsByType: any; //ChartData

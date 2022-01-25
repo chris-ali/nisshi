@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -51,6 +52,7 @@ namespace Nisshi.Requests.Analytics
                     .ToListAsync(cancellationToken);
 
                 // Fill in missing months in a year with zeroes if no entries were found
+                var today = DateTime.Today;
                 var blankEntries = new List<TotalsByMonth>();
                 foreach (var year in data.Select(x => x.Year).Distinct())
                 {
@@ -58,6 +60,9 @@ namespace Nisshi.Requests.Analytics
                     {
                         if (!data.Any(x => x.Month == month && x.Year == year))
                         {
+                            if (year == today.Year && month > today.Month)
+                                continue;
+
                             blankEntries.Add(new TotalsByMonth {
                                 Month = month,
                                 Year = year
@@ -68,8 +73,8 @@ namespace Nisshi.Requests.Analytics
 
                 data.AddRange(blankEntries);
 
-                return data.OrderByDescending(x => x.Year)
-                           .ThenByDescending(x => x.Month).ToList();
+                return data.OrderBy(x => x.Year)
+                           .ThenBy(x => x.Month).ToList();
             }
         }
     }

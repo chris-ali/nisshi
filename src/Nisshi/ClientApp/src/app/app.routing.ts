@@ -62,7 +62,7 @@ export const appRoutes: Route[] = [
         ]
     },
 
-    // Admin routes
+    // Authenticated routes
     {
         path       : '',
         canActivate: [AuthGuard],
@@ -72,7 +72,6 @@ export const appRoutes: Route[] = [
             initialData: InitialDataResolver,
         },
         children   : [
-            {path: 'example', loadChildren: () => import('app/modules/admin/example/example.module').then(m => m.ExampleModule)},
             {path: 'dashboard', loadChildren: () => import('app/modules/dashboard/dashboard.module').then(m => m.DashboardModule)},
             {path: 'aircraft/view', loadChildren: () => import('app/modules/aircraft/view/aircraft-view.module').then(m => m.AircraftViewModule)},
             {path: 'aircraft', loadChildren: () => import('app/modules/aircraft/form/aircraft-form.module').then(m => m.AircraftFormModule)},

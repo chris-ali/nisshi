@@ -7,7 +7,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         title: 'Home',
         type : 'basic',
         icon : 'heroicons_outline:home',
-        link : '/example'
+        link : '/dashboard'
     },
     {
         id   : 'aircraft',
@@ -36,13 +36,6 @@ export const defaultNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:calendar',
         link : '/currency'
-    },
-    {
-        id   : 'metrics',
-        title: 'Metrics',
-        type : 'basic',
-        icon : 'heroicons_outline:calculator',
-        link : '/metrics'
     },
 ];
 export const compactNavigation: FuseNavigationItem[] = [
@@ -51,7 +44,7 @@ export const compactNavigation: FuseNavigationItem[] = [
         title: 'Home',
         type : 'basic',
         icon : 'heroicons_outline:home',
-        link : '/example'
+        link : '/dashboard'
     },
     {
         id   : 'aircraft',
@@ -80,13 +73,6 @@ export const compactNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:calendar',
         link : '/currency'
-    },
-    {
-        id   : 'metrics',
-        title: 'Metrics',
-        type : 'basic',
-        icon : 'heroicons_outline:calculator',
-        link : '/metrics'
     },
 ];
 export const futuristicNavigation: FuseNavigationItem[] = [
@@ -95,7 +81,7 @@ export const futuristicNavigation: FuseNavigationItem[] = [
         title: 'Home',
         type : 'basic',
         icon : 'heroicons_outline:home',
-        link : '/example'
+        link : '/dashboard'
     },
     {
         id   : 'aircraft',
@@ -124,13 +110,6 @@ export const futuristicNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:calendar',
         link : '/currency'
-    },
-    {
-        id   : 'metrics',
-        title: 'Metrics',
-        type : 'basic',
-        icon : 'heroicons_outline:calculator',
-        link : '/metrics'
     },
 ];
 export const horizontalNavigation: FuseNavigationItem[] = [
@@ -139,7 +118,7 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         title: 'Home',
         type : 'basic',
         icon : 'heroicons_outline:home',
-        link : '/example'
+        link : '/dashboard'
     },
     {
         id   : 'aircraft',
@@ -168,12 +147,5 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:calendar',
         link : '/currency'
-    },
-    {
-        id   : 'metrics',
-        title: 'Metrics',
-        type : 'basic',
-        icon : 'heroicons_outline:calculator',
-        link : '/metrics'
     },
 ];

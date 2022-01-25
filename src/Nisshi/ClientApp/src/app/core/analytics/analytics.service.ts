@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, LOCALE_ID } from '@angular/core';
+import { DecimalPipe,formatNumber } from '@angular/common';
 import { forkJoin, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { ApiService } from '../base/api.service';
-import { TotalsAnalytics, LandingsAnalytics, AnalyticsCompendium, ChartData, SeriesData } from './analytics.types';
+import { TotalsAnalytics, LandingsAnalytics, AnalyticsCompendium, ChartData } from './analytics.types';
 
 const URL = 'analytics/';
 
@@ -14,7 +15,8 @@ export class AnalyticsService
     /**
      * Constructor
      */
-    constructor(private _api: ApiService) { }
+    constructor(private _api: ApiService,
+                @Inject(LOCALE_ID) private locale: string) { }
 
 
     // -----------------------------------------------------------------------------------------------------
@@ -28,15 +30,17 @@ export class AnalyticsService
     getAllAnalytics(): Observable<AnalyticsCompendium>
     {
         return forkJoin([
+            this.getTotals(),
             this.getTotalsByMonth(),
             this.getTotalsByCatClass(),
             this.getTotalsByType(),
             this.getTotalsByInstanceType(),
             this.getLandingsApproachesPast90Days()
         ]).pipe(
-            map(([byMonth, byCatClass, byType, byInstanceType, landings]) => {
+            map(([totals, byMonth, byCatClass, byType, byInstanceType, landings]) => {
                 var analytics: AnalyticsCompendium =
                 {
+                    summedTotals: totals,
                     totalsByMonth: byMonth,
                     totalsByCatClass: byCatClass,
                     totalsByType: byType,
@@ -54,6 +58,14 @@ export class AnalyticsService
     // -----------------------------------------------------------------------------------------------------
 
     /**
+     * Gets summed totals of all logbook entries
+     */
+     getTotals(): Observable<TotalsAnalytics>
+     {
+         return this._api.get(`${URL}totals`).pipe();
+     }
+
+    /**
      * Gets totals of all logbook entries grouped by month and year
      */
     getTotalsByMonth(): Observable<ChartData>
@@ -65,7 +77,7 @@ export class AnalyticsService
                     labels.push(`${analytic.month}/${analytic.year}`);
                 });
 
-                return this.mapIntoLineChartData(analytics, 'totals-by-month', 'column', labels);
+                return this.mapIntoLineChartData(analytics, labels);
             }
         ));
     }
@@ -128,70 +140,62 @@ export class AnalyticsService
      * Formats analytics data into a format apex line chart can use correctly
      *
      * @param analytics
-     * @param chartName
-     * @param type
      * @param labels
      * @returns formatted chart data
      */
-    private mapIntoLineChartData(analytics: TotalsAnalytics[],
-        chartName: string,
-        type: string,
-        labels: string[]): ChartData
+    private mapIntoLineChartData(analytics: TotalsAnalytics[], labels: string[]): ChartData
     {
-        var series: Record<string, SeriesData[]> = {};
-        series[chartName] =
-            [
-                {
-                    name: 'total-time',
-                    type: type,
-                    data: analytics.map(x => x.totalTimeSum)
-                },
-                {
-                    name: 'imc',
-                    type: type,
-                    data: analytics.map(x => x.instrumentSum)
-                },
-                {
-                    name: 'multi',
-                    type: type,
-                    data: analytics.map(x => x.multiSum)
-                },
-                {
-                    name: 'dual-given',
-                    type: type,
-                    data: analytics.map(x => x.dualGivenSum)
-                },
-                {
-                    name: 'turbine',
-                    type: type,
-                    data: analytics.map(x => x.turbineSum)
-                },
-                {
-                    name: 'sic',
-                    type: type,
-                    data: analytics.map(x => x.sicSum)
-                },
-                {
-                    name: 'pic',
-                    type: type,
-                    data: analytics.map(x => x.picSum)
-                },
-                {
-                    name: 'night',
-                    type: type,
-                    data: analytics.map(x => x.nightSum)
-                },
-                {
-                    name: 'cross-country',
-                    type: type,
-                    data: analytics.map(x => x.crossCountrySum)
-                }
-            ];
-
+        var type = 'column';
         var chartData: ChartData =
         {
             labels: labels,
-            series: series
+            series: {
+                'total-time': [{
+                    name: 'Total Time',
+                    type: type,
+                    data: analytics.map(x => this.truncDecimal(x.totalTimeSum))
+                }],
+                'imc': [{
+                    name: 'Instrument',
+                    type: type,
+                    data: analytics.map(x => this.truncDecimal(x.instrumentSum))
+                }],
+                'multi': [{
+                    name: 'Multi',
+                    type: type,
+                    data: analytics.map(x => this.truncDecimal(x.multiSum))
+                }],
+                'dual-given': [{
+                    name: 'Dual Given',
+                    type: type,
+                    data: analytics.map(x => this.truncDecimal(x.dualGivenSum))
+                }],
+                'turbine': [{
+                    name: 'Turbine',
+                    type: type,
+                    data: analytics.map(x => this.truncDecimal(x.turbineSum))
+                }],
+                'sic': [{
+                    name: 'SIC',
+                    type: type,
+                    data: analytics.map(x => this.truncDecimal(x.sicSum))
+                }],
+                'pic': [{
+                    name: 'PIC',
+                    type: type,
+                    data: analytics.map(x => this.truncDecimal(x.picSum))
+                }],
+                'night': [{
+                    name: 'Night',
+                    type: type,
+                    data: analytics.map(x => this.truncDecimal(x.nightSum))
+                }],
+                'cross-country': [{
+                    name: 'Cross Country',
+                    type: type,
+                    data: analytics.map(x => this.truncDecimal(x.crossCountrySum))
+                }]
+            }
         };
 
         return chartData;
@@ -206,25 +210,36 @@ export class AnalyticsService
      * @param labels
      * @returns formatted chart data
      */
-     private mapIntoPolarChartData(analytics: TotalsAnalytics[], labels: string[]): ChartData
+    private mapIntoPolarChartData(analytics: TotalsAnalytics[], labels: string[]): ChartData
     {
         var chartData: ChartData =
         {
             labels: labels,
             series: {
-                'total-time': analytics.map(x => x.totalTimeSum),
-                'instrument': analytics.map(x => x.instrumentSum),
-                'multi': analytics.map(x => x.multiSum),
-                'dual-given': analytics.map(x => x.dualGivenSum),
-                'turbine': analytics.map(x => x.turbineSum),
-                'sic': analytics.map(x => x.sicSum),
-                'pic': analytics.map(x => x.picSum),
-                'night': analytics.map(x => x.nightSum),
-                'cross-country': analytics.map(x => x.crossCountrySum),
+                'total-time': analytics.map(x => this.truncDecimal(x.totalTimeSum)),
+                'instrument': analytics.map(x => this.truncDecimal(x.instrumentSum)),
+                'multi': analytics.map(x => this.truncDecimal(x.multiSum)),
+                'dual-given': analytics.map(x => this.truncDecimal(x.dualGivenSum)),
+                'turbine': analytics.map(x => this.truncDecimal(x.turbineSum)),
+                'sic': analytics.map(x => this.truncDecimal(x.sicSum)),
+                'pic': analytics.map(x => this.truncDecimal(x.picSum)),
+                'night': analytics.map(x => this.truncDecimal(x.nightSum)),
+                'cross-country': analytics.map(x => this.truncDecimal(x.crossCountrySum)),
             }
         };
 
         return chartData;
+    }
+
+    /**
+     * Given a number argument, truncate to 2 decimal places
+     *
+     * @param aDecimal
+     * @returns Truncated decimal as string
+     */
+    private truncDecimal(aDecimal: number): string
+    {
+        return formatNumber(aDecimal, this.locale, '1.2-2');
     }
 
     // private mapIntoChartData(analytics: TotalsAnalytics[], propertyToApply: keyof TotalsAnalytics, labels: string[])
