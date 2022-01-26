@@ -1,5 +1,4 @@
 <div class="flex flex-col flex-auto min-w-0">
-
     <!-- Header -->
     <div class="bg-card">
         <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
@@ -14,9 +13,8 @@
             </div>
         </div>
     </div>
-
     <!-- Main -->
-    <div class="flex-auto border-t -mt-px pt-4 sm:pt-6">
+    <div class="flex-auto border-t -mt-px p-4 sm:p-6">
         <div class="w-full max-w-screen-xl mx-auto">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full min-w-0">
                 <!-- Totals -->
@@ -85,7 +83,7 @@
                             #timeTypeSelector="matButtonToggleGroup">
                             <mat-button-toggle value="total-time">Total Time</mat-button-toggle>
                             <mat-button-toggle value="pic">PIC</mat-button-toggle>
-                            <mat-button-toggle value="imc">Instrument</mat-button-toggle>
+                            <mat-button-toggle value="instrument">Instrument</mat-button-toggle>
                             <mat-button-toggle value="multi">Multi</mat-button-toggle>
                             <mat-button-toggle value="turbine">Turbine</mat-button-toggle>
                             <mat-button-toggle value="sic">SIC</mat-button-toggle>
@@ -94,9 +92,9 @@
                             <mat-button-toggle value="dual-given">Dual Given</mat-button-toggle>
                         </mat-button-toggle-group>
                     </div>
-                    <div class="grid grid-cols-1 lg:grid-cols-2 grid-flow-row gap-6 w-full mt-6 sm:mt-4">
+                    <div class="grid grid-cols-2 lg:grid-cols-3 grid-flow-row gap-6 w-full mt-6 sm:mt-4">
                         <!-- Totals per month -->
-                        <div class="flex flex-col flex-auto">
+                        <div class="sm:col-span-1 md:col-span-2 lg:col-span-1">
                             <div class="font-medium text-secondary">Per Month</div>
                             <div class="flex flex-col flex-auto">
                                 <apx-chart
@@ -116,7 +114,60 @@
                                     [yaxis]="chartTotalsByMonth.yaxis"></apx-chart>
                             </div>
                         </div>
-
+                        <!-- Totals by type -->
+                        <div class="sm:col-span-1 md:col-span-1 lg:col-span-1">
+                            <div class="font-medium text-secondary">Per Type</div>
+                            <div class="flex flex-col flex-auto">
+                                <apx-chart
+                                    class="flex-auto w-full h-80"
+                                    [chart]="chartTotalsByType.chart"
+                                    [labels]="chartTotalsByType.labels"
+                                    [legend]="chartTotalsByType.legend"
+                                    [plotOptions]="chartTotalsByType.plotOptions"
+                                    [series]="chartTotalsByType.series[timeTypeSelector.value]"
+                                    [states]="chartTotalsByType.states"
+                                    [stroke]="chartTotalsByType.stroke"
+                                    [theme]="chartTotalsByType.theme"
+                                    [tooltip]="chartTotalsByType.tooltip"
+                                    [yaxis]="chartTotalsByType.yaxis"></apx-chart>
+                            </div>
+                        </div>
+                        <!-- Totals by category class -->
+                        <div class="sm:col-span-1 md:col-span-1 lg:col-span-1">
+                            <div class="font-medium text-secondary">Per Category/Class</div>
+                            <div class="flex flex-col flex-auto">
+                                <apx-chart
+                                    class="flex-auto w-full h-80"
+                                    [chart]="chartTotalsByCatClass.chart"
+                                    [labels]="chartTotalsByCatClass.labels"
+                                    [legend]="chartTotalsByCatClass.legend"
+                                    [plotOptions]="chartTotalsByCatClass.plotOptions"
+                                    [series]="chartTotalsByCatClass.series[timeTypeSelector.value]"
+                                    [states]="chartTotalsByCatClass.states"
+                                    [stroke]="chartTotalsByCatClass.stroke"
+                                    [theme]="chartTotalsByCatClass.theme"
+                                    [tooltip]="chartTotalsByCatClass.tooltip"
+                                    [yaxis]="chartTotalsByCatClass.yaxis"></apx-chart>
+                            </div>
+                        </div>
+                        <!-- Totals by instance -->
+                        <div class="sm:col-span-1 md:col-span-2 lg:col-span-1">
+                            <div class="font-medium text-secondary">Real vs. Simulated Hours</div>
+                            <div class="flex flex-col flex-auto">
+                                <apx-chart
+                                    class="flex-auto w-full h-80"
+                                    [chart]="chartTotalsByInstance.chart"
+                                    [labels]="chartTotalsByInstance.labels"
+                                    [legend]="chartTotalsByInstance.legend"
+                                    [plotOptions]="chartTotalsByInstance.plotOptions"
+                                    [series]="chartTotalsByInstance.series[timeTypeSelector.value]"
+                                    [states]="chartTotalsByInstance.states"
+                                    [stroke]="chartTotalsByInstance.stroke"
+                                    [theme]="chartTotalsByInstance.theme"
+                                    [tooltip]="chartTotalsByInstance.tooltip"
+                                    [yaxis]="chartTotalsByInstance.yaxis"></apx-chart>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- Landings and Approaches Summary -->
@@ -124,7 +175,6 @@
                     <div class="text-lg font-medium tracking-tight leading-6 truncate">Landings and Approaches Summary</div>
                     <div class="flex flex-col flex-auto mt-4">
                         <div class="font-medium text-secondary">In the Past 90 Days</div>
-
                         <div class="flex-auto grid grid-cols-3 gap-4 mt-2">
                             <div class="flex flex-col items-center m-4">
                                 <div class="text-7xl sm:text-8xl font-bold tracking-tight leading-none text-amber-500">{{analytics.landingsPast90Days.dayLandings}}</div>
@@ -141,69 +191,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- Totals by type -->
-                <div class="sm:col-span-1 md:col-span-2 lg:col-span-1 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
-                    <div class="flex flex-col sm:flex-row items-start justify-between">
-                        <div class="text-lg font-medium tracking-tight leading-6 truncate">Per Type</div>
-                    </div>
-                    <div class="flex flex-col flex-auto mt-6">
-                        <apx-chart
-                            class="flex-auto w-full h-80"
-                            [chart]="chartTotalsByType.chart"
-                            [labels]="chartTotalsByType.labels"
-                            [legend]="chartTotalsByType.legend"
-                            [plotOptions]="chartTotalsByType.plotOptions"
-                            [series]="chartTotalsByType.series[timeTypeSelector.value]"
-                            [states]="chartTotalsByType.states"
-                            [stroke]="chartTotalsByType.stroke"
-                            [theme]="chartTotalsByType.theme"
-                            [tooltip]="chartTotalsByType.tooltip"
-                            [yaxis]="chartTotalsByType.yaxis"></apx-chart>
-                    </div>
-                </div>
-                <!-- Totals by category class -->
-                <div class="sm:col-span-1 md:col-span-2 lg:col-span-1 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
-                    <div class="flex flex-col sm:flex-row items-start justify-between">
-                        <div class="text-lg font-medium tracking-tight leading-6 truncate">Per Category/Class</div>
-                    </div>
-                    <div class="flex flex-col flex-auto mt-6">
-                        <apx-chart
-                            class="flex-auto w-full h-80"
-                            [chart]="chartTotalsByCatClass.chart"
-                            [labels]="chartTotalsByCatClass.labels"
-                            [legend]="chartTotalsByCatClass.legend"
-                            [plotOptions]="chartTotalsByCatClass.plotOptions"
-                            [series]="chartTotalsByCatClass.series[timeTypeSelector.value]"
-                            [states]="chartTotalsByCatClass.states"
-                            [stroke]="chartTotalsByCatClass.stroke"
-                            [theme]="chartTotalsByCatClass.theme"
-                            [tooltip]="chartTotalsByCatClass.tooltip"
-                            [yaxis]="chartTotalsByCatClass.yaxis"></apx-chart>
-                    </div>
-                </div>
-                <!-- Totals by instance -->
-                <div class="sm:col-span-1 md:col-span-2 lg:col-span-1 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
-                    <div class="flex flex-col sm:flex-row items-start justify-between">
-                        <div class="text-lg font-medium tracking-tight leading-6 truncate">Real vs. Simulated Hours</div>
-                    </div>
-                    <div class="flex flex-col flex-auto mt-6">
-                        <apx-chart
-                            class="flex-auto w-full h-80"
-                            [chart]="chartTotalsByInstance.chart"
-                            [labels]="chartTotalsByInstance.labels"
-                            [legend]="chartTotalsByInstance.legend"
-                            [plotOptions]="chartTotalsByInstance.plotOptions"
-                            [series]="chartTotalsByInstance.series[timeTypeSelector.value]"
-                            [states]="chartTotalsByInstance.states"
-                            [stroke]="chartTotalsByInstance.stroke"
-                            [theme]="chartTotalsByInstance.theme"
-                            [tooltip]="chartTotalsByInstance.tooltip"
-                            [yaxis]="chartTotalsByInstance.yaxis"></apx-chart>
-                    </div>
-                </div>
             </div>
-
-
             <!-- <mat-tab-group
                 class="sm:px-2"
                 [animationDuration]="'0'">
@@ -216,5 +204,4 @@
             </mat-tab-group> -->
         </div>
     </div>
-
 </div>

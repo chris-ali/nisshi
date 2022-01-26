@@ -155,7 +155,7 @@ export class AnalyticsService
                     type: type,
                     data: analytics.map(x => this.truncDecimal(x.totalTimeSum))
                 }],
-                'imc': [{
+                'instrument': [{
                     name: 'Instrument',
                     type: type,
                     data: analytics.map(x => this.truncDecimal(x.instrumentSum))
@@ -241,17 +241,4 @@ export class AnalyticsService
     {
         return formatNumber(aDecimal, this.locale, '1.2-2');
     }
-
-    // private mapIntoChartData(analytics: TotalsAnalytics[], propertyToApply: keyof TotalsAnalytics, labels: string[])
-    // {
-    //     var series: Record<string, SeriesData[]> = {};
-    //     var type = 'line';
-    //     analytics.forEach(analytic => {
-    //         series[analytic[propertyToApply]] =
-    //         [
-    //             ...
-    //         ];
-    //     });
-    //     ...
-    // }
 }
