@@ -49,7 +49,7 @@ export class DashboardComponent implements OnInit, OnDestroy
         this.analyticsService.getAllAnalytics()
             .subscribe((response) => {
                 this.analytics = response;
-                this._prepareChartData();
+                this.prepareChartData();
             });
 
         // Attach SVG fill fixer to all ApexCharts
@@ -57,10 +57,10 @@ export class DashboardComponent implements OnInit, OnDestroy
             chart: {
                 events: {
                     mounted: (chart: any, options?: any): void => {
-                        this._fixSvgFill(chart.el);
+                        this.fixSvgFill(chart.el);
                     },
                     updated: (chart: any, options?: any): void => {
-                        this._fixSvgFill(chart.el);
+                        this.fixSvgFill(chart.el);
                     }
                 }
             }
@@ -112,7 +112,7 @@ export class DashboardComponent implements OnInit, OnDestroy
      * @param element
      * @private
      */
-    private _fixSvgFill(element: Element): void
+    private fixSvgFill(element: Element): void
     {
         // Current URL
         const currentURL = this.router.url;
@@ -133,7 +133,7 @@ export class DashboardComponent implements OnInit, OnDestroy
      *
      * @private
      */
-    private _prepareChartData(): void
+    private prepareChartData(): void
     {
         this.chartTotalsByMonth = {
             chart      : {
