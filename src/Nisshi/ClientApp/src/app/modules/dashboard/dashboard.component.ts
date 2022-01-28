@@ -1,18 +1,17 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, Inject, LOCALE_ID, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ApexOptions } from 'ng-apexcharts';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
-import { AnalyticsCompendium } from 'app/core/analytics/analytics.types';
+import { AnalyticsCompendium, ChartData, TotalsAnalytics } from 'app/core/analytics/analytics.types';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
-import { Subject } from 'rxjs';
+import { forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { formatNumber } from '@angular/common';
 
 @Component({
     selector       : 'dashboard',
     templateUrl    : './dashboard.component.html',
-    encapsulation  : ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush
+    encapsulation  : ViewEncapsulation.None
 })
 export class DashboardComponent implements OnInit, OnDestroy
 {
@@ -31,7 +30,7 @@ export class DashboardComponent implements OnInit, OnDestroy
      */
     constructor(private analyticsService: AnalyticsService,
                 private userService: UserService,
-                private router: Router
+                @Inject(LOCALE_ID) private locale: string
     )
     {
     }
@@ -46,25 +45,25 @@ export class DashboardComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         // Get the data
-        this.analyticsService.getAllAnalytics()
-            .subscribe((response) => {
-                this.analytics = response;
-                this.prepareChartData();
-            });
+        forkJoin([
+            this.analyticsService.getTotals(),
+            this.analyticsService.getTotalsByMonth(),
+            this.analyticsService.getTotalsByCatClass(),
+            this.analyticsService.getTotalsByType(),
+            this.analyticsService.getTotalsByInstanceType(),
+            this.analyticsService.getLandingsApproachesPast90Days()
+        ]).subscribe(([totals, byMonth, byCatClass, byType, byInstanceType, landings]) => {
+            this.analytics = {
+                summedTotals: totals,
+                totalsByMonth: this.mapIntoLineChartData(byMonth, byMonth.map(x => { return `${x.month}/${x.year}`; })),
+                totalsByCatClass: this.mapIntoPolarChartData(byCatClass, byCatClass.map(x => x.categoryClass)),
+                totalsByType: this.mapIntoPolarChartData(byType, byType.map(x => x.type)),
+                totalsByInstance: this.mapIntoPolarChartData(byInstanceType, byInstanceType.map(x => x.instance)),
+                landingsPast90Days: landings
+            };
 
-        // Attach SVG fill fixer to all ApexCharts
-        window['Apex'] = {
-            chart: {
-                events: {
-                    mounted: (chart: any, options?: any): void => {
-                        this.fixSvgFill(chart.el);
-                    },
-                    updated: (chart: any, options?: any): void => {
-                        this.fixSvgFill(chart.el);
-                    }
-                }
-            }
-        };
+            this.prepareChartData();
+        });
 
         this.userService.user$
             .pipe(takeUntil(this.unsubscribeAll))
@@ -84,49 +83,116 @@ export class DashboardComponent implements OnInit, OnDestroy
      }
 
     // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Track by function for ngFor loops
-     *
-     * @param index
-     * @param item
-     */
-    trackByFn(index: number, item: any): any
-    {
-        return item.id || index;
-    }
-
-    // -----------------------------------------------------------------------------------------------------
     // @ Private methods
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Fix the SVG fill references. This fix must be applied to all ApexCharts
-     * charts in order to fix 'black color on gradient fills on certain browsers'
-     * issue caused by the '<base>' tag.
+     * Formats analytics data into a format apex line chart can use correctly
      *
-     * Fix based on https://gist.github.com/Kamshak/c84cdc175209d1a30f711abd6a81d472
-     *
-     * @param element
-     * @private
+     * @param analytics
+     * @param labels
+     * @returns formatted chart data
      */
-    private fixSvgFill(element: Element): void
-    {
-        // Current URL
-        const currentURL = this.router.url;
+     private mapIntoLineChartData(analytics: TotalsAnalytics[], labels: string[]): ChartData
+     {
+         var type = 'column';
+         var chartData: ChartData =
+         {
+             labels: labels,
+             series: {
+                 'total-time': [{
+                     name: 'Total Time',
+                     type: type,
+                     data: analytics.map(x => this.truncDecimal(x.totalTimeSum))
+                 }],
+                 'instrument': [{
+                     name: 'Instrument',
+                     type: type,
+                     data: analytics.map(x => this.truncDecimal(x.instrumentSum))
+                 }],
+                 'multi': [{
+                     name: 'Multi',
+                     type: type,
+                     data: analytics.map(x => this.truncDecimal(x.multiSum))
+                 }],
+                 'dual-given': [{
+                     name: 'Dual Given',
+                     type: type,
+                     data: analytics.map(x => this.truncDecimal(x.dualGivenSum))
+                 }],
+                 'turbine': [{
+                     name: 'Turbine',
+                     type: type,
+                     data: analytics.map(x => this.truncDecimal(x.turbineSum))
+                 }],
+                 'sic': [{
+                     name: 'SIC',
+                     type: type,
+                     data: analytics.map(x => this.truncDecimal(x.sicSum))
+                 }],
+                 'pic': [{
+                     name: 'PIC',
+                     type: type,
+                     data: analytics.map(x => this.truncDecimal(x.picSum))
+                 }],
+                 'night': [{
+                     name: 'Night',
+                     type: type,
+                     data: analytics.map(x => this.truncDecimal(x.nightSum))
+                 }],
+                 'cross-country': [{
+                     name: 'Cross Country',
+                     type: type,
+                     data: analytics.map(x => this.truncDecimal(x.crossCountrySum))
+                 }]
+             }
+         };
 
-        // 1. Find all elements with 'fill' attribute within the element
-        // 2. Filter out the ones that doesn't have cross reference so we only left with the ones that use the 'url(#id)' syntax
-        // 3. Insert the 'currentURL' at the front of the 'fill' attribute value
-        Array.from(element.querySelectorAll('*[fill]'))
-             .filter(el => el.getAttribute('fill').indexOf('url(') !== -1)
-             .forEach((el) => {
-                 const attrVal = el.getAttribute('fill');
-                 el.setAttribute('fill', `url(${currentURL}${attrVal.slice(attrVal.indexOf('#'))}`);
-             });
-    }
+         return chartData;
+     }
+
+     /**
+      * Formats analytics data into a format apex polar chart can use correctly
+      *
+      * @param analytics
+      * @param chartName
+      * @param type
+      * @param labels
+      * @returns formatted chart data
+      * @private
+      */
+     private mapIntoPolarChartData(analytics: TotalsAnalytics[], labels: string[]): ChartData
+     {
+         var chartData: ChartData =
+         {
+             labels: labels,
+             series: {
+                 'total-time': analytics.map(x => this.truncDecimal(x.totalTimeSum)),
+                 'instrument': analytics.map(x => this.truncDecimal(x.instrumentSum)),
+                 'multi': analytics.map(x => this.truncDecimal(x.multiSum)),
+                 'dual-given': analytics.map(x => this.truncDecimal(x.dualGivenSum)),
+                 'turbine': analytics.map(x => this.truncDecimal(x.turbineSum)),
+                 'sic': analytics.map(x => this.truncDecimal(x.sicSum)),
+                 'pic': analytics.map(x => this.truncDecimal(x.picSum)),
+                 'night': analytics.map(x => this.truncDecimal(x.nightSum)),
+                 'cross-country': analytics.map(x => this.truncDecimal(x.crossCountrySum)),
+             }
+         };
+
+         return chartData;
+     }
+
+     /**
+      * Given a number argument, truncate to 2 decimal places
+      *
+      * @param aDecimal
+      * @returns Truncated decimal as string
+      * @private
+      */
+     private truncDecimal(aDecimal: number): string
+     {
+         return formatNumber(aDecimal, this.locale, '1.2-2');
+     }
 
     /**
      * Prepare the chart data from the data
