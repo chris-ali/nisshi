@@ -1,7 +1,7 @@
 import { Component, Inject, LOCALE_ID, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ApexOptions } from 'ng-apexcharts';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
-import { AnalyticsCompendium, ChartData, TotalsAnalytics } from 'app/core/analytics/analytics.types';
+import { ChartData, LandingsAnalytics, TotalsAnalytics } from 'app/core/analytics/analytics.types';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { forkJoin, Subject } from 'rxjs';
@@ -20,7 +20,12 @@ export class DashboardComponent implements OnInit, OnDestroy
     chartTotalsByInstance: ApexOptions = {};
     chartTotalsByCatClass: ApexOptions = {};
 
-    analytics: AnalyticsCompendium;
+    summedTotals: TotalsAnalytics;
+    totalsByMonth: any; //ChartData
+    totalsByCatClass: any; //ChartData
+    totalsByType: any; //ChartData
+    totalsByInstance: any; //ChartData
+    landingsPast90Days: LandingsAnalytics;
 
     private unsubscribeAll: Subject<any> = new Subject<any>();
     user: User;
@@ -44,7 +49,6 @@ export class DashboardComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        // Get the data
         forkJoin([
             this.analyticsService.getTotals(),
             this.analyticsService.getTotalsByMonth(),
@@ -53,16 +57,25 @@ export class DashboardComponent implements OnInit, OnDestroy
             this.analyticsService.getTotalsByInstanceType(),
             this.analyticsService.getLandingsApproachesPast90Days()
         ]).subscribe(([totals, byMonth, byCatClass, byType, byInstanceType, landings]) => {
-            this.analytics = {
-                summedTotals: totals,
-                totalsByMonth: this.mapIntoLineChartData(byMonth, byMonth.map(x => { return `${x.month}/${x.year}`; })),
-                totalsByCatClass: this.mapIntoPolarChartData(byCatClass, byCatClass.map(x => x.categoryClass)),
-                totalsByType: this.mapIntoPolarChartData(byType, byType.map(x => x.type)),
-                totalsByInstance: this.mapIntoPolarChartData(byInstanceType, byInstanceType.map(x => x.instance)),
-                landingsPast90Days: landings
-            };
+            var catClassTotals = this.mapIntoPolarChartData(byCatClass, byCatClass.map(x => x.categoryClass));
+            var instanceTotals = this.mapIntoPolarChartData(byInstanceType, byInstanceType.map(x => x.instance));
+            var typeTotals = this.mapIntoPolarChartData(byType, byType.map(x => x.type));
+            var monthTotals = this.mapIntoLineChartData(byMonth, byMonth.map(x => { return `${x.month}/${x.year}`; }));
 
-            this.prepareChartData();
+            this.totalsByCatClass = catClassTotals;
+            this.chartTotalsByCatClass = this.preparePolarChart(catClassTotals);
+
+            this.totalsByInstance = instanceTotals;
+            this.chartTotalsByInstance = this.preparePolarChart(instanceTotals);
+
+            this.totalsByType = typeTotals;
+            this.chartTotalsByType = this.preparePolarChart(typeTotals);
+
+            this.totalsByMonth = monthTotals;
+            this.chartTotalsByMonth = this.prepareLineChart(monthTotals);
+
+            this.summedTotals = totals;
+            this.landingsPast90Days = landings;
         });
 
         this.userService.user$
@@ -159,7 +172,6 @@ export class DashboardComponent implements OnInit, OnDestroy
       * @param type
       * @param labels
       * @returns formatted chart data
-      * @private
       */
      private mapIntoPolarChartData(analytics: TotalsAnalytics[], labels: string[]): ChartData
      {
@@ -187,7 +199,6 @@ export class DashboardComponent implements OnInit, OnDestroy
       *
       * @param aDecimal
       * @returns Truncated decimal as string
-      * @private
       */
      private truncDecimal(aDecimal: number): string
      {
@@ -195,13 +206,14 @@ export class DashboardComponent implements OnInit, OnDestroy
      }
 
     /**
-     * Prepare the chart data from the data
+     * Configures an Apex line chart
      *
-     * @private
+     * @param lineData
+     * @returns Apex chart configuration
      */
-    private prepareChartData(): void
+    private prepareLineChart(lineData: any): ApexOptions
     {
-        this.chartTotalsByMonth = {
+        return {
             chart      : {
                 fontFamily: 'inherit',
                 foreColor : 'inherit',
@@ -225,7 +237,7 @@ export class DashboardComponent implements OnInit, OnDestroy
             grid       : {
                 borderColor: 'var(--fuse-border)'
             },
-            labels     : this.analytics.totalsByMonth.labels,
+            labels     : lineData.labels,
             legend     : {
                 show: false
             },
@@ -234,7 +246,7 @@ export class DashboardComponent implements OnInit, OnDestroy
                     columnWidth: '50%'
                 }
             },
-            series     : this.analytics.totalsByMonth.series,
+            series     : lineData.series,
             states     : {
                 hover: {
                     filter: {
@@ -275,8 +287,17 @@ export class DashboardComponent implements OnInit, OnDestroy
                 }
             }
         };
+    }
 
-        this.chartTotalsByType = {
+    /**
+     * Configures an Apex polar chart
+     *
+     * @param polarData
+     * @returns Apex chart configuration
+     */
+     private preparePolarChart(polarData: any): ApexOptions
+     {
+        return {
             chart      : {
                 fontFamily: 'inherit',
                 foreColor : 'inherit',
@@ -289,7 +310,7 @@ export class DashboardComponent implements OnInit, OnDestroy
                     enabled: false
                 }
             },
-            labels     : this.analytics.totalsByType.labels,
+            labels     : polarData.labels,
             legend     : {
                 position: 'bottom'
             },
@@ -303,127 +324,7 @@ export class DashboardComponent implements OnInit, OnDestroy
                     }
                 }
             },
-            series     : this.analytics.totalsByType.series,
-            states     : {
-                hover: {
-                    filter: {
-                        type : 'darken',
-                        value: 0.75
-                    }
-                }
-            },
-            stroke     : {
-                width: 2
-            },
-            theme      : {
-                monochrome: {
-                    enabled       : true,
-                    color         : '#93C5FD',
-                    shadeIntensity: 0.75,
-                    shadeTo       : 'dark'
-                }
-            },
-            tooltip    : {
-                followCursor: true,
-                theme       : 'dark'
-            },
-            yaxis      : {
-                labels: {
-                    style: {
-                        colors: 'var(--fuse-text-secondary)'
-                    }
-                }
-            }
-        };
-
-        this.chartTotalsByInstance = {
-            chart      : {
-                fontFamily: 'inherit',
-                foreColor : 'inherit',
-                height    : '100%',
-                type      : 'polarArea',
-                toolbar   : {
-                    show: false
-                },
-                zoom      : {
-                    enabled: false
-                }
-            },
-            labels     : this.analytics.totalsByInstance.labels,
-            legend     : {
-                position: 'bottom'
-            },
-            plotOptions: {
-                polarArea: {
-                    spokes: {
-                        connectorColors: 'var(--fuse-border)'
-                    },
-                    rings : {
-                        strokeColor: 'var(--fuse-border)'
-                    }
-                }
-            },
-            series     : this.analytics.totalsByInstance.series,
-            states     : {
-                hover: {
-                    filter: {
-                        type : 'darken',
-                        value: 0.75
-                    }
-                }
-            },
-            stroke     : {
-                width: 2
-            },
-            theme      : {
-                monochrome: {
-                    enabled       : true,
-                    color         : '#93C5FD',
-                    shadeIntensity: 0.75,
-                    shadeTo       : 'dark'
-                }
-            },
-            tooltip    : {
-                followCursor: true,
-                theme       : 'dark'
-            },
-            yaxis      : {
-                labels: {
-                    style: {
-                        colors: 'var(--fuse-text-secondary)'
-                    }
-                }
-            }
-        };
-
-        this.chartTotalsByCatClass = {
-            chart      : {
-                fontFamily: 'inherit',
-                foreColor : 'inherit',
-                height    : '100%',
-                type      : 'polarArea',
-                toolbar   : {
-                    show: false
-                },
-                zoom      : {
-                    enabled: false
-                }
-            },
-            labels     : this.analytics.totalsByCatClass.labels,
-            legend     : {
-                position: 'bottom'
-            },
-            plotOptions: {
-                polarArea: {
-                    spokes: {
-                        connectorColors: 'var(--fuse-border)'
-                    },
-                    rings : {
-                        strokeColor: 'var(--fuse-border)'
-                    }
-                }
-            },
-            series     : this.analytics.totalsByCatClass.series,
+            series     : polarData.series,
             states     : {
                 hover: {
                     filter: {

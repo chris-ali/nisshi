@@ -23,16 +23,6 @@ export interface LandingsAnalytics
     approaches: number;
 }
 
-export interface AnalyticsCompendium
-{
-    summedTotals: TotalsAnalytics
-    totalsByMonth: any; //ChartData
-    totalsByCatClass: any; //ChartData
-    totalsByType: any; //ChartData
-    totalsByInstance: any; //ChartData
-    landingsPast90Days: LandingsAnalytics
-}
-
 export interface SeriesData
 {
     name: string;
