@@ -15,11 +15,15 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { SharedModule } from 'app/shared/shared.module';
 import { DashboardComponent } from './dashboard.component';
+import { DashboardResolver } from './dashboard.resolver';
 
 export const dashboardRoutes: Route[] = [
     {
         path     : '',
-        component: DashboardComponent
+        component: DashboardComponent,
+        resolve: {
+            analytics: DashboardResolver
+        }
     }
 ];
 
@@ -27,6 +31,7 @@ export const dashboardRoutes: Route[] = [
     declarations: [
         DashboardComponent
     ],
+    providers: [DashboardResolver],
     imports     : [
         RouterModule.forChild(dashboardRoutes),
         MatButtonModule,

@@ -7,6 +7,7 @@ import { User } from 'app/core/user/user.types';
 import { forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { formatNumber } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector       : 'dashboard',
@@ -21,10 +22,6 @@ export class DashboardComponent implements OnInit, OnDestroy
     chartTotalsByCatClass: ApexOptions = {};
 
     summedTotals: TotalsAnalytics;
-    totalsByMonth: any; //ChartData
-    totalsByCatClass: any; //ChartData
-    totalsByType: any; //ChartData
-    totalsByInstance: any; //ChartData
     landingsPast90Days: LandingsAnalytics;
 
     private unsubscribeAll: Subject<any> = new Subject<any>();
@@ -33,8 +30,8 @@ export class DashboardComponent implements OnInit, OnDestroy
     /**
      * Constructor
      */
-    constructor(private analyticsService: AnalyticsService,
-                private userService: UserService,
+    constructor(private userService: UserService,
+                private route: ActivatedRoute,
                 @Inject(LOCALE_ID) private locale: string
     )
     {
@@ -49,29 +46,23 @@ export class DashboardComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        forkJoin([
-            this.analyticsService.getTotals(),
-            this.analyticsService.getTotalsByMonth(),
-            this.analyticsService.getTotalsByCatClass(),
-            this.analyticsService.getTotalsByType(),
-            this.analyticsService.getTotalsByInstanceType(),
-            this.analyticsService.getLandingsApproachesPast90Days()
-        ]).subscribe(([totals, byMonth, byCatClass, byType, byInstanceType, landings]) => {
+        // Resolver calls service using forkJoin giving array of observables
+        this.route.data.subscribe(forkJoined => {
+            var totals = forkJoined.analytics[0];
+            var byMonth = forkJoined.analytics[1];
+            var byCatClass = forkJoined.analytics[2];
+            var byType = forkJoined.analytics[3];
+            var byInstanceType = forkJoined.analytics[4];
+            var landings = forkJoined.analytics[5];
+
             var catClassTotals = this.mapIntoPolarChartData(byCatClass, byCatClass.map(x => x.categoryClass));
             var instanceTotals = this.mapIntoPolarChartData(byInstanceType, byInstanceType.map(x => x.instance));
             var typeTotals = this.mapIntoPolarChartData(byType, byType.map(x => x.type));
             var monthTotals = this.mapIntoLineChartData(byMonth, byMonth.map(x => { return `${x.month}/${x.year}`; }));
 
-            this.totalsByCatClass = catClassTotals;
             this.chartTotalsByCatClass = this.preparePolarChart(catClassTotals);
-
-            this.totalsByInstance = instanceTotals;
             this.chartTotalsByInstance = this.preparePolarChart(instanceTotals);
-
-            this.totalsByType = typeTotals;
             this.chartTotalsByType = this.preparePolarChart(typeTotals);
-
-            this.totalsByMonth = monthTotals;
             this.chartTotalsByMonth = this.prepareLineChart(monthTotals);
 
             this.summedTotals = totals;
