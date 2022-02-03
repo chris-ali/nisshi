@@ -35,3 +35,13 @@ export interface ChartData
     labels: string[];
     series: Record<string, any>; // Can be number[] or SeriesData[]
 }
+
+export interface AnalyticsCompendium
+{
+    summedTotals: TotalsAnalytics
+    byMonth: TotalsAnalytics[]
+    byCatClass: TotalsAnalytics[]
+    byType: TotalsAnalytics[]
+    byInstance: TotalsAnalytics[]
+    landingsPast90Days: LandingsAnalytics
+}

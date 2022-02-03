@@ -1,7 +1,7 @@
 import { Component, Inject, LOCALE_ID, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ApexOptions } from 'ng-apexcharts';
 import { AnalyticsService } from 'app/core/analytics/analytics.service';
-import { ChartData, LandingsAnalytics, TotalsAnalytics } from 'app/core/analytics/analytics.types';
+import { AnalyticsCompendium, ChartData, LandingsAnalytics, TotalsAnalytics } from 'app/core/analytics/analytics.types';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
 import { forkJoin, Subject } from 'rxjs';
@@ -46,27 +46,22 @@ export class DashboardComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
-        // Resolver calls service using forkJoin giving array of observables
-        this.route.data.subscribe(forkJoined => {
-            var totals = forkJoined.analytics[0];
-            var byMonth = forkJoined.analytics[1];
-            var byCatClass = forkJoined.analytics[2];
-            var byType = forkJoined.analytics[3];
-            var byInstanceType = forkJoined.analytics[4];
-            var landings = forkJoined.analytics[5];
+        // From Dashboard Resolver
+        this.route.data.subscribe(x => {
+            var analytics: AnalyticsCompendium = x.analytics;
 
-            var catClassTotals = this.mapIntoPolarChartData(byCatClass, byCatClass.map(x => x.categoryClass));
-            var instanceTotals = this.mapIntoPolarChartData(byInstanceType, byInstanceType.map(x => x.instance));
-            var typeTotals = this.mapIntoPolarChartData(byType, byType.map(x => x.type));
-            var monthTotals = this.mapIntoLineChartData(byMonth, byMonth.map(x => { return `${x.month}/${x.year}`; }));
+            var catClassTotals = this.mapIntoPolarChartData(analytics.byCatClass, analytics.byCatClass.map(x => x.categoryClass));
+            var instanceTotals = this.mapIntoPolarChartData(analytics.byInstance, analytics.byInstance.map(x => x.instance));
+            var typeTotals = this.mapIntoPolarChartData(analytics.byType, analytics.byType.map(x => x.type));
+            var monthTotals = this.mapIntoLineChartData(analytics.byMonth, analytics.byMonth.map(x => { return `${x.month}/${x.year}`; }));
 
             this.chartTotalsByCatClass = this.preparePolarChart(catClassTotals);
             this.chartTotalsByInstance = this.preparePolarChart(instanceTotals);
             this.chartTotalsByType = this.preparePolarChart(typeTotals);
             this.chartTotalsByMonth = this.prepareLineChart(monthTotals);
 
-            this.summedTotals = totals;
-            this.landingsPast90Days = landings;
+            this.summedTotals = analytics.summedTotals;
+            this.landingsPast90Days = analytics.landingsPast90Days;
         });
 
         this.userService.user$
