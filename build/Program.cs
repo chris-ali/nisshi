@@ -41,7 +41,7 @@ Target(Clean, ForEach(Publish, "**/bin", "**/obj"), dir =>
 Target(Format, () =>
 {
     Run("dotnet", "tool restore");
-    Run("dotnet", "format --check");
+    Run("dotnet", "format --verify-no-changes");
 });
 
 Target(Build, DependsOn(Format), () =>
