@@ -58,7 +58,7 @@ namespace Nisshi.UnitTests.Models
             };
 
             var errors = new Profile.ProfileValidator().Validate(profile);
-            Assert.Equal(9, errors.Errors.Count);
+            Assert.Equal(8, errors.Errors.Count);
 
             profile.Username = "";
             profile.Email = "";

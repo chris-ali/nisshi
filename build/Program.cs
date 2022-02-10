@@ -41,7 +41,7 @@ Target(Clean, ForEach(Publish, "**/bin", "**/obj"), dir =>
 Target(Format, () =>
 {
     Run("dotnet", "tool restore");
-    Run("dotnet", "format --verify-no-changes");
+    Run("dotnet", "format whitespace --verify-no-changes");
 });
 
 Target(Build, DependsOn(Format), () =>
@@ -65,7 +65,7 @@ Target(Test, DependsOn(Build), () =>
 Target(Publish, DependsOn(Test), ForEach("src/Nisshi"), project =>
 {
     Run("dotnet",
-        $"publish {project} -c Release -f net5.0 -o ./publish --no-restore --no-build --verbosity=normal");
+        $"publish {project} -c Release -f net6.0 -o ./publish --no-restore --no-build --verbosity=normal");
 });
 
 Target(Default, DependsOn(Publish), () =>
