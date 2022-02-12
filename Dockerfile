@@ -16,6 +16,9 @@ FROM mcr.microsoft.com/dotnet/aspnet:6.0.2-alpine3.14-amd64
 RUN apk add --update tzdata npm
 
 COPY --from=build /build/publish /app
+
+# Need to generate node_modules inside Angular directory
+WORKDIR /app/ClientApp
 RUN npm install
 
 # wait-for waits for db to be online before starting webapp
