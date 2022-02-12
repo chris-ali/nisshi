@@ -40,7 +40,6 @@ Target(Clean, ForEach(Publish, "**/bin", "**/obj"), dir =>
 
 Target(Format, () =>
 {
-    Run("dotnet", "tool restore");
     Run("dotnet", "format whitespace --verify-no-changes");
 });
 
