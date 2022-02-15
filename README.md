@@ -2,8 +2,8 @@
 A simple logbook application for pilots to log flights. Allows for a unified location for simulated and real flights to be logged.
 
 Designed using:
-- [Angular 12](https://github.com/angular/angular) 
-- [ASP .NET Core 5.0](https://github.com/dotnet/aspnetcore)
+- [Angular 13](https://github.com/angular/angular) 
+- [ASP .NET 6.0](https://github.com/dotnet/aspnetcore)
 
 Implements:
 - WebAPI
@@ -39,6 +39,6 @@ Any changes to the Angular project in `./src/Nisshi/ClientApp` will automaticall
 
 This project has full Docker support and can be build and deployed by simply running `docker-compose up -d` from the project root directory. 
 
-If Docker is not desired, you can run `dotnet run -p build/build.csproj` from the project root directory to build the project, which will output the published artifacts in `./publish`. You may need to install the dotnet-format tool first, which can be done running: `dotnet tool install -g dotnet-format`
+If Docker is not desired, you can run `dotnet run -p build/build.csproj` from the project root directory to build the project, which will output the published artifacts in `./publish`.
 
 PRs and pushes/merges to `master` will trigger the GitHub build pipeline which runs a project-wide format check, and then builds and tests the project.
