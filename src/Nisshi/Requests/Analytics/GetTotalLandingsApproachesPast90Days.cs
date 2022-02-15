@@ -33,7 +33,8 @@ namespace Nisshi.Requests.Analytics
                         username.ToLower(CultureInfo.InvariantCulture))
                     .Where(x => x.FlightDate >= DateTime.Today.AddDays(-90));
 
-                return new LandingsApproaches {
+                return new LandingsApproaches
+                {
                     DayLandings = await data.SumAsync(x => x.NumLandings, cancellationToken),
                     NightLandings = await data.SumAsync(x => x.NumNightLandings, cancellationToken),
                     Approaches = await data.SumAsync(x => x.NumInstrumentApproaches, cancellationToken),

@@ -33,10 +33,12 @@ namespace Nisshi.Requests.Analytics
                         .ThenInclude(x => x.Model)
                     .Where(x => x.Owner.Username.ToLower(CultureInfo.InvariantCulture) ==
                         username.ToLower(CultureInfo.InvariantCulture))
-                    .GroupBy(g => new {
+                    .GroupBy(g => new
+                    {
                         Type = g.Aircraft.Model.TypeName
                     })
-                    .Select(s => new TotalsByType {
+                    .Select(s => new TotalsByType
+                    {
                         Type = s.Key.Type,
                         TotalTimeSum = s.Sum(t => t.TotalFlightTime),
                         MultiSum = s.Sum(t => t.MultiEngine),

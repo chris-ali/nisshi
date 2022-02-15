@@ -36,7 +36,8 @@ namespace Nisshi.Requests.Analytics
                         username.ToLower(CultureInfo.InvariantCulture))
                     .ToListAsync(cancellationToken);
 
-                return new SumTotals {
+                return new SumTotals
+                {
                     TotalTimeSum = data.Sum(t => t.TotalFlightTime),
                     MultiSum = data.Sum(t => t.MultiEngine),
                     InstrumentSum = data.Sum(t => t.IMC),

@@ -32,11 +32,13 @@ namespace Nisshi.Requests.Analytics
                     .Include(x => x.Owner)
                     .Where(x => x.Owner.Username.ToLower(CultureInfo.InvariantCulture) ==
                         username.ToLower(CultureInfo.InvariantCulture))
-                    .GroupBy(g => new {
+                    .GroupBy(g => new
+                    {
                         Month = g.FlightDate.Value.Month,
                         Year = g.FlightDate.Value.Year
                     })
-                    .Select(s => new TotalsByMonth {
+                    .Select(s => new TotalsByMonth
+                    {
                         Month = s.Key.Month,
                         Year = s.Key.Year,
                         TotalTimeSum = s.Sum(t => t.TotalFlightTime),
@@ -63,7 +65,8 @@ namespace Nisshi.Requests.Analytics
                             if (year == today.Year && month > today.Month)
                                 continue;
 
-                            blankEntries.Add(new TotalsByMonth {
+                            blankEntries.Add(new TotalsByMonth
+                            {
                                 Month = month,
                                 Year = year
                             });

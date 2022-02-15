@@ -125,7 +125,7 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
             for (int i = 0; i < 200; i++)
             {
                 var testLogbookEntry = await Helpers.CreateTestLogbookEntry(fixture, user);
-                testLogbookEntry.Aircraft = fixture.GetNisshiContext().Aircraft.ToList()[i%3];
+                testLogbookEntry.Aircraft = fixture.GetNisshiContext().Aircraft.ToList()[i % 3];
                 await fixture.GetNisshiContext().LogbookEntries.AddAsync(testLogbookEntry);
             }
 
@@ -175,7 +175,7 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
             for (int i = 0; i < 200; i++)
             {
                 var testLogbookEntry = await Helpers.CreateTestLogbookEntry(fixture, user);
-                testLogbookEntry.Aircraft = fixture.GetNisshiContext().Aircraft.ToList()[i%3];
+                testLogbookEntry.Aircraft = fixture.GetNisshiContext().Aircraft.ToList()[i % 3];
                 await fixture.GetNisshiContext().LogbookEntries.AddAsync(testLogbookEntry);
             }
 
@@ -225,8 +225,8 @@ namespace Nisshi.IntegrationTests.Requests.LogbookEntries
             for (int i = 0; i < 200; i++)
             {
                 var testLogbookEntry = await Helpers.CreateTestLogbookEntry(fixture, user);
-                testLogbookEntry.Aircraft = fixture.GetNisshiContext().Aircraft.ToList()[i%3];
-                testLogbookEntry.Aircraft.InstanceType = (InstanceType)(i%3);
+                testLogbookEntry.Aircraft = fixture.GetNisshiContext().Aircraft.ToList()[i % 3];
+                testLogbookEntry.Aircraft.InstanceType = (InstanceType)(i % 3);
                 await fixture.GetNisshiContext().LogbookEntries.AddAsync(testLogbookEntry);
             }
 
