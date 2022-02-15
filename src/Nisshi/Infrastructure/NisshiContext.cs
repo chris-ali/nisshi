@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -240,6 +242,14 @@ namespace Nisshi.Infrastructure
                     Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
                 new Aircraft { Id = 5, IdModel = models[0].Id, IdUser = users[1].Id, TailNumber = "N9442D", InstanceType = InstanceType.Real, LastEngineHobbs = 3242, LastPitotStatic = DateTime.Now.AddMonths(-4),
                     Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
+                new Aircraft { Id = 6, IdModel = models[2].Id, IdUser = users[0].Id, TailNumber = "N9443D", InstanceType = InstanceType.Real, LastOilHobbs = 1330, LastTransponder = DateTime.Now.AddMonths(-4),
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
+                new Aircraft { Id = 7, IdModel = models[4].Id, IdUser = users[0].Id, TailNumber = "N9444D", InstanceType = InstanceType.Real, LastOilHobbs = 1330, LastTransponder = DateTime.Now.AddMonths(-4),
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
+                new Aircraft { Id = 8, IdModel = models[7].Id, IdUser = users[0].Id, TailNumber = "N9445D", InstanceType = InstanceType.Simulation, LastOilHobbs = 1330, LastTransponder = DateTime.Now.AddMonths(-4),
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
+                new Aircraft { Id = 9, IdModel = models[9].Id, IdUser = users[0].Id, TailNumber = "N9446D", InstanceType = InstanceType.Real, LastOilHobbs = 1330, LastTransponder = DateTime.Now.AddMonths(-4),
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
             };
             modelBuilder.Entity<Aircraft>().HasData(aircraft);
 
@@ -251,52 +261,60 @@ namespace Nisshi.Infrastructure
             };
             modelBuilder.Entity<Airport>().HasData(airports);
 
-            var logbookEntries = new LogbookEntry[]
+            var logbookEntries = new List<LogbookEntry>();
+
+            for (int i = 1; i < 200; i++)
             {
-                new LogbookEntry { Id = 1, Comments = "Test1", FlightDate = DateTime.Now.AddDays(-1), PIC = 2.0m, Night = 2.0m, NumLandings = 1,
-                    NumInstrumentApproaches = 1, Route = $"{airports[0].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 2, Comments = "Test2", FlightDate = DateTime.Now.AddDays(-2), PIC = 2.7m, CrossCountry = 2.7m, NumLandings = 2,
-                    NumInstrumentApproaches = 1, Route = $"{airports[1].AirportCode} {airports[2].AirportCode}", IdAircraft = aircraft[1].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 3, Comments = "Test3", FlightDate = DateTime.Now.AddDays(-3), PIC = 3.0m, CrossCountry = 3.0m, NumLandings = 3,
-                    NumInstrumentApproaches = 4, Route = $"{airports[0].AirportCode} {airports[2].AirportCode}", IdAircraft = aircraft[1].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 4, Comments = "Test4", FlightDate = DateTime.Now.AddDays(-4), PIC = 1.2m, CrossCountry = 1.2m, NumLandings = 1,
-                    NumInstrumentApproaches = 1, Route = $"{airports[2].AirportCode} {airports[0].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 5, Comments = "Test5", FlightDate = DateTime.Now.AddDays(-5), PIC = 2.0m, CrossCountry = 2.0m, NumLandings = 1,
-                    NumInstrumentApproaches = 3, Route = $"{airports[1].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[2].Id, IdUser = users[1].Id },
-                new LogbookEntry { Id = 6, Comments = "Test6", FlightDate = DateTime.Now.AddDays(-6), PIC = 1.3m, CrossCountry = 1.3m, Night = 1.3m, NumLandings = 4,
-                    NumInstrumentApproaches = 2, Route = $"{airports[0].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[4].Id, IdUser = users[1].Id },
-                new LogbookEntry { Id = 7, Comments = "Test7", FlightDate = DateTime.Now.AddDays(-7), PIC = 2.0m, NumLandings = 1,
-                    NumInstrumentApproaches = 1, Route = $"{airports[1].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[4].Id, IdUser = users[1].Id },
-                new LogbookEntry { Id = 8, Comments = "Test8", FlightDate = DateTime.Now.AddDays(-8), PIC = 4.2m, CrossCountry = 4.2m, NumLandings = 2,
-                    NumInstrumentApproaches = 2, Route = $"{airports[1].AirportCode} {airports[2].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 9, Comments = "Test9", FlightDate = DateTime.Now.AddDays(-9), PIC = 1.1m, Night = 2.0m, NumLandings = 1,
-                    NumInstrumentApproaches = 1, Route = $"{airports[2].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 10, Comments = "Test10", FlightDate = DateTime.Now.AddDays(-8), PIC = 4.2m, CrossCountry = 4.2m, NumLandings = 2,
-                    NumInstrumentApproaches = 2, Route = $"{airports[1].AirportCode} {airports[2].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 11, Comments = "Test11", FlightDate = DateTime.Now.AddDays(-9), PIC = 1.1m, Night = 2.0m, NumLandings = 1,
-                    NumInstrumentApproaches = 1, Route = $"{airports[2].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 12, Comments = "Test12", FlightDate = DateTime.Now.AddDays(-8), PIC = 4.2m, CrossCountry = 4.2m, NumLandings = 2,
-                    NumInstrumentApproaches = 2, Route = $"{airports[1].AirportCode} {airports[2].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 13, Comments = "Test13", FlightDate = DateTime.Now.AddDays(-9), PIC = 1.1m, Night = 2.0m, NumLandings = 1,
-                    NumInstrumentApproaches = 1, Route = $"{airports[2].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 14, Comments = "Test14", FlightDate = DateTime.Now.AddDays(-8), PIC = 4.2m, CrossCountry = 4.2m, NumLandings = 2,
-                    NumInstrumentApproaches = 2, Route = $"{airports[1].AirportCode} {airports[2].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 15, Comments = "Test15", FlightDate = DateTime.Now.AddDays(-9), PIC = 1.1m, Night = 2.0m, NumLandings = 1,
-                    NumInstrumentApproaches = 1, Route = $"{airports[2].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 16, Comments = "Test16", FlightDate = DateTime.Now.AddDays(-8), PIC = 4.2m, CrossCountry = 4.2m, NumLandings = 2,
-                    NumInstrumentApproaches = 2, Route = $"{airports[1].AirportCode} {airports[2].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 17, Comments = "Test17", FlightDate = DateTime.Now.AddDays(-9), PIC = 1.1m, Night = 2.0m, NumLandings = 1,
-                    NumInstrumentApproaches = 1, Route = $"{airports[2].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 18, Comments = "Test18", FlightDate = DateTime.Now.AddDays(-8), PIC = 4.2m, CrossCountry = 4.2m, NumLandings = 2,
-                    NumInstrumentApproaches = 2, Route = $"{airports[1].AirportCode} {airports[2].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 19, Comments = "Test19", FlightDate = DateTime.Now.AddDays(-9), PIC = 1.1m, Night = 2.0m, NumLandings = 1,
-                    NumInstrumentApproaches = 1, Route = $"{airports[2].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 20, Comments = "Test20", FlightDate = DateTime.Now.AddDays(-8), PIC = 4.2m, CrossCountry = 4.2m, NumLandings = 2,
-                    NumInstrumentApproaches = 2, Route = $"{airports[1].AirportCode} {airports[2].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-                new LogbookEntry { Id = 21, Comments = "Test21", FlightDate = DateTime.Now.AddDays(-9), PIC = 1.1m, Night = 2.0m, NumLandings = 1,
-                    NumInstrumentApproaches = 1, Route = $"{airports[2].AirportCode} {airports[1].AirportCode}", IdAircraft = aircraft[0].Id, IdUser = users[0].Id },
-            };
+                logbookEntries.Add(CreateTestLogbookEntry(i, users[i % 1], aircraft, airports));
+            }
+
             modelBuilder.Entity<LogbookEntry>().HasData(logbookEntries);
+        }
+
+        /// <summary>
+        /// Creates a dummy logbook entry for seeding the database
+        /// </summary>
+        /// <param name="user">User persisted in the database</param>
+        /// <returns>Dummy logbook entry</returns>
+        private LogbookEntry CreateTestLogbookEntry(int id, User user, Aircraft[] airs, Airport[] airports)
+        {
+            var aircraft = airs.Where(x => x.IdUser == user.Id).ToArray();
+            var rand = new Random();
+
+            return new LogbookEntry
+            {
+                Id = id,
+                IdAircraft = aircraft[rand.Next(0, aircraft.Length - 1)].Id,
+                IdUser = user.Id,
+                Comments = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem.",
+                CrossCountry = RandomDuration(rand),
+                DualGiven = RandomDuration(rand),
+                GroundSim = RandomDuration(rand),
+                IMC = RandomDuration(rand),
+                MultiEngine = RandomDuration(rand),
+                Night = RandomDuration(rand),
+                PIC = RandomDuration(rand),
+                SIC = RandomDuration(rand),
+                Turbine = RandomDuration(rand),
+                TotalFlightTime = RandomDuration(rand),
+                SimulatedInstrument = RandomDuration(rand),
+                NumFullStopLandings = rand.Next(0, 10),
+                NumInstrumentApproaches = rand.Next(0, 10),
+                NumLandings = rand.Next(0, 10),
+                NumNightLandings = rand.Next(0, 10),
+                FlightDate = DateTime.Today.AddDays(-rand.Next(0, 720)),
+                Route = $"{airports[rand.Next(0, 2)].AirportCode} - {airports[rand.Next(0, 2)].AirportCode}"
+            };
+        }
+
+        /// <summary>
+        /// Returns a random decimal between 0 and 10
+        /// </summary>
+        /// <param name="rand"></param>
+        /// <returns></returns>
+        private decimal RandomDuration(Random rand)
+        {
+            return (decimal)(rand.NextDouble() * rand.Next(0, 5));
         }
     }
 }
