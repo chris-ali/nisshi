@@ -20,7 +20,7 @@ Implements:
 
 ## Development Environment
 
-Along with the .NET 5.0 SDK, this project requires npm to be installed to install Angular assets.
+Along with the .NET 6.0 SDK, this project requires npm to be installed to install Angular assets.
 
 If no environment variables are defined, an in-memory EFCore database is used with sample data seeded on application startup.
 
