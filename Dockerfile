@@ -26,4 +26,5 @@ COPY --from=build /build/resources/wait-for /app/wait-for
 RUN chmod +x /app/wait-for
 
 WORKDIR /app
-EXPOSE 5000
+EXPOSE 80
+EXPOSE 443
