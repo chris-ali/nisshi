@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
@@ -42,6 +43,7 @@ export const routes: Route[] = [
         MatSelectModule,
         MatDatepickerModule,
         MatNativeDateModule,
+        MatAutocompleteModule,
         SharedModule
     ]
 })

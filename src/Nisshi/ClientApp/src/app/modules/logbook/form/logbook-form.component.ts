@@ -1,5 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LogbookEntryService } from 'app/core/logbookentry/logbookentry.service';
 import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
@@ -28,6 +29,10 @@ export class LogbookFormComponent implements OnInit, OnDestroy
     airports: Airport[];
     appConfig: AppConfig;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
+    routeControl = new FormControl();
+    @ViewChild('airportInput') airportInput: ElementRef<HTMLInputElement>;
+    @ViewChild('autocomplete') autocomplete: MatAutocomplete;
 
     /**
      * Constructor
@@ -117,12 +122,51 @@ export class LogbookFormComponent implements OnInit, OnDestroy
     /**
      * On destroy
      */
-     ngOnDestroy(): void
-     {
-         // Unsubscribe from all subscriptions
-         this._unsubscribeAll.next();
-         this._unsubscribeAll.complete();
-     }
+    ngOnDestroy(): void
+    {
+        // Unsubscribe from all subscriptions
+        this._unsubscribeAll.next();
+        this._unsubscribeAll.complete();
+    }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Autocomplete chip events
+    // -----------------------------------------------------------------------------------------------------
+
+    // add(event: MatChipInputEvent): void {
+    //     // Add fruit only when MatAutocomplete is not open
+    //     // To make sure this does not conflict with OptionSelected Event
+    //     if (!this.autocomplete.isOpen) {
+    //       const input = event.input;
+    //       const value = event.value;
+
+    //       // Add our fruit
+    //       if ((value || '').trim()) {
+    //         this.fruits.push(value.trim());
+    //       }
+
+    //       // Reset the input value
+    //       if (input) {
+    //         input.value = '';
+    //       }
+
+    //       this.fruitCtrl.setValue(null);
+    //     }
+    //   }
+
+    //   remove(fruit: string): void {
+    //     const index = this.fruits.indexOf(fruit);
+
+    //     if (index >= 0) {
+    //       this.fruits.splice(index, 1);
+    //     }
+    //   }
+
+    //   selected(event: MatAutocompleteSelectedEvent): void {
+    //     this.fruits.push(event.option.viewValue);
+    //     this.fruitInput.nativeElement.value = '';
+    //     this.fruitCtrl.setValue(null);
+    //   }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Private methods

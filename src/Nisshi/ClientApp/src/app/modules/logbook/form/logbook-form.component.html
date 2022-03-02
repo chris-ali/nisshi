@@ -77,6 +77,33 @@
                                 Please enter the route flown
                             </mat-error>
                         </mat-form-field>
+                        <!-- <mat-form-field class="example-chip-list">
+                            <mat-chip-list #chipList>
+                              <mat-chip
+                                *ngFor="let airport of airports"
+                                [selectable]="selectable"
+                                [removable]="removable"
+                                (removed)="remove(airport)">
+                                {{airport}}
+                                <mat-icon matChipRemove *ngIf="removable">Cancel</mat-icon>
+                              </mat-chip>
+                              <input
+                                placeholder="Enter Airport Name or ICAO Code..."
+                                #airportInput
+                                [formControlName]="'route'"
+                                [formControl]="routeControl"
+                                [matAutocomplete]="auto"
+                                [matChipInputFor]="chipList"
+                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                [matChipInputAddOnBlur]="addOnBlur"
+                                (matChipInputTokenEnd)="add($event)">
+                            </mat-chip-list>
+                            <mat-autocomplete #auto="autocomplete" (optionSelected)="selected($event)">
+                              <mat-option *ngFor="let airport of filteredFruits | async" [value]="airport">
+                                {{airport}}
+                              </mat-option>
+                            </mat-autocomplete>
+                          </mat-form-field> -->
                     </div>
                     <div class="flex">
                         <mat-form-field class="flex-auto">
