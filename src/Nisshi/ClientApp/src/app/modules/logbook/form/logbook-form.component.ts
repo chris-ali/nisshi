@@ -1,17 +1,19 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LogbookEntryService } from 'app/core/logbookentry/logbookentry.service';
 import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
 import { AircraftService } from 'app/core/aircraft/aircraft.service';
 import { AirportService } from 'app/core/airport/airport.service';
 import { Aircraft } from 'app/core/aircraft/aircraft.types';
-import { Airport } from 'app/core/airport/airport.types';
 import { AppConfig } from 'app/core/config/app.config';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { FuseConfigService } from '@fuse/services/config';
-import { takeUntil } from 'rxjs/operators';
+import { startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { Airport } from 'app/core/airport/airport.types';
 
 /**
  * Form that adds/edits an logbook
@@ -26,13 +28,15 @@ export class LogbookFormComponent implements OnInit, OnDestroy
     isAddMode: boolean;
     form: FormGroup;
     aircraft: Aircraft[];
-    airports: Airport[];
     appConfig: AppConfig;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
+    airports: string[];
+    servicedAirports: Observable<string[]>;
+    separatorKeysCodes: number[] = [ENTER, COMMA];
     routeControl = new FormControl();
     @ViewChild('airportInput') airportInput: ElementRef<HTMLInputElement>;
-    @ViewChild('autocomplete') autocomplete: MatAutocomplete;
+    @ViewChild('matAutocomplete') autocomplete: MatAutocomplete;
 
     /**
      * Constructor
@@ -99,7 +103,23 @@ export class LogbookFormComponent implements OnInit, OnDestroy
             .subscribe((config: AppConfig) => {
                 this.appConfig = config;
             });
+
+        this.servicedAirports = this.routeControl.valueChanges
+            .pipe(
+                startWith(''),
+                switchMap(value => value.length >= 2 ? this.filter(value) : [])
+            );
     }
+
+    /**
+     * On destroy
+     */
+     ngOnDestroy(): void
+     {
+         // Unsubscribe from all subscriptions
+         this._unsubscribeAll.next();
+         this._unsubscribeAll.complete();
+     }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -119,54 +139,44 @@ export class LogbookFormComponent implements OnInit, OnDestroy
             this.editLogbookEntry();
     }
 
-    /**
-     * On destroy
-     */
-    ngOnDestroy(): void
-    {
-        // Unsubscribe from all subscriptions
-        this._unsubscribeAll.next();
-        this._unsubscribeAll.complete();
-    }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Autocomplete chip events
     // -----------------------------------------------------------------------------------------------------
 
-    // add(event: MatChipInputEvent): void {
-    //     // Add fruit only when MatAutocomplete is not open
-    //     // To make sure this does not conflict with OptionSelected Event
-    //     if (!this.autocomplete.isOpen) {
-    //       const input = event.input;
-    //       const value = event.value;
+    add(event: MatChipInputEvent): void
+    {
+        // Add airport only when MatAutocomplete is not open
+        // To make sure this does not conflict with OptionSelected Event
+        if (!this.autocomplete.isOpen)
+        {
+            const value = (event.value || '').trim();
 
-    //       // Add our fruit
-    //       if ((value || '').trim()) {
-    //         this.fruits.push(value.trim());
-    //       }
+            // Add our airport
+            if (value)
+                this.airports.push(value);
 
-    //       // Reset the input value
-    //       if (input) {
-    //         input.value = '';
-    //       }
+            // Clear the input value
+            event.chipInput!.clear();
 
-    //       this.fruitCtrl.setValue(null);
-    //     }
-    //   }
+            this.routeControl.setValue(null);
+        }
+    }
 
-    //   remove(fruit: string): void {
-    //     const index = this.fruits.indexOf(fruit);
+    remove(airport: string): void
+    {
+        const index = this.airports.indexOf(airport);
 
-    //     if (index >= 0) {
-    //       this.fruits.splice(index, 1);
-    //     }
-    //   }
+        if (index >= 0)
+            this.airports.splice(index, 1);
+    }
 
-    //   selected(event: MatAutocompleteSelectedEvent): void {
-    //     this.fruits.push(event.option.viewValue);
-    //     this.fruitInput.nativeElement.value = '';
-    //     this.fruitCtrl.setValue(null);
-    //   }
+    selected(event: MatAutocompleteSelectedEvent): void
+    {
+        this.airports.push(event.option.viewValue);
+        this.airportInput.nativeElement.value = '';
+        this.routeControl.setValue(null);
+    }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Private methods
@@ -199,4 +209,11 @@ export class LogbookFormComponent implements OnInit, OnDestroy
                 }
             });
     }
+
+    private filter(value: string)
+    {
+        const filterValue = value.toLowerCase();
+
+        return this.airportService.getManyByPartialCode(filterValue);
+    }_
 }
