@@ -32,7 +32,7 @@ export class LogbookFormComponent implements OnInit, OnDestroy
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     airports: string[];
-    servicedAirports: Observable<string[]>;
+    servicedAirports: Observable<Airport[]>;
     separatorKeysCodes: number[] = [ENTER, COMMA];
     routeControl = new FormControl();
     @ViewChild('airportInput') airportInput: ElementRef<HTMLInputElement>;
@@ -210,10 +210,25 @@ export class LogbookFormComponent implements OnInit, OnDestroy
             });
     }
 
-    private filter(value: string)
+    /**
+     * Calls airport service to generate filtered list for the material
+     * autocomplete
+     *
+     * @param value partial search term from autocomplete
+     * @returns list of airports
+     */
+    private filter(value: string): Observable<Airport[]>
     {
-        const filterValue = value.toLowerCase();
-
-        return this.airportService.getManyByPartialCode(filterValue);
-    }_
+        return this.airportService.getManyByPartialCode(value.toLowerCase())
+        //     .pipe(map(ports => {
+        //         ports.map(port => {
+        //             return {
+        //                 name : port.airportCode + ' - ' + port.facilityName,
+        //                 value : port.airportCode
+        //             };
+        //         })
+        //     })
+        // )
+        ;
+    }
 }
