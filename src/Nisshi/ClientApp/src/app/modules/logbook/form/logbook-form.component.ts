@@ -12,7 +12,7 @@ import { Aircraft } from 'app/core/aircraft/aircraft.types';
 import { AppConfig } from 'app/core/config/app.config';
 import { Observable, Subject } from 'rxjs';
 import { FuseConfigService } from '@fuse/services/config';
-import { startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, startWith, switchMap, takeUntil } from 'rxjs/operators';
 import { Airport } from 'app/core/airport/airport.types';
 
 /**
@@ -32,11 +32,10 @@ export class LogbookFormComponent implements OnInit, OnDestroy
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     airports: string[];
-    servicedAirports: Observable<Airport[]>;
+    servicedAirports: Airport[];
     separatorKeysCodes: number[] = [ENTER, COMMA];
     routeControl = new FormControl();
     @ViewChild('airportInput') airportInput: ElementRef<HTMLInputElement>;
-    @ViewChild('matAutocomplete') autocomplete: MatAutocomplete;
 
     /**
      * Constructor
@@ -104,11 +103,17 @@ export class LogbookFormComponent implements OnInit, OnDestroy
                 this.appConfig = config;
             });
 
-        this.servicedAirports = this.routeControl.valueChanges
+        this.routeControl.valueChanges
             .pipe(
-                startWith(''),
-                switchMap(value => value.length >= 2 ? this.filter(value) : [])
-            );
+                filter(res => {return res !== null && res.length >= 2}),
+                distinctUntilChanged(),
+                debounceTime(1000),
+                switchMap(value => {
+                    return this.airportService.getManyByPartialCode(value.toLowerCase())
+                })
+            ).subscribe(airports => {
+                this.servicedAirports = airports;
+            });
     }
 
     /**
@@ -146,21 +151,16 @@ export class LogbookFormComponent implements OnInit, OnDestroy
 
     add(event: MatChipInputEvent): void
     {
-        // Add airport only when MatAutocomplete is not open
-        // To make sure this does not conflict with OptionSelected Event
-        if (!this.autocomplete.isOpen)
-        {
-            const value = (event.value || '').trim();
+        const value = (event.value || '').trim();
 
-            // Add our airport
-            if (value)
-                this.airports.push(value);
+        // Add our airport
+        if (value)
+            this.airports.push(value);
 
-            // Clear the input value
-            event.chipInput!.clear();
+        // Clear the input value
+        event.chipInput!.clear();
 
-            this.routeControl.setValue(null);
-        }
+        this.routeControl.setValue(null);
     }
 
     remove(airport: string): void
@@ -208,27 +208,5 @@ export class LogbookFormComponent implements OnInit, OnDestroy
                     this.confirmation.alert('An error has occurred', this.confirmation.formatErrors(error));
                 }
             });
-    }
-
-    /**
-     * Calls airport service to generate filtered list for the material
-     * autocomplete
-     *
-     * @param value partial search term from autocomplete
-     * @returns list of airports
-     */
-    private filter(value: string): Observable<Airport[]>
-    {
-        return this.airportService.getManyByPartialCode(value.toLowerCase())
-        //     .pipe(map(ports => {
-        //         ports.map(port => {
-        //             return {
-        //                 name : port.airportCode + ' - ' + port.facilityName,
-        //                 value : port.airportCode
-        //             };
-        //         })
-        //     })
-        // )
-        ;
     }
 }

@@ -3,6 +3,8 @@ import { Observable } from 'rxjs';
 import { ApiService } from '../base/api.service';
 import { Airport } from './airport.types';
 
+const URL = 'airports/';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -24,6 +26,6 @@ export class AirportService {
      */
     getManyByPartialCode(partialCode: string): Observable<Airport[]>
     {
-        return this._api.get(`${URL}partialCode/${partialCode}`);
+        return this._api.get(`${URL}${partialCode}`);
     }
 }
