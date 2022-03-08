@@ -61,7 +61,7 @@
                         </mat-form-field>
                     </div>
                     <div class="flex">
-                        <mat-form-field class="fuse-mat-textarea flex-auto">
+                        <!-- <mat-form-field class="fuse-mat-textarea flex-auto">
                             <mat-label>Route of Flight</mat-label>
                             <input
                                 id="route"
@@ -76,9 +76,12 @@
                             <mat-error *ngIf="form.get('route').hasError('required')">
                                 Please enter the route flown
                             </mat-error>
-                        </mat-form-field>
+                        </mat-form-field> -->
                         <mat-form-field class="flex-auto">
-                            <mat-chip-list #chipList>
+                            <mat-label>Route of Flight</mat-label>
+                            <mat-chip-list
+                                #chipList
+                                [formControlName]="'route'">
                                 <mat-chip
                                     *ngFor="let airport of airports"
                                     (removed)="remove(airport)">
@@ -99,7 +102,7 @@
                             </mat-chip-list>
                             <mat-autocomplete #autocomplete="matAutocomplete" (optionSelected)="selected($event)">
                                 <mat-option *ngFor="let airport of servicedAirports" [value]="airport.airportCode">
-                                    {{airport}}
+                                    {{airport.airportCode}} - {{airport.facilityName}}
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>

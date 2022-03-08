@@ -31,7 +31,7 @@ export class LogbookFormComponent implements OnInit, OnDestroy
     appConfig: AppConfig;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-    airports: string[];
+    airports: string[] = [];
     servicedAirports: Airport[];
     separatorKeysCodes: number[] = [ENTER, COMMA];
     routeControl = new FormControl();
@@ -93,6 +93,7 @@ export class LogbookFormComponent implements OnInit, OnDestroy
             this.logbookEntryService.getOne(this.id)
                 .subscribe(entry => {
                     this.form.patchValue(entry);
+                    this.airports = entry.route.split('-');
                 });
         }
 
@@ -105,9 +106,9 @@ export class LogbookFormComponent implements OnInit, OnDestroy
 
         this.routeControl.valueChanges
             .pipe(
-                filter(res => {return res !== null && res.length >= 2}),
+                filter(res => { return res !== null && res.length >= 2 }),
                 distinctUntilChanged(),
-                debounceTime(1000),
+                debounceTime(250),
                 switchMap(value => {
                     return this.airportService.getManyByPartialCode(value.toLowerCase())
                 })
@@ -153,14 +154,13 @@ export class LogbookFormComponent implements OnInit, OnDestroy
     {
         const value = (event.value || '').trim();
 
-        // Add our airport
         if (value)
             this.airports.push(value);
 
         // Clear the input value
         event.chipInput!.clear();
-
         this.routeControl.setValue(null);
+        //this.form.controls.
     }
 
     remove(airport: string): void
