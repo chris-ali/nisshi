@@ -34,7 +34,7 @@ export class LogbookFormComponent implements OnInit, OnDestroy
     airports: string[] = [];
     servicedAirports: Airport[];
     separatorKeysCodes: number[] = [ENTER, COMMA];
-    routeControl = new FormControl();
+    routeInput = new FormControl();
     @ViewChild('airportInput') airportInput: ElementRef<HTMLInputElement>;
 
     /**
@@ -104,13 +104,15 @@ export class LogbookFormComponent implements OnInit, OnDestroy
                 this.appConfig = config;
             });
 
-        this.routeControl.valueChanges
+        // When the route input changes, call the airport service to get a list
+        // of autocomplete airports
+        this.routeInput.valueChanges
             .pipe(
                 filter(res => { return res !== null && res.length >= 2 }),
                 distinctUntilChanged(),
                 debounceTime(250),
                 switchMap(value => {
-                    return this.airportService.getManyByPartialCode(value.toLowerCase())
+                    return this.airportService.getManyByPartialCode(value)
                 })
             ).subscribe(airports => {
                 this.servicedAirports = airports;
@@ -150,6 +152,11 @@ export class LogbookFormComponent implements OnInit, OnDestroy
     // @ Autocomplete chip events
     // -----------------------------------------------------------------------------------------------------
 
+    /**
+     * Called when enter is pressed on airport input
+     *
+     * @param event
+     */
     add(event: MatChipInputEvent): void
     {
         const value = (event.value || '').trim();
@@ -159,23 +166,39 @@ export class LogbookFormComponent implements OnInit, OnDestroy
 
         // Clear the input value
         event.chipInput!.clear();
-        this.routeControl.setValue(null);
-        //this.form.controls.
+        this.routeInput.setValue(null);
+
+        this.form.controls['route'].setValue(this.airports.join(' - '));
     }
 
+    /**
+     * Called when airport chip is removed
+     *
+     * @param airport
+     */
     remove(airport: string): void
     {
         const index = this.airports.indexOf(airport);
 
         if (index >= 0)
             this.airports.splice(index, 1);
+
+        this.form.controls['route'].setValue(this.airports.join(' - '));
     }
 
+    /**
+     * Called when autocomplete select is clicked or selected directly. Adds airport
+     * to list and adds ICAO code to route
+     *
+     * @param event
+     */
     selected(event: MatAutocompleteSelectedEvent): void
     {
-        this.airports.push(event.option.viewValue);
+        this.airports.push(event.option.value);
         this.airportInput.nativeElement.value = '';
-        this.routeControl.setValue(null);
+        this.routeInput.setValue(null);
+
+        this.form.controls['route'].setValue(this.airports.join(' - '));
     }
 
     // -----------------------------------------------------------------------------------------------------
