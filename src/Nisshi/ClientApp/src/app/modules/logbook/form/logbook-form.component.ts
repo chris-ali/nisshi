@@ -159,7 +159,7 @@ export class LogbookFormComponent implements OnInit, OnDestroy
      */
     add(event: MatChipInputEvent): void
     {
-        const value = (event.value || '').trim();
+        const value = (event.value || '').trim().toUpperCase();
 
         if (value)
             this.airports.push(value);

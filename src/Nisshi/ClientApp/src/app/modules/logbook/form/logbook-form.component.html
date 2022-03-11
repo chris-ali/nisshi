@@ -75,12 +75,12 @@
                                     (removed)="remove(airport)">
                                     {{airport}}
                                     <button matChipRemove>
-                                        <mat-icon>Cancel</mat-icon>
+                                        <mat-icon>cancel</mat-icon>
                                     </button>
                                 </mat-chip>
                                 <input
                                     type="text"
-                                    placeholder="Enter Airport Name or ICAO Code..."
+                                    placeholder="Enter ICAO Code..."
                                     #airportInput
                                     [formControl]="routeInput"
                                     [matAutocomplete]="autocomplete"
