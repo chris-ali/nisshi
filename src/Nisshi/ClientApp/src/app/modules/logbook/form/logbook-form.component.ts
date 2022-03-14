@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
+import { MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,9 +10,9 @@ import { AircraftService } from 'app/core/aircraft/aircraft.service';
 import { AirportService } from 'app/core/airport/airport.service';
 import { Aircraft } from 'app/core/aircraft/aircraft.types';
 import { AppConfig } from 'app/core/config/app.config';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { FuseConfigService } from '@fuse/services/config';
-import { debounceTime, distinctUntilChanged, filter, startWith, switchMap, takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from 'rxjs/operators';
 import { Airport } from 'app/core/airport/airport.types';
 
 /**
