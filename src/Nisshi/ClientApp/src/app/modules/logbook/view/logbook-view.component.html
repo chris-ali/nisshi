@@ -107,7 +107,8 @@
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Date"
-                        [width]="80">
+                        prop="flightDate"
+                        [width]="90">
                         <ng-template let-row="row" ngx-datatable-cell-template>
                             {{ row.flightDate | date: 'shortDate' : '' : translateService.getActiveLang() }}
                         </ng-template>
@@ -116,14 +117,14 @@
                         name="Route"
                         prop="route"
                         [sortable]="false"
-                        [width]="80">
+                        [width]="135">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Aircraft"
                         prop="aircraft.tailNumber"
                         *ngIf="this.appConfig.logbookOptions.showTailNumber"
                         [sortable]="false"
-                        [width]="80">
+                        [width]="110">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Type"
@@ -137,21 +138,21 @@
                         prop="numInstrumentApproaches"
                         *ngIf="this.appConfig.logbookOptions.showApproaches"
                         [summaryFunc]="sumColumn"
-                        [width]="100">
+                        [width]="110">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Landings"
                         prop="numLandings"
                         *ngIf="this.appConfig.logbookOptions.showLandings"
                         [summaryFunc]="sumColumn"
-                        [width]="100">
+                        [width]="110">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Night Landings"
                         prop="numNightLandings"
                         *ngIf="this.appConfig.logbookOptions.showNightLandings"
                         [summaryFunc]="sumColumn"
-                        [width]="110">
+                        [width]="130">
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Full Stop Landings"
@@ -166,6 +167,9 @@
                         *ngIf="this.appConfig.logbookOptions.showNight"
                         [summaryFunc]="sumColumn"
                         [width]="80">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.night | number:'1.2-2' }}
+                        </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Cross Country"
@@ -173,27 +177,39 @@
                         *ngIf="this.appConfig.logbookOptions.showCrossCountry"
                         [summaryFunc]="sumColumn"
                         [width]="80">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.crossCountry | number:'1.2-2' }}
+                        </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="PIC"
                         prop="pic"
                         *ngIf="this.appConfig.logbookOptions.showPIC"
                         [summaryFunc]="sumColumn"
-                        [width]="50">
+                        [width]="80">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.pic | number:'1.2-2' }}
+                        </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="SIC"
                         prop="sic"
                         *ngIf="this.appConfig.logbookOptions.showSIC"
                         [summaryFunc]="sumColumn"
-                        [width]="50">
+                        [width]="80">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.sic | number:'1.2-2' }}
+                        </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Multi"
                         prop="multiEngine"
                         *ngIf="this.appConfig.logbookOptions.showMultiEngine"
                         [summaryFunc]="sumColumn"
-                        [width]="50">
+                        [width]="80">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.multiEngine | number:'1.2-2' }}
+                        </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Turbine"
@@ -201,6 +217,9 @@
                         *ngIf="this.appConfig.logbookOptions.showTurbine"
                         [summaryFunc]="sumColumn"
                         [width]="80">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.turbine | number:'1.2-2' }}
+                        </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Simulated IMC"
@@ -208,6 +227,9 @@
                         *ngIf="this.appConfig.logbookOptions.showSimulatedInstrument"
                         [summaryFunc]="sumColumn"
                         [width]="80">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.simulatedInstrument | number:'1.2-2' }}
+                        </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Actual IMC"
@@ -215,6 +237,9 @@
                         *ngIf="this.appConfig.logbookOptions.showIMC"
                         [summaryFunc]="sumColumn"
                         [width]="80">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.imc | number:'1.2-2' }}
+                        </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Dual Received"
@@ -222,6 +247,9 @@
                         *ngIf="this.appConfig.logbookOptions.showDualReceived"
                         [summaryFunc]="sumColumn"
                         [width]="80">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.dualReceived | number:'1.2-2' }}
+                        </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Dual Given"
@@ -229,6 +257,9 @@
                         *ngIf="this.appConfig.logbookOptions.showDualGiven"
                         [summaryFunc]="sumColumn"
                         [width]="80">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.dualGiven | number:'1.2-2' }}
+                        </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Ground Sim"
@@ -236,6 +267,9 @@
                         *ngIf="this.appConfig.logbookOptions.showGroundSim"
                         [summaryFunc]="sumColumn"
                         [width]="80">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.groundSim | number:'1.2-2' }}
+                        </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Total Time"
@@ -243,6 +277,9 @@
                         *ngIf="this.appConfig.logbookOptions.showTotalTime"
                         [summaryFunc]="sumColumn"
                         [width]="80">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.totalFlightTime | number:'1.2-2' }}
+                        </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Comments"

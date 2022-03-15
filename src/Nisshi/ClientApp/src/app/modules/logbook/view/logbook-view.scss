@@ -83,3 +83,12 @@
         }
     }
 }
+
+.datatable-body-cell {
+    span.ng-star-inserted {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: block;
+        white-space: nowrap;
+    }
+}
