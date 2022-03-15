@@ -23,7 +23,7 @@ namespace Nisshi.Requests.Airports
 
             public async Task<IList<Airport>> Handle(Query request, CancellationToken cancellationToken)
             {
-                if (string.IsNullOrEmpty(request.partialCode) || request.partialCode.Length < 3)
+                if (string.IsNullOrEmpty(request.partialCode) || request.partialCode.Length < 2)
                     return null;
 
                 var data = await context.Airports

@@ -61,20 +61,44 @@
                         </mat-form-field>
                     </div>
                     <div class="flex">
-                        <mat-form-field class="fuse-mat-textarea flex-auto">
+                        <mat-form-field class="flex-auto">
                             <mat-label>Route of Flight</mat-label>
-                            <input
-                                id="route"
-                                matInput
-                                [placeholder]="'Enter the route flown using ICAO airport codes'"
-                                [formControlName]="'route'"
-                                maxlength="20">
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:map'"></mat-icon>
+                            <mat-chip-list
+                                #chipList
+                                [formControlName]="'route'">
+                                <mat-chip
+                                    *ngFor="let airport of airports"
+                                    (removed)="remove(airport)">
+                                    {{airport}}
+                                    <button matChipRemove>
+                                        <mat-icon>cancel</mat-icon>
+                                    </button>
+                                </mat-chip>
+                                <input
+                                    type="text"
+                                    placeholder="Enter ICAO Code..."
+                                    maxlength="4"
+                                    #airportInput
+                                    [formControl]="routeInput"
+                                    [matAutocomplete]="autocomplete"
+                                    [matChipInputFor]="chipList"
+                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                    (matChipInputTokenEnd)="add($event)">
+                            </mat-chip-list>
+                            <mat-autocomplete #autocomplete="matAutocomplete" (optionSelected)="selected($event)">
+                                <mat-option *ngFor="let airport of servicedAirports" [value]="airport.airportCode">
+                                    {{airport.airportCode}} - {{airport.facilityName}}
+                                </mat-option>
+                            </mat-autocomplete>
                             <mat-error *ngIf="form.get('route').hasError('required')">
                                 Please enter the route flown
+                            </mat-error>
+                            <mat-error *ngIf="form.get('route').hasError('maxLength')">
+                                Route flown must be less than 60 characters
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -124,6 +148,9 @@
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:menu-alt-2'"></mat-icon>
+                            <mat-error *ngIf="form.get('route').hasError('maxLength')">
+                                Comments must be less than 500 characters
+                            </mat-error>
                         </mat-form-field>
                     </div>
                 </div>

@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDividerModule } from '@angular/material/divider';
@@ -8,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
 import { SharedModule } from 'app/shared/shared.module';
 import { LogbookFormComponent } from 'app/modules/logbook/form/logbook-form.component';
 import { Route, RouterModule } from '@angular/router';
@@ -42,6 +44,8 @@ export const routes: Route[] = [
         MatSelectModule,
         MatDatepickerModule,
         MatNativeDateModule,
+        MatAutocompleteModule,
+        MatChipsModule,
         SharedModule
     ]
 })

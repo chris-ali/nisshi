@@ -1,16 +1,19 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LogbookEntryService } from 'app/core/logbookentry/logbookentry.service';
 import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
 import { AircraftService } from 'app/core/aircraft/aircraft.service';
 import { AirportService } from 'app/core/airport/airport.service';
 import { Aircraft } from 'app/core/aircraft/aircraft.types';
-import { Airport } from 'app/core/airport/airport.types';
 import { AppConfig } from 'app/core/config/app.config';
 import { Subject } from 'rxjs';
 import { FuseConfigService } from '@fuse/services/config';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from 'rxjs/operators';
+import { Airport } from 'app/core/airport/airport.types';
 
 /**
  * Form that adds/edits an logbook
@@ -25,9 +28,14 @@ export class LogbookFormComponent implements OnInit, OnDestroy
     isAddMode: boolean;
     form: FormGroup;
     aircraft: Aircraft[];
-    airports: Airport[];
     appConfig: AppConfig;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
+    airports: string[] = [];
+    servicedAirports: Airport[];
+    separatorKeysCodes: number[] = [ENTER, COMMA];
+    routeInput = new FormControl();
+    @ViewChild('airportInput') airportInput: ElementRef<HTMLInputElement>;
 
     /**
      * Constructor
@@ -85,6 +93,7 @@ export class LogbookFormComponent implements OnInit, OnDestroy
             this.logbookEntryService.getOne(this.id)
                 .subscribe(entry => {
                     this.form.patchValue(entry);
+                    this.airports = entry.route.split('-');
                 });
         }
 
@@ -94,7 +103,31 @@ export class LogbookFormComponent implements OnInit, OnDestroy
             .subscribe((config: AppConfig) => {
                 this.appConfig = config;
             });
+
+        // When the route input changes, call the airport service to get a list
+        // of autocomplete airports
+        this.routeInput.valueChanges
+            .pipe(
+                filter(res => { return res !== null && res.length >= 2 }),
+                distinctUntilChanged(),
+                debounceTime(250),
+                switchMap(value => {
+                    return this.airportService.getManyByPartialCode(value)
+                })
+            ).subscribe(airports => {
+                this.servicedAirports = airports;
+            });
     }
+
+    /**
+     * On destroy
+     */
+     ngOnDestroy(): void
+     {
+         // Unsubscribe from all subscriptions
+         this._unsubscribeAll.next();
+         this._unsubscribeAll.complete();
+     }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -114,15 +147,59 @@ export class LogbookFormComponent implements OnInit, OnDestroy
             this.editLogbookEntry();
     }
 
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Autocomplete chip events
+    // -----------------------------------------------------------------------------------------------------
+
     /**
-     * On destroy
+     * Called when enter is pressed on airport input
+     *
+     * @param event
      */
-     ngOnDestroy(): void
-     {
-         // Unsubscribe from all subscriptions
-         this._unsubscribeAll.next();
-         this._unsubscribeAll.complete();
-     }
+    add(event: MatChipInputEvent): void
+    {
+        const value = (event.value || '').trim().toUpperCase();
+
+        if (value)
+            this.airports.push(value);
+
+        // Clear the input value
+        event.chipInput!.clear();
+        this.routeInput.setValue(null);
+
+        this.form.controls['route'].setValue(this.airports.join(' - '));
+    }
+
+    /**
+     * Called when airport chip is removed
+     *
+     * @param airport
+     */
+    remove(airport: string): void
+    {
+        const index = this.airports.indexOf(airport);
+
+        if (index >= 0)
+            this.airports.splice(index, 1);
+
+        this.form.controls['route'].setValue(this.airports.join(' - '));
+    }
+
+    /**
+     * Called when autocomplete select is clicked or selected directly. Adds airport
+     * to list and adds ICAO code to route
+     *
+     * @param event
+     */
+    selected(event: MatAutocompleteSelectedEvent): void
+    {
+        this.airports.push(event.option.value);
+        this.airportInput.nativeElement.value = '';
+        this.routeInput.setValue(null);
+
+        this.form.controls['route'].setValue(this.airports.join(' - '));
+    }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Private methods
