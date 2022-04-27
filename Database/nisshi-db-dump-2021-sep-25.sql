@@ -17,6 +17,10 @@ DROP TABLE IF EXISTS `users`;
 
 DROP TABLE IF EXISTS `airports`;
 
+DROP TABLE IF EXISTS `vehicles`;
+
+DROP TABLE IF EXISTS `maintenanceentries`;
+
 --
 -- Table structure for table `users`
 --
@@ -244,6 +248,69 @@ CREATE TABLE `logbookentries` (
   CONSTRAINT `fkEntryAircraft` FOREIGN KEY (`IdAircraft`) REFERENCES `aircraft` (`Id`) ON UPDATE NO ACTION,
   CONSTRAINT `fkFlightUser` FOREIGN KEY (`IdUser`) REFERENCES `users` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='A logged flight';
+
+--
+-- Dumping data for table `logbookentries`
+--
+
+LOCK TABLES `logbookentries` WRITE;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `vehicle`
+--
+
+CREATE TABLE `vehicles` (
+  `Id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `IdUser` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'Owner of the vehicle',
+  `Vin` varchar(20) NOT NULL DEFAULT '',
+  `Make` varchar(45) NOT NULL DEFAULT '',
+  `Model` varchar(45) NOT NULL DEFAULT '',
+  `Trim` varchar(45) NOT NULL DEFAULT '',
+  `Year` int(4) unsigned NOT NULL DEFAULT '0',
+  `Miles` decimal(10,1) unsigned NOT NULL DEFAULT '0',
+  `LastRegistration` date DEFAULT NULL COMMENT 'Date of last registration',
+  `RegistrationDue` date DEFAULT NULL COMMENT 'Date, if any, of next renewal of registration',
+  `LastInspection` date DEFAULT NULL COMMENT 'Date of last inspection',
+  `InsepectionDue` date DEFAULT NULL COMMENT 'Date, if any, of next inpsection',
+  `Notes` text COMMENT 'Notes about the vehicle that are shared among all users.',
+  `DateCreated` date DEFAULT NULL,
+  `DateUpdated` date DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  CONSTRAINT `fkVehicleUser` FOREIGN KEY (`IdUser`) REFERENCES `users` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Specific vehicles';
+
+--
+-- Dumping data for table `vehicle`
+--
+
+LOCK TABLES `vehicle` WRITE;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `logbookentries`
+--
+
+CREATE TABLE `logbookentries` (
+  `Id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `IdVehicle` int(10) unsigned NOT NULL DEFAULT '0',
+  `IdUser` int(10) unsigned NOT NULL DEFAULT '0',
+  `DatePerformed` date NOT NULL DEFAULT '0000-00-00',
+  `Type` int(10) unsigned NOT NULL DEFAULT '0',
+  `Duration` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
+  `MilesPerformed` decimal(10,1) unsigned NOT NULL DEFAULT '0',
+  `RepairPrice` decimal(10,2) unsigned NOT NULL DEFAULT '0.00',
+  `PerformedBy` varchar(200) DEFAULT NULL,
+  `WorkPerformed` text COMMENT 'Work performed during this maintenance',
+  `Comments` varchar(200) DEFAULT NULL,
+  `DateCreated` date DEFAULT NULL,
+  `DateUpdated` date DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  KEY `Vehicle` (`Idvehicle`),
+  KEY `User` (`IdUser`),
+  CONSTRAINT `fkEntryVehicle` FOREIGN KEY (`IdVehicle`) REFERENCES `vehicles` (`Id`) ON UPDATE NO ACTION,
+  CONSTRAINT `fkMaintUser` FOREIGN KEY (`IdUser`) REFERENCES `users` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Mantenance performend on a vehicle';
 
 --
 -- Dumping data for table `logbookentries`
