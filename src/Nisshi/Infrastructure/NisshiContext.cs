@@ -27,6 +27,8 @@ namespace Nisshi.Infrastructure
         public DbSet<Model> Models { get; set; }
         public DbSet<CategoryClass> CategoryClasses { get; set; }
         public DbSet<Airport> Airports { get; set; }
+        public DbSet<MaintenanceEntry> MaintenanceEntries { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
 
         private IDbContextTransaction currentTransaction;
 
@@ -51,6 +53,13 @@ namespace Nisshi.Infrastructure
                  .WithOne(x => x.Owner)
                  .HasForeignKey(x => x.IdUser);
                 b.HasMany(x => x.LogbookEntries)
+                 .WithOne(x => x.Owner)
+                 .HasForeignKey(x => x.IdUser)
+                 .OnDelete(DeleteBehavior.Cascade);
+                b.HasMany(x => x.Vehicles)
+                 .WithOne(x => x.Owner)
+                 .HasForeignKey(x => x.IdUser);
+                b.HasMany(x => x.MaintenanceEntries)
                  .WithOne(x => x.Owner)
                  .HasForeignKey(x => x.IdUser)
                  .OnDelete(DeleteBehavior.Cascade);
@@ -109,6 +118,25 @@ namespace Nisshi.Infrastructure
             modelBuilder.Entity<CategoryClass>(b =>
             {
                 b.HasKey(x => x.Id);
+            });
+
+            modelBuilder.Entity<MaintenanceEntry>(b =>
+            {
+                b.HasKey(x => x.Id);
+                b.HasOne(x => x.Owner)
+                 .WithMany(x => x.MaintenanceEntries)
+                 .HasForeignKey(x => x.IdUser);
+                b.HasOne(x => x.Vehicle)
+                 .WithMany(x => x.MaintenanceEntries)
+                 .HasForeignKey(x => x.IdVehicle);
+            });
+
+            modelBuilder.Entity<Vehicle>(b =>
+            {
+                b.HasKey(x => x.Id);
+                b.HasMany(x => x.MaintenanceEntries)
+                 .WithOne(x => x.Vehicle)
+                 .HasForeignKey(x => x.IdVehicle);
             });
 
             // Set each DB item's name to lower case to match mysql's lower casing
