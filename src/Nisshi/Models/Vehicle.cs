@@ -101,6 +101,7 @@ namespace Nisshi.Models
                     .Unless(x => x.LastInspection == null);
                 RuleFor(x => x.LastRegistration).LessThanOrEqualTo(DateTime.Now).WithMessage("NotFutureDate")
                     .Unless(x => x.LastRegistration == null);
+                RuleFor(x => x.Notes).MaximumLength(200).WithMessage("Length200");
             }
         }
     }

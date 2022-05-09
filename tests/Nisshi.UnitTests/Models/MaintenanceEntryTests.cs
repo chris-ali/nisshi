@@ -53,7 +53,10 @@ namespace Nisshi.UnitTests.MaintenanceEntries
                 Test work performed Test work performed Test work performed Test work performed
                 Test work performed Test work performed Test work performed Test work performed ",
                 MilesPerformed = -104000,
-                PerformedBy = "Test user Test user Test user Test user Test user Test user Test user ",
+                PerformedBy = @"Test user Test user Test user Test user Test user Test user Test user
+                Test user Test user Test user Test user Test user Test user Test user
+                Test user Test user Test user Test user Test user Test user Test user
+                Test user Test user Test user Test user Test user Test user Test user ",
                 RepairPrice = -100,
                 Type = Infrastructure.Enums.MaintenanceType.Preventative,
                 Comments = @"Test comments Test comments Test comments Test comments Test comments

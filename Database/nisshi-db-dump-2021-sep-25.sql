@@ -288,10 +288,10 @@ LOCK TABLES `vehicle` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `logbookentries`
+-- Table structure for table `maintenanceentries`
 --
 
-CREATE TABLE `logbookentries` (
+CREATE TABLE `maintenanceentries` (
   `Id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `IdVehicle` int(10) unsigned NOT NULL DEFAULT '0',
   `IdUser` int(10) unsigned NOT NULL DEFAULT '0',

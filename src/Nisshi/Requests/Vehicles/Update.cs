@@ -67,6 +67,7 @@ namespace Nisshi.Requests.Vehicles
                 toBeUpdated.LastInspection = toUpdateWith.LastInspection;
                 toBeUpdated.RegistrationDue = toUpdateWith.RegistrationDue;
                 toBeUpdated.LastRegistration = toUpdateWith.LastRegistration;
+                toBeUpdated.Miles = toUpdateWith.Miles;
                 toBeUpdated.Make = toUpdateWith.Make;
                 toBeUpdated.Model = toUpdateWith.Model;
                 toBeUpdated.Trim = toUpdateWith.Trim;

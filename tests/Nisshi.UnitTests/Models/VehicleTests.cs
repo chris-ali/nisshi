@@ -40,13 +40,11 @@ namespace Nisshi.UnitTests.Vehicles
         public void Should_Fail_Validation_Too_Long_Bad_Numerics()
         {
             var vehicle = new Vehicle {
-                InspectionDue = DateTime.Today,
                 LastInspection = DateTime.Today.AddDays(10),
-                RegistrationDue = DateTime.Today,
                 LastRegistration = DateTime.Today.AddDays(10),
-                Make = "BMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMW",
-                Model = "323i323i323i323i323i323i323i323i323i",
-                Trim = "BaseBaseBaseBaseBaseBaseBaseBaseBaseBase",
+                Make = "BMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMW",
+                Model = "323i323i323i323i323i323i323i323i323i323i323i323i323i323i",
+                Trim = "BaseBaseBaseBaseBaseBaseBaseBaseBaseBaseBaseBaseBaseBaseBase",
                 Year = -2000,
                 Miles = -104000,
                 Vin = "WBAAB123456789123WBAAB123456789123",
