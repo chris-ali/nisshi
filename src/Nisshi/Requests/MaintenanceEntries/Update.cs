@@ -69,6 +69,7 @@ namespace Nisshi.Requests.MaintenanceEntries
                 toBeUpdated.RepairPrice = toUpdateWith.RepairPrice;
                 toBeUpdated.Type = toUpdateWith.Type;
                 toBeUpdated.WorkDescription = toUpdateWith.WorkDescription;
+                toBeUpdated.DatePerformed = toUpdateWith.DatePerformed;
             }
         }
     }
