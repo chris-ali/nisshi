@@ -300,9 +300,14 @@ namespace Nisshi.Infrastructure
 
             var vehicles = new Vehicle[]
             {
-                CreateTestVehicle(1, users[0]),
-                CreateTestVehicle(2, users[0]),
-                CreateTestVehicle(3, users[1]),
+                new Vehicle { Id = 1, IdUser = users[0].Id, Make = "BMW", Model = "323i", Year = 2000, Trim = "Base", Miles = 102000, InspectionDue = DateTime.Now.AddMonths(24), RegistrationDue = DateTime.Now.AddMonths(12),
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
+                new Vehicle { Id = 2, IdUser = users[0].Id, Make = "Honda", Model = "Civic", Year = 2007, Trim = "EX", Miles = 120000, InspectionDue = DateTime.Now.AddMonths(24), RegistrationDue = DateTime.Now.AddMonths(12),
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
+                new Vehicle { Id = 3, IdUser = users[1].Id, Make = "Acura", Model = "RDX", Year = 2012, Trim = "Base", Miles = 80000, InspectionDue = DateTime.Now.AddMonths(24), RegistrationDue = DateTime.Now.AddMonths(12),
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
+                new Vehicle { Id = 4, IdUser = users[1].Id, Make = "Toyota", Model = "Highlander", Year = 2011, Trim = "SE", Miles = 100000, InspectionDue = DateTime.Now.AddMonths(24), RegistrationDue = DateTime.Now.AddMonths(12),
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
             };
             modelBuilder.Entity<Vehicle>().HasData(vehicles);
 
