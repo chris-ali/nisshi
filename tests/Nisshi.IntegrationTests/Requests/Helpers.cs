@@ -156,6 +156,55 @@ namespace Nisshi.IntegrationTests.Requests
         }
 
         /// <summary>
+        /// Creates a test manufacturer for testing purposes
+        /// </summary>
+        /// <param name="user">User persisted in the database</param>
+        /// <returns>Test manufacturer</returns>
+        public static Vehicle CreateTestVehicle(User user)
+        {
+            return new Vehicle
+            {
+                IdUser = user?.Id ?? 0,
+                InspectionDue = DateTime.Today,
+                RegistrationDue = DateTime.Today,
+                LastRegistration = DateTime.Today,
+                LastInspection = DateTime.Today,
+                Miles = 102000,
+                Make = "BMW",
+                Model = "323i",
+                Notes = "Test notes",
+                Trim = "Base",
+                Vin = "WBAM337YCD155491",
+                Year = 2000
+            };
+        }
+
+        /// <summary>
+        /// Creates a test maintenance entry for testing purposes
+        /// </summary>
+        /// <param name="fixture">Testing slice fixture</param>
+        /// <param name="user">User persisted in the database</param>
+        /// <returns>Test maintenance entry</returns>
+        public static async Task<MaintenanceEntry> CreateTestMaintenanceEntry(SliceFixture fixture, User user)
+        {
+            var vehicle = await fixture.GetNisshiContext().Vehicles.FirstOrDefaultAsync();
+            var rand = new Random();
+
+            return new MaintenanceEntry
+            {
+                IdVehicle = vehicle.Id,
+                IdUser = user.Id,
+                Comments = "Test comments.",
+                Duration = RandomDuration(rand),
+                MilesPerformed = 10000 * RandomDuration(rand),
+                PerformedBy = $"{user.FirstName} {user.LastName}",
+                RepairPrice = 100 * RandomDuration(rand),
+                Type = MaintenanceType.Repair,
+                WorkDescription = "Test repair"
+            };
+        }
+
+        /// <summary>
         /// Returns a random decimal between 0 and 10
         /// </summary>
         /// <param name="rand"></param>

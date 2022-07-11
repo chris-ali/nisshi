@@ -27,6 +27,8 @@ namespace Nisshi.Infrastructure
         public DbSet<Model> Models { get; set; }
         public DbSet<CategoryClass> CategoryClasses { get; set; }
         public DbSet<Airport> Airports { get; set; }
+        public DbSet<MaintenanceEntry> MaintenanceEntries { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
 
         private IDbContextTransaction currentTransaction;
 
@@ -51,6 +53,13 @@ namespace Nisshi.Infrastructure
                  .WithOne(x => x.Owner)
                  .HasForeignKey(x => x.IdUser);
                 b.HasMany(x => x.LogbookEntries)
+                 .WithOne(x => x.Owner)
+                 .HasForeignKey(x => x.IdUser)
+                 .OnDelete(DeleteBehavior.Cascade);
+                b.HasMany(x => x.Vehicles)
+                 .WithOne(x => x.Owner)
+                 .HasForeignKey(x => x.IdUser);
+                b.HasMany(x => x.MaintenanceEntries)
                  .WithOne(x => x.Owner)
                  .HasForeignKey(x => x.IdUser)
                  .OnDelete(DeleteBehavior.Cascade);
@@ -109,6 +118,25 @@ namespace Nisshi.Infrastructure
             modelBuilder.Entity<CategoryClass>(b =>
             {
                 b.HasKey(x => x.Id);
+            });
+
+            modelBuilder.Entity<MaintenanceEntry>(b =>
+            {
+                b.HasKey(x => x.Id);
+                b.HasOne(x => x.Owner)
+                 .WithMany(x => x.MaintenanceEntries)
+                 .HasForeignKey(x => x.IdUser);
+                b.HasOne(x => x.Vehicle)
+                 .WithMany(x => x.MaintenanceEntries)
+                 .HasForeignKey(x => x.IdVehicle);
+            });
+
+            modelBuilder.Entity<Vehicle>(b =>
+            {
+                b.HasKey(x => x.Id);
+                b.HasMany(x => x.MaintenanceEntries)
+                 .WithOne(x => x.Vehicle)
+                 .HasForeignKey(x => x.IdVehicle);
             });
 
             // Set each DB item's name to lower case to match mysql's lower casing
@@ -269,6 +297,28 @@ namespace Nisshi.Infrastructure
             }
 
             modelBuilder.Entity<LogbookEntry>().HasData(logbookEntries);
+
+            var vehicles = new Vehicle[]
+            {
+                new Vehicle { Id = 1, IdUser = users[0].Id, Make = "BMW", Model = "323i", Year = 2000, Trim = "Base", Miles = 102000, InspectionDue = DateTime.Now.AddMonths(24), RegistrationDue = DateTime.Now.AddMonths(12),
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
+                new Vehicle { Id = 2, IdUser = users[0].Id, Make = "Honda", Model = "Civic", Year = 2007, Trim = "EX", Miles = 120000, InspectionDue = DateTime.Now.AddMonths(24), RegistrationDue = DateTime.Now.AddMonths(12),
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
+                new Vehicle { Id = 3, IdUser = users[1].Id, Make = "Acura", Model = "RDX", Year = 2012, Trim = "Base", Miles = 80000, InspectionDue = DateTime.Now.AddMonths(24), RegistrationDue = DateTime.Now.AddMonths(12),
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
+                new Vehicle { Id = 4, IdUser = users[1].Id, Make = "Toyota", Model = "Highlander", Year = 2011, Trim = "SE", Miles = 100000, InspectionDue = DateTime.Now.AddMonths(24), RegistrationDue = DateTime.Now.AddMonths(12),
+                    Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem." },
+            };
+            modelBuilder.Entity<Vehicle>().HasData(vehicles);
+
+            var maintenanceEntries = new List<MaintenanceEntry>();
+
+            for (int i = 1; i < 200; i++)
+            {
+                maintenanceEntries.Add(CreateTestMaintenanceEntry(i, users[i % 1], vehicles));
+            }
+
+            modelBuilder.Entity<MaintenanceEntry>().HasData(maintenanceEntries);
         }
 
         /// <summary>
@@ -304,6 +354,57 @@ namespace Nisshi.Infrastructure
                 NumNightLandings = rand.Next(0, 10),
                 FlightDate = DateTime.Today.AddDays(-rand.Next(0, 720)),
                 Route = $"{airports[rand.Next(0, 2)].AirportCode} - {airports[rand.Next(0, 2)].AirportCode}"
+            };
+        }
+
+        /// <summary>
+        /// Creates a test manufacturer for testing purposes
+        /// </summary>
+        /// <param name="user">User persisted in the database</param>
+        /// <returns>Test manufacturer</returns>
+        private Vehicle CreateTestVehicle(int id, User user)
+        {
+            return new Vehicle
+            {
+                Id = id,
+                IdUser = user?.Id ?? 0,
+                InspectionDue = DateTime.Today,
+                RegistrationDue = DateTime.Today,
+                LastRegistration = DateTime.Today,
+                LastInspection = DateTime.Today,
+                Miles = 102000,
+                Make = "BMW",
+                Model = "323i",
+                Notes = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem.",
+                Trim = "Base",
+                Vin = "WBAM337YCD155491",
+                Year = 2000
+            };
+        }
+
+        /// <summary>
+        /// Creates a test maintenance entry for testing purposes
+        /// </summary>
+        /// <param name="fixture">Testing slice fixture</param>
+        /// <param name="user">User persisted in the database</param>
+        /// <returns>Test maintenance entry</returns>
+        private MaintenanceEntry CreateTestMaintenanceEntry(int id, User user, Vehicle[] vehicles)
+        {
+            var vehicle = vehicles.Where(x => x.IdUser == user.Id).ToArray();
+            var rand = new Random();
+
+            return new MaintenanceEntry
+            {
+                Id = id,
+                IdVehicle = vehicle[rand.Next(0, vehicle.Length - 1)].Id,
+                IdUser = user.Id,
+                Comments = "Test comments.",
+                Duration = RandomDuration(rand),
+                MilesPerformed = 10000 * RandomDuration(rand),
+                PerformedBy = $"{user.FirstName} {user.LastName}",
+                RepairPrice = 100 * RandomDuration(rand),
+                Type = MaintenanceType.Repair,
+                WorkDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem."
             };
         }
 

@@ -98,5 +98,17 @@ namespace Nisshi.Models.Users
         /// </summary>
         [JsonIgnore]
         public virtual List<LogbookEntry> LogbookEntries { get; set; } = new();
+
+        /// <summary>
+        /// Associated vehicles belonging to the user
+        /// </summary>
+        [JsonIgnore]
+        public virtual List<Vehicle> Vehicles { get; set; } = new();
+
+        /// <summary>
+        /// Associated maintenance entries belonging to the user
+        /// </summary>
+        [JsonIgnore]
+        public virtual List<MaintenanceEntry> MaintenanceEntries { get; set; } = new();
     }
 }
