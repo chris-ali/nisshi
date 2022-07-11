@@ -12,7 +12,8 @@ namespace Nisshi.UnitTests.MaintenanceEntries
         [Fact]
         public void Should_Pass_Validation()
         {
-            var maintenance = new MaintenanceEntry {
+            var maintenance = new MaintenanceEntry
+            {
                 DatePerformed = DateTime.Today,
                 Duration = 5,
                 WorkDescription = "Test work performed",
@@ -35,7 +36,8 @@ namespace Nisshi.UnitTests.MaintenanceEntries
         [Fact]
         public void Should_Fail_Validation_Too_Long_Bad_Numerics()
         {
-            var maintenance = new MaintenanceEntry {
+            var maintenance = new MaintenanceEntry
+            {
                 DatePerformed = DateTime.Today,
                 Duration = -5,
                 WorkDescription = @"Test work performed Test work performed Test work performed

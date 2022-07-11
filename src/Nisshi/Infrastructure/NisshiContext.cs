@@ -388,7 +388,7 @@ namespace Nisshi.Infrastructure
         /// <param name="fixture">Testing slice fixture</param>
         /// <param name="user">User persisted in the database</param>
         /// <returns>Test maintenance entry</returns>
-        private MaintenanceEntry CreateTestMaintenanceEntry(int id,User user, Vehicle[] vehicles)
+        private MaintenanceEntry CreateTestMaintenanceEntry(int id, User user, Vehicle[] vehicles)
         {
             var vehicle = vehicles.Where(x => x.IdUser == user.Id).ToArray();
             var rand = new Random();

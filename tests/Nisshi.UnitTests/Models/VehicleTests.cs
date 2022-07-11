@@ -12,7 +12,8 @@ namespace Nisshi.UnitTests.Vehicles
         [Fact]
         public void Should_Pass_Validation()
         {
-            var vehicle = new Vehicle {
+            var vehicle = new Vehicle
+            {
                 InspectionDue = DateTime.Today,
                 LastInspection = DateTime.Today,
                 RegistrationDue = DateTime.Today,
@@ -39,7 +40,8 @@ namespace Nisshi.UnitTests.Vehicles
         [Fact]
         public void Should_Fail_Validation_Too_Long_Bad_Numerics()
         {
-            var vehicle = new Vehicle {
+            var vehicle = new Vehicle
+            {
                 LastInspection = DateTime.Today.AddDays(10),
                 LastRegistration = DateTime.Today.AddDays(10),
                 Make = "BMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMWBMW",
