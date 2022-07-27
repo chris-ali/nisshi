@@ -3,17 +3,17 @@ import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FuseCardComponent } from '@fuse/components/card';
 import { TranslocoService } from '@ngneat/transloco';
-import { AircraftService } from 'app/core/aircraft/aircraft.service';
-import { Aircraft } from 'app/core/aircraft/aircraft.types';
+import { VehicleService } from 'app/core/vehicle/vehicle.service';
+import { Vehicle } from 'app/core/vehicle/vehicle.types';
 import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
 
 /**
- * Component that displays all aircraft available to the user,
+ * Component that displays all vehicles available to the user,
  * filterable by instance type and editable/deleteable
  */
 @Component({
-    selector     : 'aircraft-view',
-    templateUrl  : './aircraft-view.component.html',
+    selector     : 'vehicle-view',
+    templateUrl  : './vehicle-view.component.html',
     styles         : [
         `
             fuse-card {
@@ -23,18 +23,18 @@ import { ConfirmationService } from 'app/core/confirmation/confirmation.service'
     ],
     encapsulation: ViewEncapsulation.None
 })
-export class AircraftViewComponent implements AfterViewInit, OnInit
+export class VehicleViewComponent implements AfterViewInit, OnInit
 {
-    @ViewChildren(FuseCardComponent, {read: ElementRef}) private aircraftCardList: QueryList<ElementRef>;
-    aircraft: Aircraft[];
+    @ViewChildren(FuseCardComponent, {read: ElementRef}) private vehicleCardList: QueryList<ElementRef>;
+    vehicles: Vehicle[];
     filters: string[] = ['all', 'simulation', 'real'];
     selectedFilter: string = 'all';
-    aircraftCount: any = {};
+    vehicleCount: any = {};
 
     /**
      * Constructor
      */
-    constructor(private aircraftService: AircraftService,
+    constructor(private vehicleService: VehicleService,
                 public translateService: TranslocoService,
                 private confirmation: ConfirmationService,
                 private router: Router,
@@ -48,14 +48,14 @@ export class AircraftViewComponent implements AfterViewInit, OnInit
 
     ngAfterViewInit(): void
     {
-        this.aircraftCardList.changes.subscribe(() => {
-            this.calculateAircraftPerFilter();
+        this.vehicleCardList.changes.subscribe(() => {
+            this.calculateVehiclePerFilter();
         });
     }
 
     ngOnInit(): void
     {
-        this.aircraftService.getAll().subscribe(aircraft => this.aircraft = aircraft);
+        this.vehicleService.getAll().subscribe(vehicles => this.vehicles = vehicles);
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ export class AircraftViewComponent implements AfterViewInit, OnInit
     onFilterChange(change: MatButtonToggleChange): void
     {
         this.selectedFilter = change.value;
-        this.filterAircraftCards();
+        this.filterVehicleCards();
     }
 
     /**
@@ -78,31 +78,31 @@ export class AircraftViewComponent implements AfterViewInit, OnInit
      *
      * @param air
      */
-    editClick(air: Aircraft): void
+    editClick(air: Vehicle): void
     {
         this.router.navigate([`../edit/${air.id}`], { relativeTo: this.route });
     }
 
     /**
-     * When the delete menu item is clicked; opens confirm dialog and then deletes the aircraft
+     * When the delete menu item is clicked; opens confirm dialog and then deletes the vehicle
      *
-     * @param air
+     * @param veh
      */
-    deleteClick(air: Aircraft): void
+    deleteClick(veh: Vehicle): void
     {
-        var message = "Are you sure you want to delete this aircraft? <span class=\"font-medium\">This action will remove all logbook entries associated with it and cannot be undone!</span>";
-        const confirmDelete = this.confirmation.confirm("Delete Aircraft", message, "Delete", "Cancel");
+        var message = "Are you sure you want to delete this vehicle? <span class=\"font-medium\">This action will remove all logbook entries associated with it and cannot be undone!</span>";
+        const confirmDelete = this.confirmation.confirm("Delete Vehicle", message, "Delete", "Cancel");
 
         confirmDelete.afterClosed().subscribe(result => {
             if (result == "confirmed")
             {
-                this.aircraftService.delete(air.id).subscribe({
+                this.vehicleService.delete(veh.id).subscribe({
                     next: () => {
-                        this.aircraft = this.aircraft.filter(x => x.id != air.id);
-                        this.aircraftCardList.filter(x => x.nativeElement.id == air.id).pop()
+                        this.vehicles = this.vehicles.filter(x => x.id != veh.id);
+                        this.vehicleCardList.filter(x => x.nativeElement.id == veh.id).pop()
                             .nativeElement.classList.add("hidden");
 
-                        this.confirmation.alert("Aircraft Deleted", "Aircraft was successfully deleted!", true);
+                        this.confirmation.alert("Vehicle Deleted", "Vehicle was successfully deleted!", true);
                     },
                     error: error => {
                         this.confirmation.alert("An error was encountered!", error);
@@ -117,36 +117,35 @@ export class AircraftViewComponent implements AfterViewInit, OnInit
     // -----------------------------------------------------------------------------------------------------
 
     /**
-     * Calculates how many aircraft for the user match each filter type
+     * Calculates how many vehicle for the user match each filter type
      */
-    private calculateAircraftPerFilter(): void
+    private calculateVehiclePerFilter(): void
     {
-        this.aircraftCount = {};
+        this.vehicleCount = {};
 
         let count = 0;
 
         this.filters.forEach(filter => {
             if (filter == 'all')
             {
-                count = this.aircraftCardList.length;
+                count = this.vehicleCardList.length;
             }
             else
             {
-                count = this.aircraftCount[filter] = this.aircraftCardList
+                count = this.vehicleCount[filter] = this.vehicleCardList
                     .filter(card => card.nativeElement.classList.contains(`filter-${filter}`)).length;
             }
 
-            this.aircraftCount[filter] = count;
+            this.vehicleCount[filter] = count;
         });
     }
 
     /**
-     * Filters aircraft cards by setting hidden class,
-     *  depending on the filter selected
+     * Filters vehicle cards by setting hidden class, depending on the filter selected
      */
-    private filterAircraftCards(): void
+    private filterVehicleCards(): void
     {
-        this.aircraftCardList.forEach(card =>  {
+        this.vehicleCardList.forEach(card =>  {
             var classList = card.nativeElement.classList;
             if (this.selectedFilter == 'all')
             {

@@ -1,4 +1,4 @@
-import { Vehicle } from "../vehicles/vehicle.types";
+import { Vehicle } from "../vehicle/vehicle.types";
 
 export interface MaintenanceEntry
 {
