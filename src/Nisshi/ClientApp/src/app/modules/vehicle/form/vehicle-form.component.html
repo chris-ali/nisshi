@@ -91,10 +91,10 @@
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
                             <mat-error *ngIf="form.get('year').hasError('min')">
-                                Hobbs time must be non-negative
+                                Please enter a valid year
                             </mat-error>
                             <mat-error *ngIf="form.get('year').hasError('max')">
-                                Hobbs time must be less than 1000000 hours
+                                Please enter a valid year
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -127,7 +127,7 @@
                                 Miles must be non-negative
                             </mat-error>
                             <mat-error *ngIf="form.get('miles').hasError('max')">
-                                Miles must be less than 1000000 hours
+                                Miles must be less than 1000000 miles
                             </mat-error>
                         </mat-form-field>
                     </div>

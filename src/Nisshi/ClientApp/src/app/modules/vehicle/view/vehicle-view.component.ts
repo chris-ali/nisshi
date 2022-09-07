@@ -1,5 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren, ViewEncapsulation } from '@angular/core';
-import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { Component, ElementRef, OnInit, QueryList, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FuseCardComponent } from '@fuse/components/card';
 import { TranslocoService } from '@ngneat/transloco';
@@ -23,12 +22,10 @@ import { ConfirmationService } from 'app/core/confirmation/confirmation.service'
     ],
     encapsulation: ViewEncapsulation.None
 })
-export class VehicleViewComponent implements AfterViewInit, OnInit
+export class VehicleViewComponent implements OnInit
 {
     @ViewChildren(FuseCardComponent, {read: ElementRef}) private vehicleCardList: QueryList<ElementRef>;
     vehicles: Vehicle[];
-    filters: string[] = ['all', 'simulation', 'real'];
-    selectedFilter: string = 'all';
     vehicleCount: any = {};
 
     /**
@@ -46,13 +43,6 @@ export class VehicleViewComponent implements AfterViewInit, OnInit
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
 
-    ngAfterViewInit(): void
-    {
-        this.vehicleCardList.changes.subscribe(() => {
-            this.calculateVehiclePerFilter();
-        });
-    }
-
     ngOnInit(): void
     {
         this.vehicleService.getAll().subscribe(vehicles => this.vehicles = vehicles);
@@ -61,17 +51,6 @@ export class VehicleViewComponent implements AfterViewInit, OnInit
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Filters cards when a filter badge is clicked
-     *
-     * @param change
-     */
-    onFilterChange(change: MatButtonToggleChange): void
-    {
-        this.selectedFilter = change.value;
-        this.filterVehicleCards();
-    }
 
     /**
      * When the edit menu item is clicked; redirects to edit view
@@ -108,55 +87,6 @@ export class VehicleViewComponent implements AfterViewInit, OnInit
                         this.confirmation.alert("An error was encountered!", error);
                     }
                 });
-            }
-        });
-    }
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Private methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Calculates how many vehicle for the user match each filter type
-     */
-    private calculateVehiclePerFilter(): void
-    {
-        this.vehicleCount = {};
-
-        let count = 0;
-
-        this.filters.forEach(filter => {
-            if (filter == 'all')
-            {
-                count = this.vehicleCardList.length;
-            }
-            else
-            {
-                count = this.vehicleCount[filter] = this.vehicleCardList
-                    .filter(card => card.nativeElement.classList.contains(`filter-${filter}`)).length;
-            }
-
-            this.vehicleCount[filter] = count;
-        });
-    }
-
-    /**
-     * Filters vehicle cards by setting hidden class, depending on the filter selected
-     */
-    private filterVehicleCards(): void
-    {
-        this.vehicleCardList.forEach(card =>  {
-            var classList = card.nativeElement.classList;
-            if (this.selectedFilter == 'all')
-            {
-                classList.remove('hidden');
-            }
-            else
-            {
-                if (classList.contains(`filter-${this.selectedFilter}`))
-                    classList.remove('hidden');
-                else
-                    classList.add('hidden');
             }
         });
     }
