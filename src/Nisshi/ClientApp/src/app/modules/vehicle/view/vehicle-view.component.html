@@ -87,20 +87,20 @@
                         (click)="flippableCard01.face = flippableCard01.face === 'front' ? 'back' : 'front'">
                         <mat-icon [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
                     </button>
-                    <div class="flex flex-col my-2">
-                        <div class="my-2" *ngIf="veh.lastInspection">
+                    <div class="grid grid-cols-2 gap-4 my-2">
+                        <div class="col-auto my-2" *ngIf="veh.lastInspection">
                             <div>Last Inspection</div>
                             <div class="text-secondary text-md">{{veh.lastInspection | date: 'shortDate' : '' : translateService.getActiveLang()}}</div>
                         </div>
-                        <div class="my-2" *ngIf="veh.inspectionDue">
+                        <div class="col-auto my-2" *ngIf="veh.inspectionDue">
                             <div>Inspection Due Date</div>
                             <div class="text-secondary text-md">{{veh.inspectionDue | date: 'shortDate' : '' : translateService.getActiveLang()}}</div>
                         </div>
-                        <div class="my-2" *ngIf="veh.lastRegistration">
+                        <div class="col-auto my-2" *ngIf="veh.lastRegistration">
                             <div>Last Registration</div>
                             <div class="text-secondary text-md">{{veh.lastRegistration | date: 'shortDate' : '' : translateService.getActiveLang()}}</div>
                         </div>
-                        <div class="my-2" *ngIf="veh.registrationDue">
+                        <div class="col-auto my-2" *ngIf="veh.registrationDue">
                             <div>Registration Due Date</div>
                             <div class="text-secondary text-md">{{veh.registrationDue | date: 'shortDate' : '' : translateService.getActiveLang()}}</div>
                         </div>

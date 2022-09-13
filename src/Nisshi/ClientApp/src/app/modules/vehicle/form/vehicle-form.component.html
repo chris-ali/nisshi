@@ -38,7 +38,7 @@
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
-                                [svgIcon]="'heroicons_solid:hashtag'"></mat-icon>
+                                [svgIcon]="'heroicons_solid:queue-list'"></mat-icon>
                             <mat-error *ngIf="form.get('make').hasError('required')">
                                 Please enter a make
                             </mat-error>
@@ -55,7 +55,7 @@
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
-                                [svgIcon]="'heroicons_solid:hashtag'"></mat-icon>
+                                [svgIcon]="'heroicons_solid:queue-list'"></mat-icon>
                             <mat-error *ngIf="form.get('model').hasError('required')">
                                 Please enter a model
                             </mat-error>
@@ -72,9 +72,9 @@
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
-                                [svgIcon]="'heroicons_solid:hashtag'"></mat-icon>
+                                [svgIcon]="'heroicons_solid:queue-list'"></mat-icon>
                             <mat-error *ngIf="form.get('trim').hasError('required')">
-                                Please enter a Trim
+                                Please enter a trim
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -117,7 +117,7 @@
                             <input
                                 type="number"
                                 matInput
-                                [placeholder]="'Enter a miles'"
+                                [placeholder]="'Enter the mileage on vehicle'"
                                 [formControlName]="'miles'">
                             <mat-icon
                                 class="icon-size-5"
