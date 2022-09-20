@@ -32,16 +32,6 @@
                         [for]="toFilterPicker"></mat-datepicker-toggle>
                     <mat-datepicker #toFilterPicker></mat-datepicker>
                 </mat-form-field>
-                <mat-form-field class="flex-auto">
-                    <mat-label>Vehicle</mat-label>
-                    <mat-select
-                        [formControlName]="'idVehicle'">
-                        <mat-option value=""></mat-option>
-                        <mat-option *ngFor="let veh of vehicle" [value]="air.id">
-                            {{veh.year}} {{veh.make}} {{veh.model}} {{veh.trim}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
             </div>
 
             <div class="flex items-center -mx-8 px-8 py-4">
@@ -74,117 +64,39 @@
                 <div class="flex flex-col">
                     <mat-checkbox
                         class="mb-2"
-                        [formControlName]="'showTailNumber'"
+                        [formControlName]="'showMilesPerformed'"
                         [color]="'primary'">
-                        Tail Number
+                        Miles Performed
                     </mat-checkbox>
                     <mat-checkbox
                         class="mb-2"
-                        [formControlName]="'showTypeName'"
+                        [formControlName]="'showType'"
                         [color]="'primary'">
                         Type
                     </mat-checkbox>
                     <mat-checkbox
                         class="mb-2"
-                        [formControlName]="'showApproaches'"
+                        [formControlName]="'showWorkDescription'"
                         [color]="'primary'">
-                        Approaches
+                        Work Description
                     </mat-checkbox>
                     <mat-checkbox
                         class="mb-2"
-                        [formControlName]="'showLandings'"
+                        [formControlName]="'showPerformedBy'"
                         [color]="'primary'">
-                        Landings
+                        Performed By
                     </mat-checkbox>
                     <mat-checkbox
                         class="mb-2"
-                        [formControlName]="'showNightLandings'"
+                        [formControlName]="'showDuration'"
                         [color]="'primary'">
-                        Night Landings
+                        Duration
                     </mat-checkbox>
                     <mat-checkbox
                         class="mb-2"
-                        [formControlName]="'showFullStopLandings'"
+                        [formControlName]="'showRepairPrice'"
                         [color]="'primary'">
-                        Full Stop Landings
-                    </mat-checkbox>
-                    <mat-checkbox
-                        class="mb-2"
-                        [formControlName]="'showNight'"
-                        [color]="'primary'">
-                        Night
-                    </mat-checkbox>
-                    <mat-checkbox
-                        class="mb-2"
-                        [formControlName]="'showCrossCountry'"
-                        [color]="'primary'">
-                        Cross Country
-                    </mat-checkbox>
-                    <mat-checkbox
-                        class="mb-2"
-                        [formControlName]="'showPIC'"
-                        [color]="'primary'">
-                        PIC
-                    </mat-checkbox>
-                    <mat-checkbox
-                        class="mb-2"
-                        [formControlName]="'showSIC'"
-                        [color]="'primary'">
-                        SIC
-                    </mat-checkbox>
-                    <mat-checkbox
-                        class="mb-2"
-                        [formControlName]="'showMultiEngine'"
-                        [color]="'primary'">
-                        Multi
-                    </mat-checkbox>
-                    <mat-checkbox
-                        class="mb-2"
-                        [formControlName]="'showTurbine'"
-                        [color]="'primary'">
-                        Turbine
-                    </mat-checkbox>
-                    <mat-checkbox
-                        class="mb-2"
-                        [formControlName]="'showSimulatedInstrument'"
-                        [color]="'primary'">
-                        Simulated IMC
-                    </mat-checkbox>
-                    <mat-checkbox
-                        class="mb-2"
-                        [formControlName]="'showIMC'"
-                        [color]="'primary'">
-                        Actual IMC
-                    </mat-checkbox>
-                    <mat-checkbox
-                        class="mb-2"
-                        [formControlName]="'showDualReceived'"
-                        [color]="'primary'">
-                        Dual Received
-                    </mat-checkbox>
-                    <mat-checkbox
-                        class="mb-2"
-                        [formControlName]="'showDualGiven'"
-                        [color]="'primary'">
-                        Dual Given
-                    </mat-checkbox>
-                    <mat-checkbox
-                        class="mb-2"
-                        [formControlName]="'showGroundSim'"
-                        [color]="'primary'">
-                        Ground Sim
-                    </mat-checkbox>
-                    <mat-checkbox
-                        class="mb-2"
-                        [formControlName]="'showTotalTime'"
-                        [color]="'primary'">
-                        Total Time
-                    </mat-checkbox>
-                    <mat-checkbox
-                        class="mb-2"
-                        [formControlName]="'showComments'"
-                        [color]="'primary'">
-                        Comments
+                        Repair Price
                     </mat-checkbox>
                 </div>
             </div>

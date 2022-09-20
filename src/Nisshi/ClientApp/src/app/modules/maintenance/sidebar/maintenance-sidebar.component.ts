@@ -1,8 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
-import { VehicleService } from 'app/core/vehicle/vehicle.service';
-import { Vehicle } from 'app/core/vehicle/vehicle.types';
 import { MaintenanceOptions } from 'app/core/config/app.config';
 
 @Component({
@@ -26,13 +24,11 @@ export class MaintenanceSidebarComponent implements OnInit
     menuData: FuseNavigationItem[];
     form: FormGroup;
     filter: FormGroup;
-    vehicle: Vehicle[];
 
     /**
      * Constructor
      */
-    constructor(private formBuilder: FormBuilder,
-                private vehicleService: VehicleService)
+    constructor(private formBuilder: FormBuilder)
     {
     }
 
@@ -43,25 +39,12 @@ export class MaintenanceSidebarComponent implements OnInit
     ngOnInit(): void
     {
         this.form = this.formBuilder.group({
-            showTailNumber: [true],
-            showTypeName: [true],
-            showApproaches: [true],
-            showLandings: [true],
-            showNightLandings: [true],
-            showFullStopLandings: [true],
-            showNight: [true],
-            showCrossCountry: [true],
-            showPIC: [true],
-            showSIC: [true],
-            showMultiEngine: [true],
-            showTurbine: [true],
-            showSimulatedInstrument: [true],
-            showIMC: [true],
-            showDualReceived: [true],
-            showDualGiven: [true],
-            showGroundSim: [true],
-            showTotalTime: [true],
-            showComments: [true]
+            showMilesPerformed: [true],
+            showType: [true],
+            showWorkDescription: [true],
+            showPerformedBy: [true],
+            showDuration: [true],
+            showRepairPrice: [true],
         });
 
         this.form.patchValue(this.maintenanceOptions);
@@ -69,12 +52,6 @@ export class MaintenanceSidebarComponent implements OnInit
         this.filter = this.formBuilder.group({
             fromDate: [''],
             toDate: [''],
-            idVehicle: [''],
-            instanceType: ['']
-        });
-
-        this.vehicleService.getAll().subscribe(airs => {
-            this.vehicle = airs;
         });
     }
 

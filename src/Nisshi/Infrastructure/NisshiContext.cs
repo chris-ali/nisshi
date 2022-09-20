@@ -404,6 +404,7 @@ namespace Nisshi.Infrastructure
                 PerformedBy = $"{user.FirstName} {user.LastName}",
                 RepairPrice = 100 * RandomDuration(rand),
                 Type = MaintenanceType.Repair,
+                DatePerformed = DateTime.Today.AddDays(-rand.Next(0, 720)),
                 WorkDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Iaculis eu non diam phasellus vestibulum lorem."
             };
         }

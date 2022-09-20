@@ -6,7 +6,7 @@
             <!-- Title -->
             <div class="mt-2">
                 <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
-                    {{ this.isAddMode ? 'Add' : 'Edit' }} Logbook Entry
+                    {{ this.isAddMode ? 'Add' : 'Edit' }} Maintenance Entry for: {{vehicle.year}} {{vehicle.make}} {{vehicle.model}} {{ vehicle.trim }}
                 </h2>
             </div>
         </div>
@@ -23,102 +23,64 @@
                 <div class="gt-xs:max-w-80 gt-xs:pr-12">
                     <p class="text-lg font-medium">Primary Information</p>
                     <p class="text-secondary mb-6">
-                        Required items for this flight
+                        Required items for this maintenance entry
                     </p>
                 </div>
                 <div class="flex-auto min-w-64">
                     <div class="flex">
                         <mat-form-field class="flex-auto">
-                            <mat-label>Date of Flight</mat-label>
+                            <mat-label>Date Performed</mat-label>
                             <input
                                 matInput
-                                [matDatepicker]="flightDate"
+                                [matDatepicker]="datePerformed"
                                 [placeholder]="'Choose a date'"
                                 [formControlName]="'flightDate'">
                             <mat-datepicker-toggle
                                 matSuffix
-                                [for]="flightDate"></mat-datepicker-toggle>
-                            <mat-datepicker #flightDate></mat-datepicker>
-                            <mat-error *ngIf="form.get('route').hasError('required')">
-                                Please select a flight date
+                                [for]="datePerformed"></mat-datepicker-toggle>
+                            <mat-datepicker #datePerformed></mat-datepicker>
+                            <mat-error *ngIf="form.get('datePerformed').hasError('required')">
+                                Please select a date performed
                             </mat-error>
                         </mat-form-field>
                     </div>
-                    <div class="flex">
+                    <div class="flex mx-2">
                         <mat-form-field class="flex-auto">
-                            <mat-label>Aircraft</mat-label>
-                            <mat-select
-                                #manufacturerSelect
-                                [formControlName]="'idAircraft'">
-                                <mat-option value=""></mat-option>
-                                <mat-option *ngFor="let air of aircraft" [value]="air.id">
-                                    {{air.tailNumber}} - {{air.model?.manufacturer?.manufacturerName}} {{air.model?.modelName}}
-                                </mat-option>
-                            </mat-select>
-                            <mat-error *ngIf="form.get('idAircraft').hasError('required')">
-                                Please select an aircraft
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="flex">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Route of Flight</mat-label>
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:map'"></mat-icon>
-                            <mat-chip-list
-                                #chipList
-                                [formControlName]="'route'">
-                                <mat-chip
-                                    *ngFor="let airport of airports"
-                                    (removed)="remove(airport)">
-                                    {{airport}}
-                                    <button matChipRemove>
-                                        <mat-icon>cancel</mat-icon>
-                                    </button>
-                                </mat-chip>
-                                <input
-                                    type="text"
-                                    placeholder="Enter ICAO Code..."
-                                    maxlength="4"
-                                    #airportInput
-                                    [formControl]="routeInput"
-                                    [matAutocomplete]="autocomplete"
-                                    [matChipInputFor]="chipList"
-                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                    (matChipInputTokenEnd)="add($event)">
-                            </mat-chip-list>
-                            <mat-autocomplete #autocomplete="matAutocomplete" (optionSelected)="selected($event)">
-                                <mat-option *ngFor="let airport of servicedAirports" [value]="airport.airportCode">
-                                    {{airport.airportCode}} - {{airport.facilityName}}
-                                </mat-option>
-                            </mat-autocomplete>
-                            <mat-error *ngIf="form.get('route').hasError('required')">
-                                Please enter the route flown
-                            </mat-error>
-                            <mat-error *ngIf="form.get('route').hasError('maxLength')">
-                                Route flown must be less than 60 characters
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="flex">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Total Time</mat-label>
+                            <mat-label>Miles Performed At</mat-label>
                             <input
                                 type="number"
                                 matInput
-                                [placeholder]="'Enter an hour value'"
-                                [formControlName]="'totalFlightTime'">
+                                [placeholder]="'Enter the miles the maintenace was performed at'"
+                                [formControlName]="'milesPerformed'">
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:clock'"></mat-icon>
-                            <mat-error *ngIf="form.get('totalFlightTime').hasError('min')">
-                                Total flight duration must be non-negative
+                            <mat-error *ngIf="form.get('milesPerformed').hasError('min')">
+                                Miles must be non-negative
                             </mat-error>
-                            <mat-error *ngIf="form.get('totalFlightTime').hasError('max')">
-                                Total flight duration must be less than 1000 hours
+                            <mat-error *ngIf="form.get('milesPerformed').hasError('max')">
+                                Miles must be less than 1000000
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex" *ngIf="this.appConfig.maintenanceOptions.showDuration">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Duration</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter an hour value'"
+                                [formControlName]="'duration'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('duration').hasError('min')">
+                                Total maintenance duration must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('duration').hasError('max')">
+                                Total maintenance duration must be less than 1000 hours
                             </mat-error>
                         </mat-form-field>
                     </div>
@@ -137,44 +99,25 @@
                 <div class="flex-auto min-w-64">
                     <div class="flex" *ngIf="this.appConfig.logbookOptions.showComments">
                         <mat-form-field class="fuse-mat-textarea flex-auto">
-                            <mat-label>Comments</mat-label>
+                            <mat-label>Work Description</mat-label>
                             <textarea
                                 matInput
-                                [placeholder]="'Any notes or details pertinent to this flight'"
+                                [placeholder]="'Brief description of the work performed'"
                                 [rows]="3"
                                 maxlength="200"
-                                [formControlName]="'comments'"></textarea>
+                                [formControlName]="'workDescription'"></textarea>
                             <mat-icon
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:menu-alt-2'"></mat-icon>
-                            <mat-error *ngIf="form.get('route').hasError('maxLength')">
-                                Comments must be less than 500 characters
+                            <mat-error *ngIf="form.get('workDescription').hasError('maxLength')">
+                                Work description must be less than 500 characters
                             </mat-error>
                         </mat-form-field>
                     </div>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 min-w-64 justify-between">
-                    <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showApproaches">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Number of Instrument Approaches</mat-label>
-                            <input
-                                type="number"
-                                matInput
-                                [placeholder]="'Enter the number of approaches'"
-                                [formControlName]="'numInstrumentApproaches'">
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
-                            <mat-error *ngIf="form.get('numInstrumentApproaches').hasError('min')">
-                                Number of instrument approaches must be non-negative
-                            </mat-error>
-                            <mat-error *ngIf="form.get('numInstrumentApproaches').hasError('max')">
-                                Number of instrument approaches must be less than 1000000
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
+
                     <div class="flex mx-2" *ngIf="this.appConfig.logbookOptions.showLandings">
                         <mat-form-field class="flex-auto">
                             <mat-label>Number of Landings</mat-label>

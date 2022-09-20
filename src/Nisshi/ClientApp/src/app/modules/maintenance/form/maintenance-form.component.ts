@@ -22,7 +22,7 @@ export class MaintenanceFormComponent implements OnInit, OnDestroy
     id: number;
     isAddMode: boolean;
     form: FormGroup;
-    vehicle: Vehicle[];
+    vehicle: Vehicle;
     appConfig: AppConfig;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -47,34 +47,20 @@ export class MaintenanceFormComponent implements OnInit, OnDestroy
         this.id = parseInt(this.route.snapshot.params['id'] ?? '0');
         this.isAddMode = !this.id;
 
+        this.vehicleService.getOne(this.id)
+            .subscribe(veh => this.vehicle = veh);
+
         this.form = this.formBuilder.group({
             id: [this.id],
-            flightDate: [null],
-            numInstrumentApproaches: [0, [Validators.min(0), Validators.max(999999)]],
-            numLandings: [0, [Validators.min(0), Validators.max(999999)]],
-            numNightLandings: [0, [Validators.min(0), Validators.max(999999)]],
-            numFullStopLandings: [0, [Validators.min(0), Validators.max(999999)]],
-            crossCountry: [0, [Validators.min(0), Validators.max(1000)]],
-            multiEngine: [0, [Validators.min(0), Validators.max(1000)]],
-            turbine: [0, [Validators.min(0), Validators.max(1000)]],
-            night: [0, [Validators.min(0), Validators.max(1000)]],
-            imc: [0, [Validators.min(0), Validators.max(1000)]],
-            simulatedInstrument: [0, [Validators.min(0), Validators.max(1000)]],
-            dualReceived: [0, [Validators.min(0), Validators.max(1000)]],
-            dualGiven: [0, [Validators.min(0), Validators.max(1000)]],
-            pic: [0, [Validators.min(0), Validators.max(1000)]],
-            sic: [0, [Validators.min(0), Validators.max(1000)]],
-            groundSim: [0, [Validators.min(0), Validators.max(1000)]],
-            hobbsStart: [0, [Validators.min(0), Validators.max(999999)]],
-            hobbsEnd: [0, [Validators.min(0), Validators.max(999999)]],
-            totalFlightTime: [0, [Validators.min(0), Validators.max(1000)]],
-            route: ['', [Validators.required, Validators.maxLength(60)]],
-            comments: ['', Validators.maxLength(500)],
-            idVehicle: ['', Validators.nullValidator]
+            datePerformed: [null],
+            milesPerformed: [0, [Validators.min(0), Validators.max(999999)]],
+            type: [0, [Validators.min(0), Validators.max(2)]],
+            workDescription: ['', Validators.maxLength(500)],
+            performedBy: ['', Validators.maxLength(500)],
+            duration: [0, [Validators.min(0), Validators.max(1000)]],
+            repairPrice: [0, [Validators.min(0), Validators.max(100000)]],
+            idVehicle: [this.vehicle?.id],
         });
-
-        this.vehicleService.getAll()
-            .subscribe(veh => this.vehicle = veh);
 
         if (!this.isAddMode)
         {

@@ -18,7 +18,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 export const routes: Route[] = [
     {
-        path     : '',
+        path     : ':id',
         component: MaintenanceViewComponent
     }
 ];

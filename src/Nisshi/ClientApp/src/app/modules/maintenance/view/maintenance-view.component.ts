@@ -11,6 +11,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { VehicleService } from 'app/core/vehicle/vehicle.service';
 import { MaintenanceFilter } from 'app/core/ui/maintenancefilter.types';
+import { Vehicle } from 'app/core/vehicle/vehicle.types';
 
 @Component({
   selector: 'maintenance-view',
@@ -26,6 +27,7 @@ export class MaintenanceViewComponent implements OnInit, OnDestroy
     ColumnMode = ColumnMode;
     id: number;
     maintenanceEntries: MaintenanceEntry[];
+    vehicle: Vehicle;
     activeFilters: string[];
 
     drawerMode: 'over' | 'side' = 'side';
@@ -55,8 +57,12 @@ export class MaintenanceViewComponent implements OnInit, OnDestroy
     {
         this.id = parseInt(this.route.snapshot.params['id'] ?? '0');
 
-        this.maintenanceEntryService.getAll().subscribe(entries => {
+        this.maintenanceEntryService.getAll(` idVehicle eq ${this.id} `).subscribe(entries => {
             this.maintenanceEntries = entries;
+        });
+
+        this.vehicleService.getOne(this.id).subscribe (veh => {
+            this.vehicle = veh;
         });
 
         this.activeFilters = [];
@@ -171,6 +177,8 @@ export class MaintenanceViewComponent implements OnInit, OnDestroy
         var filterArray = [];
         this.activeFilters = [];
 
+        filterArray.push(` idVehicle eq ${this.id}`);
+
         if (filter?.fromDate)
         {
             filterArray.push(` datePerformed gt ${filter.fromDate.toISOString()}`);
@@ -180,14 +188,6 @@ export class MaintenanceViewComponent implements OnInit, OnDestroy
         {
             filterArray.push(` datePerformed lt ${filter.toDate.toISOString()}`);
             this.activeFilters.push(`Before: ${filter.toDate.toDateString()}`);
-        }
-        if (filter?.idVehicle)
-        {
-            filterArray.push(` idVehicle eq ${filter.idVehicle}`);
-
-            this.vehicleService.getOne(filter.idVehicle).subscribe(veh => {
-                this.activeFilters.push(`Vehicle: ${veh.year} ${veh.make} ${veh.model} ${veh.trim}`);
-            });
         }
 
         var filterQuery = filterArray.length > 0 ? `filter=${filterArray.join(' and ')}` : '';
