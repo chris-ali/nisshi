@@ -116,7 +116,8 @@ export class MaintenanceViewComponent implements OnInit, OnDestroy
      *
      * @param selected
      */
-    rowClick(selected: any) {
+    rowClick(selected: any)
+    {
         if (selected.type == 'click')
             this.toggleExpandRow(selected.row);
     }
@@ -126,10 +127,18 @@ export class MaintenanceViewComponent implements OnInit, OnDestroy
      *
      * @param row
      */
-     editClick(row: any): void
-     {
-         this.router.navigate([`../edit/${row.id}`], { relativeTo: this.route });
-     }
+    editClick(row: any): void
+    {
+        this.router.navigate([`../../${this.vehicle.id}/edit/${row.id}`], { relativeTo: this.route });
+    }
+
+    /**
+     * When the add new menu item is clicked; redirects to add new view
+     */
+    addClick(): void
+    {
+        this.router.navigate([`../../${this.vehicle.id}/add`], { relativeTo: this.route });
+    }
 
     /**
      * When the delete button for a row is clicked; opens confirm dialog and then deletes the maintenance entry

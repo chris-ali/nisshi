@@ -36,8 +36,7 @@
             #flippableCard01="fuseCard"
             id = {{veh.id}}>
             <ng-container fuseCardFront>
-                <div class="flex items-center justify-between"
-                    [routerLink]="['../../maintenance/view/' + veh.id]">
+                <div class="flex items-center justify-between">
                     <div class="flex-0 w-80 md:w-64">
                         <img
                             class="w-full h-full object-cover"
@@ -75,6 +74,13 @@
                                 [color]="'primary'"
                                 (click)="flippableCard01.face = flippableCard01.face === 'front' ? 'back' : 'front'">
                                 More Details
+                            </button>
+                            <button
+                                class="px-3"
+                                mat-button
+                                [color]="'primary'"
+                                [routerLink]="['../../maintenance/view/' + veh.id]">
+                                View Maintenance
                             </button>
                         </div>
                     </div>

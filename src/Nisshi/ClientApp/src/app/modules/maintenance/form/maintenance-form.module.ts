@@ -18,11 +18,11 @@ import { MatNativeDateModule } from '@angular/material/core';
 
 export const routes: Route[] = [
     {
-        path     : 'add',
+        path     : ':idVehicle/add',
         component: MaintenanceFormComponent
     },
     {
-        path     : 'edit/:id',
+        path     : ':idVehicle/edit/:id',
         component: MaintenanceFormComponent
     }
 ];

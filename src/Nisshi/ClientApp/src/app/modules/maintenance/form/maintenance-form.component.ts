@@ -20,6 +20,7 @@ import { takeUntil } from 'rxjs/operators';
 export class MaintenanceFormComponent implements OnInit, OnDestroy
 {
     id: number;
+    idVehicle: number;
     isAddMode: boolean;
     form: FormGroup;
     vehicle: Vehicle;
@@ -45,9 +46,10 @@ export class MaintenanceFormComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         this.id = parseInt(this.route.snapshot.params['id'] ?? '0');
+        this.idVehicle = parseInt(this.route.snapshot.params['idVehicle'] ?? '0');
         this.isAddMode = !this.id;
 
-        this.vehicleService.getOne(this.id)
+        this.vehicleService.getOne(this.idVehicle)
             .subscribe(veh => this.vehicle = veh);
 
         this.form = this.formBuilder.group({
@@ -59,7 +61,7 @@ export class MaintenanceFormComponent implements OnInit, OnDestroy
             performedBy: ['', Validators.maxLength(500)],
             duration: [0, [Validators.min(0), Validators.max(1000)]],
             repairPrice: [0, [Validators.min(0), Validators.max(100000)]],
-            idVehicle: [this.vehicle?.id],
+            idVehicle: [this.idVehicle],
         });
 
         if (!this.isAddMode)
@@ -115,7 +117,7 @@ export class MaintenanceFormComponent implements OnInit, OnDestroy
         this.maintenanceEntryService.create(this.form.value)
             .subscribe({
                 next: () => {
-                    this.router.navigate(['/maintenance/view']);
+                    this.router.navigate([`/maintenance/view/${this.vehicle.id}`]);
                     this.confirmation.alert('Updated Successfully', 'Maintenance entry was created successfully!', true);
                 },
                 error: error => {
@@ -129,7 +131,7 @@ export class MaintenanceFormComponent implements OnInit, OnDestroy
         this.maintenanceEntryService.update(this.form.value)
             .subscribe({
                 next: () => {
-                    this.router.navigate(['/maintenance/view']);
+                    this.router.navigate([`/maintenance/view/${this.vehicle.id}`]);
                     this.confirmation.alert('Updated Successfully', 'Maintenance entry was updated successfully!', true);
                 },
                 error: error => {
