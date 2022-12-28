@@ -97,12 +97,12 @@
                         [canAutoResize]="false"
                         [summaryTemplate]="sumSummaryCell">
                         <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
-                        <a
-                            href="javascript:void(0)"
-                            [class.datatable-icon-right]="!expanded"
-                            [class.datatable-icon-down]="expanded"
-                            title="Expand/Collapse Row">
-                        </a>
+                            <a
+                                href="javascript:void(0)"
+                                [class.datatable-icon-right]="!expanded"
+                                [class.datatable-icon-down]="expanded"
+                                title="Expand/Collapse Row">
+                            </a>
                         </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column
@@ -114,10 +114,13 @@
                         </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column
-                        name="Miles Performed"
+                        name="Odometer Reading"
                         prop="milesPerformed"
                         *ngIf="this.appConfig.maintenanceOptions.showMilesPerformed"
                         [width]="130">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.milesPerformed | number:'1.2-2' }}
+                        </ng-template>
                     </ngx-datatable-column>
                     <ngx-datatable-column
                         name="Type of Work"
@@ -159,25 +162,28 @@
                     </ngx-datatable-column>
 
                     <!-- Row Detail Template -->
-                    <ngx-datatable-row-detail [rowHeight]="60" #myDetailRow>
+                    <ngx-datatable-row-detail [rowHeight]="100" #myDetailRow>
                         <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
-                        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
-                            <button
-                                mat-flat-button
-                                [color]="'accent'"
-                                (click)="editClick(row)">
-                                <mat-icon [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
-                                Edit
-                            </button>
-                            &nbsp;
-                            <button
-                                mat-flat-button
-                                color="warn"
-                                (click)="deleteClick(row)">
-                                <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
-                                Delete
-                            </button>
-                        </div>
+                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                                <span>{{ row.workDescription }}</span>
+                            </div>
+                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                                <button
+                                    mat-flat-button
+                                    [color]="'accent'"
+                                    (click)="editClick(row)">
+                                    <mat-icon [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
+                                    Edit
+                                </button>
+                                &nbsp;
+                                <button
+                                    mat-flat-button
+                                    color="warn"
+                                    (click)="deleteClick(row)">
+                                    <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
+                                    Delete
+                                </button>
+                            </div>
                         </ng-template>
                     </ngx-datatable-row-detail>
 

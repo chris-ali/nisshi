@@ -21,70 +21,132 @@
             class="flex flex-col mt-4 px-8 pt-10 bg-card shadow rounded overflow-hidden">
             <div class="flex flex-col gt-xs:flex-row gt-xs:items-start">
                 <div class="gt-xs:max-w-80 gt-xs:pr-12">
-                    <p class="text-lg font-medium">Primary Information</p>
+                    <p class="text-lg font-medium">Maintenance Details</p>
                     <p class="text-secondary mb-6">
-                        Required items for this maintenance entry
+                        Enter as much information as needed to describe this maintenance entry
                     </p>
                 </div>
                 <div class="flex-auto min-w-64">
-                    <div class="flex">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Date Performed</mat-label>
-                            <input
-                                matInput
-                                [matDatepicker]="datePerformed"
-                                [placeholder]="'Choose a date'"
-                                [formControlName]="'datePerformed'">
-                            <mat-datepicker-toggle
-                                matSuffix
-                                [for]="datePerformed"></mat-datepicker-toggle>
-                            <mat-datepicker #datePerformed></mat-datepicker>
-                            <mat-error *ngIf="form.get('datePerformed').hasError('required')">
-                                Please select a date performed
-                            </mat-error>
-                        </mat-form-field>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 min-w-64 justify-between">
+                        <div class="flex mx-2">
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Date Performed</mat-label>
+                                <input
+                                    matInput
+                                    [matDatepicker]="datePerformed"
+                                    [placeholder]="'Choose a date'"
+                                    [formControlName]="'datePerformed'">
+                                <mat-datepicker-toggle
+                                    matSuffix
+                                    [for]="datePerformed"></mat-datepicker-toggle>
+                                <mat-datepicker #datePerformed></mat-datepicker>
+                                <mat-error *ngIf="form.get('datePerformed').hasError('required')">
+                                    Please select a date performed
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex mx-2">
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Odometer Reading</mat-label>
+                                <input
+                                    type="number"
+                                    matInput
+                                    [placeholder]="'Enter the odometer reading the maintenace was performed at'"
+                                    [formControlName]="'milesPerformed'">
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                                <mat-error *ngIf="form.get('milesPerformed').hasError('min')">
+                                    Odometer reading must be non-negative
+                                </mat-error>
+                                <mat-error *ngIf="form.get('milesPerformed').hasError('max')">
+                                    Odometer reading must be less than 1000000
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex-auto mx-2 min-w-64" *ngIf="this.appConfig.maintenanceOptions.showType">
+                            <span class="font-semibold mb-2">Type of Work</span>
+                            <mat-radio-group
+                                class="flex flex-col"
+                                [color]="'primary'"
+                                [value]="1"
+                                [formControlName]="'type'"
+                                #instanceRadio>
+                                <mat-radio-button
+                                    class="mb-2"
+                                    [value]="1">
+                                    Preventative
+                                </mat-radio-button>
+                                <mat-radio-button
+                                    class="mb-2"
+                                    [value]="2">
+                                    Repair
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <div class="flex-auto mx-2">
+                            <div class="flex" *ngIf="this.appConfig.maintenanceOptions.showPerformedBy">
+                                <mat-form-field class="fuse-mat-textarea flex-auto">
+                                    <mat-label>Performed By</mat-label>
+                                    <input
+                                        type="text"
+                                        matInput
+                                        [placeholder]="'Who performed the work'"
+                                        maxlength="500"
+                                        [formControlName]="'performedBy'">
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        matPrefix
+                                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                                    <mat-error *ngIf="form.get('performedBy').hasError('maxLength')">
+                                        Performed by must be less than 500 characters
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="flex mx-2" *ngIf="this.appConfig.maintenanceOptions.showDuration">
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Duration</mat-label>
+                                <input
+                                    type="number"
+                                    matInput
+                                    [placeholder]="'Enter an hour value'"
+                                    [formControlName]="'duration'">
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                                <mat-error *ngIf="form.get('duration').hasError('min')">
+                                    Total maintenance duration must be non-negative
+                                </mat-error>
+                                <mat-error *ngIf="form.get('duration').hasError('max')">
+                                    Total maintenance duration must be less than 1000 hours
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div class="flex mx-2" *ngIf="this.appConfig.maintenanceOptions.showRepairPrice">
+                            <mat-form-field class="flex-auto">
+                                <mat-label>Repair Price</mat-label>
+                                <input
+                                    type="number"
+                                    matInput
+                                    [placeholder]="'Enter a repair price'"
+                                    [formControlName]="'repairPrice'">
+                                <mat-icon
+                                    class="icon-size-5"
+                                    matPrefix
+                                    [svgIcon]="'heroicons_solid:credit-card'"></mat-icon>
+                                <mat-error *ngIf="form.get('repairPrice').hasError('min')">
+                                    Repair price must be non-negative
+                                </mat-error>
+                                <mat-error *ngIf="form.get('repairPrice').hasError('max')">
+                                    Repair price must be less than $100000
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
                     </div>
-                    <div class="flex-auto min-w-64">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Miles Performed At</mat-label>
-                            <input
-                                type="number"
-                                matInput
-                                [placeholder]="'Enter the miles the maintenace was performed at'"
-                                [formControlName]="'milesPerformed'">
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
-                            <mat-error *ngIf="form.get('milesPerformed').hasError('min')">
-                                Miles must be non-negative
-                            </mat-error>
-                            <mat-error *ngIf="form.get('milesPerformed').hasError('max')">
-                                Miles must be less than 1000000
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="flex-auto min-w-64" *ngIf="this.appConfig.maintenanceOptions.showType">
-                        <span class="font-semibold mb-2">Type of Work</span>
-                        <mat-radio-group
-                            class="flex flex-col"
-                            [color]="'primary'"
-                            [value]="1"
-                            [formControlName]="'type'"
-                            #instanceRadio>
-                            <mat-radio-button
-                                class="mb-2"
-                                [value]="1">
-                                Preventative
-                            </mat-radio-button>
-                            <mat-radio-button
-                                class="mb-2"
-                                [value]="2">
-                                Repair
-                            </mat-radio-button>
-                        </mat-radio-group>
-                    </div>
-                    <div class="flex-auto min-w-64">
+                    <div class="flex-auto min-w-64 mx-2">
                         <div class="flex" *ngIf="this.appConfig.maintenanceOptions.showWorkDescription">
                             <mat-form-field class="fuse-mat-textarea flex-auto">
                                 <mat-label>Work Description</mat-label>
@@ -104,83 +166,6 @@
                             </mat-form-field>
                         </div>
                     </div>
-                    <div class="flex-auto min-w-64">
-                        <div class="flex" *ngIf="this.appConfig.maintenanceOptions.showPerformedBy">
-                            <mat-form-field class="fuse-mat-textarea flex-auto">
-                                <mat-label>Performed By</mat-label>
-                                <input
-                                    type="text"
-                                    matInput
-                                    [placeholder]="'Who performed the work'"
-                                    maxlength="500"
-                                    [formControlName]="'performedBy'">
-                                <mat-icon
-                                    class="icon-size-5"
-                                    matPrefix
-                                    [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                                <mat-error *ngIf="form.get('performedBy').hasError('maxLength')">
-                                    Performed by must be less than 500 characters
-                                </mat-error>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="flex" *ngIf="this.appConfig.maintenanceOptions.showDuration">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Duration</mat-label>
-                            <input
-                                type="number"
-                                matInput
-                                [placeholder]="'Enter an hour value'"
-                                [formControlName]="'duration'">
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
-                            <mat-error *ngIf="form.get('duration').hasError('min')">
-                                Total maintenance duration must be non-negative
-                            </mat-error>
-                            <mat-error *ngIf="form.get('duration').hasError('max')">
-                                Total maintenance duration must be less than 1000 hours
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                    <div class="flex" *ngIf="this.appConfig.maintenanceOptions.showRepairPrice">
-                        <mat-form-field class="flex-auto">
-                            <mat-label>Repair Price</mat-label>
-                            <input
-                                type="number"
-                                matInput
-                                [placeholder]="'Enter a repair price'"
-                                [formControlName]="'repairPrice'">
-                            <mat-icon
-                                class="icon-size-5"
-                                matPrefix
-                                [svgIcon]="'heroicons_solid:credit-card'"></mat-icon>
-                            <mat-error *ngIf="form.get('repairPrice').hasError('min')">
-                                Repair price must be non-negative
-                            </mat-error>
-                            <mat-error *ngIf="form.get('repairPrice').hasError('max')">
-                                Repair price must be less than 100000 hours
-                            </mat-error>
-                        </mat-form-field>
-                    </div>
-                </div>
-            </div>
-
-            <mat-divider class="mt-4 mb-12"></mat-divider>
-
-            <div class="flex flex-col gt-xs:flex-row gt-xs:items-start">
-                <div class="gt-xs:max-w-80 gt-xs:pr-12">
-                    <p class="text-lg font-medium">Additional Information</p>
-                    <p class="text-secondary mb-6">
-                        Optional items for this maintenance entry
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 min-w-64 justify-between">
-
-
-
                 </div>
             </div>
 
