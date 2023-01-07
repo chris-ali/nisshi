@@ -3,12 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Nisshi.Controllers.Interfaces;
 using Nisshi.Models;
 using Nisshi.Requests.Airports;
 
 namespace Nisshi.Controllers
 {
-    public class AirportsController : BaseNisshiController
+    public class AirportsController : BaseNisshiController, IAirportsController
     {
         public AirportsController(IMediator mediator) : base(mediator)
         {

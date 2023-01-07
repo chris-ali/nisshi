@@ -3,12 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Nisshi.Controllers.Interfaces;
 using Nisshi.Models;
 using Nisshi.Requests.CategoryClasses;
 
 namespace Nisshi.Controllers
 {
-    public class CategoryClassesController : BaseNisshiController
+    public class CategoryClassesController : BaseNisshiController, ICategoryClassesController
     {
         public CategoryClassesController(IMediator mediator) : base(mediator)
         {
