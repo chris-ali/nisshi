@@ -15,10 +15,11 @@ export interface AppConfig
     theme: Theme;
     language: string;
     logbookOptions: LogbookOptions;
+    maintenanceOptions: MaintenanceOptions;
 }
 
 /**
- * LogbookConfig interface. Contains configuration for columns to display on the
+ * LogbookOptions interface. Contains configuration for columns to display on the
  * logbook view
  */
 export interface LogbookOptions
@@ -45,6 +46,20 @@ export interface LogbookOptions
 }
 
 /**
+ * MaintenanceOptions interface. Contains configuration for columns to display on the
+ * maintenance view
+ */
+export interface MaintenanceOptions
+{
+    showMilesPerformed: boolean;
+    showType: boolean;
+    showWorkDescription: boolean;
+    showPerformedBy: boolean;
+    showDuration: boolean;
+    showRepairPrice: boolean;
+}
+
+/**
  * Default configuration for the entire application. This object is used by
  * FuseConfigService to set the default configuration.
  *
@@ -57,25 +72,33 @@ export const appConfig: AppConfig = {
     scheme: 'light',
     theme : 'default',
     language: 'en',
-        logbookOptions: {
-            showTailNumber: true,
-            showTypeName: true,
-            showApproaches: true,
-            showLandings: true,
-            showNightLandings: true,
-            showFullStopLandings: true,
-            showCrossCountry: true,
-            showNight: true,
-            showPIC: true,
-            showSIC: true,
-            showMultiEngine: true,
-            showTurbine: true,
-            showSimulatedInstrument: true,
-            showIMC: true,
-            showDualReceived: true,
-            showDualGiven: true,
-            showGroundSim: true,
-            showTotalTime: true,
-            showComments: true,
-        }
+    logbookOptions: {
+        showTailNumber: true,
+        showTypeName: true,
+        showApproaches: true,
+        showLandings: true,
+        showNightLandings: true,
+        showFullStopLandings: true,
+        showCrossCountry: true,
+        showNight: true,
+        showPIC: true,
+        showSIC: true,
+        showMultiEngine: true,
+        showTurbine: true,
+        showSimulatedInstrument: true,
+        showIMC: true,
+        showDualReceived: true,
+        showDualGiven: true,
+        showGroundSim: true,
+        showTotalTime: true,
+        showComments: true,
+    },
+    maintenanceOptions: {
+        showMilesPerformed: true,
+        showType: true,
+        showWorkDescription: true,
+        showPerformedBy: true,
+        showDuration: true,
+        showRepairPrice: true,
+    }
 };

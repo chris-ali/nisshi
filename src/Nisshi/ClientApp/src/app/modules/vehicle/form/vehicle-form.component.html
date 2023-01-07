@@ -1,0 +1,225 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    {{this.isAddMode ? 'Add' : 'Edit' }} Vehicle
+                </h2>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-10">
+        <form
+            [formGroup]="form"
+            (ngSubmit)="onSubmit()"
+            class="flex flex-col mt-4 px-8 pt-10 bg-card shadow rounded overflow-hidden">
+            <div class="flex flex-col gt-xs:flex-row gt-xs:items-start">
+                <div class="gt-xs:max-w-80 gt-xs:pr-12">
+                    <p class="text-lg font-medium">Primary Information</p>
+                    <p class="text-secondary mb-6">
+                        Required items for this vehicle
+                    </p>
+                </div>
+                <div class="flex-auto min-w-64">
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Make</mat-label>
+                            <input
+                                id="make"
+                                matInput
+                                [formControlName]="'make'"
+                                maxlength="20">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:queue-list'"></mat-icon>
+                            <mat-error *ngIf="form.get('make').hasError('required')">
+                                Please enter a make
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Model</mat-label>
+                            <input
+                                id="model"
+                                matInput
+                                [formControlName]="'model'"
+                                maxlength="20">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:queue-list'"></mat-icon>
+                            <mat-error *ngIf="form.get('model').hasError('required')">
+                                Please enter a model
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Trim</mat-label>
+                            <input
+                                id="trim"
+                                matInput
+                                [formControlName]="'trim'"
+                                maxlength="20">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:queue-list'"></mat-icon>
+                            <mat-error *ngIf="form.get('trim').hasError('required')">
+                                Please enter a trim
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Year</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter a year'"
+                                [formControlName]="'year'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('year').hasError('min')">
+                                Please enter a valid year
+                            </mat-error>
+                            <mat-error *ngIf="form.get('year').hasError('max')">
+                                Please enter a valid year
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <mat-divider class="mt-4 mb-12"></mat-divider>
+
+            <div class="flex flex-col gt-xs:flex-row gt-xs:items-start">
+                <div class="gt-xs:max-w-80 gt-xs:pr-12">
+                    <p class="text-lg font-medium">Additional Information</p>
+                    <p class="text-secondary mb-6">
+                        Optional items to better keep track of this vehicle
+                    </p>
+                </div>
+                <div class="flex-auto min-w-64">
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Miles</mat-label>
+                            <input
+                                type="number"
+                                matInput
+                                [placeholder]="'Enter the mileage on vehicle'"
+                                [formControlName]="'miles'">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:clock'"></mat-icon>
+                            <mat-error *ngIf="form.get('miles').hasError('min')">
+                                Miles must be non-negative
+                            </mat-error>
+                            <mat-error *ngIf="form.get('miles').hasError('max')">
+                                Miles must be less than 1000000 miles
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="fuse-mat-textarea flex-auto">
+                            <mat-label>Vehicle Notes</mat-label>
+                            <textarea
+                                matInput
+                                [placeholder]="'Any notes or details pertinent to this vehicle'"
+                                [rows]="3"
+                                maxlength="200"
+                                [formControlName]="'notes'"></textarea>
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:menu-alt-2'"></mat-icon>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Date of Last Registration</mat-label>
+                            <input
+                                matInput
+                                [matDatepicker]="lastRegistrationPicker"
+                                [placeholder]="'Choose a date'"
+                                [formControlName]="'lastRegistration'">
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="lastRegistrationPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #lastRegistrationPicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Registration Due Date</mat-label>
+                            <input
+                                matInput
+                                [matDatepicker]="registrationDuePicker"
+                                [placeholder]="'Choose a date'"
+                                [formControlName]="'registrationDue'">
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="registrationDuePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #registrationDuePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Date of Last Inspection</mat-label>
+                            <input
+                                matInput
+                                [matDatepicker]="lastInspectionPicker"
+                                [placeholder]="'Choose a date'"
+                                [formControlName]="'lastInspection'">
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="lastInspectionPicker"></mat-datepicker-toggle>
+                            <mat-datepicker #lastInspectionPicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                    <div class="flex">
+                        <mat-form-field class="flex-auto">
+                            <mat-label>Inspection Due Date</mat-label>
+                            <input
+                                matInput
+                                [matDatepicker]="inspectionDuePicker"
+                                [placeholder]="'Choose a date'"
+                                [formControlName]="'inspectionDue'">
+                            <mat-datepicker-toggle
+                                matSuffix
+                                [for]="inspectionDuePicker"></mat-datepicker-toggle>
+                            <mat-datepicker #inspectionDuePicker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end border-t -mx-8 mt-8 px-8 py-5 bg-gray-50 dark:bg-gray-700">
+                <button
+                    [routerLink]="['/vehicle/view']"
+                    mat-stroked-button
+                    type="button">
+                    Cancel
+                </button>
+                <button
+                    class="px-6 ml-3"
+                    mat-flat-button
+                    [color]="'primary'">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+
+</div>

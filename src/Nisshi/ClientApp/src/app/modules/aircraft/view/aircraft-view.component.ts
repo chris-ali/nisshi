@@ -23,7 +23,7 @@ import { ConfirmationService } from 'app/core/confirmation/confirmation.service'
     ],
     encapsulation: ViewEncapsulation.None
 })
-export class ViewComponent implements AfterViewInit, OnInit
+export class AircraftViewComponent implements AfterViewInit, OnInit
 {
     @ViewChildren(FuseCardComponent, {read: ElementRef}) private aircraftCardList: QueryList<ElementRef>;
     aircraft: Aircraft[];

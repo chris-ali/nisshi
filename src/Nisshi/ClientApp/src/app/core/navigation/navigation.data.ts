@@ -24,6 +24,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
         link : '/logbook/view'
     },
     {
+        id   : 'vehicle',
+        title: 'Vehicles',
+        type : 'basic',
+        icon : 'mat_outline:directions_car',
+        link : '/vehicle/view'
+    },
+    {
         id   : 'trip',
         title: 'Trip',
         type : 'basic',
@@ -59,6 +66,13 @@ export const compactNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:book-open',
         link : '/logbook/view'
+    },
+    {
+        id   : 'vehicle',
+        title: 'Vehicles',
+        type : 'basic',
+        icon : 'mat_outline:directions_car',
+        link : '/vehicle/view'
     },
     {
         id   : 'trip',
@@ -98,6 +112,13 @@ export const futuristicNavigation: FuseNavigationItem[] = [
         link : '/logbook/view'
     },
     {
+        id   : 'vehicle',
+        title: 'Vehicles',
+        type : 'basic',
+        icon : 'mat_outline:directions_car',
+        link : '/vehicle/view'
+    },
+    {
         id   : 'trip',
         title: 'Trip',
         type : 'basic',
@@ -133,6 +154,13 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:book-open',
         link : '/logbook/view'
+    },
+    {
+        id   : 'vehicle',
+        title: 'Vehicles',
+        type : 'basic',
+        icon : 'mat_outline:directions_car',
+        link : '/vehicle/view'
     },
     {
         id   : 'trip',

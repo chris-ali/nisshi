@@ -1,0 +1,120 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    Vehicles
+                </h2>
+            </div>
+        </div>
+
+        <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+            <button
+                class="ml-3"
+                mat-flat-button
+                [color]="'accent'"
+                [routerLink]="['../add']">
+                <mat-icon
+                    class="icon-size-5 mr-2"
+                    [svgIcon]="'heroicons_solid:view-grid-add'"></mat-icon>
+                Add New
+            </button>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-10">
+
+        <fuse-card
+            *ngFor="let veh of vehicles"
+            class="flex flex-col md:flex-row max-w-80 md:max-w-160 w-full"
+            [flippable]="true"
+            [face]="'front'"
+            #flippableCard01="fuseCard"
+            id = {{veh.id}}>
+            <ng-container fuseCardFront>
+                <div class="flex items-center justify-between">
+                    <div class="flex-0 w-80 md:w-64">
+                        <img
+                            class="w-full h-full object-cover"
+                            src="assets/images/ui/angular-material/scenes/progress-bar.scene.png"
+                            alt="Card cover image">
+                    </div>
+                    <div class="flex flex-col flex-auto m-8 mb-4">
+                        <div class="flex items-center justify-between">
+                            <div class="text-2xl font-semibold leading-tight">
+                                {{veh.year}} {{veh.make}} {{veh.model}} {{ veh.trim }}
+                            </div>
+                            <div class="-mr-3">
+                                <button
+                                    mat-icon-button
+                                    [matMenuTriggerFor]="flippableCard01Menu">
+                                    <mat-icon
+                                        class="icon-size-5"
+                                        [svgIcon]="'heroicons_solid:dots-vertical'"></mat-icon>
+                                </button>
+                                <mat-menu #flippableCard01Menu="matMenu">
+                                    <button mat-menu-item (click)="editClick(veh)">Edit</button>
+                                    <button mat-menu-item (click)="deleteClick(veh)">Delete</button>
+                                </mat-menu>
+                            </div>
+                        </div>
+                        <div class="text-secondary font-medium text-md mt-1">{{veh.miles}} Miles</div>
+                        <div class="mt-4" *ngIf="veh.notes">
+                            <div>Vehicle Notes</div>
+                            <div class="text-secondary text-md">{{veh.notes}}</div>
+                        </div>
+                        <div class="mt-3 -mx-3">
+                            <button
+                                class="px-3"
+                                mat-button
+                                [color]="'primary'"
+                                (click)="flippableCard01.face = flippableCard01.face === 'front' ? 'back' : 'front'">
+                                More Details
+                            </button>
+                            <button
+                                class="px-3"
+                                mat-button
+                                [color]="'primary'"
+                                [routerLink]="['../../maintenance/view/' + veh.id]">
+                                View Maintenance
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container fuseCardBack>
+                <div class="flex flex-col flex-auto m-4">
+                    <button
+                        class="ml-1.5"
+                        mat-icon-button
+                        (click)="flippableCard01.face = flippableCard01.face === 'front' ? 'back' : 'front'">
+                        <mat-icon [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
+                    </button>
+                    <div class="grid grid-cols-2 gap-4 my-2">
+                        <div class="col-auto my-2" *ngIf="veh.lastInspection">
+                            <div>Last Inspection</div>
+                            <div class="text-secondary text-md">{{veh.lastInspection | date: 'shortDate' : '' : translateService.getActiveLang()}}</div>
+                        </div>
+                        <div class="col-auto my-2" *ngIf="veh.inspectionDue">
+                            <div>Inspection Due Date</div>
+                            <div class="text-secondary text-md">{{veh.inspectionDue | date: 'shortDate' : '' : translateService.getActiveLang()}}</div>
+                        </div>
+                        <div class="col-auto my-2" *ngIf="veh.lastRegistration">
+                            <div>Last Registration</div>
+                            <div class="text-secondary text-md">{{veh.lastRegistration | date: 'shortDate' : '' : translateService.getActiveLang()}}</div>
+                        </div>
+                        <div class="col-auto my-2" *ngIf="veh.registrationDue">
+                            <div>Registration Due Date</div>
+                            <div class="text-secondary text-md">{{veh.registrationDue | date: 'shortDate' : '' : translateService.getActiveLang()}}</div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </fuse-card>
+
+    </div>
+</div>

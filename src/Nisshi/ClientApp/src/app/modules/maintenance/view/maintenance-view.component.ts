@@ -3,28 +3,31 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
-import { LogbookEntryService } from 'app/core/logbookentry/logbookentry.service';
-import { LogbookEntry } from 'app/core/logbookentry/logbookentry.types';
-import { AppConfig, LogbookOptions } from 'app/core/config/app.config';
+import { MaintenanceEntryService } from 'app/core/maintenanceentry/maintenanceentry.service';
+import { MaintenanceEntry } from 'app/core/maintenanceentry/maintenanceentry.types';
+import { AppConfig, MaintenanceOptions } from 'app/core/config/app.config';
 import { FuseConfigService } from '@fuse/services/config';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { AircraftService } from 'app/core/aircraft/aircraft.service';
-import { LogbookFilter } from 'app/core/ui/logbookfilter.types';
+import { VehicleService } from 'app/core/vehicle/vehicle.service';
+import { MaintenanceFilter } from 'app/core/ui/maintenancefilter.types';
+import { Vehicle } from 'app/core/vehicle/vehicle.types';
 
 @Component({
-  selector: 'logbook-view',
-  templateUrl: './logbook-view.component.html',
+  selector: 'maintenance-view',
+  templateUrl: './maintenance-view.component.html',
   encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./logbook-view.scss']
+  styleUrls: ['./maintenance-view.scss']
 })
-export class LogbookViewComponent implements OnInit, OnDestroy
+export class MaintenanceViewComponent implements OnInit, OnDestroy
 {
-    @ViewChild('logbookTable') table: any;
+    @ViewChild('maintenanceTable') table: any;
     enableSummary = true;
     summaryPosition = 'bottom';
     ColumnMode = ColumnMode;
-    logbookEntries: LogbookEntry[];
+    id: number;
+    maintenanceEntries: MaintenanceEntry[];
+    vehicle: Vehicle;
     activeFilters: string[];
 
     drawerMode: 'over' | 'side' = 'side';
@@ -36,8 +39,8 @@ export class LogbookViewComponent implements OnInit, OnDestroy
     /**
      * Constructor
      */
-    constructor(private logbookEntryService: LogbookEntryService,
-                private aircraftService: AircraftService,
+    constructor(private maintenanceEntryService: MaintenanceEntryService,
+                private vehicleService: VehicleService,
                 public translateService: TranslocoService,
                 private fuseConfigService: FuseConfigService,
                 private confirmation: ConfirmationService,
@@ -52,8 +55,14 @@ export class LogbookViewComponent implements OnInit, OnDestroy
 
     ngOnInit(): void
     {
-        this.logbookEntryService.getAll().subscribe(entries => {
-            this.logbookEntries = entries;
+        this.id = parseInt(this.route.snapshot.params['id'] ?? '0');
+
+        this.maintenanceEntryService.getAll(` idVehicle eq ${this.id} `).subscribe(entries => {
+            this.maintenanceEntries = entries;
+        });
+
+        this.vehicleService.getOne(this.id).subscribe (veh => {
+            this.vehicle = veh;
         });
 
         this.activeFilters = [];
@@ -107,7 +116,8 @@ export class LogbookViewComponent implements OnInit, OnDestroy
      *
      * @param selected
      */
-    rowClick(selected: any) {
+    rowClick(selected: any)
+    {
         if (selected.type == 'click')
             this.toggleExpandRow(selected.row);
     }
@@ -117,28 +127,36 @@ export class LogbookViewComponent implements OnInit, OnDestroy
      *
      * @param row
      */
-     editClick(row: any): void
-     {
-         this.router.navigate([`../edit/${row.id}`], { relativeTo: this.route });
-     }
+    editClick(row: any): void
+    {
+        this.router.navigate([`../../${this.vehicle.id}/edit/${row.id}`], { relativeTo: this.route });
+    }
 
     /**
-     * When the delete button for a row is clicked; opens confirm dialog and then deletes the logbook entry
+     * When the add new menu item is clicked; redirects to add new view
+     */
+    addClick(): void
+    {
+        this.router.navigate([`../../${this.vehicle.id}/add`], { relativeTo: this.route });
+    }
+
+    /**
+     * When the delete button for a row is clicked; opens confirm dialog and then deletes the maintenance entry
      *
      * @param row
      */
     deleteClick(row: any): void
     {
-        var message = "Are you sure you want to delete this logbook entry?";
-        const confirmDelete = this.confirmation.confirm("Delete Logbook Entry", message, "Delete", "Cancel");
+        var message = "Are you sure you want to delete this maintenance entry?";
+        const confirmDelete = this.confirmation.confirm("Delete Maintenance Entry", message, "Delete", "Cancel");
 
         confirmDelete.afterClosed().subscribe(result => {
             if (result == "confirmed")
             {
-                this.logbookEntryService.delete(row.id).subscribe({
+                this.maintenanceEntryService.delete(row.id).subscribe({
                     next: () => {
-                        this.logbookEntries = this.logbookEntries.filter(x => x.id != row.id);
-                        this.confirmation.alert("Logbook Entry Deleted", "Logbook entry was successfully deleted!", true);
+                        this.maintenanceEntries = this.maintenanceEntries.filter(x => x.id != row.id);
+                        this.confirmation.alert("Maintenance Entry Deleted", "Maintenance entry was successfully deleted!", true);
                     },
                     error: error => {
                         this.confirmation.alert("An error was encountered!", error);
@@ -149,53 +167,42 @@ export class LogbookViewComponent implements OnInit, OnDestroy
     }
 
     /**
-     * When the sidebar updates logbook options, update them here as well
+     * When the sidebar updates maintenance options, update them here as well
      *
      * @param options
      */
-    onAppConfigChanged(options: LogbookOptions): void
+    onAppConfigChanged(options: MaintenanceOptions): void
     {
-        this.fuseConfigService.config = {logbookOptions: options};
+        this.fuseConfigService.config = {maintenanceOptions: options};
     }
 
     /**
-     * When the sidebar updates the filter, update the list of logbook entries
+     * When the sidebar updates the filter, update the list of maintenance entries
      *
      * @param filter
      */
-    onFilterChanged(filter: LogbookFilter): void
+    onFilterChanged(filter: MaintenanceFilter): void
     {
         var filterArray = [];
         this.activeFilters = [];
 
+        filterArray.push(` idVehicle eq ${this.id}`);
+
         if (filter?.fromDate)
         {
-            filterArray.push(` flightDate gt ${filter.fromDate.toISOString()}`);
+            filterArray.push(` datePerformed gt ${filter.fromDate.toISOString()}`);
             this.activeFilters.push(`After: ${filter.fromDate.toDateString()}`);
         }
         if (filter?.toDate)
         {
-            filterArray.push(` flightDate lt ${filter.toDate.toISOString()}`);
+            filterArray.push(` datePerformed lt ${filter.toDate.toISOString()}`);
             this.activeFilters.push(`Before: ${filter.toDate.toDateString()}`);
-        }
-        if (filter?.idAircraft)
-        {
-            filterArray.push(` idAircraft eq ${filter.idAircraft}`);
-
-            this.aircraftService.getOne(filter.idAircraft).subscribe(air => {
-                this.activeFilters.push(`Aircraft: ${air.tailNumber} - ${air.model?.manufacturer?.manufacturerName} ${air.model?.modelName}`);
-            });
-        }
-        if (filter?.instanceType)
-        {
-            filterArray.push(` aircraft/instanceType eq Nisshi.Infrastructure.Enums.InstanceType'${filter.instanceType}'`);
-            this.activeFilters.push(`Type: ${filter.instanceType} Only`);
         }
 
         var filterQuery = filterArray.length > 0 ? `filter=${filterArray.join(' and ')}` : '';
 
-        this.logbookEntryService.getAll(filterQuery).subscribe(entries => {
-            this.logbookEntries = entries;
+        this.maintenanceEntryService.getAll(filterQuery).subscribe(entries => {
+            this.maintenanceEntries = entries;
         });
     }
 }

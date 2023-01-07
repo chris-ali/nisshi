@@ -39,7 +39,7 @@
                                 matSuffix
                                 [for]="flightDate"></mat-datepicker-toggle>
                             <mat-datepicker #flightDate></mat-datepicker>
-                            <mat-error *ngIf="form.get('route').hasError('required')">
+                            <mat-error *ngIf="form.get('flightDate').hasError('required')">
                                 Please select a flight date
                             </mat-error>
                         </mat-form-field>
@@ -148,7 +148,7 @@
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:menu-alt-2'"></mat-icon>
-                            <mat-error *ngIf="form.get('route').hasError('maxLength')">
+                            <mat-error *ngIf="form.get('comments').hasError('maxLength')">
                                 Comments must be less than 500 characters
                             </mat-error>
                         </mat-form-field>

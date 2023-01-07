@@ -12,18 +12,18 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FuseCardModule } from '@fuse/components/card';
 import { SharedModule } from 'app/shared/shared.module';
-import { AircraftViewComponent } from 'app/modules/aircraft/view/aircraft-view.component';
+import { VehicleViewComponent } from 'app/modules/vehicle/view/vehicle-view.component';
 
 export const routes: Route[] = [
     {
         path     : '',
-        component: AircraftViewComponent
+        component: VehicleViewComponent
     }
 ];
 
 @NgModule({
     declarations: [
-        AircraftViewComponent
+        VehicleViewComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -41,6 +41,6 @@ export const routes: Route[] = [
         SharedModule
     ]
 })
-export class AircraftViewModule
+export class VehicleViewModule
 {
 }

@@ -8,22 +8,24 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { FuseCardModule } from '@fuse/components/card';
 import { SharedModule } from 'app/shared/shared.module';
-import { AircraftViewComponent } from 'app/modules/aircraft/view/aircraft-view.component';
+import { MaintenanceViewComponent as MaintenanceViewComponent } from 'app/modules/maintenance/view/maintenance-view.component';
+import { MaintenanceSidebarModule } from 'app/modules/maintenance/sidebar/maintenance-sidebar.module';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 export const routes: Route[] = [
     {
-        path     : '',
-        component: AircraftViewComponent
+        path     : ':id',
+        component: MaintenanceViewComponent
     }
 ];
 
 @NgModule({
     declarations: [
-        AircraftViewComponent
+        MaintenanceViewComponent
     ],
     imports     : [
         RouterModule.forChild(routes),
@@ -35,12 +37,14 @@ export const routes: Route[] = [
         MatIconModule,
         MatInputModule,
         MatMenuModule,
+        MatSidenavModule,
         MatProgressBarModule,
         MatTooltipModule,
-        FuseCardModule,
-        SharedModule
+        SharedModule,
+        MaintenanceSidebarModule,
+        NgxDatatableModule
     ]
 })
-export class AircraftViewModule
+export class MaintenanceViewModule
 {
 }

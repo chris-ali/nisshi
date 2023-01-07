@@ -1,0 +1,203 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <mat-drawer-container class="flex-auto h-full">
+
+        <!-- Drawer -->
+        <mat-drawer
+            class="w-72 dark:bg-gray-900"
+            [autoFocus]="false"
+            [mode]="drawerMode"
+            [opened]="drawerOpened"
+            [position]="'end'"
+            #matDrawer>
+
+            <maintenance-sidebar
+                (preferencesChanged)="matDrawer.toggle(); onAppConfigChanged($event);"
+                (filterChanged)="onFilterChanged($event);"
+                [maintenanceOptions]="appConfig.maintenanceOptions"></maintenance-sidebar>
+        </mat-drawer>
+
+        <!-- Drawer content -->
+        <mat-drawer-content class="flex flex-col overflow-hidden">
+
+            <!-- Header -->
+            <div class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-8 sm:px-10 border-b bg-card dark:bg-transparent">
+                <div class="flex-1 min-w-0">
+                    <!-- Title -->
+                    <div class="mt-2">
+                        <h2 class="text-2xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                            {{ vehicle?.year }} {{ vehicle?.make }} {{ vehicle?.model }} {{ vehicle?.trim }} Maintenance Log
+                        </h2>
+                    </div>
+                </div>
+                <!-- Actions -->
+                <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                    <button
+                        class="mx-3"
+                        mat-flat-button
+                        [color]="'accent'"
+                        (click)="addClick()">
+                        <mat-icon
+                            class="icon-size-5 mr-2"
+                            [svgIcon]="'heroicons_solid:view-grid-add'"></mat-icon>
+                        Add New
+                    </button>
+                    <button
+                        mat-icon-button
+                        (click)="matDrawer.toggle()">
+                        <mat-icon [svgIcon]="'heroicons_outline:menu'"></mat-icon>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex flex-col sm:flex-row flex-0 items-center p-4 sm:py-4 sm:px-10"
+                [style.display]="activeFilters.length == 0 ? 'none !important' : ''">
+                <div class="pr-2 pt-2">
+                    <h2 class="text-lg md:text-lg font-bold tracking-tight leading-7 sm:leading-10 truncate">
+                        Active Filters:
+                    </h2>
+                </div>
+                <mat-button-toggle-group class="flex flex-wrap -m-2">
+                    <ng-container *ngFor="let filter of activeFilters">
+                        <mat-button-toggle
+                            class="m-2"
+                            [value]="filter">
+                            <span class="text-secondary">{{filter}}</span>
+                        </mat-button-toggle>
+                    </ng-container>
+                </mat-button-toggle-group>
+            </div>
+
+            <!-- Main -->
+            <div
+                class="flex-auto overflow-y-auto"
+                cdkScrollable>
+
+                <ngx-datatable
+                    #maintenanceTable
+                    class="material fullscreen {{this.appConfig.scheme == 'dark' ? 'dark' : ''}}"
+                    [rows]="maintenanceEntries"
+                    [columnMode]="ColumnMode.standard"
+                    [headerHeight]="50"
+                    [footerHeight]="50"
+                    rowHeight="auto"
+                    [limit]="10"
+                    [scrollbarH]="true"
+                    [summaryRow]="enableSummary"
+                    summaryHeight="55"
+                    [summaryPosition]="summaryPosition"
+                    (activate)="rowClick($event)">
+
+                    <!-- Column Templates -->
+                    <ngx-datatable-column
+                        [width]="50"
+                        [resizeable]="false"
+                        [sortable]="false"
+                        [draggable]="false"
+                        [canAutoResize]="false"
+                        [summaryTemplate]="sumSummaryCell">
+                        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
+                            <a
+                                href="javascript:void(0)"
+                                [class.datatable-icon-right]="!expanded"
+                                [class.datatable-icon-down]="expanded"
+                                title="Expand/Collapse Row">
+                            </a>
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Date"
+                        prop="datePerformed"
+                        [width]="90">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.datePerformed | date: 'shortDate' : '' : translateService.getActiveLang() }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Odometer Reading"
+                        prop="milesPerformed"
+                        *ngIf="this.appConfig.maintenanceOptions.showMilesPerformed"
+                        [width]="130">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.milesPerformed | number:'1.2-2' }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Type of Work"
+                        prop="type"
+                        *ngIf="this.appConfig.maintenanceOptions.showType"
+                        [width]="110">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Work Description"
+                        prop="workDescription"
+                        *ngIf="this.appConfig.maintenanceOptions.showWorkDescription"
+                        [width]="130">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Performed By"
+                        prop="performedBy"
+                        *ngIf="this.appConfig.maintenanceOptions.showPerformedBy"
+                        [width]="130">
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Duration"
+                        prop="duration"
+                        *ngIf="this.appConfig.maintenanceOptions.showDuration"
+                        [summaryFunc]="sumColumn"
+                        [width]="110">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.duration | number:'1.2-2' }}
+                        </ng-template>
+                    </ngx-datatable-column>
+                    <ngx-datatable-column
+                        name="Repair Price"
+                        prop="repairPrice"
+                        *ngIf="this.appConfig.maintenanceOptions.showRepairPrice"
+                        [summaryFunc]="sumColumn"
+                        [width]="110">
+                        <ng-template let-row="row" ngx-datatable-cell-template>
+                            {{ row.repairPrice | number:'1.2-2' }}
+                        </ng-template>
+                    </ngx-datatable-column>
+
+                    <!-- Row Detail Template -->
+                    <ngx-datatable-row-detail [rowHeight]="100" #myDetailRow>
+                        <ng-template let-row="row" let-expanded="expanded" ngx-datatable-row-detail-template>
+                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                                <span>{{ row.workDescription }}</span>
+                            </div>
+                            <div class="flex flex-shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+                                <button
+                                    mat-flat-button
+                                    [color]="'accent'"
+                                    (click)="editClick(row)">
+                                    <mat-icon [svgIcon]="'heroicons_outline:pencil-alt'"></mat-icon>
+                                    Edit
+                                </button>
+                                &nbsp;
+                                <button
+                                    mat-flat-button
+                                    color="warn"
+                                    (click)="deleteClick(row)">
+                                    <mat-icon [svgIcon]="'heroicons_outline:x-circle'"></mat-icon>
+                                    Delete
+                                </button>
+                            </div>
+                        </ng-template>
+                    </ngx-datatable-row-detail>
+
+                    <!-- Summary Template -->
+                    <ng-template #sumSummaryCell>
+                        Sum
+                    </ng-template>
+
+                </ngx-datatable>
+
+            </div>
+
+        </mat-drawer-content>
+
+    </mat-drawer-container>
+
+</div>
