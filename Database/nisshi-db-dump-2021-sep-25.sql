@@ -277,14 +277,14 @@ CREATE TABLE `vehicles` (
   `DateCreated` date DEFAULT NULL,
   `DateUpdated` date DEFAULT NULL,
   PRIMARY KEY (`Id`),
-  CONSTRAINT `fkVehicleUser` FOREIGN KEY (`IdUser`) REFERENCES `users` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT `fkVehicleUser` FOREIGN KEY (`IdUser`) REFERENCES `users` (`Id`) ON DELETE CASCADE ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Specific vehicles';
 
 --
--- Dumping data for table `vehicle`
+-- Dumping data for table `vehicles`
 --
 
-LOCK TABLES `vehicle` WRITE;
+LOCK TABLES `vehicles` WRITE;
 UNLOCK TABLES;
 
 --
@@ -313,10 +313,10 @@ CREATE TABLE `maintenanceentries` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Mantenance performend on a vehicle';
 
 --
--- Dumping data for table `logbookentries`
+-- Dumping data for table `maintenanceentries`
 --
 
-LOCK TABLES `logbookentries` WRITE;
+LOCK TABLES `maintenanceentries` WRITE;
 UNLOCK TABLES;
 
 --
