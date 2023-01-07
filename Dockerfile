@@ -1,5 +1,5 @@
 # Stage 1 - Build Container
-FROM mcr.microsoft.com/dotnet/sdk:6.0.102-alpine3.14-amd64 as build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine-amd64 as build
 
 WORKDIR /build
 COPY . .
@@ -11,7 +11,7 @@ RUN apk add --update npm
 RUN dotnet run --project build/build.csproj
 
 # Stage 2 - Runtime Container
-FROM mcr.microsoft.com/dotnet/aspnet:6.0.2-alpine3.14-amd64
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine-amd64
 
 RUN apk add --update tzdata npm
 
@@ -19,7 +19,7 @@ COPY --from=build /build/publish /app
 
 # Need to generate node_modules inside Angular directory
 WORKDIR /app/ClientApp
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 # wait-for waits for db to be online before starting webapp
 COPY --from=build /build/resources/wait-for /app/wait-for
