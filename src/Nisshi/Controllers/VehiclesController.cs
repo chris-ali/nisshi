@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Nisshi.Controllers.Interfaces;
 using Nisshi.Infrastructure.Security;
 using Nisshi.Models;
 using Nisshi.Requests.Vehicles;
@@ -12,9 +13,9 @@ using Nisshi.Requests.Vehicles;
 namespace Nisshi.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes, Roles = "Administrator, User")]
-    public class VehicleController : BaseNisshiController
+    public class VehiclesController : BaseNisshiController, IVehiclesController
     {
-        public VehicleController(IMediator mediator) : base(mediator)
+        public VehiclesController(IMediator mediator) : base(mediator)
         {
         }
 

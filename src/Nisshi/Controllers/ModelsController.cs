@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Nisshi.Controllers.Interfaces;
 using Nisshi.Infrastructure.Security;
 using Nisshi.Models;
 using Nisshi.Requests.Models;
 
 namespace Nisshi.Controllers
 {
-    public class ModelsController : BaseNisshiController
+    public class ModelsController : BaseNisshiController, IModelsController
     {
         public ModelsController(IMediator mediator) : base(mediator)
         {

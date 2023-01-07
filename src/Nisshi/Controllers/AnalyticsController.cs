@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Nisshi.Controllers.Interfaces;
 using Nisshi.Infrastructure.Security;
 using Nisshi.Models;
 using Nisshi.Requests.Analytics;
@@ -11,7 +12,7 @@ using Nisshi.Requests.Analytics;
 namespace Nisshi.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes, Roles = "Administrator, User")]
-    public class AnalyticsController : BaseNisshiController
+    public class AnalyticsController : BaseNisshiController, IAnalyticsController
     {
         public AnalyticsController(IMediator mediator) : base(mediator)
         {

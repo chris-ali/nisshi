@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Nisshi.Controllers.Interfaces;
 using Nisshi.Infrastructure.Security;
 using Nisshi.Models;
 using Nisshi.Requests.Aircrafts;
@@ -12,7 +13,7 @@ using Nisshi.Requests.Aircrafts;
 namespace Nisshi.Controllers
 {
     [Authorize(AuthenticationSchemes = JwtIssuerOptions.Schemes, Roles = "Administrator, User")]
-    public class AircraftController : BaseNisshiController
+    public class AircraftController : BaseNisshiController, IAircraftController
     {
         public AircraftController(IMediator mediator) : base(mediator)
         {
