@@ -1,18 +1,9 @@
-import { Layout } from 'app/layout/layout.types';
-
-// Types
-export type Scheme = 'auto' | 'dark' | 'light';
-export type Theme = 'default' | string;
-
 /**
  * AppConfig interface. Update this interface to strictly type your config
  * object.
  */
 export interface AppConfig
 {
-    layout: Layout;
-    scheme: Scheme;
-    theme: Theme;
     language: string;
     logbookOptions: LogbookOptions;
     maintenanceOptions: MaintenanceOptions;
@@ -68,9 +59,6 @@ export interface MaintenanceOptions
  * FuseConfigService and its methods.
  */
 export const appConfig: AppConfig = {
-    layout: 'classy',
-    scheme: 'light',
-    theme : 'default',
     language: 'en',
     logbookOptions: {
         showTailNumber: true,
