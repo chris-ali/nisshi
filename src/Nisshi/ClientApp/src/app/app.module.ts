@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ExtraOptions, PreloadAllModules, RouterModule } from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
@@ -10,15 +10,46 @@ import { appRoutes } from 'app/app.routing';
 import { ConfirmationModule } from './core/confirmation/confirmation.module';
 import { TailwindConfigModule } from './core/tailwind/tailwind.module';
 import { ConfigModule } from './core/config/config.module';
-import { DefaultLayoutComponent } from './containers/default-layout';
+import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
 
 import {
-    AppAsideModule,
-    AppBreadcrumbModule,
-    AppHeaderModule,
-    AppFooterModule,
-    AppSidebarModule,
-  } from '../../projects/coreui/angular/src/public-api';
+    PERFECT_SCROLLBAR_CONFIG,
+    PerfectScrollbarConfigInterface,
+    PerfectScrollbarModule,
+  } from 'ngx-perfect-scrollbar';
+
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+    suppressScrollX: true
+  };
+
+import {
+    DefaultFooterComponent,
+    DefaultHeaderComponent,
+    DefaultLayoutComponent,
+} from './containers';
+
+import {
+    AvatarModule,
+    BadgeModule,
+    BreadcrumbModule,
+    ButtonGroupModule,
+    ButtonModule,
+    CardModule,
+    DropdownModule,
+    FooterModule,
+    FormModule,
+    GridModule,
+    HeaderModule,
+    ListGroupModule,
+    NavModule,
+    ProgressModule,
+    SharedModule,
+    SidebarModule,
+    TabsModule,
+    UtilitiesModule,
+} from '@coreui/angular';
+
+import { IconModule, IconSetService } from '@coreui/icons-angular';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
@@ -26,8 +57,10 @@ const routerConfig: ExtraOptions = {
 };
 
 const APP_CONTAINERS = [
-    DefaultLayoutComponent
-];
+    DefaultFooterComponent,
+    DefaultHeaderComponent,
+    DefaultLayoutComponent,
+  ];
 
 @NgModule({
     declarations: [
@@ -46,9 +79,46 @@ const APP_CONTAINERS = [
         // Core module of your application
         CoreModule,
 
+        // CoreUI components
+        AvatarModule,
+        BreadcrumbModule,
+        FooterModule,
+        DropdownModule,
+        GridModule,
+        HeaderModule,
+        SidebarModule,
+        IconModule,
+        PerfectScrollbarModule,
+        NavModule,
+        ButtonModule,
+        FormModule,
+        UtilitiesModule,
+        ButtonGroupModule,
+        //ReactiveFormsModule,
+        SidebarModule,
+        SharedModule,
+        TabsModule,
+        ListGroupModule,
+        ProgressModule,
+        BadgeModule,
+        ListGroupModule,
+        CardModule,
+
         // 3rd party modules that require global configuration via forRoot
         MarkdownModule.forRoot({})
     ],
+    providers: [
+        {
+          provide: LocationStrategy,
+          useClass: HashLocationStrategy,
+        },
+        {
+          provide: PERFECT_SCROLLBAR_CONFIG,
+          useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
+        },
+        IconSetService,
+        Title
+      ],
     bootstrap   : [
         AppComponent
     ]

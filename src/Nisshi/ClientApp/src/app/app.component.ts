@@ -1,21 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import en from '@angular/common/locales/en-US-POSIX';
+import en from '@angular/common/locales/en';
 import de from '@angular/common/locales/de';
 import ja from '@angular/common/locales/ja';
 import { registerLocaleData } from '@angular/common';
+import { IconSetService } from '@coreui/icons-angular';
+import { iconSubset } from './icons/icon-subset';
+import { Title } from '@angular/platform-browser';
 
 @Component({
-    selector   : 'app-root',
+    selector   : 'body',
     templateUrl: './app.component.html',
     styleUrls  : ['./app.component.scss']
 })
 export class AppComponent implements OnInit
 {
+    title = 'CoreUI Free Angular Admin Template';
+
     /**
      * Constructor
      */
-    constructor()
+    constructor(
+        private titleService: Title,
+        private iconSetService: IconSetService)
     {
+        titleService.setTitle(this.title);
+    // iconSet singleton
+    iconSetService.icons = { ...iconSubset };
     }
 
     // -----------------------------------------------------------------------------------------------------

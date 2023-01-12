@@ -63,10 +63,6 @@
         -webkit-text-fill-color: currentColor;
     }
 
-    body, .dark, .light {
-        @apply text-default bg-default #{'!important'};
-    }
-
     *, *::before, *::after {
         --tw-border-opacity: 1 !important;
         border-color: rgba(var(--fuse-border-rgb), var(--tw-border-opacity));
@@ -74,10 +70,6 @@
         .dark & {
             --tw-border-opacity: 0.12 !important;
         }
-    }
-
-    [disabled] * {
-        @apply text-disabled #{'!important'};
     }
 
     /* Print styles */
