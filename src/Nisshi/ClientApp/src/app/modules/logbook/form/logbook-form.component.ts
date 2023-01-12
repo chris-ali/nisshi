@@ -5,13 +5,13 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LogbookEntryService } from 'app/core/logbookentry/logbookentry.service';
-import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
+import { ConfirmationAdapter } from 'app/core/confirmation/confirmation.adapter';
 import { AircraftService } from 'app/core/aircraft/aircraft.service';
 import { AirportService } from 'app/core/airport/airport.service';
 import { Aircraft } from 'app/core/aircraft/aircraft.types';
 import { AppConfig } from 'app/core/config/app.config';
 import { Subject } from 'rxjs';
-import { FuseConfigService } from '@fuse/services/config';
+import { ConfigService } from 'app/core/config/config.service';
 import { debounceTime, distinctUntilChanged, filter, switchMap, takeUntil } from 'rxjs/operators';
 import { Airport } from 'app/core/airport/airport.types';
 
@@ -44,10 +44,10 @@ export class LogbookFormComponent implements OnInit, OnDestroy
                 private logbookEntryService: LogbookEntryService,
                 private aircraftService: AircraftService,
                 private airportService: AirportService,
-                private fuseConfigService: FuseConfigService,
+                private configService: ConfigService,
                 private route: ActivatedRoute,
                 private router: Router,
-                private confirmation: ConfirmationService)
+                private confirmation: ConfirmationAdapter)
     {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -98,7 +98,7 @@ export class LogbookFormComponent implements OnInit, OnDestroy
         }
 
         // Subscribe to config changes
-        this.fuseConfigService.config$
+        this.configService.config$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((config: AppConfig) => {
                 this.appConfig = config;
@@ -125,7 +125,7 @@ export class LogbookFormComponent implements OnInit, OnDestroy
      ngOnDestroy(): void
      {
          // Unsubscribe from all subscriptions
-         this._unsubscribeAll.next();
+         this._unsubscribeAll.next(1);
          this._unsubscribeAll.complete();
      }
 

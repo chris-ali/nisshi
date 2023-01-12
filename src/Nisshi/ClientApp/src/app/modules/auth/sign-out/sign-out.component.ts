@@ -59,7 +59,7 @@ export class AuthSignOutComponent implements OnInit, OnDestroy
     ngOnDestroy(): void
     {
         // Unsubscribe from all subscriptions
-        this._unsubscribeAll.next();
+        this._unsubscribeAll.next(1);
         this._unsubscribeAll.complete();
     }
 }

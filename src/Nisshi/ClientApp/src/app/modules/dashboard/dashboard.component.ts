@@ -24,7 +24,7 @@ export class DashboardComponent implements OnInit, OnDestroy
     summedTotals: TotalsAnalytics;
     landingsPast90Days: LandingsAnalytics;
 
-    private unsubscribeAll: Subject<any> = new Subject<any>();
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
     user: User;
 
     /**
@@ -65,7 +65,7 @@ export class DashboardComponent implements OnInit, OnDestroy
         });
 
         this.userService.user$
-            .pipe(takeUntil(this.unsubscribeAll))
+            .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((user: User) => {
                 this.user = user;
             });
@@ -77,8 +77,8 @@ export class DashboardComponent implements OnInit, OnDestroy
      ngOnDestroy(): void
      {
          // Unsubscribe from all subscriptions
-         this.unsubscribeAll.next();
-         this.unsubscribeAll.complete();
+         this._unsubscribeAll.next(1);
+         this._unsubscribeAll.complete();
      }
 
     // -----------------------------------------------------------------------------------------------------

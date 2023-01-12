@@ -2,11 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VehicleService } from 'app/core/vehicle/vehicle.service';
-import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
-import { ManufacturerService } from 'app/core/manufacturer/manufacturer.service';
 import { Manufacturer } from 'app/core/manufacturer/manufacturer.types';
-import { ModelService } from 'app/core/model/model.service';
 import { Model } from 'app/core/model/model.types';
+import { ConfirmationAdapter } from 'app/core/confirmation/confirmation.adapter';
 
 /**
  * Form that adds/edits an vehicle
@@ -31,7 +29,7 @@ export class VehicleFormComponent implements OnInit
                 private vehicleService: VehicleService,
                 private route: ActivatedRoute,
                 private router: Router,
-                private confirmation: ConfirmationService)
+                private confirmation: ConfirmationAdapter)
     {}
 
     // -----------------------------------------------------------------------------------------------------

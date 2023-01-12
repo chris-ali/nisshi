@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
+import { ConfirmationAdapter } from 'app/core/confirmation/confirmation.adapter';
 import { UserService } from 'app/core/user/user.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class SettingsAccountComponent implements OnInit
     constructor(
         private formBuilder: FormBuilder,
         private userService: UserService,
-        private confirmation: ConfirmationService,
+        private confirmation: ConfirmationAdapter,
         private router: Router
     )
     {

@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulatio
 import { takeUntil } from 'rxjs/operators';
 import { AvailableLangs, TranslocoService } from '@ngneat/transloco';
 import { AppConfig } from 'app/core/config/app.config';
-import { ConfigService } from 'app/core/config';
+import { ConfigService } from 'app/core/config/config.service';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -68,7 +68,7 @@ export class LanguagesComponent implements OnInit, OnDestroy
      */
     ngOnDestroy(): void
     {
-        this._unsubscribeAll.next();
+        this._unsubscribeAll.next(1);
         this._unsubscribeAll.complete();
     }
 

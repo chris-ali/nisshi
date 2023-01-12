@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, ViewEncapsulation } from '@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'app/core/auth/auth.service';
-import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
+import { ConfirmationAdapter } from 'app/core/confirmation/confirmation.adapter';
 
 @Component({
     selector       : 'settings-security',
@@ -20,7 +20,7 @@ export class SettingsSecurityComponent implements OnInit
     constructor(
         private formBuilder: FormBuilder,
         private authService: AuthService,
-        private confirmation: ConfirmationService,
+        private confirmation: ConfirmationAdapter,
         private router: Router
     )
     {
