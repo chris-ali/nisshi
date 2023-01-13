@@ -9,8 +9,7 @@ import { Title } from '@angular/platform-browser';
 
 @Component({
     selector   : 'body',
-    templateUrl: './app.component.html',
-    styleUrls  : ['./app.component.scss']
+    template: '<router-outlet></router-outlet>',
 })
 export class AppComponent implements OnInit
 {
