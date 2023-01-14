@@ -1,23 +1,19 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
-import { fuseAnimations } from '@fuse/animations';
-import { FuseValidators } from '@fuse/validators';
-import { FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 
 @Component({
     selector     : 'auth-reset-password',
     templateUrl  : './reset-password.component.html',
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
 })
 export class AuthResetPasswordComponent implements OnInit
 {
     @ViewChild('resetPasswordNgForm') resetPasswordNgForm: NgForm;
 
-    alert: { type: FuseAlertType; message: string } = {
-        type   : 'success',
+    alert: { color: string; message: string } = {
+        color   : 'success',
         message: ''
     };
     resetPasswordForm: FormGroup;
@@ -48,7 +44,7 @@ export class AuthResetPasswordComponent implements OnInit
                 passwordConfirm: ['', Validators.required]
             },
             {
-                validators: FuseValidators.mustMatch('password', 'passwordConfirm')
+                //validators: FuseValidators.mustMatch('password', 'passwordConfirm')
             }
         );
     }
@@ -94,7 +90,7 @@ export class AuthResetPasswordComponent implements OnInit
 
                     // Set the alert
                     this.alert = {
-                        type   : 'success',
+                        color   : 'success',
                         message: 'Your password has been reset.'
                     };
                 },
@@ -102,7 +98,7 @@ export class AuthResetPasswordComponent implements OnInit
 
                     // Set the alert
                     this.alert = {
-                        type   : 'error',
+                        color   : 'danger',
                         message: 'Something went wrong, please try again.'
                     };
                 }

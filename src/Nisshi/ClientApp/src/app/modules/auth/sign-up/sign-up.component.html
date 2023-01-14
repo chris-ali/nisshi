@@ -12,20 +12,17 @@
                 <div>Already have an account?</div>
                 <a
                     class="ml-1 text-primary-500 hover:underline"
-                    [routerLink]="['/pages/authentication/sign-in']">Sign in
+                    [routerLink]="['/sign-in']">Sign in
                 </a>
             </div>
 
             <!-- Alert -->
-            <fuse-alert
-                class="mt-8 -mb-4"
+            <c-alert
+                color="{{alert.color}}"
                 *ngIf="showAlert"
-                [appearance]="'outline'"
-                [showIcon]="false"
-                [type]="alert.type"
-                [@shake]="alert.type === 'error'">
+                class="mt-8 -mb-4">
                 {{alert.message}}
-            </fuse-alert>
+            </c-alert>
 
             <!-- Sign Up form -->
             <form
@@ -113,7 +110,7 @@
                     [disabled]="signUpForm.disabled"
                     (click)="signUp()">
                     <span *ngIf="!signUpForm.disabled">
-                        Create your free account
+                        Create account
                     </span>
                     <mat-progress-spinner
                         *ngIf="signUpForm.disabled"

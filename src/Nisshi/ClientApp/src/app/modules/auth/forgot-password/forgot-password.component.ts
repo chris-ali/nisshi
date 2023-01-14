@@ -1,22 +1,19 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
-import { fuseAnimations } from '@fuse/animations';
-import { FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 
 @Component({
     selector     : 'auth-forgot-password',
     templateUrl  : './forgot-password.component.html',
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
 })
 export class AuthForgotPasswordComponent implements OnInit
 {
     @ViewChild('forgotPasswordNgForm') forgotPasswordNgForm: NgForm;
 
-    alert: { type: FuseAlertType; message: string } = {
-        type   : 'success',
+    alert: { color: string; message: string } = {
+        color   : 'success',
         message: ''
     };
     forgotPasswordForm: FormGroup;
@@ -88,7 +85,7 @@ export class AuthForgotPasswordComponent implements OnInit
 
                     // Set the alert
                     this.alert = {
-                        type   : 'success',
+                        color   : 'success',
                         message: 'Password reset sent! You\'ll receive an email if you are registered on our system.'
                     };
                 },
@@ -96,7 +93,7 @@ export class AuthForgotPasswordComponent implements OnInit
 
                     // Set the alert
                     this.alert = {
-                        type   : 'error',
+                        color   : 'danger',
                         message: 'Email does not found! Are you sure you are already a member?'
                     };
                 }
