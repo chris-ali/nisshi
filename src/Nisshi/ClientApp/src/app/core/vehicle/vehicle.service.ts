@@ -4,7 +4,7 @@ import { map, tap } from 'rxjs/operators';
 import { ApiService } from '../base/api.service';
 import { Vehicle } from './vehicle.types';
 
-const URL = 'vehicle/';
+const URL = 'vehicles/';
 
 @Injectable({
     providedIn: 'root'

@@ -23,8 +23,8 @@ export class AppComponent implements OnInit
         private iconSetService: IconSetService)
     {
         titleService.setTitle(this.title);
-    // iconSet singleton
-    iconSetService.icons = { ...iconSubset };
+        // iconSet singleton
+        iconSetService.icons = { ...iconSubset };
     }
 
     // -----------------------------------------------------------------------------------------------------
