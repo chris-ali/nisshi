@@ -16,18 +16,11 @@
   ],
   "scripts": {
     "ng": "ng",
-    "build-lib:dev": "ng build @coreui/angular --watch",
-    "build-lib:prod": "ng build @coreui/angular --configuration production",
-    "test-lib:dev": "ng test @coreui/angular",
-    "test-lib:prod": "ng test @coreui/angular --karmaConfig=projects/coreui/angular/karma.conf.github.js",
     "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
-    "prepublish-lib": "ng test @coreui/angular --watch=false && ng e2e && ng build @coreui/angular --configuration production",
-    "publish-lib": "cd dist/@coreui/angular/ && npm publish --tag v2-lts --dry-run",
-    "link": "cd dist/@coreui/angular/ && npm link",
-    "release-version": "node build/change-version.js"
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
