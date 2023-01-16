@@ -1,10 +1,9 @@
 import { Component, Inject, LOCALE_ID, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ApexOptions } from 'ng-apexcharts';
-import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { AnalyticsCompendium, ChartData, LandingsAnalytics, TotalsAnalytics } from 'app/core/analytics/analytics.types';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
-import { forkJoin, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { formatNumber } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';

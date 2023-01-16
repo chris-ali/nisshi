@@ -4,8 +4,9 @@ import de from '@angular/common/locales/de';
 import ja from '@angular/common/locales/ja';
 import { registerLocaleData } from '@angular/common';
 import { IconSetService } from '@coreui/icons-angular';
-import { iconSubset } from './icons/icon-subset';
 import { Title } from '@angular/platform-browser';
+import { cilHome, cilAirplaneMode, cilBook, cilGlobeAlt, cilCalendar, cilGarage,
+    cilMenu, cilUser, cilSettings, cilLockLocked } from '@coreui/icons';
 
 @Component({
     selector   : 'body',
@@ -23,8 +24,8 @@ export class AppComponent implements OnInit
         private iconSetService: IconSetService)
     {
         titleService.setTitle(this.title);
-        // iconSet singleton
-        iconSetService.icons = { ...iconSubset };
+        iconSetService.icons = { cilHome, cilAirplaneMode, cilBook, cilGlobeAlt, cilCalendar, cilGarage,
+            cilMenu, cilUser, cilSettings, cilLockLocked };
     }
 
     // -----------------------------------------------------------------------------------------------------

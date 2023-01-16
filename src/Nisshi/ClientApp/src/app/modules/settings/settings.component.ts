@@ -55,12 +55,6 @@ export class SettingsComponent implements OnInit, OnDestroy
                 icon       : 'heroicons_outline:lock-closed',
                 title      : 'Security',
                 description: 'Manage password'
-            },
-            {
-                id         : 'theme',
-                icon       : 'heroicons_outline:desktop-computer',
-                title      : 'Theme',
-                description: 'Manage site display properties'
             }
         ];
     }

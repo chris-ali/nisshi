@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
 import { MaintenanceOptions } from 'app/core/config/app.config';
 
 @Component({
@@ -21,7 +20,6 @@ export class MaintenanceSidebarComponent implements OnInit
     @Output() preferencesChanged = new EventEmitter();
     @Output() filterChanged = new EventEmitter();
 
-    menuData: FuseNavigationItem[];
     form: FormGroup;
     filter: FormGroup;
 

@@ -1,11 +1,11 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnInit, QueryList, Renderer2, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FuseCardComponent } from '@fuse/components/card';
+import { CardComponent } from '@coreui/angular';
 import { TranslocoService } from '@ngneat/transloco';
 import { AircraftService } from 'app/core/aircraft/aircraft.service';
 import { Aircraft } from 'app/core/aircraft/aircraft.types';
-import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
+import { ConfirmationAdapter } from 'app/core/confirmation/confirmation.adapter';
 
 /**
  * Component that displays all aircraft available to the user,
@@ -16,7 +16,7 @@ import { ConfirmationService } from 'app/core/confirmation/confirmation.service'
     templateUrl  : './aircraft-view.component.html',
     styles         : [
         `
-            fuse-card {
+            c-card {
                 margin: 16px;
             }
         `
@@ -25,7 +25,7 @@ import { ConfirmationService } from 'app/core/confirmation/confirmation.service'
 })
 export class AircraftViewComponent implements AfterViewInit, OnInit
 {
-    @ViewChildren(FuseCardComponent, {read: ElementRef}) private aircraftCardList: QueryList<ElementRef>;
+    @ViewChildren(CardComponent, {read: ElementRef}) private aircraftCardList: QueryList<ElementRef>;
     aircraft: Aircraft[];
     filters: string[] = ['all', 'simulation', 'real'];
     selectedFilter: string = 'all';
@@ -36,7 +36,7 @@ export class AircraftViewComponent implements AfterViewInit, OnInit
      */
     constructor(private aircraftService: AircraftService,
                 public translateService: TranslocoService,
-                private confirmation: ConfirmationService,
+                private confirmation: ConfirmationAdapter,
                 private router: Router,
                 private route: ActivatedRoute)
     {

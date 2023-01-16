@@ -1,10 +1,10 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FuseCardComponent } from '@fuse/components/card';
+import { CardComponent } from '@coreui/angular';
 import { TranslocoService } from '@ngneat/transloco';
 import { VehicleService } from 'app/core/vehicle/vehicle.service';
 import { Vehicle } from 'app/core/vehicle/vehicle.types';
-import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
+import { ConfirmationAdapter } from 'app/core/confirmation/confirmation.adapter';
 
 /**
  * Component that displays all vehicles available to the user,
@@ -15,7 +15,7 @@ import { ConfirmationService } from 'app/core/confirmation/confirmation.service'
     templateUrl  : './vehicle-view.component.html',
     styles         : [
         `
-            fuse-card {
+            c-card {
                 margin: 16px;
             }
         `
@@ -24,7 +24,7 @@ import { ConfirmationService } from 'app/core/confirmation/confirmation.service'
 })
 export class VehicleViewComponent implements OnInit
 {
-    @ViewChildren(FuseCardComponent, {read: ElementRef}) private vehicleCardList: QueryList<ElementRef>;
+    @ViewChildren(CardComponent, {read: ElementRef}) private vehicleCardList: QueryList<ElementRef>;
     vehicles: Vehicle[];
     vehicleCount: any = {};
 
@@ -33,7 +33,7 @@ export class VehicleViewComponent implements OnInit
      */
     constructor(private vehicleService: VehicleService,
                 public translateService: TranslocoService,
-                private confirmation: ConfirmationService,
+                private confirmation: ConfirmationAdapter,
                 private router: Router,
                 private route: ActivatedRoute)
     {

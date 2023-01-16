@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { FuseNavigationModule } from '@fuse/components/navigation/navigation.module';
 import { MaintenanceSidebarComponent } from 'app/modules/maintenance/sidebar/maintenance-sidebar.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -35,7 +34,6 @@ import { MatRadioModule } from '@angular/material/radio';
         MatMenuModule,
         MatInputModule,
         MatRadioModule,
-        FuseNavigationModule,
         SharedModule
     ],
     exports     : [

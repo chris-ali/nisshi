@@ -10,9 +10,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { FuseCardModule } from '@fuse/components/card';
 import { SharedModule } from 'app/shared/shared.module';
 import { VehicleViewComponent } from 'app/modules/vehicle/view/vehicle-view.component';
+import { CardModule } from '@coreui/angular';
 
 export const routes: Route[] = [
     {
@@ -37,7 +37,7 @@ export const routes: Route[] = [
         MatMenuModule,
         MatProgressBarModule,
         MatTooltipModule,
-        FuseCardModule,
+        CardModule,
         SharedModule
     ]
 })

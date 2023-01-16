@@ -2,13 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MaintenanceEntryService } from 'app/core/maintenanceentry/maintenanceentry.service';
-import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
 import { VehicleService } from 'app/core/vehicle/vehicle.service';
 import { Vehicle } from 'app/core/vehicle/vehicle.types';
 import { AppConfig } from 'app/core/config/app.config';
 import { Subject } from 'rxjs';
-import { FuseConfigService } from '@fuse/services/config';
 import { takeUntil } from 'rxjs/operators';
+import { ConfigService } from 'app/core/config/config.service';
+import { ConfirmationAdapter } from 'app/core/confirmation/confirmation.adapter';
 
 /**
  * Form that adds/edits an maintenance
@@ -33,10 +33,10 @@ export class MaintenanceFormComponent implements OnInit, OnDestroy
     constructor(private formBuilder: FormBuilder,
                 private maintenanceEntryService: MaintenanceEntryService,
                 private vehicleService: VehicleService,
-                private fuseConfigService: FuseConfigService,
+                private configService: ConfigService,
                 private route: ActivatedRoute,
                 private router: Router,
-                private confirmation: ConfirmationService)
+                private confirmation: ConfirmationAdapter)
     {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ export class MaintenanceFormComponent implements OnInit, OnDestroy
         }
 
         // Subscribe to config changes
-        this.fuseConfigService.config$
+        this.configService.config$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((config: AppConfig) => {
                 this.appConfig = config;
@@ -86,7 +86,7 @@ export class MaintenanceFormComponent implements OnInit, OnDestroy
      ngOnDestroy(): void
      {
          // Unsubscribe from all subscriptions
-         this._unsubscribeAll.next();
+         this._unsubscribeAll.next(1);
          this._unsubscribeAll.complete();
      }
 
