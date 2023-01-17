@@ -7,7 +7,7 @@ A simple logbook application for pilots to log flights and for maintenance or re
 
 Calculates detailed flight analytics broken down by aircraft type, conditions of flight, etc, which are displayed on the dashboard of the application.
 
-[NisshiLogbook](https://user-images.githubusercontent.com/15899769/212988214-c6bf9b1b-542a-4373-81a9-cc18e41b0444.png)
+![NisshiLogbook](https://user-images.githubusercontent.com/15899769/212988377-31a902a0-3f42-4662-9886-2ba6d21944ad.png)
 
 Configuration supports display of user-desired columns in logbook as well as date and aircraft filtering,
 
