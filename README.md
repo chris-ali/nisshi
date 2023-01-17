@@ -11,11 +11,11 @@ Calculates detailed flight analytics broken down by aircraft type, conditions of
 
 Configuration supports display of user-desired columns in logbook as well as date and aircraft filtering,
 
-Designed using:
+### Designed using:
 - [Angular 15](https://github.com/angular/angular) 
 - [ASP .NET 6.0](https://github.com/dotnet/aspnetcore)
 
-Implements:
+### Implements:
 - WebAPI
 - Swagger endpoints
 - [CoreUI] (https://github.com/coreui/coreui-free-bootstrap-admin-template) Angular Template
