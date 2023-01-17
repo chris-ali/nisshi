@@ -1,7 +1,7 @@
 # Nisshi
 ### (Japanese for Log)
 
-A simple logbook application for pilots to log flights and for maintenance or repairs to be recorded per vehicle. Provides for a unified location for simulated and real flights to be logged.!
+A simple logbook application for pilots to log flights and for maintenance or repairs to be recorded per vehicle. Provides for a unified location for simulated and real flights to be logged.
 
 ![NisshiDashboard](https://user-images.githubusercontent.com/15899769/212988266-8a0f240b-ef8d-42da-84ef-5a2010992062.png)
 
