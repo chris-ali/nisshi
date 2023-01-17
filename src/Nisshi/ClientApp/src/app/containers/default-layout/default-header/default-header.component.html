@@ -1,4 +1,3 @@
-<!--<c-header class="mb-4 d-print-none" position="sticky">-->
 <ng-container>
   <c-container [fluid]="true">
     <button
@@ -21,7 +20,6 @@
     <c-breadcrumb-router class="ms-2"></c-breadcrumb-router>
   </c-container>
 </ng-container>
-<!--</c-header>-->
 
 <ng-template #userDropdown>
   <c-dropdown alignment="end" variant="nav-item">
@@ -31,12 +29,13 @@
       [caret]="false"
       cDropdownToggle
       class="py-0">
-      <c-avatar
+      <svg cIcon class="me-2" name="cilUser"></svg>
+      <!-- <c-avatar
         cTextColor="primary"
         shape="rounded-1"
         size="md"
         src="./assets/img/avatars/8.jpg">
-      </c-avatar>
+      </c-avatar> -->
     </button>
     <ul cDropdownMenu class="pt-0 pr-5 w-auto">
       <li>
@@ -44,7 +43,7 @@
       </li>
       <li>
         <a routerLink="/settings/profile" cDropdownItem>
-          <svg cIcon class="me-2" name="cilUser"></svg>
+          <svg cIcon class="me-2" name="cilShortText"></svg>
           Profile
         </a>
       </li>
@@ -60,7 +59,7 @@
       <li>
         <a routerLink="/sign-out" cDropdownItem>
           <svg cIcon class="me-2" name="cilLockLocked"></svg>
-          Log Out
+          Sign Out
         </a>
       </li>
     </ul>

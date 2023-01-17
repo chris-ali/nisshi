@@ -6,7 +6,7 @@ import { registerLocaleData } from '@angular/common';
 import { IconSetService } from '@coreui/icons-angular';
 import { Title } from '@angular/platform-browser';
 import { cilHome, cilAirplaneMode, cilBook, cilGlobeAlt, cilCalendar, cilGarage,
-    cilMenu, cilUser, cilSettings, cilLockLocked } from '@coreui/icons';
+    cilMenu, cilUser, cilSettings, cilLockLocked, cilShortText, cilViewStream } from '@coreui/icons';
 
 @Component({
     selector   : 'body',
@@ -14,7 +14,7 @@ import { cilHome, cilAirplaneMode, cilBook, cilGlobeAlt, cilCalendar, cilGarage,
 })
 export class AppComponent implements OnInit
 {
-    title = 'CoreUI Free Angular Admin Template';
+    title = 'Nisshi';
 
     /**
      * Constructor
@@ -25,7 +25,7 @@ export class AppComponent implements OnInit
     {
         titleService.setTitle(this.title);
         iconSetService.icons = { cilHome, cilAirplaneMode, cilBook, cilGlobeAlt, cilCalendar, cilGarage,
-            cilMenu, cilUser, cilSettings, cilLockLocked };
+            cilMenu, cilUser, cilSettings, cilLockLocked, cilShortText, cilViewStream };
     }
 
     // -----------------------------------------------------------------------------------------------------

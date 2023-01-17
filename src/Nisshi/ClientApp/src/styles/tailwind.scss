@@ -72,6 +72,10 @@
         }
     }
 
+    a {
+        text-decoration: inherit !important;
+    }
+
     /* Print styles */
     @media print {
 
