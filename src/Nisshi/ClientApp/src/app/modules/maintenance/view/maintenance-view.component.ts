@@ -2,16 +2,16 @@ import { Component, OnInit, ViewEncapsulation, ViewChild, OnDestroy } from '@ang
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { ColumnMode } from '@swimlane/ngx-datatable';
-import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
 import { MaintenanceEntryService } from 'app/core/maintenanceentry/maintenanceentry.service';
 import { MaintenanceEntry } from 'app/core/maintenanceentry/maintenanceentry.types';
 import { AppConfig, MaintenanceOptions } from 'app/core/config/app.config';
-import { FuseConfigService } from '@fuse/services/config';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { VehicleService } from 'app/core/vehicle/vehicle.service';
 import { MaintenanceFilter } from 'app/core/ui/maintenancefilter.types';
 import { Vehicle } from 'app/core/vehicle/vehicle.types';
+import { ConfirmationAdapter } from 'app/core/confirmation/confirmation.adapter';
+import { ConfigService } from 'app/core/config/config.service';
 
 @Component({
   selector: 'maintenance-view',
@@ -42,8 +42,8 @@ export class MaintenanceViewComponent implements OnInit, OnDestroy
     constructor(private maintenanceEntryService: MaintenanceEntryService,
                 private vehicleService: VehicleService,
                 public translateService: TranslocoService,
-                private fuseConfigService: FuseConfigService,
-                private confirmation: ConfirmationService,
+                private configService: ConfigService,
+                private confirmation: ConfirmationAdapter,
                 private router: Router,
                 private route: ActivatedRoute)
     {
@@ -68,7 +68,7 @@ export class MaintenanceViewComponent implements OnInit, OnDestroy
         this.activeFilters = [];
 
         // Subscribe to config changes
-        this.fuseConfigService.config$
+        this.configService.config$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((config: AppConfig) => {
                 this.appConfig = config;
@@ -81,7 +81,7 @@ export class MaintenanceViewComponent implements OnInit, OnDestroy
      ngOnDestroy(): void
      {
          // Unsubscribe from all subscriptions
-         this._unsubscribeAll.next();
+         this._unsubscribeAll.next(1);
          this._unsubscribeAll.complete();
      }
 
@@ -173,7 +173,7 @@ export class MaintenanceViewComponent implements OnInit, OnDestroy
      */
     onAppConfigChanged(options: MaintenanceOptions): void
     {
-        this.fuseConfigService.config = {maintenanceOptions: options};
+        this.configService.config = {maintenanceOptions: options};
     }
 
     /**

@@ -2,7 +2,7 @@
     <!-- Header -->
     <div class="bg-card">
         <div class="flex flex-col w-full max-w-screen-xl mx-auto px-6 sm:px-8">
-            <div class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 my-8 sm:my-12">
+            <div class="flex flex-col sm:flex-row flex-auto sm:items-center min-w-0 my-4 sm:my-8">
                 <div class="flex flex-auto items-center min-w-0">
                     <div class="flex flex-col min-w-0 ml-4">
                         <ng-container *transloco="let t">
@@ -18,53 +18,53 @@
         <div class="w-full max-w-screen-xl mx-auto">
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 w-full min-w-0">
                 <!-- Totals -->
-                <div class="sm:col-span-2 md:col-span-4 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
-                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Total Logged Hours</div>
+                <div class="sm:col-span-2 md:col-span-4 flex flex-col flex-auto p-6 card shadow rounded overflow-hidden">
+                    <div class="text-2xl font-medium tracking-tight leading-6 truncate">Total Logged Hours</div>
                     <div class="flex flex-col">
                         <div class="flex-auto grid grid-cols-4 gap-4 mt-6">
-                            <div class="col-span-2 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-indigo-50 text-indigo-800 dark:bg-white dark:bg-opacity-5 dark:text-indigo-400">
+                            <div class="col-span-2 flex flex-col items-center justify-center py-8 px-1 rounded bg-indigo-50 text-indigo-800 dark:bg-white dark:bg-opacity-5 dark:text-indigo-400">
                                 <div class="text-5xl sm:text-7xl font-semibold leading-none tracking-tight">
                                     {{summedTotals.totalTimeSum | number: '1.2-2'}}
                                 </div>
                                 <div class="mt-1 text-sm sm:text-lg font-medium">Total Time</div>
                             </div>
-                            <div class="col-span-2 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-green-50 text-green-800 dark:bg-white dark:bg-opacity-5 dark:text-green-500">
+                            <div class="col-span-2 flex flex-col items-center justify-center py-8 px-1 rounded bg-green-50 text-green-800 dark:bg-white dark:bg-opacity-5 dark:text-green-500">
                                 <div class="text-5xl sm:text-7xl font-semibold leading-none tracking-tight">
                                     {{summedTotals.picSum | number: '1.2-2'}}
                                 </div>
                                 <div class="mt-1 text-sm sm:text-lg font-medium">Pilot in Command</div>
                             </div>
-                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5">
+                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded bg-gray-100 dark:bg-white dark:bg-opacity-5">
                                 <div class="text-5xl font-semibold leading-none tracking-tight">
                                     {{summedTotals.multiSum | number: '1.2-2'}}
                                 </div>
                                 <div class="mt-1 text-sm sm:text-lg font-medium">Multi Engine</div>
                             </div>
-                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5">
+                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded bg-gray-100 dark:bg-white dark:bg-opacity-5">
                                 <div class="text-5xl font-semibold leading-none tracking-tight">
                                     {{summedTotals.turbineSum | number: '1.2-2'}}
                                 </div>
                                 <div class="mt-1 text-sm sm:text-lg font-medium">Turbine</div>
                             </div>
-                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5">
+                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded bg-gray-100 dark:bg-white dark:bg-opacity-5">
                                 <div class="text-5xl font-semibold leading-none tracking-tight">
                                     {{summedTotals.instrumentSum | number: '1.2-2'}}
                                 </div>
                                 <div class="mt-1 text-sm sm:text-lg font-medium">Instrument</div>
                             </div>
-                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5">
+                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded bg-gray-100 dark:bg-white dark:bg-opacity-5">
                                 <div class="text-5xl font-semibold leading-none tracking-tight">
                                     {{summedTotals.crossCountrySum | number: '1.2-2'}}
                                 </div>
                                 <div class="mt-1 text-sm sm:text-lg font-medium">Cross Country</div>
                             </div>
-                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5">
+                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded bg-gray-100 dark:bg-white dark:bg-opacity-5">
                                 <div class="text-5xl font-semibold leading-none tracking-tight">
                                     {{summedTotals.sicSum | number: '1.2-2'}}
                                 </div>
                                 <div class="mt-1 text-sm sm:text-lg font-medium">Second in Command</div>
                             </div>
-                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5">
+                            <div class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded bg-gray-100 dark:bg-white dark:bg-opacity-5">
                                 <div class="text-5xl font-semibold leading-none tracking-tight">
                                     {{summedTotals.dualGivenSum | number: '1.2-2'}}
                                 </div>
@@ -74,8 +74,8 @@
                     </div>
                 </div>
                 <!-- Breakdown -->
-                <div class="sm:col-span-2 md:col-span-4 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
-                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Hours Breakdown</div>
+                <div class="sm:col-span-2 md:col-span-4 flex flex-col flex-auto p-6 card shadow rounded overflow-hidden">
+                    <div class="text-2xl font-medium tracking-tight leading-6 truncate">Hours Breakdown</div>
                     <div class="mt-6 sm:mt-4 sm:ml-2">
                         <mat-button-toggle-group
                             value="total-time"
@@ -94,7 +94,7 @@
                     </div>
                     <div class="grid grid-cols-2 lg:grid-cols-3 grid-flow-row gap-6 w-full mt-6 sm:mt-4">
                         <!-- Totals per month -->
-                        <div class="sm:col-span-1 md:col-span-2 lg:col-span-1">
+                        <div class="sm:col-span-2 md:col-span-3 lg:col-span-3">
                             <div class="font-medium text-secondary">Per Month</div>
                             <div class="flex flex-col flex-auto">
                                 <apx-chart
@@ -171,8 +171,8 @@
                     </div>
                 </div>
                 <!-- Landings and Approaches Summary -->
-                <div class="sm:col-span-2 md:col-span-4 lg:col-span-2 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden">
-                    <div class="text-lg font-medium tracking-tight leading-6 truncate">Landings and Instrument Approaches</div>
+                <div class="sm:col-span-2 md:col-span-4 flex flex-col flex-auto p-6 card shadow rounded overflow-hidden">
+                    <div class="text-2xl font-medium tracking-tight leading-6 truncate">Landings and Instrument Approaches</div>
                     <div class="flex flex-col flex-auto mt-4">
                         <div class="font-medium text-secondary">In the Past 90 Days</div>
                         <div class="flex-auto grid grid-cols-3 gap-4 mt-2">

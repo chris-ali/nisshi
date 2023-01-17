@@ -1,10 +1,9 @@
 import { Component, Inject, LOCALE_ID, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ApexOptions } from 'ng-apexcharts';
-import { AnalyticsService } from 'app/core/analytics/analytics.service';
 import { AnalyticsCompendium, ChartData, LandingsAnalytics, TotalsAnalytics } from 'app/core/analytics/analytics.types';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.types';
-import { forkJoin, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { formatNumber } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
@@ -24,7 +23,7 @@ export class DashboardComponent implements OnInit, OnDestroy
     summedTotals: TotalsAnalytics;
     landingsPast90Days: LandingsAnalytics;
 
-    private unsubscribeAll: Subject<any> = new Subject<any>();
+    private _unsubscribeAll: Subject<any> = new Subject<any>();
     user: User;
 
     /**
@@ -65,7 +64,7 @@ export class DashboardComponent implements OnInit, OnDestroy
         });
 
         this.userService.user$
-            .pipe(takeUntil(this.unsubscribeAll))
+            .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((user: User) => {
                 this.user = user;
             });
@@ -77,8 +76,8 @@ export class DashboardComponent implements OnInit, OnDestroy
      ngOnDestroy(): void
      {
          // Unsubscribe from all subscriptions
-         this.unsubscribeAll.next();
-         this.unsubscribeAll.complete();
+         this._unsubscribeAll.next(1);
+         this._unsubscribeAll.complete();
      }
 
     // -----------------------------------------------------------------------------------------------------

@@ -1,21 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import en from '@angular/common/locales/en-US-POSIX';
+import en from '@angular/common/locales/en';
 import de from '@angular/common/locales/de';
 import ja from '@angular/common/locales/ja';
 import { registerLocaleData } from '@angular/common';
+import { IconSetService } from '@coreui/icons-angular';
+import { Title } from '@angular/platform-browser';
+import { cilHome, cilAirplaneMode, cilBook, cilGlobeAlt, cilCalendar, cilGarage,
+    cilMenu, cilUser, cilSettings, cilLockLocked, cilShortText, cilViewStream } from '@coreui/icons';
 
 @Component({
-    selector   : 'app-root',
-    templateUrl: './app.component.html',
-    styleUrls  : ['./app.component.scss']
+    selector   : 'body',
+    template: '<router-outlet></router-outlet>',
 })
 export class AppComponent implements OnInit
 {
+    title = 'Nisshi';
+
     /**
      * Constructor
      */
-    constructor()
+    constructor(
+        private titleService: Title,
+        private iconSetService: IconSetService)
     {
+        titleService.setTitle(this.title);
+        iconSetService.icons = { cilHome, cilAirplaneMode, cilBook, cilGlobeAlt, cilCalendar, cilGarage,
+            cilMenu, cilUser, cilSettings, cilLockLocked, cilShortText, cilViewStream };
     }
 
     // -----------------------------------------------------------------------------------------------------

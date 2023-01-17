@@ -18,7 +18,7 @@
         <form
             [formGroup]="form"
             (ngSubmit)="onSubmit()"
-            class="flex flex-col mt-4 px-8 pt-10 bg-card shadow rounded overflow-hidden">
+            class="flex flex-col mt-4 px-8 pt-10 card shadow rounded overflow-hidden">
             <div class="flex flex-col gt-xs:flex-row gt-xs:items-start">
                 <div class="gt-xs:max-w-80 gt-xs:pr-12">
                     <p class="text-lg font-medium">Primary Information</p>
@@ -67,17 +67,17 @@
                                 class="icon-size-5"
                                 matPrefix
                                 [svgIcon]="'heroicons_solid:map'"></mat-icon>
-                            <mat-chip-list
+                            <mat-chip-grid
                                 #chipList
                                 [formControlName]="'route'">
-                                <mat-chip
+                                <mat-chip-row
                                     *ngFor="let airport of airports"
                                     (removed)="remove(airport)">
                                     {{airport}}
                                     <button matChipRemove>
                                         <mat-icon>cancel</mat-icon>
                                     </button>
-                                </mat-chip>
+                                </mat-chip-row>
                                 <input
                                     type="text"
                                     placeholder="Enter ICAO Code..."
@@ -88,7 +88,7 @@
                                     [matChipInputFor]="chipList"
                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                                     (matChipInputTokenEnd)="add($event)">
-                            </mat-chip-list>
+                            </mat-chip-grid>
                             <mat-autocomplete #autocomplete="matAutocomplete" (optionSelected)="selected($event)">
                                 <mat-option *ngFor="let airport of servicedAirports" [value]="airport.airportCode">
                                     {{airport.airportCode}} - {{airport.facilityName}}

@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnIni
 import { MatDrawer } from '@angular/material/sidenav';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -25,7 +24,6 @@ export class SettingsComponent implements OnInit, OnDestroy
      */
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
-        private _fuseMediaWatcherService: FuseMediaWatcherService,
         private route: ActivatedRoute,
         private router: Router
     )
@@ -57,35 +55,8 @@ export class SettingsComponent implements OnInit, OnDestroy
                 icon       : 'heroicons_outline:lock-closed',
                 title      : 'Security',
                 description: 'Manage password'
-            },
-            {
-                id         : 'theme',
-                icon       : 'heroicons_outline:desktop-computer',
-                title      : 'Theme',
-                description: 'Manage site display properties'
             }
         ];
-
-        // Subscribe to media changes
-        this._fuseMediaWatcherService.onMediaChange$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(({matchingAliases}) => {
-
-                // Set the drawerMode and drawerOpened
-                if ( matchingAliases.includes('lg') )
-                {
-                    this.drawerMode = 'side';
-                    this.drawerOpened = true;
-                }
-                else
-                {
-                    this.drawerMode = 'over';
-                    this.drawerOpened = false;
-                }
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
     }
 
     /**
@@ -94,7 +65,7 @@ export class SettingsComponent implements OnInit, OnDestroy
     ngOnDestroy(): void
     {
         // Unsubscribe from all subscriptions
-        this._unsubscribeAll.next();
+        this._unsubscribeAll.next(1);
         this._unsubscribeAll.complete();
     }
 

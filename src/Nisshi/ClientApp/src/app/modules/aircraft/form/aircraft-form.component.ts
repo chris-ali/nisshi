@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AircraftService } from 'app/core/aircraft/aircraft.service';
-import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
+import { ConfirmationAdapter } from 'app/core/confirmation/confirmation.adapter';
 import { ManufacturerService } from 'app/core/manufacturer/manufacturer.service';
 import { Manufacturer } from 'app/core/manufacturer/manufacturer.types';
 import { ModelService } from 'app/core/model/model.service';
@@ -33,7 +33,7 @@ export class AircraftFormComponent implements OnInit
                 private modelService: ModelService,
                 private route: ActivatedRoute,
                 private router: Router,
-                private confirmation: ConfirmationService)
+                private confirmation: ConfirmationAdapter)
     {}
 
     // -----------------------------------------------------------------------------------------------------

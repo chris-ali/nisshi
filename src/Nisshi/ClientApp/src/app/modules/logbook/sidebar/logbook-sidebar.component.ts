@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
 import { AircraftService } from 'app/core/aircraft/aircraft.service';
 import { Aircraft } from 'app/core/aircraft/aircraft.types';
 import { LogbookOptions } from 'app/core/config/app.config';
@@ -23,7 +22,6 @@ export class LogbookSidebarComponent implements OnInit
     @Output() preferencesChanged = new EventEmitter();
     @Output() filterChanged = new EventEmitter();
 
-    menuData: FuseNavigationItem[];
     form: FormGroup;
     filter: FormGroup;
     aircraft: Aircraft[];

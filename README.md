@@ -1,24 +1,24 @@
-# Nisshi, Japanese for Log
+# Nisshi
+### (Japanese for Log)
 
-A simple logbook application for pilots to log flights and for maintenance or repairs to be recorded per vehicle. Provides for a unified location for simulated and real flights to be logged. 
+A simple logbook application for pilots to log flights and for maintenance or repairs to be recorded per vehicle. Provides for a unified location for simulated and real flights to be logged.!
 
-![NisshiLogbook](https://user-images.githubusercontent.com/15899769/211160948-18d481dd-336a-4e0f-8d5d-720e4d351f2d.png)
+![NisshiDashboard](https://user-images.githubusercontent.com/15899769/212988266-8a0f240b-ef8d-42da-84ef-5a2010992062.png)
 
-![NisshiAircraft](https://user-images.githubusercontent.com/15899769/211160998-3957a353-eba9-479f-8c38-94ce0e6f79cc.png)
+Calculates detailed flight analytics broken down by aircraft type, conditions of flight, etc, which are displayed on the dashboard of the application.
 
-Calculates detailed flight analytics broken down by aircraft type, conditions of flight, etc, which are displayed on the dashboard of the application. 
+![NisshiLogbook](https://user-images.githubusercontent.com/15899769/212988377-31a902a0-3f42-4662-9886-2ba6d21944ad.png)
 
-![NisshiDashboard](https://user-images.githubusercontent.com/15899769/211161010-52b4b803-056d-4628-8b2d-209cb6f1c89f.png)
-
-Configuration supports display of user-desired columns in logbook as well as dark theme,
+Configuration supports display of user-desired columns in logbook as well as date and aircraft filtering,
 
 Designed using:
-- [Angular 13](https://github.com/angular/angular) 
+- [Angular 15](https://github.com/angular/angular) 
 - [ASP .NET 6.0](https://github.com/dotnet/aspnetcore)
 
 Implements:
 - WebAPI
 - Swagger endpoints
+- [CoreUI] (https://github.com/coreui/coreui-free-bootstrap-admin-template) Angular Template
 - CQRS pattern via [MediatR](https://github.com/jbogard/MediatR)
 - JWT authentication 
 - Target dependency graph via [Bullseye](https://github.com/adamralph/bullseye)

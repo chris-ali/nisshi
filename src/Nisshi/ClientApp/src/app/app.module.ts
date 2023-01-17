@@ -1,46 +1,125 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ExtraOptions, PreloadAllModules, RouterModule } from '@angular/router';
 import { MarkdownModule } from 'ngx-markdown';
-import { FuseModule } from '@fuse';
-import { FuseConfigModule } from '@fuse/services/config';
-import { FuseMockApiModule } from '@fuse/lib/mock-api';
-import { CoreModule } from 'app/core/core.module';
 import { appConfig } from 'app/core/config/app.config';
-import { mockApiServices } from 'app/mock-api';
-import { LayoutModule } from 'app/layout/layout.module';
 import { AppComponent } from 'app/app.component';
 import { appRoutes } from 'app/app.routing';
+import { ConfirmationModule } from './core/confirmation/confirmation.module';
+import { ConfigModule } from './core/config/config.module';
+import { HashLocationStrategy, LocationStrategy, PathLocationStrategy } from '@angular/common';
+
+import {
+    PERFECT_SCROLLBAR_CONFIG,
+    PerfectScrollbarConfigInterface,
+    PerfectScrollbarModule,
+  } from 'ngx-perfect-scrollbar';
+
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+    suppressScrollX: true
+  };
+
+import {
+    DefaultFooterComponent,
+    DefaultHeaderComponent,
+    DefaultLayoutComponent,
+} from './containers';
+
+import {
+    AvatarModule,
+    BadgeModule,
+    BreadcrumbModule,
+    ButtonGroupModule,
+    ButtonModule,
+    CardModule,
+    DropdownModule,
+    FooterModule,
+    FormModule,
+    GridModule,
+    HeaderModule,
+    ListGroupModule,
+    NavModule,
+    ProgressModule,
+    SharedModule,
+    SidebarModule,
+    TabsModule,
+    UtilitiesModule,
+} from '@coreui/angular';
+
+import { IconModule, IconSetService } from '@coreui/icons-angular';
+import { AuthModule } from './core/auth/auth.module';
+import { TranslocoCoreModule } from './core/transloco/transloco.module';
+import { IconsModule } from './core/icons/icons.module';
 
 const routerConfig: ExtraOptions = {
     preloadingStrategy       : PreloadAllModules,
     scrollPositionRestoration: 'enabled'
 };
 
+const APP_CONTAINERS = [
+    DefaultFooterComponent,
+    DefaultHeaderComponent,
+    DefaultLayoutComponent,
+  ];
+
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        ...APP_CONTAINERS,
     ],
     imports     : [
         BrowserModule,
         BrowserAnimationsModule,
         RouterModule.forRoot(appRoutes, routerConfig),
 
-        // Fuse, FuseConfig & FuseMockAPI
-        FuseModule,
-        FuseConfigModule.forRoot(appConfig),
-        FuseMockApiModule.forRoot(mockApiServices),
+        ConfirmationModule,
+        ConfigModule.forRoot(appConfig),
 
-        // Core module of your application
-        CoreModule,
+        AuthModule,
+        IconsModule,
+        TranslocoCoreModule,
 
-        // Layout module of your application
-        LayoutModule,
+        // CoreUI components
+        AvatarModule,
+        BreadcrumbModule,
+        FooterModule,
+        DropdownModule,
+        GridModule,
+        HeaderModule,
+        SidebarModule,
+        IconModule,
+        PerfectScrollbarModule,
+        NavModule,
+        ButtonModule,
+        FormModule,
+        UtilitiesModule,
+        ButtonGroupModule,
+        //ReactiveFormsModule,
+        SidebarModule,
+        SharedModule,
+        TabsModule,
+        ListGroupModule,
+        ProgressModule,
+        BadgeModule,
+        ListGroupModule,
+        CardModule,
 
         // 3rd party modules that require global configuration via forRoot
         MarkdownModule.forRoot({})
     ],
+    providers: [
+        {
+          provide: LocationStrategy,
+          useClass: HashLocationStrategy,
+        },
+        {
+          provide: PERFECT_SCROLLBAR_CONFIG,
+          useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG,
+        },
+        IconSetService,
+        Title
+      ],
     bootstrap   : [
         AppComponent
     ]

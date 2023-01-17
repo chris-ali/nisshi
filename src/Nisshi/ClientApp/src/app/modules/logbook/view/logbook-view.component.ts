@@ -2,11 +2,11 @@ import { Component, OnInit, ViewEncapsulation, ViewChild, OnDestroy } from '@ang
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@ngneat/transloco';
 import { ColumnMode } from '@swimlane/ngx-datatable';
-import { ConfirmationService } from 'app/core/confirmation/confirmation.service';
+import { ConfirmationAdapter } from 'app/core/confirmation/confirmation.adapter';
 import { LogbookEntryService } from 'app/core/logbookentry/logbookentry.service';
 import { LogbookEntry } from 'app/core/logbookentry/logbookentry.types';
 import { AppConfig, LogbookOptions } from 'app/core/config/app.config';
-import { FuseConfigService } from '@fuse/services/config';
+import { ConfigService } from 'app/core/config/config.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AircraftService } from 'app/core/aircraft/aircraft.service';
@@ -39,8 +39,8 @@ export class LogbookViewComponent implements OnInit, OnDestroy
     constructor(private logbookEntryService: LogbookEntryService,
                 private aircraftService: AircraftService,
                 public translateService: TranslocoService,
-                private fuseConfigService: FuseConfigService,
-                private confirmation: ConfirmationService,
+                private configService: ConfigService,
+                private confirmation: ConfirmationAdapter,
                 private router: Router,
                 private route: ActivatedRoute)
     {
@@ -59,7 +59,7 @@ export class LogbookViewComponent implements OnInit, OnDestroy
         this.activeFilters = [];
 
         // Subscribe to config changes
-        this.fuseConfigService.config$
+        this.configService.config$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((config: AppConfig) => {
                 this.appConfig = config;
@@ -72,7 +72,7 @@ export class LogbookViewComponent implements OnInit, OnDestroy
      ngOnDestroy(): void
      {
          // Unsubscribe from all subscriptions
-         this._unsubscribeAll.next();
+         this._unsubscribeAll.next(1);
          this._unsubscribeAll.complete();
      }
 
@@ -155,7 +155,7 @@ export class LogbookViewComponent implements OnInit, OnDestroy
      */
     onAppConfigChanged(options: LogbookOptions): void
     {
-        this.fuseConfigService.config = {logbookOptions: options};
+        this.configService.config = {logbookOptions: options};
     }
 
     /**
