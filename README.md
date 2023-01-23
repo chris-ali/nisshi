@@ -18,7 +18,7 @@ Configuration supports display of user-desired columns in logbook as well as dat
 ### Implements:
 - WebAPI
 - Swagger endpoints
-- [CoreUI] (https://github.com/coreui/coreui-free-bootstrap-admin-template) Angular Template
+- [CoreUI](https://github.com/coreui/coreui-free-bootstrap-admin-template) Angular Template
 - CQRS pattern via [MediatR](https://github.com/jbogard/MediatR)
 - JWT authentication 
 - Target dependency graph via [Bullseye](https://github.com/adamralph/bullseye)
