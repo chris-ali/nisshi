@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/src/Nisshi/bin/Debug/net6.0/Nisshi.dll",
+            "program": "${workspaceFolder}/src/Nisshi/bin/Debug/net8.0/Nisshi.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/Nisshi",
             "stopAtEntry": false,
